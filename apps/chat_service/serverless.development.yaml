@@ -1,0 +1,21 @@
+service: corpus-chat-service
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-west-2
+  stage: development
+
+functions:
+  chat:
+    handler: src/index.handler
+    events:
+      - http:
+          path: chat
+          method: post
+          cors: true
+    environment:
+      NODE_ENV: development
+
+plugins:
+  - serverless-offline

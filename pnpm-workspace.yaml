@@ -1,0 +1,3 @@
+packages:
+  - 'apps/*'    # This means all folders inside 'apps' are separate projects
+  - 'packages/*' # This means all folders inside 'packages' are shared libraries

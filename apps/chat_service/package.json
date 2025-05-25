@@ -1,0 +1,27 @@
+{
+  "name": "chat_service",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "dotenv -e .env.development -- serverless offline --host 0.0.0.0 --httpPort 3101 --lambdaPort 3004 --config serverless.development.yaml",
+    "build": "tsc",
+    "test": "jest",
+    "lint": "eslint src/**/*.ts"
+  },
+  "dependencies": {
+    "@aws-sdk/client-lambda": "^3.0.0",
+    "openai": "^4.0.0",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.0",
+    "@types/jest": "^29.0.0",
+    "@types/node": "^20.0.0",
+    "dotenv-cli": "^7.4.4",
+    "jest": "^29.0.0",
+    "serverless": "^3.40.0",
+    "serverless-offline": "^13.9.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.0.0"
+  }
+}
