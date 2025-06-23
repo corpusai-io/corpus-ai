@@ -8,7 +8,7 @@ A modern, monorepo-based web platform for Corpus AI app building and deployment.
 
 ## 📋 Overview
 
-Denser Web is a comprehensive web platform consisting of multiple applications:
+CorpusAI Web is a comprehensive web platform consisting of multiple applications:
 
 - **website** - Main user portal
 - **backend** - Backend API services
