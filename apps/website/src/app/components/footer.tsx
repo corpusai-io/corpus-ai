@@ -1,6 +1,6 @@
 export default function Footer(){
     return(
-<footer className="text-gray-600 body-font">
+<footer className="text-gray-600 body-font bg-gradient-to-b from-white to-white ">
  <div className="container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
  <div className="w-64 flex-shrink-0 mx-auto text-center">
   <div className="flex flex-col items-center">
@@ -44,7 +44,7 @@ export default function Footer(){
         <h2 className="title-font font-medium text-gray-600 tracking-widest text-lg mb-3">Products</h2>
         <nav className="list-none mb-10 space-y-6">
           <li>
-            <a className="text-gray-900 hover:text-gray-600 text-xl font-[var(--font-primary)]">Corpus Chat</a>
+            <a className="font-medium text-[20px] leading-[100%] tracking-[-0.32px] font-helvetica text-[#1E1E1E]">Corpus Chat</a>
           </li>
         </nav>
       </div>
@@ -52,13 +52,13 @@ export default function Footer(){
         <h2 className="title-font font-medium text-gray-600 tracking-widest text-lg mb-3">Company</h2>
         <nav className="list-none mb-10 space-y-6">
           <li>
-            <a className="text-gray-900 hover:text-gray-600 text-xl">Blog</a>
+            <a className="font-medium text-[20px] leading-[100%] tracking-[-0.32px] font-helvetica text-[#1E1E1E]">Blog</a>
           </li>
           <li>
-            <a className="text-gray-900 hover:text-gray-600 text-xl">Documentation</a>
+            <a className="font-medium text-[20px] leading-[100%] tracking-[-0.32px] font-helvetica text-[#1E1E1E]">Documentation</a>
           </li>
           <li>
-            <a className="text-gray-900 hover:text-gray-600 text-xl">Posts</a>
+            <a className="font-medium text-[20px] leading-[100%] tracking-[-0.32px] font-helvetica text-[#1E1E1E]">Posts</a>
           </li>
         </nav>
       </div>
@@ -66,10 +66,10 @@ export default function Footer(){
         <h2 className="title-font font-medium text-gray-600 tracking-widest text-lg mb-3">Contact</h2>
         <nav className="list-none mb-10 space-y-6">
           <li>
-            <a className="text-gray-900 hover:text-gray-600 text-xl">About</a>
+            <a className="font-medium text-[20px] leading-[100%] tracking-[-0.32px] font-helvetica text-[#1E1E1E]">About</a>
           </li>
           <li>
-            <a className="text-gray-900 hover:text-gray-600 text-xl">Contact</a>
+            <a className="font-medium text-[20px] leading-[100%] tracking-[-0.32px] font-helvetica text-[#1E1E1E]">Contact</a>
           </li>
         </nav>
       </div>

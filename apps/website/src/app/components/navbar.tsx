@@ -1,7 +1,9 @@
 
 export default function Navbar(){
     return(
-<header className="text-gray-600  bg-gray-200 body-font border m-4 border-0 outline-0 rounded-[10px] shadow-[0_8px_16px_0_rgba(194,194,194,0.15)] flex items-center justify-between bg-gradient-to-b from-white to-white ">
+
+<header className="text-gray-600  bg-gray-200 body-font border m-4 border-1 border-[#ECECEC] outline-0 rounded-[10px] shadow-[0_8px_16px_0_rgba(194,194,194,0.15)] flex items-center justify-between bg-gradient-to-b from-white to-white ">
+  <div className="custom-ellipse"></div>
   <div className="container mx-auto flex flex-wrap p-2 flex-col md:flex-row items-center ">
     <a className="flex title-font font-medium items-center text-black mb-4 md:mb-0">
       <span className="ml-3 text-xl font-bold">CORPUS AI</span>
@@ -276,5 +278,6 @@ export default function Navbar(){
     <button className="inline-flex items-center  bg-[#BF56FF] border-0 py-1 px-3 focus:outline-none text-white font-medium rounded text-base mt-4 md:mt-0 shadow-[0_4px_8px_0_rgba(220, 220, 220, 1)]">Get Started</button>
   </div>
 </header>
+
     );
 }
