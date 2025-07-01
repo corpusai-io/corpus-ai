@@ -1,14 +1,21 @@
-
+"use client";
+import { ClientPageRoot } from 'next/dist/client/components/client-page';
+import { use, useState } from 'react';
 export default function Navbar(){
+ const [menuOpen, setMenuOpen] = useState(false);
+
     return(
 
-<header className="text-gray-600  bg-gray-200 body-font border m-4 border-1 border-[#ECECEC] outline-0 rounded-[10px] shadow-[0_8px_16px_0_rgba(194,194,194,0.15)] flex items-center justify-between bg-gradient-to-b from-white to-white ">
+<header className="text-gray-600  body-font border m-4 border-1 border-[#ECECEC] outline-0 rounded-[10px] shadow-[0_8px_16px_0_rgba(194,194,194,0.15)] bg-white">
   <div className="custom-ellipse"></div>
-  <div className="container mx-auto flex flex-wrap p-2 flex-col md:flex-row items-center ">
+  <div className="container mx-auto p-2 flex flex-wrap items-center justify-between">
     <a className="flex title-font font-medium items-center text-black mb-4 md:mb-0">
       <span className="ml-3 text-xl font-bold">CORPUS AI</span>
     </a>
-<nav className="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-gray-400 flex flex-wrap items-center text-base justify-center gap-x-8">
+
+    
+  
+<nav id="nav-menu" className="hidden lg:flex flex-wrap items-center text-base justify-center gap-x-8 w-full lg:w-auto">
   
   <div className="relative group">
     
@@ -30,7 +37,7 @@ export default function Navbar(){
         <span>Products</span>
         
           <div className="flex items-start space-x-3 py-4">
-      <span><img src="/app/icons/Vector.svg" alt="Chat" className="w-5 h-5" /></span>
+      <span><img src=" Vector.svg" alt="Chat" className="w-5 h-5" /></span>
       <div>
         <p className="font-semibold text-black">Corpus Chat</p>
         <p className="text-gray-500 text-xs">AI chatbot for your website</p>
@@ -41,7 +48,7 @@ export default function Navbar(){
       <div className="block text-gray-700 hover:text-[#BF56FF] py-1">
         <span>Use Cases</span>
         <div className="flex items-start space-x-3 py-4">
-      <span>🏢</span>
+      <span><img src="Vector(1).svg" alt="B2B" className="w-5 h-5"/></span>
       <div>
         <p className="font-semibold text-black">B2B Chatbot</p>
         <p className="text-gray-500 text-xs">Specialized chatbot for business interactions</p>
@@ -49,7 +56,7 @@ export default function Navbar(){
     </div>
 
     <div className="flex items-start space-x-3 py-4">
-      <span>🎧</span>
+      <span><img src="customer-service-line.svg" alt="B2B" className="w-5 h-5"/></span>
       <div>
         <p className="font-semibold text-black">Customer Care Chatbot</p>
         <p className="text-gray-500 text-xs">AI powered customer support automation</p>
@@ -60,7 +67,7 @@ export default function Navbar(){
       <div className="block text-gray-700 hover:text-[#BF56FF] py-1">
         <span>Features</span>
         <div className="flex items-start space-x-3 py-4">
-      <span>📄</span>
+      <span><img src="file-pdf-2-line-2 2.svg" alt="B2B" className="w-5 h-5"/></span>
       <div>
         <p className="font-semibold text-black">Chat with PDF</p>
         <p className="text-gray-500 text-xs">Interactive conversations with your PDF document</p>
@@ -68,7 +75,7 @@ export default function Navbar(){
     </div>
 
     <div className="flex items-start space-x-3 py-4">
-      <span>🌐</span>
+      <span><img src="global-line.svg" alt="B2B" className="w-5 h-5"/></span>
       <div>
         <p className="font-semibold text-black">Chatbot on Website</p>
         <p className="text-gray-500 text-xs">Embed AI chatbot on your website</p>
@@ -76,7 +83,7 @@ export default function Navbar(){
     </div>
 
     <div className="flex items-start space-x-3 py-4">
-      <span>💬</span>
+      <span><img src="wechat-line.svg" alt="B2B" className="w-5 h-5"/></span>
       <div>
         <p className="font-semibold text-black">Chat with Bot</p>
         <p className="text-gray-500 text-xs">Engage with your documents intelligently</p>
@@ -107,32 +114,32 @@ export default function Navbar(){
         <span>Products</span></div>
         <div className="grid grid-cols-2 gap-[31px]">
           <div>
-      <div className="flex items-start space-x-3 py-4">
-      <span><img src="/app/icons/Vector.svg" alt="Chat" className="w-5 h-5" /></span>
+      <div className="flex items-center space-x-3 py-4">
+      <span><img src="Group.svg" alt="Chat" className="w-5 h-5" /></span>
       <div>
         <p className="font-semibold text-black">Slack</p>
         <p className="text-gray-500 text-xs">Connect with slack</p>
       </div>
       </div>
 
-      <div className="flex items-start space-x-3 py-4">
-      <span><img src="/app/icons/Vector.svg" alt="Chat" className="w-5 h-5" /></span>
+      <div className="flex items-center space-x-3 py-4">
+      <span><img src="wordpress-icon.svg" alt="Chat" className="w-5 h-5 " /></span>
       <div>
         <p className="font-semibold text-black">WordPress</p>
         <p className="text-gray-500 text-xs">Connect with WordPress</p>
       </div>
       </div>
 
-      <div className="flex items-start space-x-3 py-4">
-      <span><img src="/app/icons/Vector.svg" alt="Chat" className="w-5 h-5" /></span>
+      <div className="flex items-center space-x-3 py-4">
+      <span><img src="zapier.svg" alt="Chat" className="w-5 h-5 " /></span>
       <div>
         <p className="font-semibold text-black">Zapier</p>
         <p className="text-gray-500 text-xs">Connect with Zapier</p>
       </div>
       </div>
 
-      <div className="flex items-start space-x-3 py-4">
-      <span><img src="/app/icons/Vector.svg" alt="Chat" className="w-5 h-5" /></span>
+      <div className="flex items-center space-x-3 py-4">
+      <span><img src="telegram.svg" alt="Chat" className="w-5 h-5 " /></span>
       <div>
         <p className="font-semibold text-black">Telegram</p>
         <p className="text-gray-500 text-xs">Connect with Telegram</p>
@@ -172,7 +179,7 @@ export default function Navbar(){
           <div>
 
              <div className="flex items-start space-x-3 py-4">
-      <span><img src="/app/icons/Vector.svg" alt="Chat" className="w-5 h-5" /></span>
+      <span><img src="education.svg" alt="Chat" className="w-[24px] h-[24px] " /></span>
       <div>
         <p className="font-semibold text-black">Education</p>
         <p className="text-gray-500 ">AI solutions for Educational Institutions</p>
@@ -180,7 +187,7 @@ export default function Navbar(){
       </div>
 
        <div className="flex items-start space-x-3 py-4">
-      <span><img src="/app/icons/Vector.svg" alt="Chat" className="w-5 h-5" /></span>
+      <span><img src="healthcare.svg" alt="Chat" className="w-[24px] h-[24px] " /></span>
       <div>
         <p className="font-semibold text-black">Healthcare</p>
         <p className="text-gray-500 ">AI solutions for Health Care Providers</p>
@@ -188,7 +195,7 @@ export default function Navbar(){
       </div>
 
        <div className="flex items-start space-x-3 py-4">
-      <span><img src="/app/icons/Vector.svg" alt="Chat" className="w-5 h-5" /></span>
+      <span><img src="workspace.svg" alt="Chat" className="w-[24px] h-[24px] " /></span>
       <div>
         <p className="font-semibold text-black">Workplace</p>
         <p className="text-gray-500 text-xs">AI solutions for Workplace operations</p>
@@ -199,7 +206,7 @@ export default function Navbar(){
           <div>
 
              <div className="flex items-start space-x-3 py-4">
-      <span><img src="/app/icons/Vector.svg" alt="Chat" className="w-5 h-5" /></span>
+      <span><img src="government.svg" alt="Chat" className="w-[24px] h-[24px] " /></span>
       <div>
         <p className="font-semibold text-black">Government</p>
         <p className="text-gray-500 text-xs">Public section solutions for Government</p>
@@ -207,7 +214,7 @@ export default function Navbar(){
       </div>
 
        <div className="flex items-start space-x-3 py-4">
-      <span><img src="/app/icons/Vector.svg" alt="Chat" className="w-5 h-5" /></span>
+      <span><img src="legal.svg" alt="Chat" className="w-[24px] h-[24px] " /></span>
       <div>
         <p className="font-semibold text-black">Legal</p>
         <p className="text-gray-500 text-xs">AI solutions for Legal Practioners</p>
@@ -249,8 +256,8 @@ export default function Navbar(){
       <div>
         <div>Resources</div>
         <div>
-      <div className="flex items-start space-x-3 py-4">
-      <span><img src="/app/icons/Vector.svg" alt="Chat" className="w-5 h-5" /></span>
+      <div className="flex items-start space-x-3 py-3">
+      <span><img src="pages-line.svg" alt="Chat" className="w-5 h-5" /></span>
       <div>
         <p className="font-semibold text-black">Blog</p>
         <p className="text-gray-500 text-xs">Latest updates and insights from our team</p>
@@ -258,7 +265,7 @@ export default function Navbar(){
       </div>
 
 <div className="flex items-start space-x-3 py-4">
-      <span><img src="/app/icons/Vector.svg" alt="Chat" className="w-5 h-5" /></span>
+      <span><img src="file-line.svg" alt="Chat" className="w-5 h-5" /></span>
       <div>
         <p className="font-semibold text-black">Documentation</p>
         <p className="text-gray-500 text-xs">Latest updates and insights from our team</p>
@@ -275,9 +282,32 @@ export default function Navbar(){
 </nav>
 
 
-    <button className="inline-flex items-center  bg-[#BF56FF] border-0 py-1 px-3 focus:outline-none text-white font-medium rounded text-base mt-4 md:mt-0 shadow-[0_4px_8px_0_rgba(220, 220, 220, 1)]">Get Started</button>
+  <button className="inline-flex items-center bg-[#BF56FF] border-0 py-1 px-3 focus:outline-none text-white font-medium rounded text-base mt-0 md:mt-0 shadow-[0_4px_8px_0_rgba(220, 220, 220, 1)] hidden lg:inline-flex">Get Started</button>
+
+  <div className="block lg:hidden">
+      <button  onClick={() => setMenuOpen(!menuOpen)} id="menu-toggle" className="text-black focus:outline-none">
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+
   </div>
+
+   <div id="mobile-nav" className="lg:hidden hidden p-4">
+     <nav className="flex flex-col space-y-4">
+      
+      <a href="#" className="text-black hover:text-[#BF56FF]">Platform</a>
+      <a href="#" className="text-black hover:text-[#BF56FF]">Integrations</a>
+      <a href="#" className="text-black hover:text-[#BF56FF]">Solutions</a>
+      <a href="#" className="text-black hover:text-[#BF56FF]">Affiliates</a>
+      <a href="#" className="text-black hover:text-[#BF56FF]">Pricing</a>
+      <a href="#" className="text-black hover:text-[#BF56FF]">Resources</a>
+      <button className="inline-flex items-center bg-[#BF56FF] border-0 py-1 px-3 focus:outline-none text-white font-medium rounded text-base shadow-[0_4px_8px_0_rgba(220, 220, 220, 1)] w-full">Get Started</button>
+    </nav>
+   </div>
 </header>
+
 
     );
 }
