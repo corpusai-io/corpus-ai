@@ -12,7 +12,7 @@ export default function LogoSlider() {
   ];
 
   return (
-    <div className="relative w- overflow-hidden bg-white py-6">
+    <div className="relative w- overflow-hidden bg-transparent py-6">
       
       <div className="absolute left-0 top-0 h-full w-16 z-10 pointer-events-none bg-gradient-to-r from-white to-transparent" />
       <div className="absolute right-0 top-0 h-full w-16 z-10 pointer-events-none bg-gradient-to-l from-white to-transparent" />

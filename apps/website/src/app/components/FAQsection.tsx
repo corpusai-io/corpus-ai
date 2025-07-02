@@ -42,7 +42,7 @@ const FAQSection = () => {
         <h1 className="text-lg font-bold text-[#BF56FF] mb-2">FAQ</h1>
         <h2 className="text-4xl font-semibold text-black mb-4">Frequently Asked Questions</h2>
         <p className="text-[#8D8D8D]">
-          If you have any questions, please don't hesitate to contact us.
+          If you have any questions, please don&rsquo;t hesitate to contact us.
         </p>
       </div>
 

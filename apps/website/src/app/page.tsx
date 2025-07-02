@@ -27,8 +27,13 @@ export default function Home() {
 
       
       <section className="text-center px-4 pt-8 pb-16">
-        <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-gray-900 leading-tight">
-          AI powered Chatbot <span className="inline-block align-middle text-xl">💬</span> Built<br />
+        <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold font-inter text-gray-900 leading-tight">
+          AI powered Chatbot <span className="inline-block align-middle text-xl"><div className='rounded-full  border-1 border-[#E0E0E0] bg-white w-[107px] h-[47px] flex justify-center items-center space-x-2 mb-2'>
+            <div className="w-[13.67px] h-[13.67px] bg-[#9E9E9E] rounded-full"></div>
+            <div className="w-[13.67px] h-[13.67px] bg-[#9E9E9E] rounded-full"></div>
+            <div className="w-[13.67px] h-[13.67px] bg-[#9E9E9E] rounded-full"></div>
+  </div>
+  </span> Built<br />
           for your <span className="bg-gradient-to-r from-[#BF56FF] via-[#D0A8E9] to-[#CD7BFF] bg-clip-text text-transparent">Website</span>
         </h1>
         <p className="mt-4 text-[#7F7A7A] max-w-xl mx-auto text-base sm:text-lg">
@@ -46,7 +51,7 @@ export default function Home() {
           </a>
           <a
             href="#"
-            className="bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 font-medium px-6 py-2 rounded-full w-full sm:w-auto text-center transition duration-200"
+            className="bg-white border-[1.5px] border-gray-300 hover:bg-gray-100 text-[#1E1E1E] font-medium px-6 py-2 rounded-full w-full sm:w-auto text-center transition duration-200"
           >
             Book a Meeting
           </a>
@@ -68,7 +73,7 @@ export default function Home() {
   </div>
 </div>
 
-      <div className="text-center pt-15 px-4 sm:px-6 md:px-8 ">
+      <div className="text-center mt-15 px-4 sm:px-6 md:px-8 ">
   <span className="text-base sm:text-lg md:text-xl font-medium text-[#8D8D8D]">
     Trusted By Industry Leaders
   </span>
@@ -77,28 +82,28 @@ export default function Home() {
     <section> <LogoSlider /> </section>
 <section><FeaturesSection /></section>
 
-<section className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-10 bg-white px-4 md:px-10 py-10">
+<section className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-10 px-4 md:px-10 py-10">
   <div className="rounded-lg border border-[#EAEAEA] bg-white p-5">
-    <div className="flex flex-wrap justify-between items-center gap-2">
+    <div className="flex  justify-between items-center gap-2">
       <div>
-        <img src="/Achievements/2.png" alt="" className="mb-2" />
-        <img src="/Achievements/1.png" alt="" />
+        <img src="/Achievements/2.png" alt="image 01" className="mb-2" />
+        <img src="/Achievements/1.png" alt="image 02" />
       </div>
       <div>
-        <img src="/Achievements/3.png" alt="" />
+        <img src="/Achievements/3.png" alt="image 03" />
       </div>
     </div>
-    <div className="mt-4">
+    <div className="mt-9">
       <h3 className="text-lg font-medium mb-1">PDF Highlighting</h3>
-      <p className="text-[#8D8D8D]">Highlight sections in your PDF to clarify the chatbot's responses</p>
+      <p className="text-[#8D8D8D]">Highlight sections in your PDF to clarify the chatbot&rsquo;s responses</p>
     </div>
   </div>
 
   <div className="rounded-lg border border-[#EAEAEA] bg-white p-5">
     <div>
-      <img src="/Achievements/123.png" alt="" className="w-full object-contain" />
+      <img src="/Achievements/123.png" alt="image 04" className="w-full object-contain" />
     </div>
-    <div className="mt-4">
+    <div>
       <h3 className="text-lg font-medium mb-1">Lead Generation</h3>
       <p className="text-[#8D8D8D]">Generate leads from your website with Corpus AI</p>
     </div>
@@ -115,19 +120,19 @@ export default function Home() {
 
   <div className="border rounded-lg border-[#EAEAEA] p-4">
     <img src="/Achievements/5.svg" alt="" />
-    <h3 className="pt-3 text-lg font-semibold">Customizable Chatbot</h3>
+    <h3 className="pt-3 text-lg font-semibold">Connect your favorite tools</h3>
     <p className="pt-3 text-[#8D8D8D]">Connect your favorite tools to Corpus AI to streamline your workflow</p>
   </div>
 
   <div className="border rounded-lg border-[#EAEAEA] p-4 relative">
     <img src="/Achievements/7.svg" alt="" className="float-right pb-3" />
     <img src="/Achievements/8.svg" alt="" />
-    <h3 className="pt-5 text-lg font-semibold">Customizable Chatbot</h3>
+    <h3 className="pt-5 text-lg font-semibold">24/7 Chat Support</h3>
     <p className="pt-3 text-[#8D8D8D]">With our AI chat support, your customers can get help 24/7</p>
   </div>
 </section>
 
-<section className='bg-white'>
+<section className='bg-[#FAF6FF]' >
   <div className="text-center py-5 px-4 max-w-7xl mx-auto">
         <h4 className="text-sm text-[#BF56FF] font-semibold mb-5 uppercase">Reviews</h4>
         <h2 className="text-3xl sm:text-4xl font-bold mb-8">What Our Clients Says</h2>
@@ -135,18 +140,18 @@ export default function Home() {
         </div>
   <TestimonialsSlider/>
   </section>
-<section className='bg-gradient-to-b from-gray-50 via-transparent to-transparent'><TestimonialsSlider/></section>
-<section className="bg-white">
+<section className='bg-[#FAF6FF]'><TestimonialsSlider/></section>
+<section className="bg-white w-full">
   <div className="relative w-full">
     <img
       src="/blogimages/Group 2366.png"
       alt="Demo Image"
-      
+      className='w-full'
     />
 
     <div className="absolute inset-0 flex items-center justify-center">
       <section className="text-center px-4 pt-4 sm:pt-6 md:pt-8">
-        <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-gray-900 leading-snug sm:leading-tight">
+        <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-[#1E1E1E] leading-snug sm:leading-tight">
           With Corpus AI, Your business is <br />
           in the palm of
           <span className="bg-gradient-to-r from-[#BF56FF] via-[#D0A8E9] to-[#CD7BFF] bg-clip-text text-transparent">
@@ -170,7 +175,7 @@ export default function Home() {
 </section>
 
 
-<section className='bg-white'>
+<section >
    <div className="text-center py-5 px-4 max-w-7xl mx-auto">
         <h4 className="text-sm text-[#BF56FF] font-semibold mb-5 uppercase">Pricing</h4>
         <h2 className="text-3xl sm:text-4xl font-bold mb-8">Simple Pricing</h2>
@@ -270,12 +275,12 @@ export default function Home() {
   </div>
 </section>
 
-<section className='bg-white'>
+<section >
   <FAQSection/>
 </section>
 
  <section className="text-center px-4 pt-8 pb-16 bg-white">
-        <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-900 leading-tight">
+        <h1 className="text-xl sm:text-2xl md:text-6xl font-semibold text-gray-900 leading-tight">
           Create Your<br/>Corpus <span className="bg-gradient-to-r from-[#BF56FF] via-[#D0A8E9] to-[#CD7BFF] bg-clip-text text-transparent">Chatbot</span>
         </h1>
         <p className="mt-4 text-[#7F7A7A] mx-auto text-base sm:text-lg">

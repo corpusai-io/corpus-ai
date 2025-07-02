@@ -2,7 +2,7 @@
 import styles from './FeaturesSection.module.css'
 export default function FeaturesSection() {
   return (
-    <div className="bg-white text-gray-800">
+    <div className="bg-transparent text-gray-800">
       
       <section className="text-center py-16 px-4 max-w-7xl mx-auto">
         <h4 className="text-sm text-[#BF56FF] font-semibold mb-5 uppercase">Deployment</h4>
