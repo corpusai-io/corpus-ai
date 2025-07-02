@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 export default function WebsiteChatbot(){
-  const [activeSection, setActiveSection] = useState<'website' | 'file'>('website');
+  const [activeSection, setActiveSection] = useState<'web' | 'file'>('web');
 
   // Simulate file content (you can replace with actual logic)
   const [fileContent, setFileContent] = useState('');
@@ -52,14 +52,14 @@ export default function WebsiteChatbot(){
                 <ul className="space-y-2 text-sm font-medium w-40">
                   <li>
                     <button
-                      onClick={() => setActiveSection('website')}
-                      className={`w-full text-left px-4 py-2 rounded-md transition 
-                        ${activeSection === 'website' 
+                      onClick={() => setActiveSection('web')}
+                      className={`w-full text-left px-4 py-2 rounded-[14px] transition 
+                        ${activeSection === 'web' 
                           ? 'bg-gray-200 text-purple-600 font-semibold flex gap-3' 
                           : 'hover:bg-gray-100 text-gray-600 flex gap-3'}
                       `}
                       >
-                      <img src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Browser-icon.svg" alt=""/> Website
+                      <img src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Browser-icon.svg" alt=""/> Web
                     </button>
                   </li>
 
@@ -84,10 +84,10 @@ export default function WebsiteChatbot(){
 
       {/* Main Content */}
       <div className="flex-1 border-1 border-[#F4F4F4] pl-5 pt-3 rounded-t-[20px]  mb-[-25px] pb-[30px]">
-        {activeSection === 'website' && (
+        {activeSection === 'web' && (
           <div id="Website-page">
-            <h4 className="text-xl font-bold mb-1">Website</h4>
-            <p className="text-[#7A7A7A] mb-2">
+            <span className="font-bold mb-1">Website</span>
+            <p className="text-[#7A7A7A] mb-2 mt-1 text-[13px] ">
               Enter the URL of the website you want to build a chatbot for.
             </p>
           
