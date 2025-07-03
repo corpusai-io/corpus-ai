@@ -6,6 +6,7 @@ import TestimonialsSliders from '@/app/components/testimonalsSlider 2';
 import FAQSection from '@/app/components/FAQsection'
 import PricingSection from '@/app/components/Pricing';
 import Navbar from './components/navbar';
+
 export default function Home() {
    
   return (
@@ -281,7 +282,7 @@ export default function Home() {
 
  <section className="text-center px-4 pt-8 pb-16 bg-white">
         <h1 className="text-xl sm:text-2xl md:text-6xl font-semibold text-gray-900 leading-tight">
-          Create Your<br/>Corpus <span className="bg-gradient-to-r from-[#BF56FF] via-[#D0A8E9] to-[#CD7BFF] bg-clip-text text-transparent">Chatbot</span>
+          Create Your<br/>Corpus <span className="bg-gradient-to-r from-[#DAC0FF] to-[#BF56FF] bg-clip-text text-transparent">Chatbot</span>
         </h1>
         <p className="mt-4 text-[#7F7A7A] mx-auto text-base sm:text-lg">
           Build an AI assistant that delivers concise, focused responses tailored to your customers
