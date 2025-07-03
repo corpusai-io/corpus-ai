@@ -6,8 +6,7 @@ export default function Navbar(){
 
     return(
 
-<header className="text-gray-600 max-w-7xl body-font border m-4 border-1 border-[#ECECEC] outline-0 rounded-[10px] shadow-[0_8px_16px_0_rgba(194,194,194,0.15)] bg-white w-[90%] mx-auto ">
-  <div className="custom-ellipse"></div>
+<header className="text-gray-600 max-w-7xl body-font m-4 border-1 border-[#ECECEC] outline-0 rounded-[10px] shadow-[0_8px_16px_0_rgba(194,194,194,0.15)] bg-white w-[90%] mx-auto ">
   <div className="container mx-auto p-2 flex flex-wrap items-center justify-between">
     <a className="flex title-font font-medium items-center text-black mb-4 md:mb-0">
       <span className="ml-3 text-xl font-bold">CORPUS AI</span>
@@ -281,31 +280,67 @@ export default function Navbar(){
   
 </nav>
 
+<div className='flex items-center'>
 
-  <button className="inline-flex items-center bg-[#BF56FF] border-1 border-white py-1 px-3 focus:outline-none text-white font-medium rounded-[10px] text-base mt-0 md:mt-0 shadow-[0_4px_8px_0_rgba(220, 220, 220, 1)] hidden lg:inline-flex transition-all duration-300 hover:scale-105 hover:bg-gradient-to-r from-[#FC5990] to-[#AC5DE6] " >Get Started</button>
 
-  <div className="block lg:hidden">
-      <button  onClick={() => setMenuOpen(!menuOpen)} id="menu-toggle" className="text-black focus:outline-none">
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
+  <button className="inline-flex items-center mr-3 self-end bg-[#BF56FF] border-1 border-white py-1 px-3 focus:outline-none text-white font-medium rounded-[10px] text-base mt-0 md:mt-0 shadow-[0_4px_8px_0_rgba(220, 220, 220, 1)] lg:inline-flex hidden transition-all duration-300 hover:scale-105 hover:bg-gradient-to-r from-[#FC5990] to-[#AC5DE6] " >Get Started</button>
+            <button
+        onClick={() => setMenuOpen(!menuOpen)}
+        id="menu-toggle"
+        className="text-black focus:outline-none lg:hidden"
+      >
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          ></path>
         </svg>
       </button>
-    </div>
-
-  </div>
-
-   <div id="mobile-nav" className="lg:hidden hidden p-4">
-     <nav className="flex flex-col space-y-4">
-      
-      <a href="#" className="text-black hover:text-[#BF56FF]">Platform</a>
-      <a href="#" className="text-black hover:text-[#BF56FF]">Integrations</a>
-      <a href="#" className="text-black hover:text-[#BF56FF]">Solutions</a>
-      <a href="#" className="text-black hover:text-[#BF56FF]">Affiliates</a>
-      <a href="#" className="text-black hover:text-[#BF56FF]">Pricing</a>
-      <a href="#" className="text-black hover:text-[#BF56FF]">Resources</a>
-      <button className="inline-flex items-center bg-[#BF56FF] border-0 py-1 px-3 focus:outline-none text-white font-medium rounded text-base shadow-[0_4px_8px_0_rgba(220, 220, 220, 1)] w-full">Get Started</button>
-    </nav>
    </div>
+   </div>
+  <div className="flex items-center">
+    
+        
+        <div
+        id="mobile-nav"
+        className={`lg:hidden p-4 w-full ${menuOpen ? "" : "hidden"}`}
+      >
+        <nav className="flex flex-col  space-y-4">
+          <a href="#" className="text-black hover:text-[#BF56FF]">
+            Platform
+          </a>
+          <a href="#" className="text-black hover:text-[#BF56FF]">
+            Integrations
+          </a>
+          <a href="#" className="text-black hover:text-[#BF56FF]">
+            Solutions
+          </a>
+          <a href="#" className="text-black hover:text-[#BF56FF]">
+            Affiliates
+          </a>
+          <a href="#" className="text-black hover:text-[#BF56FF]">
+            Pricing
+          </a>
+          <a href="#" className="text-black hover:text-[#BF56FF]">
+            Resources
+          </a>
+          <button className="inline-flex items-center mr-3 self-center bg-[#BF56FF] border-1 border-white py-1 px-3 focus:outline-none text-white font-medium rounded-[10px] text-base mt-0 md:mt-0 shadow-[0_4px_8px_0_rgba(220, 220, 220, 1)] lg:inline-flex hidden transition-all duration-300 hover:scale-105 hover:bg-gradient-to-r from-[#FC5990] to-[#AC5DE6] " >Get Started</button>
+        </nav>
+      </div>
+      </div>
+    
+
+ 
+
+   
 </header>
 
 

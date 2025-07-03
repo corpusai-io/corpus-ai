@@ -149,9 +149,9 @@ export default function Home() {
       className='w-full'
     />
 
-    <div className="absolute inset-0 flex items-center justify-center">
-      <section className="text-center px-4 pt-4 sm:pt-6 md:pt-8">
-        <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-[#1E1E1E] leading-snug sm:leading-tight">
+    <div className="absolute inset-0 flex mx-auto items-center justify-center ">
+      <section className="text-center w-full px-4 pt-4 sm:pt-6 md:pt-8 ">
+        <h1 className="text-sm mt-8 md:text-2xl lg:text-3xl font-semibold text-[#1E1E1E] leading-snug sm:leading-tight">
           With Corpus AI, Your business is <br />
           in the palm of
           <span className="bg-gradient-to-r from-[#BF56FF] via-[#D0A8E9] to-[#CD7BFF] bg-clip-text text-transparent">
@@ -161,10 +161,10 @@ export default function Home() {
 
        
 
-        <div className="mt-5 sm:mt-6 md:mt-8 flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4">
+        <div className="mt-5 sm:mt-6 md:mt-8 flex flex-col sm:flex-row  justify-center items-center gap-3 sm:gap-4">
           <a
             href="#"
-            className="bg-white text-[#BF56FF] shadow-[0_0_15px_rgba(191,86,255,0.4)] font-medium px-4 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 rounded-full w-full sm:w-auto text-sm sm:text-base md:text-lg"
+            className="bg-white text-[#BF56FF] shadow-[0_0_15px_rgba(191,86,255,0.4)] font-medium px-4 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 rounded-full w-fit sm:w-auto text-sm sm:text-base md:text-lg"
           >
             Get Started
           </a>
