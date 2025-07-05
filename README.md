@@ -54,10 +54,10 @@ pnpm dev
 # Launch Next Portal
 pnpm dev --filter=website
 
-# Launch App Server
+# Launch App Server/backend
 pnpm dev --filter=backend
 
-# Launch Web App
+# Launch Web dashboard
 pnpm dev --filter=dashboard
 
 # Launch Documentation
