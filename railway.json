@@ -1,23 +1,28 @@
 {
-  "build": {
-    "builder": "NIXPACKS",
-    "buildCommand": "pnpm install"
-  },
   "deployments": [
     {
       "name": "website",
       "root": "apps/website",
-      "startCommand": "pnpm start"
+      "build": {
+        "dockerfilePath": "../../docker/docker.website",
+        "context": "."
+      }
     },
     {
       "name": "dashboard",
       "root": "apps/dashboard",
-      "startCommand": "pnpm start"
+      "build": {
+        "dockerfilePath": "../../docker/docker.dashboard",
+        "context": "."
+      }
     },
     {
       "name": "docs",
       "root": "apps/docs",
-      "startCommand": "pnpm start"
+      "build": {
+        "dockerfilePath": "../../docker/docker.docs",
+        "context": "."
+      }
     }
   ]
 }
