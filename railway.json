@@ -1,26 +1,26 @@
 {
-  "deployments": [
+  "services": [
     {
       "name": "website",
-      "root": "apps/website",
+      "root": ".",
       "build": {
-        "dockerfilePath": "../../docker/docker.website",
+        "dockerfilePath": "docker/docker.website",
         "context": "."
       }
     },
     {
       "name": "dashboard",
-      "root": "apps/dashboard",
+      "root": ".",
       "build": {
-        "dockerfilePath": "../../docker/docker.dashboard",
+        "dockerfilePath": "docker/docker.dashboard",
         "context": "."
       }
     },
     {
       "name": "docs",
-      "root": "apps/docs",
+      "root": ".",
       "build": {
-        "dockerfilePath": "../../docker/docker.docs",
+        "dockerfilePath": "docker/docker.docs",
         "context": "."
       }
     }
