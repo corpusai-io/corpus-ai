@@ -1,5 +1,4 @@
-import { Metadata } from "next";
-
+// File-Chatbot/layout.tsx
 interface RootLayoutProps {
   children: React.ReactNode;
 }

@@ -5,7 +5,8 @@ export default function Welcome(){
     return(
         <>
        <div className="flex-1 mt-11 ml-11 mr-5">
-              <h1 className="font-bold text-[25px]">Welcome to CorpusAI's documentation</h1>
+              <h1 className="font-bold text-[25px]">Welcome to CorpusAI&apos;s documentation</h1>
+
               
               {/* Welcome Page Cards */}
               
