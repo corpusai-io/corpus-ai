@@ -6,7 +6,6 @@ export default function Welcome(){
         <>
        <div className="flex-1 mt-11 ml-11 mr-5">
               <h1 className="font-bold text-[25px]">Welcome to CorpusAI&apos;s documentation</h1>
-
               
               {/* Welcome Page Cards */}
               
@@ -40,7 +39,7 @@ export default function Welcome(){
                     <div className="mb-4 border-gray-500 rounded">
                         <img src="/Website Assets/Question Mark.svg" alt="" />
                         <h3 className="pt-3">FAQ</h3>
-                        <p className="text-gray-500">Find answere to frequently asked questions</p>
+                        <p className="text-gray-500">Find answers to frequently asked questions</p>
                     </div>
                 </div>
               </div>
@@ -70,7 +69,7 @@ export default function Welcome(){
   <ul className="ml-2 border-l-4 mt-2 border-[#BF56FF] pl-4 text-[#BF56FF]">
     <li>
       <Link href="/">
-        Welcome to Corpus AI's Documentation
+        Welcome to Corpus AI&apos;s Documentation
       </Link>
     </li>
   </ul>
