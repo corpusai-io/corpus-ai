@@ -1,0 +1,19 @@
+{
+  "services": [
+    {
+      "name": "website",
+      "root": "apps/website",
+      "startCommand": "pnpm run start"
+    },
+    {
+      "name": "dashboard",
+      "root": "apps/dashboard",
+      "startCommand": "pnpm run start"
+    },
+    {
+      "name": "docs",
+      "root": "apps/docs",
+      "startCommand": "pnpm run start"
+    }
+  ]
+}
