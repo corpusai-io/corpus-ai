@@ -23,6 +23,18 @@
         "dockerfilePath": "docker/docker.docs",
         "context": "."
       }
+    },
+    {
+      "name": "proxy",
+      "root": ".",
+      "build": {
+        "dockerfilePath": "docker/docker.proxy",
+        "context": "."
+      },
+      "deploy": {
+        "startCommand": "nginx -g 'daemon off;'",
+        "healthcheckPath": "/"
+      }
     }
   ]
 }
