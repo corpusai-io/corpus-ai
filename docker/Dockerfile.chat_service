@@ -35,10 +35,13 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nodeuser
 
+# 🔧 Fix: Create .local and give access
+RUN mkdir -p /app/.local/share/pnpm/.tools && \
+    chown -R 1001:1001 /app/.local
+
 COPY --from=builder /app .
 
 USER nodeuser
 
 EXPOSE 8002
-
 CMD ["pnpm", "turbo", "run", "start", "--filter=chat_service"]
