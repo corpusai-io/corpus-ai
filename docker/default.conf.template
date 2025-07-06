@@ -86,4 +86,56 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_cache_bypass $http_upgrade;
     }
+}upstream backend {
+    server ${BACKEND_HOST}:${BACKEND_PORT};
+}
+
+upstream chat_service {
+    server ${CHAT_SERVICE_HOST}:${CHAT_SERVICE_PORT};
+}
+
+upstream dashboard {
+    server ${DASHBOARD_HOST}:${DASHBOARD_PORT};
+}
+
+upstream website {
+    server ${WEBSITE_HOST}:${WEBSITE_PORT};
+}
+
+upstream docs {
+    server ${DOCS_HOST}:${DOCS_PORT};
+}
+
+server {
+    listen 80;
+    server_name _;
+
+    # API routes
+    location /api/ {
+        proxy_pass http://backend;
+        include proxy_params;
+    }
+
+    # Chat service
+    location /chat/ {
+        proxy_pass http://chat_service;
+        include proxy_params;
+    }
+
+    # ⚠️ Fix 1: Add trailing slash to prevent path misrouting
+    location /dashboard/ {
+        proxy_pass http://dashboard/;
+        include proxy_params;
+    }
+
+    location /docs/ {
+        proxy_pass http://docs/;
+        include proxy_params;
+    }
+
+    # ✅ Root website
+    location / {
+        proxy_pass http://website;
+        include proxy_params;
+    }
 }
