@@ -13,15 +13,16 @@ export default function WebsiteChatbot(){
     return(
         <>
             <main className="flex-1 flex">
-            <div className="flex-1 mt-[30px] ml-15 mr-5 text-[14px]">
+            <div className="flex-1 mt-[30px] ml-15 mr-5">
              <p className="text-[#7F7F7F] ">Chatbot</p>
                         
             {/* Website Chatbot Content */}
 
-            <h2  className="font-bold  mt-1 text-[20px]">Website Chatbot</h2>
+            <h2  className="font-bold  mt-1 ">Website Chatbot</h2>
 
-            <p className="text-justify mt-2 text-[#777777]  space-y-2 ">After you log in with one the following: Google login, Facebook login or sign up with Corpus, you will <br/> see the chatbot home as follows.</p>    
-            <div className="bg-white mt-1 pt-3 px-5 w-[620px] h-[264px] shadow-lg rounded-[10px]">
+            <p className="text-justify mt-2 text-[#777777]  space-y-2">After you log in with one the following: Google login, Facebook login or sign up with Corpus, you will <br/> see the chatbot home as follows.</p>    
+
+            <div className="bg-white mt-1 pt-3 pl-6 pr-6 w-[720px] h-[320px] shadow-lg rounded-[10px]">
             <div className="flex justify-between">
                 <div>
                   <h2 className="font-bold">Chatbots</h2> 
@@ -29,8 +30,8 @@ export default function WebsiteChatbot(){
                 </div>
                 <button className="border-1 border-[#EAEAEA] p-2 rounded-[5px] pt-1 pb-0 pl-3 pr-3 cursor-pointer h-9">Add Bot</button>
             </div>
-           <div className="text-center mt-2 space-y-1">
-            <img src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Box website chatbot.svg" alt="" className="relative left-59 w-25 "/>
+           <div className="text-center mt-5 space-y-1">
+            <img src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Box website chatbot.svg" alt="" className="relative left-70 w-30 "/>
             <p className="mt-5 font-bold">There are no Chatbots</p>
             <p className="text-[#7F7F7F]">Create new chatbots to get started</p>
             
@@ -38,16 +39,15 @@ export default function WebsiteChatbot(){
             </div>
             
             </div>
-            <p className=" text-justify mt-3 mb-3 text-[#777777]">
+            <p className=" text-justify mt-5 mb-5 text-[#777777]">
               When you click Create Now button, you will reach the chatbot building page (see below). Make sure <br/> that the WEB tab is selected and input the website you’d like to crawl (https://corpusai.io in this case).<br/> Click the button Build Now to start building a chatbot on the website.
             </p>
           {/* This section for future added more information*/}
-          <div className="bg-white w-[720px] pt-[15px] pl-[25px]  rounded-t-[20px] shadow-lg">
+          <div className="bg-white w-[720px] mt-4 p-[25px] rounded-t-[20px] shadow-lg">
             <div className="">
                 <h2 className="font-bold">Create Chatbot</h2>
                 <p className="text-[#7A7A7A]">Create a Chatbot from different sources.</p>
-          <div className="flex gap-5 mt-3">
-                
+          <div className="flex gap-10 mt-4">
                 {/* Tabs */}
                 <ul className="space-y-2 text-sm font-medium w-40">
                   <li>
@@ -83,7 +83,7 @@ export default function WebsiteChatbot(){
       </ul>
 
       {/* Main Content */}
-      <div className="flex-1 border-1 border-[#F4F4F4] pl-5 pt-3 rounded-t-[20px]  ">
+      <div className="flex-1 border-1 border-[#F4F4F4] pl-5 pt-3 rounded-t-[20px]  mb-[-25px] pb-[30px]">
         {activeSection === 'web' && (
           <div id="Website-page">
             <span className="font-bold mb-1">Website</span>
