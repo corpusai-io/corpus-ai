@@ -14,11 +14,11 @@ export default function WebsiteChatbot(){
         <>
             <main className="flex-1 flex">
             <div className="flex-1 mt-[30px] ml-15 mr-5">
-             <p className="text-[#7F7F7F] ">Chatbot</p>
+             <p className="text-[#7F7F7F] ">Chatbotcccccccccccaaaaaaaaaa</p>
                         
             {/* Website Chatbot Content */}
 
-            <h2  className="font-bold  mt-1 ">Website Chatbot</h2>
+            <h2  className="font-bold  mt-1 ">Website sadasasd Chatbot</h2>
 
             <p className="text-justify mt-2 text-[#777777]  space-y-2">After you log in with one the following: Google login, Facebook login or sign up with Corpus, you will <br/> see the chatbot home as follows.</p>    
 
