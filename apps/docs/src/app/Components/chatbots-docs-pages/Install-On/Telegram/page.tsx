@@ -1,6 +1,14 @@
 'use client'; 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+const sections = [
+  { id: "Telegram", text: "Create a Telegram Page" },
+  { id: "Link_Telegram", text: "Link your Chatbot to Telegram" },
+  { id: "Test_Telegram", text: "Test your Telegram Integration" },
+  { id: "Add_To_Channel", text: "Optional: Add your Bot to a Telegram Channel" },
+  { id: "Revoke_Telegram", text: "Revoke Telegram Integration" },
+];
 
 export default function WebsiteChatbot(){
   const [activeSection, setActiveSection] = useState<'web' | 'file'>('web');
@@ -10,6 +18,33 @@ export default function WebsiteChatbot(){
 
   // Disable File tab if content is empty or only whitespace
   const fileTabLocked = fileContent.trim() === '';
+
+  const [activeId, setActiveId] = useState(sections[0].id); // First section active by default
+
+  useEffect(() => {
+    const handleScroll = () => {
+      let found = false;
+      for (let i = 0; i < sections.length; i++) {
+        const el = document.getElementById(sections[i].id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top >= -100 && rect.top < window.innerHeight / 2) {
+            setActiveId(sections[i].id);
+            found = true;
+            break;
+          }
+        }
+      }
+      if (!found) setActiveId(sections[0].id);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // trigger once on load
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+
     return(
         <>
             <main className="flex-1 flex">
@@ -55,20 +90,20 @@ export default function WebsiteChatbot(){
               </p>
         {/* Create a Telegram Page End Here*/}
 
-        {/* Link your Chatbot to telegram Start Here
+        {/* Link your Chatbot to telegram Start Here*/}
           <h1 id="Link_Telegram">Link your Chatbot to telegram</h1>
         {/* Link your Chatbot to telegram End Here*/}
 
         {/* Test your Telegram Integration Start Here*/}
-          {/* <h1 id="Test_Telegram">Test your Telegram Integration</h1> */}
+           <h1 id="Test_Telegram" className="mt-[300px]">Test your Telegram Integration</h1> 
         {/* Test your Telegram Integration End Here*/}
 
         {/* Optional: Add your Bot to a Telegram Channel Start Here*/}
-          {/* <h1 id="Optional_BOT">Optional: Add your Bot to a Telegram Channel</h1> */}
+           <h1 id="Optional_BOT">Optional: Add your Bot to a Telegram Channel</h1>
         {/* Optional: Add your Bot to a Telegram Channel End Here */}
 
         {/* Revoke Telegram Integration Start Here*/}
-          {/* <h1 id="Revoke_Telegram">Revoke Telegram Integration</h1> */}
+          <h1 id="Revoke_Telegram">Revoke Telegram Integration</h1>
         {/* Revoke Telegram Integration End Here */}
         
        
@@ -83,27 +118,29 @@ export default function WebsiteChatbot(){
     <span>On this page</span>
   </div>
 
-  <ul className="text-[14px] space-y-3.5 ml-[4px]  border-l-1  border-l-[#D8D8D8]">
-    {[
-      { href: "#Telegram", text: "Create a Telegram Page" },
-      { href: "#Link_Telegram", text: "Link your Chatbot to Telegram" },
-      { href: "", text: "Test your Telegram Integration" },
-      { href: "", text: "Optional: Add your Bot to a Telegram Channel" },
-      { href: "", text: "Revoke Telegram Integration" },
-    ].map((item, index) => (
-      <li
-        key={index}
-        className="border-l-1 border-l-[#D8D8D8] ml-[-1px] hover:border-[#BF56FF] pl-3 transition-all duration-200"
+<ul className="text-[14px] space-y-3.5 ml-[4px] border-l-1 border-l-[#D8D8D8]">
+  {sections.map((item, index) => (
+    <li
+      key={index}
+      className={`ml-[-1px] pl-3 transition-all duration-200 border-l-2 hover:border-[#BF56FF]  ${
+        activeId === item.id
+          ? 'border-[#BF56FF]'
+          : 'border-transparent'
+      }`}
+    >
+      <Link
+        href={`#${item.id}`}
+        className={`block transition-all duration-200 ${
+          activeId === item.id
+            ? 'text-[#BF56FF]'
+            : 'text-[#777777] hover:text-[#BF56FF]'
+        }`}
       >
-        <Link
-          href={item.href}
-          className="block text-[#777777] hover:text-[#BF56FF] transition-all duration-200"
-        >
-          {item.text}
-        </Link>
-      </li>
-    ))}
-  </ul>
+        {item.text}
+      </Link>
+    </li>
+  ))}
+</ul>
 </div>
 
 

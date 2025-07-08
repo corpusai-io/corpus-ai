@@ -25,7 +25,7 @@ export default function Page() {
     "Zapier with Lead Generation": "/Install-ON",
     "Connect": "/Connect",
     "RESTful API": "/Rest",
-    "Access Settings": "/",
+    "Access Settings": "/Components/chatbots-docs-pages/Access_Setting",
     "Upgrade Plan": "/Up",
     "AWS Marketplace": "/AWS",
     "FAQ": "/FAQ",
@@ -108,7 +108,7 @@ const navLink = (name, display = null) => (
           <img src="/Website Assets/Dots Sidebar.svg" alt="" />
         </div>
         <hr className="ml-1 mr-1 border-gray-200" />
-        <form className="mt-3 bg-gray-200 rounded py-1 pl-2 ml-1.5 mr-2">
+      <form className="mt-3 bg-[#F8F8F8] rounded py-1 pl-2 ml-1.5 mr-2">
           <span className="absolute">
             <img src="/Website Assets/Search.svg" alt="" />
           </span>
@@ -117,7 +117,7 @@ const navLink = (name, display = null) => (
             placeholder="Search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="px-7 outline-0 bg-gray-200 w-full"
+            className="px-7 outline-0 bg-[#F8F8F8] w-full"
             required
           />
         </form>

@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
               <aside className="fixed top-0 left-0 overflow-y-auto">
               <Sidebar />
               </aside>
-              <main className="flex-1 flex ml-[270px] overflow-y-auto">
+              <main className="flex-1 flex ml-[270px] overflow-y-auto ">
               {children}
               
               </main>
