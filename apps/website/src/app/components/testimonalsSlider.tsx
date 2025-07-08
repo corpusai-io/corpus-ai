@@ -4,14 +4,14 @@ import Image from "next/image";
 
 export default function TestimonialsSlider() {
   return (
-    <div className="relative overflow-hidden py-3 bg-gradient-to-r from-gray-50 to-transparent h-[320px]">
+    <div className="relative overflow-hidden py-3 bg-gradient-to-r from-gray-50 to-transparent h-[284px]">
       
       <div className="pointer-events-none absolute left-0 top-0 h-full w-24 bg-gradient-to-r from-gray-50 to-transparent z-10" />
       
       <div className="pointer-events-none absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-gray-50 to-transparent z-10" />
 
       <div className="w-full">
-        <div className="flex animate-slide gap-6">
+        <div className="flex animate-slide gap-[24px]">
           {Array.from({ length: 2 }).map((_, repeatIndex) => (
             <div key={repeatIndex} className="flex gap-6">
               {testimonials.map((testimonial, i) => (
