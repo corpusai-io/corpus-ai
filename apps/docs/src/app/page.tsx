@@ -28,7 +28,7 @@ export default function Welcome(){
                 </div>
                 <div className="bg-white pl-3 pt-3 rounded-[10px] border-1 border-gray-200 shadow">
                     <div className="mb-4 border-gray-400 rounded">
-                     <div className=" p-2 rounded w-8 text-gray-500 bg-gray-100 border-1 border-gray-300 p-1.5 rounded-[5px]">
+                     <div className=" w-8 text-gray-500 bg-gray-100 border-1 border-gray-300 p-1.5 rounded-[5px]">
                      <img src="/Website Assets/Dollar.svg" alt="" />
                      </div>                
                         <h3 className="pt-3">Billing</h3>
