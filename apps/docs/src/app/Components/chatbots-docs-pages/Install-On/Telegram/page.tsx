@@ -58,7 +58,7 @@ export default function WebsiteChatbot(){
                <h1  className="font-bold  mt-3 text-2xl " >Telegram</h1>
 
               <p className="text-[#7F7F7F] mt-1">
-                Integrate your chatbot with Telegram. Ask your chatbot questions from a Telegram channel and receive <br/> responses as Telegram messages.
+                Integrate your chatbot with Telegram. Ask your chatbot questions from a Telegram channel <br/> and receive responses as Telegram messages.
               </p>
               
               <div className="bg-[#fff] p-5 mt-2 w-[640px] rounded-[10px] shadow">

@@ -12,7 +12,10 @@ export default function Welcome(){
               <div className="grid grid-cols-2 gap-4 mt-12  ">
                 <div className="bg-white pl-3 pt-3 rounded-[10px] border-1 border-gray-200 shadow">
                     <div className="rounded">
+                      <div className=" w-8 text-gray-500 bg-gray-100 border-1 border-gray-300 p-1.5 rounded-[5px]">
                         <img src="/Website Assets/Robot.svg" alt="" />
+                      </div>
+                       
                         <h3 className="pt-3">Chatbot</h3>
                         <p className="text-gray-500">Learn how to create a chatbot with CorpusAI</p>
                     </div>
@@ -37,7 +40,9 @@ export default function Welcome(){
                 </div>
                 <div className="bg-white pl-3 pt-3 rounded-[10px] border-1 border-gray-200 shadow">
                     <div className="mb-4 border-gray-500 rounded">
-                        <img src="/Website Assets/Question Mark.svg" alt="" />
+                       <div className=" w-8 text-gray-500 bg-gray-100 border-1 border-gray-300 p-1.5 rounded-[5px]">
+                          <img src="/Website Assets/Question Mark.svg" alt="" />
+                       </div>
                         <h3 className="pt-3">FAQ</h3>
                         <p className="text-gray-500">Find answere to frequently asked questions</p>
                     </div>

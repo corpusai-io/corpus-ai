@@ -10,16 +10,6 @@ export default function WebsiteChatbot() {
     { value: 'Public', title: 'Public', description: 'Anyone can access' },
   ];
 
-  const [selected, setSelected] = useState(options[0]);
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef(null);
-
-  const toggleDropdown = () => setIsOpen(!isOpen);
-  const handleOptionClick = (option) => {
-    setSelected(option);
-    setIsOpen(false);
-  };
-
   return (
     <>
       <main className="flex-1 flex">
@@ -43,56 +33,59 @@ export default function WebsiteChatbot() {
 
             <div className="mt-6">
               <h2 className="font-medium font-inter mb-2">Select access control option for dashboard</h2>
-
-              <div className="relative inline-block text-left w-64" ref={dropdownRef}>
-                <div
-                  className="border border-gray-300 rounded-md px-4 py-2 cursor-pointer bg-white"
-                  onClick={toggleDropdown}
-                >
-                  {selected.title}  
+                
+              <div className="flex gap-2">
+                <div className="">
+                  Private
+                   <img src="/Website Assets/Arrow Down.svg" className="inline-block" alt="" />
                 </div>
-{isOpen && (
-  <div className=" mt-2 w-full bg-white border border-gray-300 rounded-md shadow-lg z-50">
-    {options.map((option) => {
-      const isSelected = selected.value === option.value;
-
-      const isPublic = option.value === 'Public' && isSelected;
-
-      return (
-        <div
-          key={option.value}
-          className={`px-4 py-2 cursor-pointer ${
-            isPublic
-              ? 'bg-[#F2DEFF] text-[#BF56FF]'
-              : 'hover:bg-purple-100 text-gray-900'
-          }`}
-          onClick={() => handleOptionClick(option)}
-        >
-          <div className={`font-semibold ${isPublic ? 'text-[#BF56FF]' : ''}`}>
-            {option.title}
-          </div>
-          <div className={`text-sm ${isPublic ? 'text-[#BF56FF]' : 'text-gray-500'}`}>
-            {option.description}
-          </div>
-        </div>
-      );
-    })}
-  </div>
-)}
-              </div>
                
-            </div>
-          </div>
+                <button>Save</button>
+              </div>
+              <div>
+               <div>
+                <span>Private</span>
+                <p>Only chatbot owner can access</p>
+                <span>Invite Only</span>
+                <p>Email Invitation Only</p>
+                <span>Public</span>
+                <p>Anyone can access</p>
+                </div>
+                <p>Queries from anv other user are reiected b this chatbot. Reiected queries does not cost chat usage credit</p>
+              </div>
+
+              <div>
+                <p>Corpus's RESTful API provides a oroarammable interface to our chatbot. You can use it to build public or private apps, workflows, and integrations ontop or Corpus.</p>
+                <span>API Documentation</span>
+
+                <div>
+                  
+                  <p>You can generate an API kev to access the API</p>
+                  <div>
+                    <button>Generate API Key</button>
+                  </div>
+                </div>
+                
+              </div>
+        </div>
+        </div>
         </div>
       </main>
 
-      <div className="w-64 pt-13 fixed top-0 right-0 overflow-y-auto">
-        <div className="flex items-center gap-2 text-gray-400 font-medium mb-2">
-          <img src="/Website Assets/Sidebar-Alighment.svg" alt="" />
-          <span>On this page</span>
-        </div>
-        {/* Add Sidebar Links if needed */}
+            
+     <div className="w-64 pt-13 fixed top-0 right-0 overflow-y-auto">
+      <div className="flex items-center gap-2 text-gray-400 font-medium mb-2">
+        <img src="/Website Assets/Sidebar-Alighment.svg" alt="" />
+        
+        <span>On this page</span>
       </div>
+    
+      <ul className="">
+        <li className="bg-white p-1 pl-4 rounded mr-18 border-1 border-[#EAEAEA]">
+          <p>No Heading</p>
+        </li>
+      </ul>
+    </div>
     </>
   );
 }

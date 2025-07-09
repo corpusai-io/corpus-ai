@@ -42,7 +42,7 @@ export default function WebsiteChatbot(){
               When you click Create Now button, you will reach the chatbot building page (see below). Make sure <br/> that the WEB tab is selected and input the website you’d like to crawl (https://corpusai.io in this case).<br/> Click the button Build Now to start building a chatbot on the website.
             </p>
           {/* This section for future added more information*/}
-          <div className="bg-white w-[720px] pt-[15px] pl-[25px]  rounded-t-[20px] shadow-lg">
+          <div className="bg-white w-[620px] pt-[15px] pl-[25px]  rounded-t-[20px] shadow-lg">
             <div className="">
                 <h2 className="font-bold">Create Chatbot</h2>
                 <p className="text-[#7A7A7A]">Create a Chatbot from different sources.</p>

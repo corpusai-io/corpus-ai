@@ -1,4 +1,5 @@
 'use client';
+
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
@@ -32,71 +33,73 @@ export default function Page() {
   };
 
   const installItems = [
-    "Telegram",
-    "Slack",
-    "Shopify",
-    "Wordpress",
-    "Your Website",
-    "Zapier",
-    "Zapier with Lead Generation",
+    "Telegram", "Slack", "Shopify", "Wordpress", "Your Website", "Zapier", "Zapier with Lead Generation",
   ];
 
- useEffect(() => {
-  const savedItem = localStorage.getItem("activeItem");
-  const savedRoute = localStorage.getItem("activeRoute");
-  const savedShowInstall = localStorage.getItem("showInstall");
+  useEffect(() => {
+    const savedItem = localStorage.getItem("activeItem");
+    const savedRoute = localStorage.getItem("activeRoute");
+    const savedShowInstall = localStorage.getItem("showInstall");
 
-  if (savedItem) {
-    setActiveItem(savedItem);
-  }
-
-  if (savedShowInstall === "true") {
-    setShowInstall(true);
-  }
-
-  if (savedRoute && window.location.pathname !== savedRoute) {
-    router.push(savedRoute);
-  }
-}, []);
-
-useEffect(() => {
-  if (activeItem) {
-    localStorage.setItem("activeItem", activeItem);
-    const route = itemRoutes[activeItem];
-    if (route) {
-      localStorage.setItem("activeRoute", route);
+    // ✅ If on Home Page "/", clear all stored values & stop redirect
+    if (window.location.pathname === "/") {
+      setActiveItem("");
+      localStorage.removeItem("activeItem");
+      localStorage.removeItem("activeRoute");
+      localStorage.removeItem("showInstall");
+      setShowInstall(false);
+      return;
     }
 
-    // Persist showInstall state
-    const isInstallItem = installItems.includes(activeItem);
-    setShowInstall(isInstallItem);
-    localStorage.setItem("showInstall", isInstallItem ? "true" : "false");
-  }
-}, [activeItem]);
+    // ✅ Restore state for other pages
+    if (savedItem) setActiveItem(savedItem);
+    if (savedShowInstall === "true") setShowInstall(true);
+
+    if (
+      savedRoute &&
+      savedRoute !== "/" &&
+      savedRoute !== window.location.pathname
+    ) {
+      router.push(savedRoute);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (activeItem) {
+      localStorage.setItem("activeItem", activeItem);
+      const route = itemRoutes[activeItem];
+      if (route) {
+        localStorage.setItem("activeRoute", route);
+      }
+
+      const isInstallItem = installItems.includes(activeItem);
+      setShowInstall(isInstallItem);
+      localStorage.setItem("showInstall", isInstallItem ? "true" : "false");
+    }
+  }, [activeItem]);
 
   const handleClick = (itemName) => {
     setActiveItem(itemName);
-    if (installItems.includes(itemName)) {
-      setShowInstall(true);
-    } else {
-      setShowInstall(false);
-    }
+    setShowInstall(installItems.includes(itemName));
   };
 
-const navLink = (name, display = null) => (
-  <Link href={itemRoutes[name] || "#"} onClick={() => handleClick(name)}>
-    <div
-      className={`block pl-2 ml-3 py-1 rounded-md cursor-pointer ${
-        activeItem === name ? "bg-[#F4E2FF] text-[#BF56FF]" : "text-gray-700"
-      }`}
-    >
-      {typeof display === "string" ? display : display ?? name}
-    </div>
-  </Link>
-);
+  const navLink = (name, display = null) => (
+    <Link href={itemRoutes[name] || "/"} onClick={() => handleClick(name)}>
+      <div
+        className={`block pl-2 ml-3 py-1 rounded-md cursor-pointer transition ${
+          activeItem === name
+            ? "bg-[#F4E2FF] text-[#BF56FF]"
+            : activeItem
+            ? "text-[#7E7E7E] hover:bg-[#F2F2F2] hover:text-[#1E1E1E]"
+            : "text-[#7E7E7E]"
+        }`}
+      >
+        {typeof display === "string" ? display : display ?? name}
+      </div>
+    </Link>
+  );
 
   return (
-    <>
     <div className="w-70 h-screen bg-white flex flex-col overflow-hidden">
       <header className="sticky top-0 z-10 bg-white">
         <div className="flex items-center justify-between p-3">
@@ -108,7 +111,7 @@ const navLink = (name, display = null) => (
           <img src="/Website Assets/Dots Sidebar.svg" alt="" />
         </div>
         <hr className="ml-1 mr-1 border-gray-200" />
-      <form className="mt-3 bg-[#F8F8F8] rounded py-1 pl-2 ml-1.5 mr-2">
+        <form className="mt-3 bg-[#F8F8F8] rounded py-1 pl-2 ml-1.5 mr-2">
           <span className="absolute">
             <img src="/Website Assets/Search.svg" alt="" />
           </span>
@@ -123,22 +126,25 @@ const navLink = (name, display = null) => (
         </form>
       </header>
 
-      <div className={`flex-1 px-3 text-sm list-none text-gray-700 mt-2 ${showInstall ? 'overflow-y-auto' : 'overflow-hidden'}`}>
+      <div className={`flex-1 px-3 text-sm list-none text-gray-700 mt-4 ${showInstall ? 'overflow-y-auto' : 'overflow-hidden'}`}>
+        {/* Section: Chatbot */}
         <li>
           <div className="flex items-center gap-2">
             <img src="/Website Assets/Robot.svg" alt="" />
             <span>Chatbot</span>
+            <img src="/Website Assets/Arrow Down.svg" className="inline-block absolute right-6" alt="" />
           </div>
-          <div className="mt-1 border-l border-gray-300 text-gray-500 ml-3">
+          <div className="border-l border-gray-300 text-gray-500 ml-3">
             {navLink("Website Chatbot")}
             {navLink("File Chatbot")}
             {navLink("Chatbot Data Store")}
             {navLink("Chatbot Query Logs")}
             {navLink("Chatbot Customization")}
-            {navLink("Use Documents From Google", <><span>Use Documents From Google <br /> Drive</span></>)}
+            {navLink("Use Documents From Google", <>Use Documents From Google <br/> Drive</>)}
           </div>
         </li>
 
+        {/* Section: Integration */}
         <li>
           <div className="flex items-center gap-2">
             <img src="/Website Assets/Setting.svg" alt="" />
@@ -146,7 +152,7 @@ const navLink = (name, display = null) => (
           </div>
           <div className="text-gray-500 pr-3 border-l border-gray-300 ml-3">
             <span
-              className="flex justify-between cursor-pointer pl-2 ml-3 py-1 rounded-md"
+              className="flex justify-between cursor-pointer pl-2 ml-3 py-1 rounded-md hover:bg-[#F2F2F2] hover:text-[#1E1E1E]"
               onClick={() => setShowInstall(prev => !prev)}
             >
               Install On
@@ -157,47 +163,60 @@ const navLink = (name, display = null) => (
                 {installItems.map((item) => navLink(item))}
               </ul>
             )}
-            {navLink("Connect", <>Connect <img src="/Website Assets/Arrow Left.svg" className="inline-block ml-2" alt="" /></>)}
-            {navLink("RESTful API", <>RESTful API <img src="/Website Assets/Arrow Left.svg" className="inline-block ml-2" alt="" /></>)}
+            {navLink("Connect", <>Connect <img src="/Website Assets/Arrow Left.svg" className="inline-block absolute right-6" alt="" /></>)}
+            {navLink("RESTful API", <>RESTful API <img src="/Website Assets/Arrow Left.svg" className="inline-block absolute right-6" alt="" /></>)}
           </div>
         </li>
 
+        {/* Section: Access Settings */}
         <li>
           <div
             onClick={() => handleClick("Access Settings")}
-            className={`py-1 rounded-md flex items-center gap-2 ${activeItem === "Access Settings" ? "bg-[#F4E2FF] text-[#BF56FF]" : "text-gray-700"}`}
+            className={`py-1 rounded-md flex items-center gap-2 hover:bg-[#F2F2F2] hover:text-[#1E1E1E] ${activeItem === "Access Settings" ? "bg-[#F4E2FF] text-[#BF56FF]" : "text-gray-700"}`}
           >
             <img src="/Website Assets/Sheild Plus.svg" alt="" />
             <Link href="/Access Setting">Access Settings</Link>
           </div>
         </li>
 
+        {/* Section: Billing */}
         <li>
           <div className="flex items-center gap-2">
             <img src="/Website Assets/Dollar.svg" alt="" />
             <span>Billing</span>
           </div>
-          <div className="border-l border-gray-300 text-gray-500 space-y-2 ml-3">
+          <div className="border-l border-gray-300 text-gray-500 space-y-2 ml-3 ">
             {navLink("Upgrade Plan")}
             {navLink("AWS Marketplace")}
           </div>
         </li>
 
-        <li>
-          <div className="flex items-center gap-2 mb-2">
-            <img src="/Website Assets/Question Mark.svg" alt="" />
-            {navLink("FAQ")}
-          </div>
-        </li>
+        {/* Section: FAQ */}
+     <li>
+  <div
+    onClick={() => handleClick("FAQ")}
+    className={`flex items-center gap-2 mb-2 py-1 rounded-md cursor-pointer transition ${
+      activeItem === "FAQ"
+        ? "bg-[#F4E2FF] text-[#BF56FF]"
+        : "text-[#7E7E7E] hover:bg-[#F2F2F2] hover:text-[#1E1E1E]"
+    }`}
+  >
+    <img src="/Website Assets/Question Mark.svg" alt="" />
+    <Link href="/FAQ">{/* Link inside the styled div */}
+      <span>{'FAQ'}</span>
+    </Link>
+  </div>
+</li>
 
         {showInstall && (
           <div className="fixed bottom-14 left-0 w-60 h-8 bg-white/65 z-50 pointer-events-none"></div>
         )}
       </div>
 
+      {/* Footer */}
       <div className="sticky bottom-0 bg-white border-t border-gray-300">
-        <div className="ml-3 mr-5 mt-2 flex justify-between text-gray-500 py-2">
-          <div className="flex gap-2 p-1.5 pl-3 pr-3 rounded-3xl border border-gray-200">
+        <div className="ml-3 mr-5 mt-1 flex justify-between text-gray-500 py-2">
+          <div className="flex gap-2 p-0.5 pl-3 pr-3 rounded-3xl border border-gray-200">
             <img src="/Website Assets/Brightness.svg" alt="" />
             <img src="/Website Assets/Moon.svg" alt="" />
           </div>
@@ -205,6 +224,5 @@ const navLink = (name, display = null) => (
         </div>
       </div>
     </div>
-    </>
   );
 }
