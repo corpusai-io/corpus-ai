@@ -19,7 +19,7 @@ export default function TestimonialsSliders() {
                   className="bg-white border border-gray-200 shadow-lg rounded-lg p-6 w-80 flex-shrink-0"
                 >
                   <Image
-                    src={testimonial.img}
+                    src="/profile.png"
                     alt="User"
                     width={56}
                     height={56}

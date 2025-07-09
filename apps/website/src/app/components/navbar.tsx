@@ -9,9 +9,10 @@ export default function Navbar(){
  
     return(
 
-<header className="text-gray-600 max-w-7xl body-font m-4 border-1 border-[#ECECEC] outline-0 rounded-[10px] shadow-[0_8px_16px_0_rgba(194,194,194,0.15)] bg-white w-[90%] mx-auto ">
-  <div className="container mx-auto p-2 flex flex-wrap items-center justify-between">
-    <a className="flex title-font font-medium text-center items-center text-black mb-4 md:mb-0">
+<header className=" sticky z-20 text-gray-600 max-w-6xl body-font border-1 bg-white border-[#ECECEC] outline-0 rounded-[10px] shadow-[0_8px_16px_0_rgba(194,194,194,0.15)] w-[94%] mx-auto mt-[55px]">
+  <div className="container-fluid p-2 flex  flex-wrap items-center justify-between">
+    <div className='flex justify-between  w-auto gap-10'>
+    <a className=" title-font font-medium text-center  text-black  md:mb-0">
       <span className="ml-3 text-center text-xl font-bold">CORPUS AI</span>
     </a>
     <nav id="nav-menu" className="hidden lg:flex flex-wrap items-center text-base justify-center gap-x-[30px] w-full lg:w-auto">

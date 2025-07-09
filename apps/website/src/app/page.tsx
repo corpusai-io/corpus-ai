@@ -12,7 +12,7 @@ export default function Home() {
   return (
      
     <main className="min-h-screen bg-transparent overflow-x-hidden">
-        <Navbar />
+       
       
       <div className="flex justify-center pt-[100px]">
         <div className="inline-flex items-center text-sm font-medium rounded-full px-1 py-1 gap-2 shadow-sm bg-white">

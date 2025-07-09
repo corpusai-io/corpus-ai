@@ -89,12 +89,25 @@ const CorpusChatPage = () => {
       once: true, // Only animate once on scroll
     });
   }, []);
+  
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-purple-200 via-purple-50 to-white flex flex-col items-center justify-center px-2 sm:px-4 relative">
+    <div className="min-h-screen w-full bg-white flex flex-col items-center justify-center px-2 sm:px-4 relative">
       {/* Pink Blob beside Hero Section */}
-      <div className="hidden lg:block absolute top-40 left-10 -translate-y-1/2 z-0 pointer-events-none">
-        <div className="blob bg-pink-200 blur-3xl w-[400px] h-[400px]"></div>
+      <div className=" lg:block absolute top-40 left-10 -translate-y-1/2 z-0 pointer-events-none">
+        <div className="blob bg-[#FCA4FF] opacity-[40%] blur-2xl rounded-full w-[470px] h-[500px]"></div>
+      </div>
+      <div className=" lg:block absolute top-0 left-[40%] -translate-y-1/2 z-0 pointer-events-none">
+        <div className="blob2 bg-[#CE89FC] opacity-[40%] blur-2xl rounded-full w-[600px] h-[400px]"></div>
+      </div>
+       <div className=" lg:block absolute top-0 right-0 -translate-y-1/2 z-0 pointer-events-none">
+        <div className="blob bg-[#FFAAF9] opacity-[40%] blur-2xl rounded-full w-[300px] h-[300px]"></div>
+      </div>
+      <div className=" lg:block absolute top-70 right-10 -translate-y-1/2 z-0 pointer-events-none">
+        <div className="blob bg-[#DEC7FE] opacity-[60%] blur-2xl rounded-full w-[400px] h-[400px]"></div>
+      </div>
+       <div className=" lg:block absolute top-20 left-10 -translate-y-1/2 z-0 pointer-events-none">
+        <div className="blob5 bg-[#DEC7FE] opacity-[60%] blur-2xl rounded-full w-[400px] h-[400px]"></div>
       </div>
       {/* Hero Section */}
       <div className="flex flex-col lg:flex-row justify-between items-center w-full max-w-[1300px] py-10 gap-10 lg:gap-0 relative z-10">
@@ -127,7 +140,7 @@ const CorpusChatPage = () => {
         </div>
         {/* Right Section: Chat Cards */}
         <div className="flex-1 flex items-center justify-center w-full">
-          <div className="grid chatsCards grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 lg:gap-8">
+          <div className="grid chatsCards grid-cols-1 md:grid-cols-2 gap-8 md:gap-6 lg:gap-4">
             {/* Live Chat Card */}
             <div data-aos="fade-up" data-aos-duration="200" data-aos-delay="0" className="shadow-lg chatCard1 w-[280px] rounded-2xl mt-8 border border-zinc-100/20 bg-white p-5 flex flex-col items-center justify-center gap-4 relative" style={{ minHeight: '320px' }}>
               {/* Header */}
