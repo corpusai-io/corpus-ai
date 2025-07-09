@@ -9,12 +9,11 @@ export default function Navbar(){
  
     return(
 
-<header className=" sticky z-20 text-gray-600 max-w-6xl body-font border-1 bg-white border-[#ECECEC] outline-0 rounded-[10px] shadow-[0_8px_16px_0_rgba(194,194,194,0.15)] w-[94%] mx-auto mt-[55px]">
+<header className="sticky z-20 text-gray-600 max-w-6xl body-font border-1 bg-white border-[#ECECEC] outline-0 rounded-[10px] shadow-[0_8px_16px_0_rgba(194,194,194,0.15)] w-[94%] mx-auto mt-[55px]">
   <div className="container-fluid p-2 flex  flex-wrap items-center justify-between">
     <div className='flex justify-between  w-auto gap-10'>
-    <a className=" title-font font-medium text-center  text-black  md:mb-0">
-      <span className="ml-3 text-center text-xl font-bold">CORPUS AI</span>
-    </a>
+    <Link href="/" className="flex title-font font-medium text-center items-center text-black  md:mb-0"><img src="/logo.svg" alt="Corpus AI Logo" className="ml-3 h-6 w-auto"/>
+    </Link>
     <nav id="nav-menu" className="hidden lg:flex flex-wrap items-center text-base justify-center gap-x-[30px] w-full lg:w-auto">
   
   <div className="relative group">

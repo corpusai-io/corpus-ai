@@ -84,9 +84,8 @@ const CorpusChatPage = () => {
   }, []);
 
   useEffect(() => {
-    AOS.init({
-      duration: 0, // Animation duration in ms
-      once: true, // Only animate once on scroll
+    AOS.init({ // Animation duration in ms
+      once: true // Only animate once on scroll
     });
   }, []);
   
