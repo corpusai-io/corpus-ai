@@ -78,7 +78,7 @@ export default function ChatBotOnWebPage(){
     return(
     
       
-        <div className="min-h-screen w-full flex flex-col items-center justify-center  bg-gradient-to-br from-[#E9D5FF] via-white to-[#EDE9FE]px-2 sm:px-4 py-8">
+        <div className="min-h-screen w-full flex flex-col items-center justify-center  bg-transparent px-2 sm:px-4 py-8">
         <div className="flex  flex-col md:flex-row items-center justify-center w-full max-w-5xl gap-10 md:gap-16">
 
           {/* Left Section */}

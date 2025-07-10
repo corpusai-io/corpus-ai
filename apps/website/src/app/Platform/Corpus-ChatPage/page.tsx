@@ -1,6 +1,8 @@
 'use client'; 
 import React, { useEffect, useState } from 'react';
 import FeatureCard from '@/app/components/FeatureCard';
+import PricingPage from '@/app/components/Pricing';
+import FAQSection from '@/app/components/FAQsection';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 const features = [
@@ -91,33 +93,18 @@ const CorpusChatPage = () => {
   
 
   return (
-    <div className="min-h-screen w-full bg-white flex flex-col items-center justify-center px-2 sm:px-4 relative">
-      {/* Pink Blob beside Hero Section */}
-      <div className=" lg:block absolute top-40 left-10 -translate-y-1/2 z-0 pointer-events-none">
-        <div className="blob bg-[#FCA4FF] opacity-[40%] blur-2xl rounded-full w-[470px] h-[500px]"></div>
-      </div>
-      <div className=" lg:block absolute top-0 left-[40%] -translate-y-1/2 z-0 pointer-events-none">
-        <div className="blob2 bg-[#CE89FC] opacity-[40%] blur-2xl rounded-full w-[600px] h-[400px]"></div>
-      </div>
-       <div className=" lg:block absolute top-0 right-0 -translate-y-1/2 z-0 pointer-events-none">
-        <div className="blob bg-[#FFAAF9] opacity-[40%] blur-2xl rounded-full w-[300px] h-[300px]"></div>
-      </div>
-      <div className=" lg:block absolute top-70 right-10 -translate-y-1/2 z-0 pointer-events-none">
-        <div className="blob bg-[#DEC7FE] opacity-[60%] blur-2xl rounded-full w-[400px] h-[400px]"></div>
-      </div>
-       <div className=" lg:block absolute top-20 left-10 -translate-y-1/2 z-0 pointer-events-none">
-        <div className="blob5 bg-[#DEC7FE] opacity-[60%] blur-2xl rounded-full w-[400px] h-[400px]"></div>
-      </div>
+    <div className="min-h-screen w-full bg-transparent flex flex-col items-center justify-center px-2 sm:px-4 relative">
+     
       {/* Hero Section */}
       <div className="flex flex-col lg:flex-row justify-between items-center w-full max-w-[1300px] py-10 gap-10 lg:gap-0 relative z-10">
         
         {/* Left Section */}
         <div className="flex flex-col items-center lg:items-start justify-center text-center lg:text-left w-full lg:w-1/2 px-2 sm:px-6 lg:pl-10">
-          <h1 className="text-3xl font-inter sm:text-4xl md:text-5xl font-bold leading-tight mb-4 text-zinc-900">
+          <h1 className="text-3xl font-inter sm:text-4xl md:text-5xl font-semibold leading-tight mb-4 text-zinc-900">
             Trustworthy Chat<br />
             with your{' '}
             <span className="inline-block relative mb-1 w-[67px] md:w-[130px] h-[1.2em] align-middle overflow-hidden">
-              <span className="absolute left-0 top-0  w-full h-full text-purple-400 font-bold transition-transform duration-500 ease-in-out"
+              <span className="absolute left-0 top-0  w-full h-full text-purple-400 font-semibold transition-transform duration-500 ease-in-out"
                 style={{ transform: `translateY(-${currentWord * 100}%)` }}>
                 {animatedWords.map((word) => (
                   <span key={word} className="block h-[1.2em]">{word}</span>
@@ -125,14 +112,14 @@ const CorpusChatPage = () => {
               </span>
             </span>
           </h1>
-          <p  className="text-base sm:text-lg text-zinc-500 mb-8">
+          <p  className="text-base sm:text-lg text-[#8D8D8D] mb-8">
             Verifiable answers from PDFs, websites, and beyond all with source highlights
           </p>
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center sm:justify-start">
-            <button className="bg-purple-500 text-white rounded-full px-8 py-3 text-lg font-semibold shadow-md hover:bg-purple-500 transition w-full sm:w-auto">
+            <button className="bg-[#BF56FF] text-white rounded-[30px] px-8 py-3 text-lg font-medium shadow-md  transition w-full sm:w-auto">
               Get Started
             </button>
-            <button className="bg-white text-zinc-900 border border-zinc-200 rounded-full px-8 py-3 text-lg font-semibold shadow hover:bg-purple-100 transition w-full sm:w-auto">
+            <button className="bg-white text-[#1E1E1E] border border-[#F0F0F0] rounded-[30px] px-8 py-3 text-lg font-medium shadow  transition w-full sm:w-auto">
               Watch Video
             </button>
           </div>
@@ -279,9 +266,9 @@ const CorpusChatPage = () => {
         </div>
       </div>
       {/* Features Section */}
-      <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-10 mb-20">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 text-center mb-2">Everything you need for <br /><span className="text-purple-500">Interactive Content</span></h2>
-        <p className="text-zinc-400 text-center max-w-2xl mb-10 text-base sm:text-lg">Transform your websites and documents into interactive knowledge bases. Let users find answers through natural conversations.</p>
+      <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-10 mb-[161px]">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black text-center mb-2">Everything you need for <br /><span className="text-[#BF56FF]">Interactive Content</span></h2>
+        <p className="text-[#7D7D7D] text-center max-w-4xl mb-15 text-base sm:text-lg">Transform your websites and documents into interactive knowledge bases. Let users find answers through natural conversations.</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 w-full max-w-6xl px-2 sm:px-4">
           {features.map((feature, idx) => (
             <FeatureCard key={idx} icon={feature.icon} title={feature.title} description={feature.description} />
@@ -292,7 +279,7 @@ const CorpusChatPage = () => {
       <section className="w-full flex flex-col items-center mb-20">
         <div data-aos="fade-up" data-aos-duration="500" className="text-center mb-2 text-purple-400 font-semibold">How It Works</div>
         <h2 data-aos="fade-up" data-aos-duration="500" className="text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 text-center mb-2">Start in <span className="text-purple-500">Three</span> Steps</h2>
-        <p data-aos="fade-up" data-aos-duration="500" className="text-zinc-400 text-center max-w-2xl mb-10 text-base sm:text-lg">Setting up your AI chat assistant is quick and easy. Follow these steps to transform your content into an interactive knowledge base.</p>
+        <p data-aos="fade-up" data-aos-duration="500" className="text-[#8D8D8D] text-center max-w-2xl mb-10 text-base sm:text-lg">Setting up your AI chat assistant is quick and easy. Follow these steps to transform your content into an interactive knowledge base.</p>
         <div className="flex flex-col lg:flex-row items-center justify-center w-full max-w-6xl gap-10 px-2 sm:px-4">
         
           <div data-aos="fade-right" data-aos-duration="500" className="flex-1 flex flex-col gap-10 w-full">
@@ -303,9 +290,9 @@ const CorpusChatPage = () => {
                   {idx < steps.length - 1 && <div className="w-1 h-16 bg-purple-100" />}
                 </div>
                 <div>
-                  <div className="bg-purple-100 rounded-xl p-2 mb-2 flex items-center justify-center text-purple-500 text-2xl w-10 h-10">{step.icon}</div>
+                  <div className="bg-purple-100 rounded-xl p-2 mb-2 flex items-center justify-center text-[#BF56FF] text-2xl w-10 h-10">{step.icon}</div>
                   <div className="font-semibold text-lg text-zinc-900 mb-1">{step.title}</div>
-                  <div className="text-zinc-500 text-sm max-w-xs">{step.description}</div>
+                  <div className="text-[#7D7D7D] text-sm max-w-xs">{step.description}</div>
                 </div>
               </div>
             ))}
@@ -349,6 +336,33 @@ const CorpusChatPage = () => {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+     <section >
+        <div className="text-center py-5 px-4 max-w-7xl mx-auto">
+             <h4 className="text-sm text-[#BF56FF] font-semibold mb-5 uppercase">Pricing</h4>
+             <h2 className="text-3xl sm:text-4xl font-bold mb-8">Simple Pricing</h2>
+             <p className="mb-12 text-[#8D8D8D] max-w-6xl mx-auto">Use Corpus Chat for free. Upgrade to enable custom domains and more advanced features.</p>
+             </div>
+       <PricingPage/>
+       </section>
+      <FAQSection/>
+      <section className="text-center px-4 pt-[56px] pb-16 bg-white">
+        <h1 className="text-xl sm:text-2xl md:text-5xl font-medium text-[#1E1E1E] leading-tight">
+          Ready to transform your content into<br/><span className="bg-gradient-to-r from-[#DAC0FF] to-[#BF56FF] bg-clip-text text-transparent">interactive conversations?</span>
+        </h1>
+        <p className="mt-4 text-[#8D8D8D] mx-auto text-base sm:text-lg">
+          Start for free and upgrade as your needs grow.
+        </p>
+
+        
+        <div className="mt-[24px] flex flex-col sm:flex-row justify-center items-center gap-4">
+          <a
+            href="#"
+            className="hover:bg-gradient-to-r from-[#FC5990] to-[#AC5DE6]  text-black  border-[#E0E0E0] shadow font-medium px-6 py-2 border rounded-[15px] w-full sm:w-auto "
+          >
+            Get Started for Free
+          </a>
         </div>
       </section>
     </div>

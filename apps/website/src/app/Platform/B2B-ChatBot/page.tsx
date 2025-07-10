@@ -1,6 +1,7 @@
 
 import B2BFeatureCard from '@/app/components/B2BFeatureCard';
 import B2BReasonCard from '@/app/components/B2BReasonCard';
+import FAQSection from '@/app/components/FAQsection';
 import Navbar from '@/app/components/navbar';
 
 
@@ -70,7 +71,7 @@ export default function B2BChatBotPage() {
   // const [tab, setTab] = useState('Web');
   return (
 
-        <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-purple-200 via-white to-purple-100 px-2 sm:px-4 py-8">
+        <div className="min-h-screen w-full flex flex-col items-center justify-center bg-transparent px-2 sm:px-4 py-8">
       <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-5xl gap-10 md:gap-16">
         {/* Left Section */}
         <div className="flex-1 flex flex-col items-start justify-center text-left max-w-lg">
@@ -137,11 +138,11 @@ export default function B2BChatBotPage() {
       </section>
 
       {/* 3 Steps Section */}
-      <section data-aos="fade" data-aos-duration="600" className="w-full flex flex-col items-center mt-20 mb-10">
+      <section data-aos="fade" data-aos-duration="600" className="w-full bg-[#F9F0FF] flex flex-col items-center pt-20 pb-10">
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 text-center mb-12">Build Your B2B Chatbot in 3 Steps</h2>
         <div className="flex flex-col lg:flex-row items-center justify-center w-full max-w-6xl gap-10 px-2 sm:px-4">
           {/* Left: Card with Tabs and Form */}
-          <img className='order-2' src="/assets/addChatBotImage.svg" alt="" />
+          <img className='' src="/assets/addChatBotImage.svg" alt="" />
           {/* Right: Setup Info */}
           <div className="flex-1 flex flex-col items-start justify-center max-w-lg mt-10 lg:mt-0">
             <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-medium inline-block">Setup</span>
@@ -152,7 +153,7 @@ export default function B2BChatBotPage() {
       </section>
 
       {/* Customize Section */}
-      <section data-aos="fade-left" data-aos-duration="600"  className="w-full flex flex-col lg:flex-row items-center justify-center mt-20 mb-10 max-w-7xl mx-auto">
+      <section data-aos="fade-left" data-aos-duration="600"  className="w-full bg-[#F9F0FF] flex flex-col lg:flex-row items-center justify-center pt-20 pb-10 max-w-7xl mx-auto">
         {/* Left: Text */}
         <div className="flex-1 flex flex-col items-start justify-center max-w-lg mb-10 lg:mb-0">
           <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-medium inline-block">Customize</span>
@@ -234,7 +235,7 @@ export default function B2BChatBotPage() {
       </section>
 
       {/* Deploy & Scale Section */}
-      <section className="w-full flex flex-col lg:flex-row items-center justify-center mt-20 mb-10 max-w-7xl mx-auto">
+      <section className="w-full flex flex-col lg:flex-row bg-[#F9F0FF] items-center justify-center pt-20 pb-10 max-w-7xl mx-auto">
         {/* Left: Integrations Card */}
         <img className='w-1/2 shadow-md' src="/assets/integrate-chatbot.webp" alt="" />
         {/* Right: Text */}
@@ -252,6 +253,25 @@ export default function B2BChatBotPage() {
           {reasons.map((r, i) => (
             <B2BReasonCard key={i} icon={r.icon} title={r.title} description={r.description} />
           ))}
+        </div>
+      </section>
+      <section><FAQSection/></section>
+      <section className="text-center px-4 pt-[56px] pb-16 bg-white">
+        <h1 className="text-xl sm:text-2xl md:text-5xl font-medium text-[#1E1E1E] leading-tight">
+         Trustworthy Chat with<span className="bg-gradient-to-r from-[#DAC0FF] to-[#BF56FF] bg-clip-text text-transparent"> Your Data</span>
+        </h1>
+        <p className="mt-4 text-[#8D8D8D] mx-auto text-base sm:text-lg">
+          Verifiable answers from PDFs, websites, and beyond with source highlights.
+        </p>
+
+        
+        <div className="mt-[24px] flex flex-col sm:flex-row justify-center items-center gap-4">
+          <a
+            href="#"
+            className="hover:bg-gradient-to-r from-[#FC5990] to-[#AC5DE6]  text-black  border-[#E0E0E0] shadow font-medium px-6 py-2 border rounded-[15px] w-full sm:w-auto "
+          >
+            Get Started for Free
+          </a>
         </div>
       </section>
     </div>

@@ -2,11 +2,15 @@
 import { ClientPageRoot } from 'next/dist/client/components/client-page';
 import Link from 'next/link';
 import { use, useState } from 'react';
-
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 export default function Navbar(){
  const [menuOpen, setMenuOpen] = useState(false);
- 
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Toggle dropdown visibility
+  const toggleDropdown = () => setIsVisible(!isVisible);
+  const closeDropdown = () => setIsVisible(false);
     return(
 
 <header className="sticky z-20 text-gray-600 max-w-6xl body-font border-1 bg-white border-[#ECECEC] outline-0 rounded-[10px] shadow-[0_8px_16px_0_rgba(194,194,194,0.15)] w-[94%] mx-auto mt-[55px]">
@@ -18,7 +22,7 @@ export default function Navbar(){
   
   <div className="relative group">
     
-    <a className="hover:text-[#BF56FF] flex items-center gap-1 cursor-pointer">
+    <a onMouseEnter={()=>{setIsVisible(true)}} className="hover:text-[#BF56FF] flex items-center gap-1 cursor-pointer" >
       Platform
       
       <svg className="w-4 h-4 group-hover:hidden" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -30,13 +34,13 @@ export default function Navbar(){
       </svg>
     </a>
 
-    
-    <div className="absolute left-0 top-10 mt-2 w-[941px] bg-white rounded-md shadow-lg p-4 opacity-0 invisible group-hover:visible group-hover:opacity-100 transition-all duration-200 z-50 grid grid-cols-3 gap-[31px]">
+    {isVisible && (
+    <div  className={`absolute left-0 top-10 mt-2 w-[941px] bg-white rounded-md shadow-lg p-4 opacity-0 invisible group-hover:visible group-hover:opacity-100 transition-all duration-200 z-50 grid grid-cols-3 gap-[31px]`}>
       <div className="block text-gray-700 hover:text-[#BF56FF] py-1">
         <span className='pl-[35px] text-[#8D8D8D]'>Products</span>
         
-         <Link href='/Platform/Corpus-ChatPage'> <div className="flex items-start gap-[9px] py-[27px] pl-[35px]">
-      <span><img src=" Vector.svg" alt="Chat" className="w-5 h-5" /></span>
+         <Link href='/Platform/Corpus-ChatPage' onClick={closeDropdown}> <div className="flex items-start gap-[9px] mt-[27px] hover:bg-gray-100 p-2 rounded-md pl-[35px]" >
+      <span><Image src="/Vector.svg" alt="Chat" height={24} width={24} /></span>
       <div>
         <p className="font-medium  text-[#1E1E1E]">Corpus Chat</p>
         <p className="text-[#747474]  text-base">AI chatbot for your website</p>
@@ -46,16 +50,16 @@ export default function Navbar(){
         </div>
       <div className="block text-gray-700 hover:text-[#BF56FF] py-1 p">
         <span className='text-[#8D8D8D]'>Use Cases</span>
-       <Link href="/Platform/B2B-ChatBot"> <div className="flex items-start space-x-3 py-4">
-      <span><img src="Vector(1).svg" alt="B2B" className="w-5 h-5"/></span>
+       <Link href="/Platform/B2B-ChatBot" onClick={closeDropdown}> <div className="flex items-start space-x-3 mt-[27px] hover:bg-gray-100 p-2 rounded-md ">
+      <span><Image src="/Vector(1).svg" alt="B2B" width={24} height={24}/></span>
       <div>
         <p className="font-medium text-[#1E1E1E]">B2B Chatbot</p>
         <p className="text-[#747474]  text-base">Specialized chatbot for business interactions</p>
       </div>
     </div></Link>
 
-    <Link href="/Platform/CustomerCare-Page"><div className="flex items-start space-x-3 py-4">
-      <span><img src="customer-service-line.svg" alt="B2B" className="w-5 h-5"/></span>
+    <Link href="/Platform/CustomerCare-Page" onClick={closeDropdown}><div className="flex items-start space-x-3 mt-[27px] hover:bg-gray-100 p-2 rounded-md ">
+      <span><Image src="/customer-service-line.svg" alt="B2B" width={24} height={24}/></span>
       <div>
         <p className="font-medium text-[#1E1E1E]">Customer Care Chatbot</p>
         <p className="text-[#747474]  text-base">AI powered customer support automation</p>
@@ -65,25 +69,25 @@ export default function Navbar(){
       
       <div className="block text-gray-700 hover:text-[#BF56FF] py-1">
         <span className='text-[#8D8D8D]'>Features</span>
-       <Link href="/Platform/Chat-With-PDF-Page"><div className="flex items-start space-x-3 py-4">
-      <span><img src="file-pdf-2-line-2 2.svg" alt="B2B" className="w-5 h-5"/></span>
+       <Link href="/Platform/Chat-With-PDF-Page" onClick={closeDropdown}><div className="flex items-start space-x-3 mt-[27px] hover:bg-gray-100 p-2 rounded-md ">
+      <span><Image src="/file-pdf-2-line-2 2.svg" alt="B2B" height={24} width={24}/></span>
       <div>
         <p className="font-medium text-[#1E1E1E]">Chat with PDF</p>
         <p className="text-[#747474]  text-base">Interactive conversations with your PDF document</p>
       </div>
     </div></Link>
 
-    <Link href="/Platform/ChatBot-On-WebPage"><div className="flex items-start space-x-3 py-4">
-      <span><img src="global-line.svg" alt="B2B" className="w-5 h-5"/></span>
+    <Link href="/Platform/ChatBot-On-WebPage" onClick={closeDropdown}><div className="flex items-start space-x-3 mt-[27px] hover:bg-gray-100 p-2 rounded-md ">
+      <span><Image src="/global-line.svg" alt="B2B" width={24} height={24}/></span>
       <div>
         <p className="font-medium text-[#1E1E1E]">Chatbot on Website</p>
         <p className="text-[#747474]  text-base">Embed AI chatbot on your website</p>
       </div>
     </div></Link>
 
-    <Link href= "/Platform/Chat-With-Bot-Page">
-    <div className="flex items-start space-x-3 py-4">
-      <span><img src="wechat-line.svg" alt="B2B" className="w-5 h-5"/></span>
+    <Link href= "/Platform/Chat-With-Bot-Page" onClick={closeDropdown}>
+    <div className="flex items-start space-x-3 mt-[27px] hover:bg-gray-100 p-2 rounded-md ">
+      <span><Image src="/wechat-line.svg" alt="B2B" width={24} height={24} /></span>
       <div>
         <p className="font-medium text-[#1E1E1E]">Chat with Bot</p>
         <p className="text-[#747474]  text-base">Engage with your documents intelligently</p>
@@ -92,12 +96,14 @@ export default function Navbar(){
     </Link>
         </div>
     </div>
-  </div>
+
+      )}
+        </div>
 
   
   <div className="relative group">
     
-    <a className="hover:text-[#BF56FF] flex items-center gap-1 cursor-pointer">
+    <a onMouseEnter={()=>{setIsVisible(true)}}  className="hover:text-[#BF56FF] flex items-center gap-1 cursor-pointer">
       Integrations
       
       <svg className="w-4 h-4 group-hover:hidden" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -109,45 +115,45 @@ export default function Navbar(){
       </svg>
     </a>
 
-    
+    {isVisible && (
     <div className="absolute left-0 top-10 mt-2 w-[602px] bg-white rounded-md shadow-lg p-4 opacity-0 invisible group-hover:visible group-hover:opacity-100 transition-all duration-200 z-50s">
       <div className="block text-gray-700 hover:text-[#BF56FF] ">
         <span className='pl-[35px] mt-[23px] text-[#8D8D8D]'>Integrations</span></div>
         <div className="grid grid-cols-2 gap-[31px]">
-          <div>
-      <div className="flex items-center pl-[33px] gap-[9px] mt-[27px]">
-      <span><img src="Group.svg" alt="Chat" className="w-5 h-5" /></span>
+          <div className='flex flex-col gap-4'>
+      <div className="flex items-center pl-[33px] gap-[9px] mt-[27px] hover:bg-gray-100 p-2 rounded-md " onClick={closeDropdown}>
+      <span><Image src="/socials-icons/Slack.svg" alt="Chat" width={24} height={24} /></span>
       <div>
         <p className="font-medium text-[#1E1E1E]">Slack</p>
         <p className="text-[#747474]  text-base">Connect with slack</p>
       </div>
       </div>
 
-      <div className="flex items-center pl-[33px] gap-[8px] mt-[30px]">
-      <span><img src="wordpress-icon.svg" alt="Chat" className="w-5 h-5 " /></span>
+      <div className="flex items-center pl-[33px] gap-[8px]  hover:bg-gray-100 p-2 rounded-md " onClick={closeDropdown}>
+      <span><Image src="/socials-icons/wordpress-icon.svg" alt="Chat" width={24} height={24} /></span>
       <div>
         <p className="font-medium text-[#1E1E1E]">WordPress</p>
         <p className="text-[#747474]  text-base">Connect with WordPress</p>
       </div>
       </div>
 
-      <div className="flex items-center pl-[33px] gap-[8px] mt-[30px]">
-      <span><img src="zapier.svg" alt="Chat" className="w-5 h-5 " /></span>
+      <div className="flex items-center pl-[33px] gap-[8px]  hover:bg-gray-100 p-2 rounded-md " onClick={closeDropdown}>
+      <span><Image src="/socials-icons/zapier.svg" alt="Chat" width={24} height={24} /></span>
       <div>
         <p className="font-medium text-[#1E1E1E]">Zapier</p>
         <p className="text-[#747474]  text-base">Connect with Zapier</p>
       </div>
       </div>
 
-      <div className="flex items-center pl-[33px] gap-[9px] mt-[30px]">
-      <span><img src="telegram-1 1.svg" alt="Chat" className="w-5 h-5 " /></span>
+      <div className="flex items-center pl-[33px] gap-[9px] hover:bg-gray-100 p-2 rounded-md " onClick={closeDropdown}>
+      <span><Image src="/socials-icons/telegram-1 1.svg" alt="Chat" width={24} height={24} /></span>
       <div>
         <p className="font-medium text-[#1E1E1E]">Telegram</p>
         <p className="text-[#747474]  text-base">Connect with Telegram</p>
       </div>
       </div>
-      <div className="flex items-center pl-[33px] gap-[9px] mt-[30px]">
-      <span><img src="whatsapp.svg" alt="Chat" className="w-5 h-5 " /></span>
+      <div className="flex items-center pl-[33px] gap-[9px]  hover:bg-gray-100 p-2 rounded-md " onClick={closeDropdown}>
+      <span><Image src="/socials-icons/whatsapp.svg" alt="Chat" width={24} height={24} /></span>
       <div>
         <p className="font-medium text-[#1E1E1E]">WhatsApp</p>
         <p className="text-[#747474]  text-base">Connect with WhatsApp</p>
@@ -163,6 +169,7 @@ export default function Navbar(){
     
     </div>
     </div>
+    )}
   </div>
 
   <div className="relative group">

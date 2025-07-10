@@ -79,7 +79,7 @@ const empoweringCards = [
 export default function ChatWithBotPage(){
    
     return(
-        <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-purple-200 via-white to-purple-100 px-2 sm:px-4 py-8">
+        <div className="min-h-screen w-full flex flex-col items-center justify-center bg-transparent px-2 sm:px-4 py-8">
         {/* section 1 */}
         <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-5xl gap-10 md:gap-16">
           {/* Left Section */}
