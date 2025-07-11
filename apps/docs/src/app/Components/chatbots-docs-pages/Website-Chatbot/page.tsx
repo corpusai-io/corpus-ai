@@ -12,16 +12,19 @@ export default function WebsiteChatbot(){
   const fileTabLocked = fileContent.trim() === '';
     return(
         <>
+          
             <main className="flex-1 flex">
-            <div className="flex-1 mt-[30px] ml-15 mr-5 text-[14px]">
+            {/* <div className="flex-1 mt-[30px] ml-15 mr-5 text-[14px]"> */}
+              <div className="w-full max-w-auto pt-[1px] pl-[10px]  overflow-x-hidden">
+
              <p className="text-[#7F7F7F] ">Chatbot</p>
                         
             {/* Website Chatbot Content */}
 
             <h2  className="font-bold  mt-1 text-[20px]">Website Chatbot</h2>
 
-            <p className="text-justify mt-2 text-[#777777]  space-y-2 ">After you log in with one the following: Google login, Facebook login or sign up with Corpus, you will <br/> see the chatbot home as follows.</p>    
-            <div className="bg-white mt-1 pt-3 px-5 w-[620px] h-[264px] shadow-lg rounded-[10px]">
+            <p className="text-justify mt-2 text-[#777777]  space-y-2 ">After you log in with one the following: Google login, Facebook login or sign up with Corpus, you will see the chatbot home as follows.</p>    
+            <div className="bg-white mx-auto mt-4 py-[30px] pt-3 px-5 w-auto h-auto shadow-lg rounded-[10px] ">
             <div className="flex justify-between">
                 <div>
                   <h2 className="font-bold">Chatbots</h2> 
@@ -30,7 +33,11 @@ export default function WebsiteChatbot(){
                 <button className="border-1 border-[#EAEAEA] p-2 rounded-[5px] pt-1 pb-0 pl-3 pr-3 cursor-pointer h-9">Add Bot</button>
             </div>
            <div className="text-center mt-2 space-y-1">
-            <img src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Box website chatbot.svg" alt="" className="relative left-59 w-25 "/>
+            <img 
+              src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Box website chatbot.svg" 
+              alt="" 
+              className="mx-auto w-[100px]" 
+            />
             <p className="mt-5 font-bold">There are no Chatbots</p>
             <p className="text-[#7F7F7F]">Create new chatbots to get started</p>
             
@@ -39,10 +46,10 @@ export default function WebsiteChatbot(){
             
             </div>
             <p className=" text-justify mt-3 mb-3 text-[#777777]">
-              When you click Create Now button, you will reach the chatbot building page (see below). Make sure <br/> that the WEB tab is selected and input the website you’d like to crawl (https://corpusai.io in this case).<br/> Click the button Build Now to start building a chatbot on the website.
+              When you click Create Now button, you will reach the chatbot building page (see below). Make sure  that the WEB tab is selected and input the website you’d like to crawl (https://corpusai.io in this case). Click the button Build Now to start building a chatbot on the website.
             </p>
           {/* This section for future added more information*/}
-          <div className="bg-white w-[620px] pt-[15px] pl-[25px]  rounded-t-[20px] shadow-lg">
+          <div className="bg-white w-auto pt-[15px] pl-[25px] rounded-t-[20px] shadow-lg ">
             <div className="">
                 <h2 className="font-bold">Create Chatbot</h2>
                 <p className="text-[#7A7A7A]">Create a Chatbot from different sources.</p>
@@ -81,13 +88,13 @@ export default function WebsiteChatbot(){
           </button>
         </li>
       </ul>
-
+{/**/}
       {/* Main Content */}
-      <div className="flex-1 border-1 border-[#F4F4F4] pl-5 pt-3 rounded-t-[20px]  ">
+      <div className="flex-1 border-1 border-[#F4F4F4] mr-[15px] pl-5 pt-3 rounded-t-[20px]  ">
         {activeSection === 'web' && (
           <div id="Website-page">
             <span className="font-bold mb-1">Website</span>
-            <p className="text-[#7A7A7A] mb-2 mt-1 text-[13px] ">
+            <p className="text-[#7A7A7A] mb-2 mt-1 text-[10px] ">
               Enter the URL of the website you want to build a chatbot for.
             </p>
           
@@ -100,30 +107,25 @@ export default function WebsiteChatbot(){
           </div>
         )}
       </div>
+    </div>      
     </div>
-
-                
-            </div>
           </div>
         </div>
   </main>
-     
-     
-        
-     <div className="w-64 pt-13 fixed top-0 right-0 overflow-y-auto">
-      <div className="flex items-center gap-2 text-gray-400 font-medium mb-2">
-        <img src="/Website Assets/Sidebar-Alighment.svg" alt="" />
-        
-        <span>On this page</span>
-      </div>
-    
-      <ul className="">
-        <li className="bg-white p-1 pl-4 rounded mr-18 border-1 border-[#EAEAEA]">
-          <p>No Heading</p>
-        </li>
-      </ul>
-    </div>
-        
+
+   {/*  Fixed Right Sidebar */}
+          <aside className=" w-64 fixed top-0 right-[20px] h-full p-4 pt-[30px] z-0">
+            <div className="flex items-center gap-2 text-gray-400 font-medium mb-2">
+              <img src="/Website Assets/Sidebar-Alighment.svg" alt="" />
+              <span>On this page</span>
+            </div>
+            <ul>
+              <li className="bg-white p-1 pl-4 rounded border border-[#EAEAEA]">
+                <p>No Heading</p>
+              </li>
+            </ul>
+          </aside>   
+
         </>
     );
 }

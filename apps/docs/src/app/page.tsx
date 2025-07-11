@@ -48,10 +48,10 @@ export default function Welcome(){
                     </div>
                 </div>
               </div>
-            <div className="mt-35 text-right">
+            <div className="mt-30 text-right">
             <hr className="border-gray-200"/>
             <div className="flex">
-            <div className="mt-2 p-3 w-[300px]  bg-white absolute right-[270px] rounded-[10px] shadow">
+            <div className="mt-2 p-3 w-[300px] bg-white absolute right-[270px] bottom-[10px] rounded-[10px] shadow">
                 <div className="flex items-center pl-56 text-[#7E7E7E]">
                     <span>Next</span> 
                 <img src="/Website Assets/Arrow Left.svg" alt="" className="w-4 h-4"/>
@@ -64,7 +64,7 @@ export default function Welcome(){
         </div>
           </div>
         
-    <div className="w-64 pt-13">
+    <div className="w-64 pt-13 fixed right-0 top-0">
   <div className="flex items-center gap-2 text-gray-400 font-medium mb-2">
     <img src="/Website Assets/Sidebar-Alighment.svg" alt="" />
     

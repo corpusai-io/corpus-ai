@@ -44,31 +44,30 @@ export default function WebsiteChatbot(){
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-
     return(
         <>
-            <main className="flex-1 flex">
-            <div id="Telegram" className="flex-1 mt-[30px] ml-15 mr-5">
+             <main className="flex-1 flex">
+             <div id="Telegram" className="w-full max-w-auto overflow-x-hidden">
 
            {/* Create a Telegram Page Start Here*/}
-             <p className="flex items-center text-[#7F7F7F] text-[14px]" >Integration
+             <p className="flex items-center text-[#7F7F7F]" >Integration
                <img src="/Website Assets/Arrow Left.svg" alt="" className="w-4 h-4"/>
                Install On</p>
 
-               <h1  className="font-bold  mt-3 text-2xl " >Telegram</h1>
+               <h1  className="font-bold mt-2 text-2xl">Telegram</h1>
 
               <p className="text-[#7F7F7F] mt-1">
-                Integrate your chatbot with Telegram. Ask your chatbot questions from a Telegram channel <br/> and receive responses as Telegram messages.
+                Integrate your chatbot with Telegram. Ask your chatbot questions from a Telegram channel and receive responses as Telegram messages.
               </p>
               
-              <div className="bg-[#fff] p-5 mt-2 w-[640px] rounded-[10px] shadow">
+              <div className="bg-[#fff] p-5 mt-2 max-w-auto rounded-[10px] shadow">
                  <div className="flex item-center gap-3">
                     
                       <img src="/Website Assets/chatbot-docs-pages-icons/Telegram Icons/i.svg" alt=""  className="bg-[#BF56FF] p-1 mt-1 rounded-[24px] w-4 h-4"/>
                       {/* <img src="/Website Assets/chatbot-docs-pages-icons/Telegram Icons/telegram-!-icon.svg" alt=""  className="absolute left-88 top-42.5"/> */}
                    
                     
-                    <p className="text-[14px] text-[#7F7F7F]">This guide assumes you already have a chatbot at Denser.ai. If not, follow one of these <br/> guides to create your chatbot by feeding it documents about your products:</p>
+                    <p className=" text-[#7F7F7F]">This guide assumes you already have a chatbot at Denser.ai. If not, follow one of these  guides to create your chatbot by feeding it documents about your products:</p>
               </div> 
                <div className="text-[14px] pl-8 pt-2">
                   <div className="flex gap-3">
@@ -81,12 +80,19 @@ export default function WebsiteChatbot(){
                   </div>
                 </div>
             </div>
-            <p className="text-[#777777] mt-[20px] mb-[20px]">
-            If your chatbot has not been integrated with Telegram before, you'll need to create a new <br/> Telegram   Bot first.  
-            </p>   
-              <img src="/Website Assets/chatbot-docs-pages-icons/Telegram Icons/Telegram-chat.svg" alt="" className="bg-[#3B2563] p-[15px] mt-2 w-[640px] h-[350px] pb-[40px] pt-[30px]" />
+            <p className="text-[#777777] mt-[15px] mb-[15px] ">
+            If your chatbot has not been integrated with Telegram before, you'll need to create a new Telegram Bot first.  
+            </p> 
+           <div className="bg-[#3B2563] flex items-center justify-center p-[15px] mt-4 w-full h-auto pb-[40px] pt-[30px]">
+  <img 
+    src="/Website Assets/chatbot-docs-pages-icons/Telegram Icons/Telegram-chat.svg" 
+    alt="Telegram Chat Icon" 
+    className="" 
+  />
+</div>
+
               <p className="text-[#777777] mt-[20px] mb-[20px]">
-                Type <b className="text-[#000]">/newbot</b> to trigger the new bot command. Follow the instructions and note down your <br/> API Token. 
+                Type <b className="text-[#000]">/newbot</b> to trigger the new bot command. Follow the instructions and note down your API Token. 
               </p>
         {/* Create a Telegram Page End Here*/}
 

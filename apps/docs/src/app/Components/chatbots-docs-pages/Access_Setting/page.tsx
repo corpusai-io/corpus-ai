@@ -13,7 +13,7 @@ export default function WebsiteChatbot() {
   return (
     <>
       <main className="flex-1 flex">
-        <div className="flex-1 mt-[30px] ml-15 mr-5">
+         <div id="Telegram" className="w-full max-w-auto overflow-x-hidden">
           <h1 className="font-semibold text-[30px] mt-[16px] font-inter">Chatbot Access Control</h1>
 
           <p className="text-[#777777] mt-[7px] font-inter">

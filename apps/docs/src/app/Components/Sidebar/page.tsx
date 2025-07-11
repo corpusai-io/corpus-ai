@@ -100,7 +100,7 @@ export default function Page() {
   );
 
   return (
-    <div className="w-70 h-screen bg-white flex flex-col overflow-hidden">
+    <div className="h-screen bg-white flex flex-col overflow-y-hidden">
       <header className="sticky top-0 z-10 bg-white">
         <div className="flex items-center justify-between p-3">
           <div className="flex items-center space-x-2">
@@ -126,13 +126,15 @@ export default function Page() {
         </form>
       </header>
 
-      <div className={`flex-1 px-3 text-sm list-none text-gray-700 mt-4 ${showInstall ? 'overflow-y-auto' : 'overflow-hidden'}`}>
+      <div className={`flex-1 px-3 text-sm list-none text-gray-700 mt-4  ${showInstall ? 'overflow-y-auto' : 'overflow-hidden'}`}>
         {/* Section: Chatbot */}
         <li>
           <div className="flex items-center gap-2">
             <img src="/Website Assets/Robot.svg" alt="" />
+          < div className="flex justify-between items-center gap-28">
             <span>Chatbot</span>
-            <img src="/Website Assets/Arrow Down.svg" className="inline-block absolute right-6" alt="" />
+            <img src="/Website Assets/Arrow Down.svg" alt="" />
+          </div>
           </div>
           <div className="border-l border-gray-300 text-gray-500 ml-3">
             {navLink("Website Chatbot")}
@@ -140,7 +142,15 @@ export default function Page() {
             {navLink("Chatbot Data Store")}
             {navLink("Chatbot Query Logs")}
             {navLink("Chatbot Customization")}
-            {navLink("Use Documents From Google", <>Use Documents From Google <br/> Drive</>)}
+            <div>
+            {navLink("Use Documents From Google", (
+              <>
+                Use Documents From Google <br /> Drive
+              </>
+            ))}
+            
+            </div>
+           
           </div>
         </li>
 
@@ -163,9 +173,17 @@ export default function Page() {
                 {installItems.map((item) => navLink(item))}
               </ul>
             )}
-            {navLink("Connect", <>Connect <img src="/Website Assets/Arrow Left.svg" className="inline-block absolute right-6" alt="" /></>)}
-            {navLink("RESTful API", <>RESTful API <img src="/Website Assets/Arrow Left.svg" className="inline-block absolute right-6" alt="" /></>)}
-          </div>
+           <div className="flex justify-between cursor-pointer mx rounded-md hover:bg-[#F2F2F2] hover:text-[#1E1E1E]">
+            {navLink("Connect")}
+            <img src="/Website Assets/Arrow Left.svg"  alt="" />
+            </div>
+            <div className="flex justify-between cursor-pointer ">
+            {navLink("RESTful API")}
+            <img src="/Website Assets/Arrow Left.svg" alt="" />
+            </div>
+            </div>
+
+
         </li>
 
         {/* Section: Access Settings */}
@@ -175,7 +193,7 @@ export default function Page() {
             className={`py-1 rounded-md flex items-center gap-2 hover:bg-[#F2F2F2] hover:text-[#1E1E1E] ${activeItem === "Access Settings" ? "bg-[#F4E2FF] text-[#BF56FF]" : "text-gray-700"}`}
           >
             <img src="/Website Assets/Sheild Plus.svg" alt="" />
-            <Link href="/Access Setting">Access Settings</Link>
+            <Link href="/Components/chatbots-docs-pages/Access_Setting">Access Settings</Link>
           </div>
         </li>
 
@@ -223,6 +241,6 @@ export default function Page() {
           <img src="/Website Assets/Sidebar-Flip.svg" alt="" />
         </div>
       </div>
-    </div>
+    </div> 
   );
 }
