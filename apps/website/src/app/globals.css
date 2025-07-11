@@ -58,7 +58,7 @@ html, body {
   overflow-x: hidden;
 }
 .blob {
-  animation: floatClockwise 20s ease-in-out infinite;
+  animation: floatClockwise 12s ease-in-out infinite;
   transform-origin: center;
   border-radius: 9999px;
 }
@@ -81,7 +81,7 @@ html, body {
   }
 }
 .blob2 {
-  animation: floatClockwise2 25s ease-in-out infinite;
+  animation: floatClockwise2 12s ease-in-out infinite;
   transform-origin: center;
   border-radius: 9999px;
 }
@@ -104,7 +104,7 @@ html, body {
   }
 }
 .blob5 {
-  animation: floatClockwise5 25s ease-in-out infinite;
+  animation: floatClockwise5 10s ease-in-out infinite;
   transform-origin: center;
   border-radius: 9999px;
 }

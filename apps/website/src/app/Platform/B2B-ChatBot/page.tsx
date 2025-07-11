@@ -153,7 +153,7 @@ export default function B2BChatBotPage() {
       </section>
 
       {/* Customize Section */}
-      <section data-aos="fade-left" data-aos-duration="600"  className="w-full bg-[#F9F0FF] flex flex-col lg:flex-row items-center justify-center pt-20 pb-10 max-w-7xl mx-auto">
+      <section data-aos="fade-left" data-aos-duration="600"  className="w-full bg-[#F9F0FF] flex flex-col lg:flex-row items-center justify-center pt-20 pb-10  mx-auto">
         {/* Left: Text */}
         <div className="flex-1 flex flex-col items-start justify-center max-w-lg mb-10 lg:mb-0">
           <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-medium inline-block">Customize</span>
@@ -235,7 +235,8 @@ export default function B2BChatBotPage() {
       </section>
 
       {/* Deploy & Scale Section */}
-      <section className="w-full flex flex-col lg:flex-row bg-[#F9F0FF] items-center justify-center pt-20 pb-10 max-w-7xl mx-auto">
+      <section className="w-full  bg-[#F9F0FF]  pt-20 pb-10 ">
+        <div className='max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-center'>
         {/* Left: Integrations Card */}
         <img className='w-1/2 shadow-md' src="/assets/integrate-chatbot.webp" alt="" />
         {/* Right: Text */}
@@ -243,6 +244,7 @@ export default function B2BChatBotPage() {
           <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-medium inline-block">Launch</span>
           <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">Deploy & Scale</h3>
           <p className="text-zinc-500 text-base sm:text-lg">Launch your B2B chatbot across multiple channels - website, messaging platforms, and more. Monitor performance, gather insights, and scale your automated B2B communications.</p>
+        </div>
         </div>
       </section>
 

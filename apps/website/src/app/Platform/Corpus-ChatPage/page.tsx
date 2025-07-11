@@ -351,7 +351,7 @@ const CorpusChatPage = () => {
         <h1 className="text-xl sm:text-2xl md:text-5xl font-medium text-[#1E1E1E] leading-tight">
           Ready to transform your content into<br/><span className="bg-gradient-to-r from-[#DAC0FF] to-[#BF56FF] bg-clip-text text-transparent">interactive conversations?</span>
         </h1>
-        <p className="mt-4 text-[#8D8D8D] mx-auto text-base sm:text-lg">
+        <p className="mt-4 text-[#8D8D8D] font-medium mx-auto text-base sm:text-lg">
           Start for free and upgrade as your needs grow.
         </p>
 

@@ -1,16 +1,16 @@
 "use client";
 import React from 'react';
 
-type B2BFeatureCardProps = {
+type EducationFeatureCardProps = {
   icon: React.ReactNode;
   title: string;
   description: string;
 };
 
-const B2BFeatureCard: React.FC<B2BFeatureCardProps> = ({ icon, title, description, }) => (
+const EducationFeatureCard: React.FC<EducationFeatureCardProps> = ({ icon, title, description, }) => (
  <div
   className="
-    relative bg-white group rounded-2xl border-2 border-zinc-100 p-6 flex flex-col
+    relative bg-white group rounded-2xl border-2 border-[#EEEEEE] p-6 flex flex-col
     min-w-[220px] min-h-[160px] transition shadow-sm hover:shadow-md
     hover:ring-purple-200 hover:border-[#BF56FF]
     before:content-[''] before:absolute before:inset-0 before:rounded-xl
@@ -32,4 +32,4 @@ const B2BFeatureCard: React.FC<B2BFeatureCardProps> = ({ icon, title, descriptio
   </div>
 );
 
-export default B2BFeatureCard;
+export default EducationFeatureCard;

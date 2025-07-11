@@ -1,5 +1,5 @@
 import B2BFeatureCard from '@/app/components/B2BFeatureCard';
-
+import CustomerCareFAQ from '@/app/components/CustomerCareFAQ';
 const features = [
     {
       icon: (
@@ -157,10 +157,28 @@ export default function ChatWithPdfPage(){
             <p className="text-zinc-500 text-base sm:text-lg">Start conversations with multiple PDFs—ask questions naturally, receive instant answers, and understand complex information. Easily manage and organize all your documents—create your own document library.</p>
           </div>
         </section>
-  
+  <section>
+        <CustomerCareFAQ/>
+        </section>
+       
+        <section className="text-center px-4 pt-[56px] pb-16 bg-white">
+        <h1 className="text-xl sm:text-2xl md:text-5xl font-medium text-[#1E1E1E] leading-tight">
+         Trustworthy Chat with<span className="bg-gradient-to-r from-[#DAC0FF] to-[#BF56FF] bg-clip-text text-transparent"> Your Data</span>
+        </h1>
+        <p className="mt-4 text-[#8D8D8D] mx-auto text-base sm:text-lg">
+          Verifiable answers from PDFs, websites, and beyond with source highlights.
+        </p>
+
         
-   
-        
+        <div className="mt-[24px] flex flex-col sm:flex-row justify-center items-center gap-4">
+          <a
+            href="#"
+            className="hover:bg-gradient-to-r from-[#FC5990] to-[#AC5DE6]  text-black  border-[#E0E0E0] shadow font-medium px-6 py-2 border rounded-[15px] w-full sm:w-auto "
+          >
+            Get Started for Free
+          </a>
+        </div>
+      </section>
       </div>
     )
 }

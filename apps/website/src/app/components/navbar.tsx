@@ -195,10 +195,11 @@ export default function Navbar(){
 
              <div className="flex items-start space-x-3 py-4">
       <span><img src="education.svg" alt="Chat" className="w-[24px] h-[24px] " /></span>
-      <div>
+     <Link href='/Solution/Education'><div>
         <p className="font-medium text-[#1E1E1E]">Education</p>
         <p className="text-[#747474]  ">AI solutions for Educational Institutions</p>
       </div>
+      </Link>
       </div>
 
        <div className="flex items-start space-x-3 py-4">

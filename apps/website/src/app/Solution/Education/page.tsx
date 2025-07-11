@@ -1,31 +1,29 @@
-import B2BFeatureCard from '@/app/components/B2BFeatureCard';
+import EducationFeatureCard from '@/app/components/EducationFeatureCard';
 import B2BReasonCard from '@/app/components/B2BReasonCard';
-import addChatBotImage from '../assets/addChatBotImage.svg';
-import integrateChatbot from '../assets/integrate-chatbot.webp';
 import CustomerCareFAQ from '@/app/components/CustomerCareFAQ';
 const features = [
   {
     icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-zap size-6 text-primary" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path></svg>
     ),
-    title: 'Customer Satisfaction',
-    description: 'CorpusAI chatbot is designed to deliver faster, more responsive customer services. Less wait time, more consistent answers across multiple channels. Enhance the seamless customer experience with our AI chatbot, delivering timely and accurate support that boosts customer satisfaction and loyalty.',
+    title: 'Streamline Admin Tasks',
+    description: 'From new student registration to course scheduling, educational chatbots can automate and simplify a wide range of administrative processes.',
     highlight: false,
   },
   {
     icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-users size-6 text-primary" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg>
+       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-headphones size-6 text-primary" aria-hidden="true"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"></path></svg>
     ),
-    title: 'Empower Live Agents',
-    description: 'Free up your agents to deliver exceptional customer service with AI chatbot. By handling routine inquiries, CorpusAI chatbot allows your agents to concentrate on more complex and critical issues, and ensures a more personalized experience for customers when they need expert assistance.',
+    title: 'Enhance Student Support',
+    description: 'Education chatbot acts as a reliable platform for students, assisting with document submissions, requirement requests, and other administrative tasks.',
     highlight: true,
   },
   {
     icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-globe size-6 text-primary" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
+       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-graduation-cap size-6 text-primary" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"></path><path d="M22 10v6"></path><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"></path></svg>
     ),
-    title: 'Instant Multilingual Support',
-    description: 'CorpusAI chatbot expands your reach by offering instant multilingual support, enabling customers to communicate in their preferred language. This eliminates the need for expensive translation tools, maintains clear and effective communication with customer worldwide through our AI-powered chatbot.',
+    title: 'Improve Employee Training',
+    description: 'With engaging, interactive training materials, education AI chatbots simplify onboarding and training for new employees. They boost knowledge retention and make training more effective and enjoyable.',
     highlight: false,
   },
 ];
@@ -35,63 +33,67 @@ const reasons = [
     icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-brain h-6 w-6 text-purple-500" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"></path><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"></path><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"></path><path d="M17.599 6.5a3 3 0 0 0 .399-1.375"></path><path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"></path><path d="M3.477 10.896a4 4 0 0 1 .585-.396"></path><path d="M19.938 10.5a4 4 0 0 1 .585.396"></path><path d="M6 18a4 4 0 0 1-1.967-.516"></path><path d="M19.967 17.484A4 4 0 0 1 18 18"></path></svg>
     ),
-    title: 'Contextual Memory',
-    description: 'The chatbot remembers past interactions, avoiding repetition and ensuring a smoother, more personalized experience.'
+    title: 'AI Educational Support',
+    description: 'Advanced RAG technology and GPT-4 to help educational institutions improve teaching and services with accurate, interactive AI assistance.'
   },
   {
     icon: (
-      <svg width="24" height="24" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/><path d="M12 6v6l4 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-settings h-6 w-6 text-[#BF56FF]" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
     ),
-    title: '24/7 Availability',
-    description: 'Our AI-powered chatbot is available 24/7, ensuring your customers get reliable support anytime—day or night.'
+    title: 'Full Control Over Data',
+    description: 'Institutions have complete control over their training data. Corpus AI chat learns from provided data while ensuring privacy and security.'
   },
   {
     icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-zap size-6 text-primary" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path></svg>
     ),
-    title: 'Instant Customer Support',
-    description: 'Get real-time responses without hold times or digging through FAQs—our chatbot ensures fast, efficient support.'
+    title: 'Smart, Natural Interaction',
+    description: "CorpusAI's bots understand natural language and provide context-aware responses, making interactions smooth and intuitive."
   },
   {
     icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chart-line h-6 w-6 text-purple-400" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="m19 9-5 5-4-4-3 3"></path></svg>
     ),
-    title: 'Enhance Efficiency',
-    description: 'The chatbot quickly understands customers and resolves common issues, reducing back-and-forth and speeding up support.'
+    title: 'Customizable AI',
+    description: "CorpusAI's chatbot for education can be tailored to match your school's name, logo, and branding for a unique and professional look."
   },
   {
     icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-settings h-6 w-6 text-purple-400" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
     ),
-    title: 'Gather Customer Feedback',
-    description: 'Corpus AI chatbot collects feedback after each chat, helping B2B businesses boost efficiency and improve customer experience.'
+    title: 'Improved Accessibility',
+    description: 'Students, parents, and faculty can quickly find answers about enrollment, financial aid, course offerings, schedules, and more'
   },
   {
     icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-rocket h-6 w-6 text-purple-400" aria-hidden="true"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path></svg>
     ),
-    title: 'Scalable Support',
-    description: 'Whether helping one or thousands, our chatbot scales easily to deliver prompt, consistent support at any volume.'
+    title: 'Cut Costs',
+    description: 'By taking on repetitive administrative and support tasks, chatbots help institutions reduce labor and resource costs.'
   },
 ];
 
-export default function CustomerCarePage(){
+export default function Education(){
     
     return (
     
-        <div className="min-h-screen w-full flex flex-col items-center justify-center bg-transparent px-2 sm:px-4 py-8">
+        <div className="min-h-screen w-full flex flex-col items-center justify-center bg-transparent px-2 sm:px-4 py-20">
           <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-5xl gap-10 md:gap-16">
             {/* Left Section */}
             <div className="flex-1 flex flex-col items-start justify-center text-left max-w-lg">
-              <span className="mb-4 px-4 py-1 rounded-full bg-purple-100 text-purple-500 border text-sm font-medium inline-block">Customer Support</span>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-4 text-zinc-900">
-                AI Chatbot for<br />
-                Customer <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600">Service</span>
+              <span className="mb-4 px-4 py-1 rounded-full bg-purple-100 text-purple-500 border text-sm font-medium inline-block">Education Integration</span>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold leading-tight mb-4 text-zinc-900">
+                All-In-One 
+<br />
+        Conversational
+ <br />AI Chatbot for <br/>
+ <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#BF56FF] via-[#D0A8E9] to-[#BF56FF]">Education
+</span>
               </h1>
-              <p className="text-zinc-500 mb-8 text-base sm:text-lg">
-                Welcome to our AI-powered chatbot! It streamlines inquiries, offers personalized support, and uses advanced NLP for a seamless, human-like experience.
+              <p className="text-[#7F7A7A] mb-8 text-base sm:text-lg">
+                Corpus Chat uses AI to automate student support, admissions, and admin tasks across K–12 and universities, processing thousands of pages at scale.
               </p>
-              <button className="bg-purple-500 text-white rounded-full px-6 py-3 text-base font-semibold shadow-md hover:bg-purple-600 transition">Get Started</button>
+              <button className="bg-[#BF56FF] text-white rounded-full px-6 py-3 text-base font-medium shadow-md  ">Get Started</button>
             </div>
             {/* Right Section: Chat Card */}
             <div className="flex-1 p-4 md:p-12 rounded-2xl border border-purple-200 flex items-center justify-center w-full">
@@ -131,10 +133,10 @@ export default function CustomerCarePage(){
           {/* Features Section */}
           <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 mb-10">
             <div className="text-center mb-2 text-purple-400 font-semibold">Features</div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 text-center mb-10">Elevate Your Customer Service<br className='hidden sm:block'/> with AI Chatbot</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 text-center mb-10">Why Should Educational Institutions Adopt<br className='hidden sm:block'/>  Chatbots?</h2>
             <div className="w-full flex flex-col md:flex-row items-stretch justify-center gap-6 max-w-5xl mx-auto">
               {features.map((f, i) => (
-                <B2BFeatureCard key={i} icon={f.icon} title={f.title} description={f.description}  />
+                <EducationFeatureCard key={i} icon={f.icon} title={f.title} description={f.description}  />
               ))}
             </div>
           </section>
