@@ -19,6 +19,12 @@ functions:
 
 plugins:
   - serverless-offline
+  # Add this section to configure ports
+custom:
+  serverless-offline:
+    httpPort: 8002
+    lambdaPort: 3004
+    host: 0.0.0.0
 custom:
   serverless-offline:
     httpPort: 8002

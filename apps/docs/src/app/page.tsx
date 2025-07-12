@@ -12,14 +12,17 @@ export default function Welcome(){
               <div className="grid grid-cols-2 gap-4 mt-12  ">
                 <div className="bg-white pl-3 pt-3 rounded-[10px] border-1 border-gray-200 shadow">
                     <div className="rounded">
+                      <div className=" w-8 text-gray-500 bg-gray-100 border-1 border-gray-300 p-1.5 rounded-[5px]">
                         <img src="/Website Assets/Robot.svg" alt="" />
+                      </div>
+                       
                         <h3 className="pt-3">Chatbot</h3>
                         <p className="text-gray-500">Learn how to create a chatbot with CorpusAI</p>
                     </div>
                 </div>
                <div className="bg-white pl-3 pt-3 rounded-[10px] border-1 border-gray-200 shadow">
                     <div className="mb-4 rounded">
-                        <div className="p-2 rounded w-8 text-gray-500 bg-gray-100 border-1 border-gray-300 p-1.5 rounded-[5px]">
+                        <div className=" w-8 text-gray-500 bg-gray-100 border-1 border-gray-300 p-1.5 rounded-[5px]">
                         <img src="/Website Assets/Setting.svg" alt="" />
                        </div> 
                         <h3 className="pt-3">Integration</h3>
@@ -28,7 +31,7 @@ export default function Welcome(){
                 </div>
                 <div className="bg-white pl-3 pt-3 rounded-[10px] border-1 border-gray-200 shadow">
                     <div className="mb-4 border-gray-400 rounded">
-                     <div className=" p-2 rounded w-8 text-gray-500 bg-gray-100 border-1 border-gray-300 p-1.5 rounded-[5px]">
+                     <div className=" w-8 text-gray-500 bg-gray-100 border-1 border-gray-300 p-1.5 rounded-[5px]">
                      <img src="/Website Assets/Dollar.svg" alt="" />
                      </div>                
                         <h3 className="pt-3">Billing</h3>
@@ -37,16 +40,18 @@ export default function Welcome(){
                 </div>
                 <div className="bg-white pl-3 pt-3 rounded-[10px] border-1 border-gray-200 shadow">
                     <div className="mb-4 border-gray-500 rounded">
-                        <img src="/Website Assets/Question Mark.svg" alt="" />
+                       <div className=" w-8 text-gray-500 bg-gray-100 border-1 border-gray-300 p-1.5 rounded-[5px]">
+                          <img src="/Website Assets/Question Mark.svg" alt="" />
+                       </div>
                         <h3 className="pt-3">FAQ</h3>
                         <p className="text-gray-500">Find answers to frequently asked questions</p>
                     </div>
                 </div>
               </div>
-            <div className="mt-35 text-right">
+            <div className="mt-30 text-right">
             <hr className="border-gray-200"/>
             <div className="flex">
-            <div className="mt-2 p-3 w-[300px]  bg-white absolute right-[270px] rounded-[10px] shadow">
+            <div className="mt-2 p-3 w-[300px] bg-white absolute right-[270px] bottom-[10px] rounded-[10px] shadow">
                 <div className="flex items-center pl-56 text-[#7E7E7E]">
                     <span>Next</span> 
                 <img src="/Website Assets/Arrow Left.svg" alt="" className="w-4 h-4"/>
@@ -59,7 +64,7 @@ export default function Welcome(){
         </div>
           </div>
         
-    <div className="w-64 pt-13">
+    <div className="w-64 pt-13 fixed right-0 top-0">
   <div className="flex items-center gap-2 text-gray-400 font-medium mb-2">
     <img src="/Website Assets/Sidebar-Alighment.svg" alt="" />
     
