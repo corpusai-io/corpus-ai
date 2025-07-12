@@ -1,0 +1,28 @@
+{
+  "services": [
+    {
+      "name": "website",
+      "root": ".",
+      "build": {
+        "dockerfilePath": "docker/docker.website",
+        "context": "."
+      }
+    },
+    {
+      "name": "dashboard",
+      "root": ".",
+      "build": {
+        "dockerfilePath": "docker/docker.dashboard",
+        "context": "."
+      }
+    },
+    {
+      "name": "docs",
+      "root": ".",
+      "build": {
+        "dockerfilePath": "docker/docker.docs",
+        "context": "."
+      }
+    }
+  ]
+}
