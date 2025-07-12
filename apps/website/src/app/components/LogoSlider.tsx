@@ -31,7 +31,7 @@ export default function LogoSlider() {
             key={i}
             src={src}
             alt={`logo-${i}`}
-            className="h-6 w-[1216px] grayscale opacity-20 hover:opacity-100 transition-opacity"
+            className="h-6 w-full grayscale opacity-20 hover:opacity-100 transition-opacity"
           />
         ))}
       </div>

@@ -2,20 +2,20 @@ import Image from 'next/image';
 import LogoSlider from '@/app/components/LogoSlider';
 import FeaturesSection from '@/app/components/FeaturesSection';
 import TestimonialsSlider from '@/app/components/testimonalsSlider';
-import TestimonialsSliders from '@/app/components/testimonalsSlider 2';
+import TestimonialsSliders from '@/app/components/testimonalsSliders';
 import FAQSection from '@/app/components/FAQsection'
-import PricingSection from '@/app/components/Pricing';
+import PricingPage from './components/Pricing';
 import Navbar from './components/navbar';
-
+import Link from 'next/link';
 export default function Home() {
    
   return (
      
     <main className="min-h-screen bg-transparent overflow-x-hidden">
-
-       <Navbar/>
-      <div className="flex justify-center pt-10">
-        <div className="inline-flex items-center text-sm font-medium rounded-full px-3 py-1 gap-2 shadow-sm bg-white">
+       
+      
+      <div className="flex justify-center pt-[100px]">
+        <div className="inline-flex items-center text-sm font-medium rounded-full px-1 py-1 gap-2 shadow-sm bg-white">
           <span className="bg-[#C458FF] text-white text-xs font-semibold px-2 py-0.5 rounded-full">
             NEW
           </span>
@@ -80,12 +80,19 @@ export default function Home() {
   </span>
 </div>
 
-    <section> <LogoSlider /> </section>
+    <section className='mx-auto max-w-6xl'> <LogoSlider /> </section>
 <section><FeaturesSection /></section>
+<section className='w-full pt-15'>
+  <section className="text-center py-[24px] px-4 max-w-7xl mx-auto">
+        <h4 className="text-sm text-[#BF56FF] font-semibold mb-2 uppercase">Features</h4>
+        <h2 className="text-3xl sm:text-4xl font-bold mb-4">Features Built for You</h2>
+        <p className="text-[#8D8D8D] max-w-2xl mx-auto">Elevate your customer experience with Corpus AI</p>
 
-<section className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-10 px-4 md:px-10 py-10">
+        
+      </section>
+<section className="grid mx-auto max-w-6xl grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-[21px] px-4 md:px-10">
   <div className="rounded-lg border border-[#EAEAEA] bg-white p-5">
-    <div className="flex  justify-between items-center gap-2">
+    <div className="flex justify-between items-center gap-[19px]">
       <div>
         <img src="/Achievements/2.png" alt="image 01" className="mb-2" />
         <img src="/Achievements/1.png" alt="image 02" />
@@ -94,7 +101,7 @@ export default function Home() {
         <img src="/Achievements/3.png" alt="image 03" />
       </div>
     </div>
-    <div className="mt-9">
+    <div className="mt-14">
       <h3 className="text-lg font-medium mb-1">PDF Highlighting</h3>
       <p className="text-[#8D8D8D]">Highlight sections in your PDF to clarify the chatbot&rsquo;s responses</p>
     </div>
@@ -110,13 +117,15 @@ export default function Home() {
     </div>
   </div>
 </section>
+</section>
 
-
-<section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 bg-white px-4 sm:px-6 lg:px-10 py-10">
+<section className="grid mx-auto max-w-6xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[18px] bg-white px-4 sm:px-6 lg:px-10 py-[24px]">
   <div className="border rounded-lg border-[#EAEAEA] p-4">
     <img src="/Achievements/4.svg" alt="" />
-    <h3 className="pt-3 text-lg font-semibold">Customizable Chatbot</h3>
+    <div className='mt-7'>
+    <h3 className="pt-3  text-lg font-semibold">Customizable Chatbot</h3>
     <p className="pt-3 text-[#8D8D8D]">Customize your chatbot to your brand and business</p>
+    </div>
   </div>
 
   <div className="border rounded-lg border-[#EAEAEA] p-4">
@@ -128,21 +137,23 @@ export default function Home() {
   <div className="border rounded-lg border-[#EAEAEA] p-4 relative">
     <img src="/Achievements/7.svg" alt="" className="float-right pb-3" />
     <img src="/Achievements/8.svg" alt="" />
+    <div className='mt-12'>
     <h3 className="pt-5 text-lg font-semibold">24/7 Chat Support</h3>
     <p className="pt-3 text-[#8D8D8D]">With our AI chat support, your customers can get help 24/7</p>
+    </div>
   </div>
 </section>
 
-<section className='bg-[#FAF6FF]' >
-  <div className="text-center py-5 px-4 max-w-7xl mx-auto">
+<section className='bg-[#FAF6FF] mx-auto max-w-6xl' >
+  <div className="text-center pt-5 px-4 max-w-7xl mx-auto">
         <h4 className="text-sm text-[#BF56FF] font-semibold mb-5 uppercase">Reviews</h4>
-        <h2 className="text-3xl sm:text-4xl font-bold mb-8">What Our Clients Says</h2>
-        <p className="mb-12 text-[#8D8D8D]  mx-auto">Discover how Coprus AI is transforming businesses through intelligent automation and exceptional customer service</p>
+        <h2 className="text-3xl sm:text-4xl font-bold mb-[19px]">What Our Clients Says</h2>
+        <p className="mb-[64px] text-[#8D8D8D]  mx-auto">Discover how Coprus AI is transforming businesses through intelligent automation and exceptional customer service</p>
         </div>
   <TestimonialsSlider/>
   </section>
-<section className='bg-[#FAF6FF]'><TestimonialsSlider/></section>
-<section className="bg-white w-full">
+<section className='bg-[#FAF6FF] mx-auto max-w-6xl'><TestimonialsSliders/></section>
+<section className="bg-white">
   <div className="relative w-full">
     <img
       src="/blogimages/Group 2366.png"
@@ -150,8 +161,8 @@ export default function Home() {
       className='w-full'
     />
 
-    <div className="absolute inset-0 flex mx-auto items-center justify-center ">
-      <section className="text-center w-full px-4 pt-4 sm:pt-6 md:pt-8 ">
+    <div className="absolute  inset-0 flex mx-auto items-center justify-center ">
+      <section className="text-center  px-4 pt-4 sm:pt-6 md:pt-8 ">
         <h1 className="text-sm mt-8 md:text-2xl lg:text-3xl font-semibold text-[#1E1E1E] leading-snug sm:leading-tight">
           With Corpus AI, Your business is <br />
           in the palm of
@@ -182,7 +193,7 @@ export default function Home() {
         <h2 className="text-3xl sm:text-4xl font-bold mb-8">Simple Pricing</h2>
         <p className="mb-12 text-[#8D8D8D] max-w-2xl mx-auto">Use Corpus Chat for free. Upgrade to enable custom domains and more advanced features.</p>
         </div>
-  <PricingSection/>
+  <PricingPage/>
   </section>
 <section className="bg-white">
   <div className="max-w-6xl mx-auto px-4 py-12">
@@ -281,7 +292,7 @@ export default function Home() {
 </section>
 
  <section className="text-center px-4 pt-8 pb-16 bg-white">
-        <h1 className="text-xl sm:text-2xl md:text-6xl font-semibold text-gray-900 leading-tight">
+        <h1 className="text-xl sm:text-2xl md:text-6xl font-semibold text-[#1E1E1E] ">
           Create Your<br/>Corpus <span className="bg-gradient-to-r from-[#DAC0FF] to-[#BF56FF] bg-clip-text text-transparent">Chatbot</span>
         </h1>
         <p className="mt-4 text-[#7F7A7A] mx-auto text-base sm:text-lg">
@@ -289,7 +300,7 @@ export default function Home() {
         </p>
 
         
-        <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
+        <div className="mt-[24px] flex flex-col sm:flex-row justify-center items-center gap-4">
           <a
             href="#"
             className="hover:bg-gradient-to-r from-[#FC5990] to-[#AC5DE6]  text-black border-[#E0E0E0] shadow font-medium px-6 py-2 rounded-lg w-full sm:w-auto "
@@ -298,7 +309,7 @@ export default function Home() {
           </a>
         </div>
       </section>
-     
+   
     </main>
     
   );

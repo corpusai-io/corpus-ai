@@ -9,7 +9,7 @@ export default function FeaturesSection() {
         <h2 className="text-3xl sm:text-4xl font-bold mb-8">Easy to Deploy Your Chatbot</h2>
         <p className="mb-12 text-[#8D8D8D] max-w-2xl mx-auto">Create a powerful AI chatbot with Corpus AI in minutes – no technical expertise required.</p>
 
-         <div className="grid grid-cols-1 sm:grid-cols-3 gap-20 sm:gap-10 mb-12 mx-10">
+         <div className="grid grid-cols-1 sm:grid-cols-3 gap-20 sm:gap-10 mb-[109px] mx-10">
       {[
         {
           title: 'Import your data',
@@ -40,21 +40,12 @@ export default function FeaturesSection() {
       ))}
     </div>
 
- <div className="flex flex-wrap justify-center gap-20 text-sm text-gray-500">
+ <div className="flex flex-wrap justify-center gap-10 text-sm text-gray-500">
           <img src="/Achievements/Acievement(1).svg" alt="" className=""/>
           <img src="/Achievements/Acievement(2).svg" alt="" className=""/>
           <img src="/Achievements/Acievement(3).svg" alt="" className=""/>
           <img src="/Achievements/Acievement(4).svg" alt="" className=""/>
         </div>
-      </section>
-
-
-      <section className="text-center py-16 px-4 max-w-7xl mx-auto">
-        <h4 className="text-sm text-[#BF56FF] font-semibold mb-5 uppercase">Features</h4>
-        <h2 className="text-3xl sm:text-4xl font-bold mb-8">Features Built for You</h2>
-        <p className="mb-12 text-[#8D8D8D] max-w-2xl mx-auto">Elevate your customer experience with Corpus AI</p>
-
-        
       </section>
     </div>
 

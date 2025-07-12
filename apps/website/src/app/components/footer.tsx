@@ -1,6 +1,7 @@
 export default function Footer() {
   return (
-    <footer className="text-gray-600 body-font bg-gradient-to-b from-white to-white">
+    <footer className="text-gray-600 body-font ">
+      <div className="w-full h-[2px] bg-gradient-to-r from-[#C297FF]/0 via-[#C297FF]/100 to-[#C297FF]/0" />
       <div className="container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
         
         {/* Logo + Social Icons */}

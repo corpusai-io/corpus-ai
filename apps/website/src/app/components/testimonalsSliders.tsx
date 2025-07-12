@@ -7,20 +7,19 @@ export default function TestimonialsSliders() {
     <div className="relative overflow-hidden py-3 bg-gradient-to-r from-gray-50 to-transparent">
       
       <div className="pointer-events-none absolute left-0 top-0 h-full w-24 bg-gradient-to-r from-gray-50 to-transparent z-10" />
-     
       <div className="pointer-events-none absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-gray-50 to-transparent z-10" />
 
       <div className="w-full">
-        <div className="flex animate-slide gap-6">
+        <div className="flex animate-slide-right gap-[24px]">
           {Array.from({ length: 2 }).map((_, repeatIndex) => (
-            <div key={repeatIndex} className="flex gap-6">
+            <div key={repeatIndex} className="flex gap-[24px]">
               {testimonials.map((testimonial, i) => (
                 <div
                   key={i}
                   className="bg-white border border-gray-200 shadow-lg rounded-lg p-6 w-80 flex-shrink-0"
                 >
                   <Image
-                    src={testimonial.img}
+                    src="/profile.png"
                     alt="User"
                     width={56}
                     height={56}
@@ -42,18 +41,17 @@ export default function TestimonialsSliders() {
         </div>
       </div>
 
-      
       <style jsx global>{`
-        @keyframes slide {
+        @keyframes slide-right {
           0% {
-            transform: translateX(0);
-          }
-          100% {
             transform: translateX(-50%);
           }
+          100% {
+            transform: translateX(0);
+          }
         }
-        .animate-slide {
-          animation: slide 30s linear infinite;
+        .animate-slide-right {
+          animation: slide-right 30s linear infinite;
         }
       `}</style>
     </div>
@@ -62,23 +60,23 @@ export default function TestimonialsSliders() {
 
 const testimonials = [
   {
-    img: "/user1.png",
+    img: "/blogimages/image 1.png",
     text: "Corpus AI handles support instantly, boosting lead generation with zero setup.",
     author: "Director of Clinical Operations, Kivo Health",
     tag: "Chronic Care Management",
   },
   {
-    img: "/user2.png",
+    img: "/blogimages/image 1.png",
     text: "Fast, accurate, and great for lead generation—Corpus AI is a game-changer.",
     author: "VP of Patient Access, NovaCare Solutions",
   },
   {
-    img: "/user3.png",
+    img: "/blogimages/image 1.png",
     text: "No setup, just instant, effective support and lead generation with Corpus AI.",
     author: "Director of Payer Strategy, Synergy Health Group",
   },
   {
-    img: "/user4.png",
+    img: "/blogimages/image 1.png",
     text: "Health Harbor’s seamless eligibility verifications enable us to focus on patient care.",
     author: "Co-founder & CEO, Flair Health",
     tag: "Respiratory Therapy",
