@@ -40,14 +40,38 @@ const createProxy = (target, pathRewrite = {}) => createProxyMiddleware({
   pathRewrite,
   onError: (err, req, res) => {
     console.error(`❌ Proxy error for ${req.url}:`, err.message);
-    res.status(502).json({ 
-      error: 'Service unavailable', 
-      service: target,
-      path: req.url 
-    });
+    // Only send JSON response for HTTP requests, not WebSocket upgrades
+    if (res && res.status && !res.headersSent) {
+      res.status(502).json({ 
+        error: 'Service unavailable', 
+        service: target,
+        path: req.url 
+      });
+    }
   },
   onProxyReq: (proxyReq, req, res) => {
-    console.log(`🔄 Proxying: ${req.method} ${req.url} → ${target}${req.url}`);
+    if (req.url && !req.url.includes('webpack-hmr')) {
+      console.log(`🔄 Proxying: ${req.method} ${req.url} → ${target}${req.url}`);
+    }
+  },
+  onProxyReqWs: (proxyReq, req, socket, options, head) => {
+    console.log(`🔌 WebSocket: ${req.url} → ${target}${req.url}`);
+  },
+  onError: (err, req, res) => {
+    // Suppress common WebSocket connection errors in development
+    if (err.code === 'ECONNREFUSED' && req.url && req.url.includes('webpack-hmr')) {
+      console.log(`⚠️  WebSocket connection failed for ${req.url} (this is normal if service isn't ready)`);
+      return;
+    }
+    console.error(`❌ Proxy error for ${req.url}:`, err.message);
+    // Only send JSON response for HTTP requests, not WebSocket upgrades
+    if (res && res.status && !res.headersSent) {
+      res.status(502).json({ 
+        error: 'Service unavailable', 
+        service: target,
+        path: req.url 
+      });
+    }
   }
 });
 
@@ -70,6 +94,10 @@ app.use('/dashboard', createProxy(currentServices.dashboard, {
 app.use('/docs', createProxy(currentServices.docs, {
   '^/docs': '' // Remove /docs prefix when forwarding to docs
 }));
+
+// Handle docs-specific assets (must come before catch-all)
+app.use('/_next/static/chunks/apps_docs_', createProxy(currentServices.docs));
+app.use('/Website%20Assets', createProxy(currentServices.docs));
 
 // Health check endpoint
 app.get('/health', (req, res) => {
