@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import './../../../globals.css';
 
 export const metadata: Metadata = {
-  title: 'CORPUS-AI | ACCESS SETTING',
+  title: 'CORPUS-AI | UPDATE PLAN',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

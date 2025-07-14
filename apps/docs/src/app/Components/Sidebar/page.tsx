@@ -24,12 +24,12 @@ export default function Page() {
     "Your Website": "/Install-ON",
     "Zapier": "/Install-ON",
     "Zapier with Lead Generation": "/Install-ON",
-    "Connect": "/Connect",
+    "Connect": "/Comp",
     "RESTful API": "/Rest",
     "Access Settings": "/Components/chatbots-docs-pages/Access_Setting",
-    "Upgrade Plan": "/Up",
+    "Upgrade Plan": "/Components/chatbots-docs-pages/Update-Plan",
     "AWS Marketplace": "/AWS",
-    "FAQ": "/FAQ",
+    "FAQ": "/Components/chatbots-docs-pages/FAQ",
   };
 
   const installItems = [
@@ -81,12 +81,15 @@ export default function Page() {
   const handleClick = (itemName) => {
     setActiveItem(itemName);
     setShowInstall(installItems.includes(itemName));
+    
   };
 
+
+  
   const navLink = (name, display = null) => (
     <Link href={itemRoutes[name] || "/"} onClick={() => handleClick(name)}>
       <div
-        className={`block pl-2 ml-3 py-1 rounded-md cursor-pointer transition ${
+        className={`block py-[3px] pl-2 rounded-md cursor-pointer transition hover:bg-[#F2F2F2] hover:text-[#1E1E1E] ${
           activeItem === name
             ? "bg-[#F4E2FF] text-[#BF56FF]"
             : activeItem
@@ -100,6 +103,7 @@ export default function Page() {
   );
 
   return (
+    
     <div className="h-screen bg-white flex flex-col overflow-y-hidden">
       <header className="sticky top-0 z-10 bg-white">
         <div className="flex items-center justify-between p-3">
@@ -126,30 +130,25 @@ export default function Page() {
         </form>
       </header>
 
-      <div className={`flex-1 px-3 text-sm list-none text-gray-700 mt-4  ${showInstall ? 'overflow-y-auto' : 'overflow-hidden'}`}>
+      <div className={`flex-1 px-3 text-sm list-none text-gray-700 mt-3  ${showInstall ? 'overflow-y-auto' : 'overflow-hidden'}`}>
         {/* Section: Chatbot */}
         <li>
-          <div className="flex items-center gap-2">
+          <div className="flex items-start gap-2">
             <img src="/Website Assets/Robot.svg" alt="" />
-          < div className="flex justify-between items-center gap-28">
             <span>Chatbot</span>
+          <div className="ml-[95px]">
             <img src="/Website Assets/Arrow Down.svg" alt="" />
           </div>
           </div>
           <div className="border-l border-gray-300 text-gray-500 ml-3">
+           <div className="px-3">
             {navLink("Website Chatbot")}
             {navLink("File Chatbot")}
             {navLink("Chatbot Data Store")}
             {navLink("Chatbot Query Logs")}
             {navLink("Chatbot Customization")}
-            <div>
-            {navLink("Use Documents From Google", (
-              <>
-                Use Documents From Google <br /> Drive
-              </>
-            ))}
-            
-            </div>
+            {navLink("Use Documents From Google Drive")}
+           </div>
            
           </div>
         </li>
@@ -162,22 +161,22 @@ export default function Page() {
           </div>
           <div className="text-gray-500 pr-3 border-l border-gray-300 ml-3">
             <span
-              className="flex justify-between cursor-pointer pl-2 ml-3 py-1 rounded-md hover:bg-[#F2F2F2] hover:text-[#1E1E1E]"
+              className="flex justify-between cursor-pointer pl-2 ml-3 py-[2px] rounded-md hover:bg-[#F2F2F2] hover:text-[#1E1E1E]"
               onClick={() => setShowInstall(prev => !prev)}
             >
               Install On
               <img src="/Website Assets/Arrow Left.svg" alt="" />
             </span>
             {showInstall && (
-              <ul>
+              <ul className="ml-3 ">
                 {installItems.map((item) => navLink(item))}
               </ul>
             )}
-           <div className="flex justify-between cursor-pointer mx rounded-md hover:bg-[#F2F2F2] hover:text-[#1E1E1E]">
+           <div className="flex justify-between cursor-pointer rounded-md ml-3 hover:bg-[#F2F2F2] hover:text-[#1E1E1E]">
             {navLink("Connect")}
             <img src="/Website Assets/Arrow Left.svg"  alt="" />
             </div>
-            <div className="flex justify-between cursor-pointer ">
+            <div className="flex justify-between cursor-pointer ml-3 rounded-md my-2  hover:bg-[#F2F2F2] hover:text-[#1E1E1E]">
             {navLink("RESTful API")}
             <img src="/Website Assets/Arrow Left.svg" alt="" />
             </div>
@@ -204,8 +203,10 @@ export default function Page() {
             <span>Billing</span>
           </div>
           <div className="border-l border-gray-300 text-gray-500 space-y-2 ml-3 ">
+           <div className="px-3">
             {navLink("Upgrade Plan")}
             {navLink("AWS Marketplace")}
+            </div>
           </div>
         </li>
 
@@ -213,21 +214,21 @@ export default function Page() {
      <li>
   <div
     onClick={() => handleClick("FAQ")}
-    className={`flex items-center gap-2 mb-2 py-1 rounded-md cursor-pointer transition ${
+    className={`flex items-center gap-2 mb-[23px] py-1 rounded-md cursor-pointer transition ${
       activeItem === "FAQ"
         ? "bg-[#F4E2FF] text-[#BF56FF]"
         : "text-[#7E7E7E] hover:bg-[#F2F2F2] hover:text-[#1E1E1E]"
     }`}
   >
     <img src="/Website Assets/Question Mark.svg" alt="" />
-    <Link href="/FAQ">{/* Link inside the styled div */}
+    <Link href="/Components/chatbots-docs-pages/FAQ">{/* Link inside the styled div */}
       <span>{'FAQ'}</span>
     </Link>
   </div>
 </li>
 
         {showInstall && (
-          <div className="fixed bottom-14 left-0 w-60 h-8 bg-white/65 z-50 pointer-events-none"></div>
+          <div className="fixed bottom-[45px] left-0 w-60 h-7 bg-white/75 z-50 pointer-events-none"></div>
         )}
       </div>
 
