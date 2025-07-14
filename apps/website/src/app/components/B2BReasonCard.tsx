@@ -23,14 +23,14 @@ export default function B2BReasonCard({ icon, title, description }: B2BReasonCar
       
       <div className="mb-4 flex items-center ">
         
-        <span className="bg-purple-100 rounded-lg border border-purple-200 p-2 text-purple-500 text-xl shadow-[0_0_16px_2px_rgba(168,85,247,0.15)] mr-2 ">
+        <span className="bg-purple-100 rounded-lg border border-purple-200 p-2 text-[#BF56FF] text-xl shadow-[0_0_16px_2px_rgba(168,85,247,0.15)] mr-2 ">
           {icon}
         </span>
       </div>
-      <div className="font-semibold text-lg text-zinc-900 mb-1 duration-200 group-hover:text-purple-400">
+      <div className="font-semibold text-lg text-[#1E1E1E] mb-1 duration-200 group-hover:text-[#BF56FF]">
         {title}
       </div>
-      <div className="text-zinc-500 text-sm">{description}</div>
+      <div className="text-[#7D7D7D] text-sm">{description}</div>
     </div>
   );
 }

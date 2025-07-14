@@ -204,18 +204,21 @@ export default function Navbar(){
 
        <div className="flex items-start space-x-3 py-4">
       <span><img src="healthcare.svg" alt="Chat" className="w-[24px] h-[24px] " /></span>
-      <div>
+      
+      <Link href='/Solution/Healthcare'><div>
         <p className="font-medium text-[#1E1E1E]">Healthcare</p>
         <p className="text-[#747474]  ">AI solutions for Health Care Providers</p>
       </div>
+      </Link>
       </div>
 
        <div className="flex items-start space-x-3 py-4">
       <span><img src="workspace.svg" alt="Chat" className="w-[24px] h-[24px] " /></span>
-      <div>
+      <Link href='/Solution/Workplace'><div>
         <p className="font-medium text-[#1E1E1E]">Workplace</p>
         <p className="text-[#747474]  text-base">AI solutions for Workplace operations</p>
       </div>
+      </Link>
       </div>
 
           </div>
@@ -223,10 +226,11 @@ export default function Navbar(){
 
              <div className="flex items-start space-x-3 py-4">
       <span><img src="government.svg" alt="Chat" className="w-[24px] h-[24px] " /></span>
-      <div>
+     <Link href='/Solution/Government'><div>
         <p className="font-medium text-[#1E1E1E]">Government</p>
         <p className="text-[#747474]  text-base">Public section solutions for Government</p>
       </div>
+      </Link>
       </div>
 
        <div className="flex items-start space-x-3 py-4">
