@@ -54,19 +54,21 @@ export default function MobileSidebar({
 
       {/* Search Bar */}
       {showSearchBar && (
-        <div className="z-40 transition-all duration-300 mt-[60px] mb-[10px] border-t-1 pt-2">
-          <form className="relative bg-[#F8F8F8] rounded-[10px] py-1 pl-8 pr-2 mx-3 shadow-lg">
-            <span className="absolute left-2 top-1.5">
-              <img src="/Website Assets/Search.svg" alt="Search" className="w-4" />
-            </span>
+        <div className="z-40 transition-all duration-300 mt-[60px] mb-[10px] pt-2">
+          <form className="relative left-52 bg-[#F8F8F8] rounded-[5px] w-65  py-1 pl-8 pr-2 mx-3 ">
+           
             <input
               type="text"
               placeholder="Search"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="outline-0 bg-[#F8F8F8] w-full px-2"
+              className="outline-0 bg-[#F8F8F8] px-2"
               required
             />
+             <span className="absolute left-55 top-1.5">
+              <img src="/Website Assets/Search.svg" alt="Search" className="w-5" />
+            </span>
+            
           </form>
         </div>
       )}
