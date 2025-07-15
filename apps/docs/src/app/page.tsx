@@ -4,8 +4,8 @@ import Link from 'next/link';
 export default function Welcome(){
     return(
         <>
-       <div className="flex-1 mt-11 ml-11 mr-5">
-              <h1 className="font-bold text-[25px]">Welcome to CorpusAI's documentation</h1>
+       <div className="flex-1 mt-7 ml-11 mr-5 sm:ml-auto">
+              <h1 className="font-bold text-[25px]">Welcome to CorpusAI&apos;s documentation</h1>
               
               {/* Welcome Page Cards */}
               
@@ -44,27 +44,35 @@ export default function Welcome(){
                           <img src="/Website Assets/Question Mark.svg" alt="" />
                        </div>
                         <h3 className="pt-3">FAQ</h3>
-                        <p className="text-gray-500">Find answere to frequently asked questions</p>
+                        <p className="text-gray-500">Find answers to frequently asked questions</p>
                     </div>
                 </div>
               </div>
-            <div className="mt-30 text-right">
-            <hr className="border-gray-200"/>
-            <div className="flex">
-            <div className="mt-2 p-3 w-[300px] bg-white absolute right-[270px] bottom-[10px] rounded-[10px] shadow">
-                <div className="flex items-center pl-56 text-[#7E7E7E]">
-                    <span>Next</span> 
-                <img src="/Website Assets/Arrow Left.svg" alt="" className="w-4 h-4"/>
-                </div>
-                <Link href="/Components/chatbots-docs-pages/Website-Chatbot/" className="block  mt-2">
-                    Website Chatbot
-                </Link>
-            </div>
-            </div>
-        </div>
+     <div className="mt-30 text-right">
+  {/* Top horizontal line */}
+  <hr className="border-gray-200 mb-4" />
+
+  {/* Flex container */}
+  <div className="flex justify-end">
+    <div className="mt-2 p-3 w-[300px] bg-white sticky lg:right-[20px] bottom-[10px] rounded-[10px] shadow sm:relative sm:left-0 sm:right-auto">
+      
+      {/* Text and Arrow */}
+      <div className="flex items-center justify-end text-[#7E7E7E]">
+        <span className="mr-2">Next</span> 
+        <img src="/Website Assets/Arrow Left.svg" alt="" className="w-4 h-4" />
+      </div>
+      
+      {/* Link */}
+      <Link href="/Components/chatbots-docs-pages/Website-Chatbot/" className="block mt-2 text-right">
+        Website Chatbot
+      </Link>
+    </div>
+  </div>
+</div>
+
           </div>
         
-    <div className="w-64 pt-13 fixed right-0 top-0">
+    <div className="w-64 pt-13 fixed right-0 top-0 lg:block sm:hidden hidden">
   <div className="flex items-center gap-2 text-gray-400 font-medium mb-2">
     <img src="/Website Assets/Sidebar-Alighment.svg" alt="" />
     
@@ -74,7 +82,7 @@ export default function Welcome(){
   <ul className="ml-2 border-l-4 mt-2 border-[#BF56FF] pl-4 text-[#BF56FF]">
     <li>
       <Link href="/">
-        Welcome to Corpus AI's Documentation
+        Welcome to Corpus AI&apos;s Documentation
       </Link>
     </li>
   </ul>

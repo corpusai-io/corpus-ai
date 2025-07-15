@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import './../../../globals.css';
 
 export const metadata: Metadata = {
-  title: 'CORPUS-AI | TELEGRAM',
+  title: 'CORPUS-AI | WEBSITE CHATBOT',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

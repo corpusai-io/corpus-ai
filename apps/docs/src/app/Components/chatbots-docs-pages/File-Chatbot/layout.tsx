@@ -1,19 +1,14 @@
-import { Metadata } from "next";
+// File-Chatbot/layout.tsx
+interface RootLayoutProps {
+  children: React.ReactNode;
+}
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <>
-    
-    <html lang="en">
-      <body>
-            <div className="flex-1 h-full">
-              <main className="flex-1 flex">
-              {children}
-              </main>
-        </div>
-       
-      </body>
-    </html>
-    </>
+    <div className="flex-1 h-full">
+      <main className="flex-1 flex">
+        {children}
+      </main>
+    </div>
   );
 }

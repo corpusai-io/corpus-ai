@@ -1,20 +1,34 @@
 'use client';
-import { useState } from "react";
+import { useState } from 'react';
 
-export default function Page() {
-  const [search, setSearch] = useState("");
-  const [showSearchBar, setShowSearchBar] = useState(false);
+interface Props {
+  showSearchBar: boolean;
+  setShowSearchBar: (value: boolean) => void;
+  setIsMobileSidebarOpen: (value: boolean) => void;
+}
+
+export default function MobileSidebar({
+  showSearchBar,
+  setShowSearchBar,
+  setIsMobileSidebarOpen,
+}: Props) {
+  const [search, setSearch] = useState('');
 
   return (
     <>
       {/* Top bar */}
-      <div className={`py-[14px] px-[25px] w-full h-15 bg-white transition-all duration-300 fixed top-0 left-0 ${showSearchBar ? 'mb-2' : ''}`}>
-        <div className="flex justify-between items-center ">
-          
-          <img src="/Website Assets/Sidebar-Flip.svg" alt="Flip" />
+      <div className="py-[14px] px-[25px] w-full h-15 bg-white transition-all duration-300 fixed top-0 left-0 z-50">
+        <div className="flex justify-between items-center">
+          {/* Flip Button */}
+          <img
+            src="/Website Assets/Sidebar-Flip.svg"
+            alt="Flip"
+            className="cursor-pointer"
+            onClick={() => setIsMobileSidebarOpen(true)}
+          />
 
           {/* Left Side */}
-          <div className="flex items-center gap-2 ">
+          <div className="flex items-center gap-2">
             <img src="/Website Assets/Logo.svg" alt="Logo" />
             <img src="/Website Assets/Corpus AI logo.svg" alt="Corpus AI" />
             <img src="/Website Assets/Docs.svg" alt="Docs" />
@@ -31,17 +45,17 @@ export default function Page() {
             <img
               src="/Website Assets/Search.svg"
               alt="Search"
-              className="cursor-pointer "
+              className="cursor-pointer"
               onClick={() => setShowSearchBar(!showSearchBar)}
             />
           </div>
         </div>
       </div>
 
-      {/* Search Bar (shows when showSearchBar === true) */}
+      {/* Search Bar */}
       {showSearchBar && (
-        <div className="z-22 transition-all duration-300 mt-14 mb-3">
-          <form className="relative bg-[#F8F8F8] rounded py-1 pl-8 pr-2 mx-3">
+        <div className="z-40 transition-all duration-300 mt-[60px] mb-[10px] border-t-1 pt-2">
+          <form className="relative bg-[#F8F8F8] rounded-[10px] py-1 pl-8 pr-2 mx-3 shadow-lg">
             <span className="absolute left-2 top-1.5">
               <img src="/Website Assets/Search.svg" alt="Search" className="w-4" />
             </span>

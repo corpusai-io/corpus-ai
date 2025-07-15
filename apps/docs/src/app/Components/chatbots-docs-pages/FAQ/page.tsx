@@ -95,7 +95,7 @@ export default function WebsiteChatbot() {
       </main>
 
       {/*  Fixed Right Sidebar */}
-      <aside className=" w-64 fixed top-0 right-[20px] h-full p-4 pt-[30px] z-0">
+      <aside className=" w-64 fixed top-0 right-[20px] h-full p-4 pt-[30px] z-0 lg:block sm:hidden hidden">
         <div className="flex items-center gap-2 text-gray-400 font-medium mb-2">
           <img src="/Website Assets/Sidebar-Alighment.svg" alt="" />
           <span>On this page</span>

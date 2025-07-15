@@ -116,7 +116,7 @@ export default function WebsiteChatbot(){
     >
       <Link
         href={`#${item.id}`}
-        className={`block transition-all duration-200 ${
+        className={`lg:block transition-all duration-200 sm:hidden hidden ${
           activeId === item.id
             ? 'text-[#BF56FF]'
             : 'text-[#777777] hover:text-[#BF56FF]'

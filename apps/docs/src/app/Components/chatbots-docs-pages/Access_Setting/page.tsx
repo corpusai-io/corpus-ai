@@ -94,9 +94,8 @@ export default function WebsiteChatbot() {
 
         </div>
       </main>
-
-
-      <div className="w-64 pt-13 fixed top-0 right-0 overflow-y-auto">
+      
+      <div className="w-64 pt-13 fixed top-0 right-0 overflow-y-auto lg:block sm:hidden hidden">
         <div className="flex items-center gap-2 text-gray-400 font-medium mb-2">
           <img src="/Website Assets/Sidebar-Alighment.svg" alt="" />
 
