@@ -123,41 +123,46 @@ export default function Navbar(){
           <div className='flex flex-col gap-4'>
       <div className="flex items-center pl-[33px] gap-[9px] mt-[27px] hover:bg-gray-100 p-2 rounded-md " onClick={closeDropdown}>
       <span><Image src="/socials-icons/Slack.svg" alt="Chat" width={24} height={24} /></span>
-      <div>
+      <Link href="/Integrations/Slack"><div>
         <p className="font-medium text-[#1E1E1E]">Slack</p>
         <p className="text-[#747474]  text-base">Connect with slack</p>
       </div>
+      </Link>
       </div>
 
       <div className="flex items-center pl-[33px] gap-[8px]  hover:bg-gray-100 p-2 rounded-md " onClick={closeDropdown}>
       <span><Image src="/socials-icons/wordpress-icon.svg" alt="Chat" width={24} height={24} /></span>
-      <div>
+      <Link href="/Integrations/Wordpress"><div>
         <p className="font-medium text-[#1E1E1E]">WordPress</p>
         <p className="text-[#747474]  text-base">Connect with WordPress</p>
       </div>
+      </Link>
       </div>
 
       <div className="flex items-center pl-[33px] gap-[8px]  hover:bg-gray-100 p-2 rounded-md " onClick={closeDropdown}>
       <span><Image src="/socials-icons/zapier.svg" alt="Chat" width={24} height={24} /></span>
-      <div>
+      <Link href="/Integrations/Zapier"><div>
         <p className="font-medium text-[#1E1E1E]">Zapier</p>
         <p className="text-[#747474]  text-base">Connect with Zapier</p>
       </div>
+      </Link>
       </div>
 
       <div className="flex items-center pl-[33px] gap-[9px] hover:bg-gray-100 p-2 rounded-md " onClick={closeDropdown}>
       <span><Image src="/socials-icons/telegram-1 1.svg" alt="Chat" width={24} height={24} /></span>
-      <div>
+     <Link href="/Integrations/Telegram"><div>
         <p className="font-medium text-[#1E1E1E]">Telegram</p>
         <p className="text-[#747474]  text-base">Connect with Telegram</p>
       </div>
+      </Link>
       </div>
       <div className="flex items-center pl-[33px] gap-[9px]  hover:bg-gray-100 p-2 rounded-md " onClick={closeDropdown}>
       <span><Image src="/socials-icons/whatsapp.svg" alt="Chat" width={24} height={24} /></span>
-      <div>
+      <Link href="/Integrations/Whatsapp"><div>
         <p className="font-medium text-[#1E1E1E]">WhatsApp</p>
         <p className="text-[#747474]  text-base">Connect with WhatsApp</p>
       </div>
+      </Link>
       </div>
     </div>
     <div className="pl-2">
@@ -194,7 +199,7 @@ export default function Navbar(){
           <div>
 
              <div className="flex items-start space-x-3 py-4">
-      <span><img src="education.svg" alt="Chat" className="w-[24px] h-[24px] " /></span>
+      <span><Image src="/education.svg" alt="Chat" width={24} height={24} /></span>
      <Link href='/Solution/Education'><div>
         <p className="font-medium text-[#1E1E1E]">Education</p>
         <p className="text-[#747474]  ">AI solutions for Educational Institutions</p>
@@ -203,7 +208,7 @@ export default function Navbar(){
       </div>
 
        <div className="flex items-start space-x-3 py-4">
-      <span><img src="healthcare.svg" alt="Chat" className="w-[24px] h-[24px] " /></span>
+      <span><Image src="/healthcare.svg" alt="Chat" width={24} height={24} /></span>
       
       <Link href='/Solution/Healthcare'><div>
         <p className="font-medium text-[#1E1E1E]">Healthcare</p>
@@ -213,7 +218,7 @@ export default function Navbar(){
       </div>
 
        <div className="flex items-start space-x-3 py-4">
-      <span><img src="workspace.svg" alt="Chat" className="w-[24px] h-[24px] " /></span>
+      <span><Image src="/workspace.svg" alt="Chat" width={24} height={24} /></span>
       <Link href='/Solution/Workplace'><div>
         <p className="font-medium text-[#1E1E1E]">Workplace</p>
         <p className="text-[#747474]  text-base">AI solutions for Workplace operations</p>
@@ -225,7 +230,7 @@ export default function Navbar(){
           <div>
 
              <div className="flex items-start space-x-3 py-4">
-      <span><img src="government.svg" alt="Chat" className="w-[24px] h-[24px] " /></span>
+      <span><Image src="/government.svg" alt="Chat" width={24} height={24} /></span>
      <Link href='/Solution/Government'><div>
         <p className="font-medium text-[#1E1E1E]">Government</p>
         <p className="text-[#747474]  text-base">Public section solutions for Government</p>
@@ -233,13 +238,13 @@ export default function Navbar(){
       </Link>
       </div>
 
-       <div className="flex items-start space-x-3 py-4">
-      <span><img src="legal.svg" alt="Chat" className="w-[24px] h-[24px] " /></span>
-      <div>
+      <Link href='/Solution/Legal'>  <div className="flex items-start space-x-3 py-4">
+      <span><Image src="/legal.svg" alt="Chat" width={24} height={24} /></span>
+     <div>
         <p className="font-medium text-[#1E1E1E]">Legal</p>
         <p className="text-[#747474]  text-base">AI solutions for Legal Practioners</p>
       </div>
-      </div>
+      </div></Link>
 
           </div>
         </div>
@@ -252,9 +257,9 @@ export default function Navbar(){
       Affiliates
     </a>
 
-<a className="hover:text-[#BF56FF] flex items-center gap-1 cursor-pointer">
+<Link href= "/Pricing" onClick={closeDropdown} className="hover:text-[#BF56FF] flex items-center gap-1 cursor-pointer">
       Pricing
-    </a>
+    </Link>
 
 
      <div className="relative group">
@@ -276,16 +281,16 @@ export default function Navbar(){
       <div className='w-[245px]'>
         <div className='mt-[23px] text-[#8D8D8D]'>Resources</div>
         <div>
-      <div className="flex items-start space-x-3 py-3">
-      <span><img src="pages-line.svg" alt="Chat" className="w-5 h-5" /></span>
+     <Link href="/Resources/Blog"><div className="flex items-start space-x-3 py-3">
+      <span><Image src="/pages-line.svg" alt="Chat" width={24} height={24} /></span>
       <div>
         <p className="font-medium text-[#1E1E1E]">Blog</p>
         <p className="text-[#747474] text-base">Latest updates and insights from our team</p>
       </div>
-      </div>
+      </div> </Link>
 
 <div className="flex items-start space-x-3 py-4">
-      <span><img src="file-line.svg" alt="Chat" className="w-5 h-5" /></span>
+      <span><Image src="/file-line.svg" alt="Chat" width={24} height={24} /></span>
       <div>
         <p className="font-medium text-[#1E1E1E]">Documentation</p>
         <p className="text-[#747474]  text-base">Latest updates and insights from our team</p>

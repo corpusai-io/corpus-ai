@@ -129,7 +129,7 @@ export default function PricingPage() {
               </div>
             )}
             <h3 className="text-lg font-semibold text-[#454545] mb-2">{plan.title}</h3>
-            <p className="text-3xl font-bold text-[#1E1E1E] mb-2">{plan.price}<span className="text-xs text-[#858585] font-medium ml-1">/mo</span></p>
+            <p className="text-3xl font-semibold text-[#1E1E1E] mb-2">{plan.price}<span className="text-xs text-[#858585] font-medium ml-1">/mo</span></p>
             <p className="text-[#858585] mb-4">{plan.desc}</p>
 
             <button
