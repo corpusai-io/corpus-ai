@@ -44,8 +44,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
           {/* Main Content */}
           <div
-            className={`flex flex-1  lg:ml-64 lg:mr-64 lg:mt-[10px] z-10 transition-all duration-300 ease-in-out ${
-              showSearchBar ? 'mt-[100px]' : 'mt-[60px]'
+            className={`flex flex-1 lg:ml-64 lg:mt-[10px] z-10 transition-all duration-300 ease-in-out ${
+              showSearchBar ? 'mt-[80px]' : 'mt-[60px]'
             }`}
           >
             <main className="flex-1 px-4 sm:px-6 py-6">
