@@ -5,8 +5,6 @@ import TestimonialsSlider from '@/app/components/testimonalsSlider';
 import TestimonialsSliders from '@/app/components/testimonalsSliders';
 import FAQSection from '@/app/components/FAQsection'
 import PricingPage from './components/Pricing';
-import Navbar from './components/navbar';
-import Link from 'next/link';
 export default function Home() {
    
   return (
