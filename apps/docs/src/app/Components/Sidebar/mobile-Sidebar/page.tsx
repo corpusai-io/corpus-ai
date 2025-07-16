@@ -1,31 +1,74 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface Props {
   showSearchBar: boolean;
   setShowSearchBar: (value: boolean) => void;
   setIsMobileSidebarOpen: (value: boolean) => void;
+  setIsSidebarVisible: (value: boolean) => void; // 👈 NEW
+  isMobile: boolean;
 }
 
 export default function MobileSidebar({
   showSearchBar,
   setShowSearchBar,
   setIsMobileSidebarOpen,
+  isMobile, // ✅ THIS WAS MISSING
 }: Props) {
   const [search, setSearch] = useState('');
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // ✅ Reset sidebar icon visibility on layout switch
+  useEffect(() => {
+    if (!isMobile) {
+      setIsSidebarVisible(false);
+    }
+  }, [isMobile]);
+
+
+  // Auto close search bar after 8 seconds
+  useEffect(() => {
+    if (showSearchBar) {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
+        setShowSearchBar(false);
+      }, 20000);
+    }
+
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [search, showSearchBar]);
 
   return (
     <>
+    
       {/* Top bar */}
       <div className="py-[14px] px-[25px] w-full h-15 bg-white transition-all duration-300 fixed top-0 left-0 z-50">
         <div className="flex justify-between items-center">
-          {/* Flip Button */}
-          <img
-            src="/Website Assets/Sidebar-Flip.svg"
-            alt="Flip"
-            className="cursor-pointer"
-            onClick={() => setIsMobileSidebarOpen(true)}
-          />
+          {/* Flip / Close Button */}
+          {!isSidebarVisible ? (
+            <img
+              src="/Website Assets/Sidebar-Flip.svg"
+              alt="Flip"
+              className="cursor-pointer"
+              onClick={() => {
+                setIsMobileSidebarOpen(true);
+                setIsSidebarVisible(true);
+              }}
+            />
+          ) : (
+            <img
+              src="/Website Assets/Close-ICon/close-iii.svg"
+              alt="Close"
+              className="cursor-pointer w-6"
+              onClick={() => {
+                setIsMobileSidebarOpen(false);
+                setIsSidebarVisible(false);
+              }}
+            />
+          )}
 
           {/* Left Side */}
           <div className="flex items-center gap-2">
@@ -41,34 +84,43 @@ export default function MobileSidebar({
               <img src="/Website Assets/Moon.svg" alt="Moon" className="w-5" />
             </div>
 
-            {/* Search icon */}
-            <img
-              src="/Website Assets/Search.svg"
-              alt="Search"
-              className="cursor-pointer"
-              onClick={() => setShowSearchBar(!showSearchBar)}
-            />
+            {/* Toggle between Search and Close icon */}
+            {!showSearchBar ? (
+              <img
+                src="/Website Assets/Search.svg"
+                alt="Search"
+                className="cursor-pointer w-5"
+                onClick={() => setShowSearchBar(true)}
+              />
+            ) : (
+              <img
+                src="/Website Assets/Close-ICon/clos-iv.png"
+                alt="Close"
+                className="cursor-pointer w-5"
+                onClick={() => setShowSearchBar(false)}
+              />
+            )}
           </div>
         </div>
       </div>
 
-      {/* Search Bar */}
+      {/* Search Bar on Top Right */}
       {showSearchBar && (
-        <div className="z-40 transition-all duration-300 mt-[60px] mb-[10px] pt-2">
-          <form className="relative left-52 bg-[#F8F8F8] rounded-[5px] w-65  py-1 pl-8 pr-2 mx-3 ">
-           
+        <div className="fixed top-[68px] right-[7px] z-50">
+          <form className="shadow-md bg-[#F8F8F8] rounded-[5px] w-[200px] py-2 px-2 flex items-center">
             <input
               type="text"
               placeholder="Search"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="outline-0 bg-[#F8F8F8] px-2"
+              className="outline-none bg-[#F8F8F8] px-2 w-full text-sm"
               required
             />
-             <span className="absolute left-55 top-1.5">
-              <img src="/Website Assets/Search.svg" alt="Search" className="w-5" />
-            </span>
-            
+            <img
+              src="/Website Assets/Search.svg"
+              alt="Search"
+              className="w-5 cursor-pointer ml-2"
+            />
           </form>
         </div>
       )}

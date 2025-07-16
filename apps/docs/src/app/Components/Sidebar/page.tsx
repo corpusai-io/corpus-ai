@@ -4,13 +4,13 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 
-export default function Page() {
+export default function Page({ setIsMobileSidebarOpen }: { setIsMobileSidebarOpen?: (val: boolean) => void }) {
   const [search, setSearch] = useState("");
   const [activeItem, setActiveItem] = useState("");
   const [showInstall, setShowInstall] = useState(false);
   const router = useRouter();
 
-  const itemRoutes = {
+  const itemRoutes: Record<string, string> = {
     "Website Chatbot": "/Components/chatbots-docs-pages/Website-Chatbot",
     "File Chatbot": "/Components/chatbots-docs-pages/File-Chatbot",
     "Chatbot Data Store": "/ChatbotDatastore",
@@ -41,7 +41,6 @@ export default function Page() {
     const savedRoute = localStorage.getItem("activeRoute");
     const savedShowInstall = localStorage.getItem("showInstall");
 
-    // ✅ If on Home Page "/", clear all stored values & stop redirect
     if (window.location.pathname === "/") {
       setActiveItem("");
       localStorage.removeItem("activeItem");
@@ -51,15 +50,10 @@ export default function Page() {
       return;
     }
 
-    // ✅ Restore state for other pages
     if (savedItem) setActiveItem(savedItem);
     if (savedShowInstall === "true") setShowInstall(true);
 
-    if (
-      savedRoute &&
-      savedRoute !== "/" &&
-      savedRoute !== window.location.pathname
-    ) {
+    if (savedRoute && savedRoute !== "/" && savedRoute !== window.location.pathname) {
       router.push(savedRoute);
     }
   }, []);
@@ -78,32 +72,32 @@ export default function Page() {
     }
   }, [activeItem]);
 
-  const handleClick = (itemName) => {
+const handleClick = (itemName) => {
     setActiveItem(itemName);
     setShowInstall(installItems.includes(itemName));
-    
+
+    // ✅ Close sidebar and icon both
+    if (window.innerWidth <= 1024) {
+      setIsMobileSidebarOpen(false);
+      setIsSidebarVisible(false); // ✅ Close the icon state
+    }
   };
 
-
-  
-  const navLink = (name, display = null) => (
+  const navLink = (name: string, display: string | null = null) => (
     <Link href={itemRoutes[name] || "/"} onClick={() => handleClick(name)}>
       <div
         className={`block py-[3px] pl-2 rounded-md cursor-pointer transition hover:bg-[#F2F2F2] hover:text-[#1E1E1E] ${
           activeItem === name
             ? "bg-[#F4E2FF] text-[#BF56FF]"
-            : activeItem
-            ? "text-[#7E7E7E] hover:bg-[#F2F2F2] hover:text-[#1E1E1E]"
             : "text-[#7E7E7E]"
         }`}
       >
-        {typeof display === "string" ? display : display ?? name}
+        {display ?? name}
       </div>
     </Link>
   );
 
   return (
-    
     <div className="h-screen bg-white flex flex-col overflow-y-hidden">
       <header className="sticky top-0 z-10 bg-white lg:block sm:hidden hidden">
         <div className="flex items-center justify-between p-3">
@@ -130,26 +124,23 @@ export default function Page() {
         </form>
       </header>
 
-      <div className={`flex-1 px-3 text-sm list-none text-gray-700 lg:mt-3 mt-20  ${showInstall ? 'overflow-y-auto' : 'overflow-hidden'}`}>
-        {/* Section: Chatbot */}
+      <div className={`flex-1 px-3 text-sm list-none text-gray-700 lg:mt-3 mt-20 ${showInstall ? 'overflow-y-auto' : 'overflow-hidden'}`}>
+        {/* Example section */}
         <li>
           <div className="flex items-start gap-2">
             <img src="/Website Assets/Robot.svg" alt="" />
             <span>Chatbot</span>
-          <div className="ml-[95px]">
-            <img src="/Website Assets/Arrow Down.svg" alt="" />
+            <div className="ml-[95px]">
+              <img src="/Website Assets/Arrow Down.svg" alt="" />
+            </div>
           </div>
-          </div>
-          <div className="border-l border-gray-300 text-gray-500 ml-3">
-           <div className="px-3">
+          <div className="border-l border-gray-300 text-gray-500 ml-3 px-3">
             {navLink("Website Chatbot")}
             {navLink("File Chatbot")}
             {navLink("Chatbot Data Store")}
             {navLink("Chatbot Query Logs")}
             {navLink("Chatbot Customization")}
-            {navLink("Use Documents From Google Drive")}
-           </div>
-           
+            {navLink("Use Documents From Google")}
           </div>
         </li>
 
