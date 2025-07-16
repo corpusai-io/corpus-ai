@@ -5,6 +5,7 @@ import PricingPage from '@/app/components/Pricing';
 import FAQSection from '@/app/components/FAQsection';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import SolutionFAQ from '@/app/components/SolutionFAQ';
 const features = [
   {
     icon: (
@@ -71,6 +72,29 @@ const steps = [
     ),
     title: 'Start Chatting',
     description: 'Ask questions naturally and get accurate answers from your content instantly.'
+  },
+];
+
+const corpusChatFaq = [
+  {
+    question: "What is a RAG Chatbot?",
+    answer: "A RAG chatbot (Retrieval-Augmented Generation) is an advanced AI chatbot that combines information retrieval and generative capabilities to provide more accurate and contextually relevant responses. Unlike traditional chatbots, RAG chatbots can pull in data from external sources, enhancing their answers with up-to-date, specific information.",
+  },
+  {
+    question: "How do RAG Chatbot works?",
+    answer: "RAG chat bots work by first retrieving relevant information from a pre-established knowledge base or external database. They then generate a response based on this retrieved information, ensuring that answers are not only accurate but also tailored to the specific context of the user's query. This combination of retrieval and generation makes the RAG-based chatbot highly efficient at providing detailed, real-time answers.",
+  },
+  {
+    question: "Why should I use a RAG AI chatbot?",
+    answer: "A RAG AI bot is ideal if you're looking to offer more accurate, dynamic, and personalized interactions with your users. By integrating real-time information retrieval, these chatbots can adapt to a wide range of queries and provide answers grounded in the most current data, improving customer experience and decision-making. They're particularly useful in industries like healthcare, legal services, and customer support.",
+  },
+  {
+    question: "How can a CorpusAI improve my business?",
+    answer: "Implementing a RAG-based chatbot can drastically improve customer service, support, and engagement by providing quick, accurate, and relevant answers to customer inquiries. It can also help streamline internal operations by offering employees efficient access to crucial data, all while maintaining a high level of accuracy and efficiency.",
+  },
+  {
+    question: "What makes CorpusAI different from other RAG chatbots?",
+    answer: "CorpusAI stands out because it offers seamless integration with your existing systems and databases, making data retrieval fast and accurate. With features like continuous learning and adaptability, CorpusAI improves over time, ensuring it keeps up with evolving customer needs and expectations.",
   },
 ];
 
@@ -147,11 +171,11 @@ const CorpusChatPage = () => {
                 <div className="z-10 w-36 rounded-xl bg-white shadow-lg border border-zinc-100/40 py-2 flex flex-col">
                   <div className="flex items-center justify-between px-4 py-2 text-zinc-800 text-sm hover:bg-zinc-100 rounded-t-xl">
                     <span>GPT-4o</span>
-                    <span className="h-2 w-2 rounded-full bg-green-500 inline-block"></span>
+                    <span className="h-2 w-2 rounded-full bg-green-600 inline-block"></span>
                   </div>
                   <div className="flex items-center justify-between px-4 py-2 text-zinc-800 text-sm hover:bg-zinc-100 rounded-b-xl">
                     <span>Claude-3.5</span>
-                    <span className="h-2 w-2 rounded-full bg-green-500 inline-block"></span>
+                    <span className="h-2 w-2 rounded-full bg-green-600 inline-block"></span>
                   </div>
                 </div>
                 {/* Selected model button */}
@@ -187,7 +211,7 @@ const CorpusChatPage = () => {
             </div>
 
             {/* Stats Card */}
-            <div data-aos="fade-up" data-aos-duration="200" data-aos-delay="800" className="shadow-lg  w-[280px] rounded-2xl border border-zinc-100/20 bg-white p-5 flex flex-col gap-4">
+            <div data-aos="fade-up" data-aos-duration="200" data-aos-delay="800" className="shadow-lg h-fit  w-[280px] rounded-2xl border border-zinc-100/20  p-5 flex flex-col gap-4">
               <div className="flex items-center justify-between mb-1">
                 <div className="flex h-7 w-7 items-center justify-center rounded-xl bg-purple-50">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-bar-chart-2 text-purple-400"><path d="M18 20V10"></path><path d="M12 20V4"></path><path d="M6 20v-6"></path></svg>
@@ -207,21 +231,21 @@ const CorpusChatPage = () => {
                   <span className="text-sm font-semibold text-zinc-900">2.4K</span>
                 </div>
                 <div className="h-1.5 overflow-hidden rounded-full bg-zinc-100">
-                  <div className="h-full rounded-full bg-gradient-to-r from-purple-400 to-purple-400/80" style={{ width: '75%' }}></div>
+                  <div className="h-full rounded-full bg-gradient-to-r from-purple-300 to-purple-400/80" style={{ width: '75%' }}></div>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-zinc-500">Lead Generation</span>
-                  <span className="flex items-center text-xs text-green-500 font-medium">+30%<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-1"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></span>
+                  <span className="flex items-center text-xs text-green-600 font-medium">+30%<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-1"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></span>
                 </div>
                 <div className="h-1.5 overflow-hidden rounded-full bg-zinc-100">
-                  <div className="h-full rounded-full bg-gradient-to-r from-green-500 to-green-400" style={{ width: '65%' }}></div>
+                  <div className="h-full rounded-full bg-green-600" style={{ width: '65%' }}></div>
                 </div>
-                <div className="grid grid-cols-2 gap-2 pt-1">
-                  <div className="rounded-xl bg-zinc-50/50 p-2">
+                <div className="flex justify-between gap-2 pt-1">
+                  <div className="rounded-xl p-2">
                     <span className="text-xs text-zinc-500">Avg. Response time</span>
                     <span className="block text-sm font-semibold text-zinc-900">1.2s</span>
                   </div>
-                  <div className="rounded-xl bg-zinc-50/50 p-2">
+                  <div className="rounded-xl p-2">
                     <span className="text-xs text-zinc-500">Conversion</span>
                     <span className="block text-sm font-semibold text-zinc-900">24.8%</span>
                   </div>
@@ -299,7 +323,7 @@ const CorpusChatPage = () => {
           </div>
           {/* AI Assistant Box (Right) */}
           <div data-aos="fade-up" data-aos-duration="500" className="flex-1 flex items-center justify-center w-full">
-            <div className="bg-purple-50 rounded-3xl p-4 sm:p-8 w-full max-w-md shadow-md flex items-center justify-center">
+            <div className="bg-purple-50 rounded-3xl  py-3  md:py-16  w-full max-w-md shadow-md flex items-center justify-center">
               {/* AI Assistant Chat Card */}
               <div className="w-full max-w-xs bg-white/80 rounded-2xl shadow-lg border border-zinc-100/20 p-5 backdrop-blur-md">
                 <div className="flex items-center gap-3 mb-2">
@@ -346,7 +370,8 @@ const CorpusChatPage = () => {
              </div>
        <PricingPage/>
        </section>
-      <FAQSection/>
+      {/* <FAQSection/> */}
+      <SolutionFAQ faqs={corpusChatFaq} title='FAQ' subtitle='Frequently Asked Questions' />
       <section className="text-center px-4 pt-[56px] pb-16 bg-white">
         <h1 className="text-xl sm:text-2xl md:text-5xl font-medium text-[#1E1E1E] leading-tight">
           Ready to transform your content into<br/><span className="bg-gradient-to-r from-[#DAC0FF] to-[#BF56FF] bg-clip-text text-transparent">interactive conversations?</span>

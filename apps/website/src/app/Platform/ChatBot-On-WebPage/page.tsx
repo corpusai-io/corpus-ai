@@ -1,7 +1,7 @@
 import B2BReasonCard from '@/app/components/B2BReasonCard';
 import CustomerCareFAQ from '@/app/components/CustomerCareFAQ';
 import websiteFAQ from '@/app/components/websiteFAQ';
-
+import SolutionFAQ from '@/app/components/SolutionFAQ';
 
 export default function ChatBotOnWebPage(){
     const features = [
@@ -77,6 +77,38 @@ export default function ChatBotOnWebPage(){
         description: 'Automatic plugin updates through WordPress ensure you always have the latest features and security improvements.'
       },
     ];
+     const chatbotWebFaq = [
+  {
+    question: "What is an AI chatbot for website?",
+    answer: "An AI chatbot for website is an advanced tool by DenserAI that integrates into your website to provide 24/7 customer support, answer queries instantly, and enhance user experience with no coding required.",
+  },
+  {
+    question: "Is any coding required to set up an AI chatbot for website?",
+    answer: "No, adding an AI chatbot for website doesn't require coding or technical experience. With DenserAI, you can easily integrate our AI chatbot into your website by copying and pasting a code snippet or using integrations with platforms like WordPress and Shopify.",
+  },
+  {
+    question: "Does the CorpusAI chatbot support more languages?",
+    answer: "Absolutely. Our AI chatbot for website supports instant localization in over 80 languages, making it perfect for websites targeting a global audience.",
+  },
+  {
+    question: "Can I embed an AI chatbot for my website?",
+    answer: "Yes. Embedding our AI chatbot for website is simple—just insert a script into your website's HTML code, and you're ready to go.",
+  },
+  {
+    question: "How does CorpusAI chatbot for website compare with others?",
+    answer: "CorpusAI chatbot for website stands out with its advanced RAG (Retrieval-Augmented Generation) models, designed to scale with your business needs. Unlike many other website chatbots, DenserAI offers a comprehensive, all-in-one RAG-based platform.",
+  },
+
+  {
+    question: "Do you offer a free trial for adding an AI chatbot to a website?",
+    answer: "Yes, we offer a free trial for all new users. Sign up to explore DenserAI and create an AI chatbot for your website. Visit our products page for more information on our plans.",
+  },
+
+   {
+    question: "How can an AI chatbot for website benefit my business?",
+    answer: "An AI chatbot for website can significantly improve your business by automating workflows, reducing response times, and offering personalized service to more customers. CorpusAI chatbot for website integrates with your existing systems, ensuring smooth collaboration and cost savings.",
+  },
+];
     return(
     
       
@@ -193,7 +225,7 @@ export default function ChatBotOnWebPage(){
             ))}
           </div>
         </section>
-            <CustomerCareFAQ/>
+            <SolutionFAQ faqs={chatbotWebFaq} title='FAQ' subtitle='AI Chatbot for Website FAQ'/>
   <section className="text-center px-4 pt-[56px] pb-16 bg-white">
         <h1 className="text-xl sm:text-2xl md:text-5xl font-medium text-[#1E1E1E] leading-tight">
          Trustworthy Chat with<span className="bg-gradient-to-r from-[#DAC0FF] to-[#BF56FF] bg-clip-text text-transparent"> Your Data</span>

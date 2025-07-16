@@ -103,7 +103,7 @@ export default function PricingPage() {
           </div>
           <div
             onClick={() => setBillingType("yearly")}
-            className={`w-32 h-12 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 ${
+            className={`w-32 h-12 rounded-full flex items-center  justify-center cursor-pointer transition-all duration-300 ${
               billingType === "yearly"
                 ? "bg-purple-500 text-white"
                 : "bg-white text-[#1E1E1E]"

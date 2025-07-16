@@ -1,6 +1,7 @@
 import B2BFeatureCard from '@/app/components/B2BFeatureCard';
 import B2BReasonCard from '@/app/components/B2BReasonCard';
 import CustomerCareFAQ from '@/app/components/CustomerCareFAQ';
+import SolutionFAQ from '@/app/components/SolutionFAQ';
 
 const features = [
   {
@@ -77,6 +78,36 @@ const empoweringCards = [
   }
 ];
 
+
+ const faq = [
+  {
+    question: "Is CorpusAI  document chat tool free to use?",
+    answer: "Yes! CorpusAI chat doc is free for up to 100 documents or 50MB of storage, with unlimited interactions. If you require additional storage or advanced features, our premium plans are available to suit your needs.",
+  },
+  {
+    question: "Can CorpusAI chat doc support multiple file types?",
+    answer: "Absolutely. Chat with doc supports a variety of file formats, including Word, PDF, TXT, PowerPoint, CSV, and TSV. If you need assistance with other formats, please contact our support team, and we'll be happy to help.",
+  },
+  {
+    question: "Can I access the CorpusAI chat doc on my mobile device?",
+    answer: "Yes, the CorpusAI chat doc is fully optimized for both iOS and Android, making it easy to access and interact with your documents on the go, whether you're at home or on the move.",
+  },
+  {
+    question: "Can CorpusAI chat doc summarize long and complex documents?",
+    answer: "Yes! DenserChat can quickly generate concise summaries of long and intricate documents, helping you save time and focus on the most critical information.",
+  },
+  {
+    question: "Does CorpusAI chat with doc provide citation references for its responses?",
+    answer: "Yes! Every response from DenserAI chat with doc includes source references from your document. This ensures transparency and allows you to verify the information directly within your files.",
+  },
+
+  {
+    question: "How secure is my data with CorpusAI chat with doc?",
+    answer: "We prioritize your privacy and security. All documents uploaded to DenserChat are encrypted and stored securely. We do not share your data with third parties, ensuring your information remains confidential.",
+  },
+
+ 
+];
 export default function ChatWithBotPage(){
    
     return(
@@ -205,7 +236,7 @@ export default function ChatWithBotPage(){
             ))}
           </div>
         </section>
-  <CustomerCareFAQ/>
+  <SolutionFAQ faqs={faq} title='FAQ' subtitle='Chat Doc FAQ'/>
         <section className="text-center px-4 pt-[56px] pb-16 bg-white">
         <h1 className="text-xl sm:text-2xl md:text-5xl font-medium text-[#1E1E1E] leading-tight">
          Trustworthy Chat with<span className="bg-gradient-to-r from-[#DAC0FF] to-[#BF56FF] bg-clip-text text-transparent"> Your Data</span>

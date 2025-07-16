@@ -1,5 +1,6 @@
 import B2BFeatureCard from '@/app/components/B2BFeatureCard';
 import CustomerCareFAQ from '@/app/components/CustomerCareFAQ';
+import SolutionFAQ from '@/app/components/SolutionFAQ';
 const features = [
     {
       icon: (
@@ -50,6 +51,29 @@ const features = [
       highlight: false,
     },
   ];
+
+  const chatWithPdfFaq = [
+  {
+    question: "How does AI chat work for PDFs?",
+    answer: "Our chat with PDF tool can assist with various tasks like answers, explanations, analysis, and even providing creative suggestions. It's ideal for learning, quick information retrieval, problem-solving, and expert insight.",
+  },
+  {
+    question: "Is my conversation data private and secure?",
+    answer: "Yes, your privacy is our top priority. All conversations are encrypted, and we never share your data with third parties. Your documents and chats are processed securely in isolated environments and automatically deleted after analysis, ensuring complete confidentiality.",
+  },
+  {
+    question: "How accurate are the AI PDF chat's responses?",
+    answer: "Our AI delivers precise and contextually accurate responses, thanks to its advanced training on a wide range of data. DenserAI's Chat with PDF provides transparency by citing sources directly from your document for every response. While the AI is highly reliable, we recommend verifying critical information with authoritative sources.",
+  },
+  {
+    question: "Can I use the PDF chat assistant in different languages?",
+    answer: "Absolutely! DenserChat PDF chat supports multiple languages, enabling you to generate conversations in various languages with ease. Try DenserAI PDF chat today, reading is not more a difficult thing.",
+  },
+  {
+    question: "Is CorpusAI PDF chat free to use?",
+    answer: "Yes, CorpusAI PDF chat is free to use, offering its features and benefits without any subscription fees or hidden charges. If you have more PDFs to uphold and read, you can also pay for a higher level.",
+  },
+];
 export default function ChatWithPdfPage(){
     return(
         <div className="min-h-screen w-full flex flex-col items-center justify-center bg-transparent px-2 sm:px-4 py-8">
@@ -108,7 +132,7 @@ export default function ChatWithPdfPage(){
         <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 mb-10">
           <div className="text-center mb-2 text-purple-400 font-semibold">Features</div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 text-center mb-10">Elevate Your Customer Service<br className='hidden sm:block'/> with AI Chatbot</h2>
-          <div className="w-full grid grid-cols-1  md:grid-cols-3 md:flex-row items-stretch justify-center gap-6 max-w-5xl mx-auto">
+          <div className="w-full grid grid-cols-1  md:grid-cols-3 md:flex-row items-stretch justify-center max-w-5xl mx-auto">
             {features.map((f, i) => (
               <B2BFeatureCard key={i} icon={f.icon} title={f.title} description={f.description} />
             ))}
@@ -158,7 +182,7 @@ export default function ChatWithPdfPage(){
           </div>
         </section>
   <section>
-        <CustomerCareFAQ/>
+        <SolutionFAQ faqs={chatWithPdfFaq} title='FAQ' subtitle='Chat with PDF FAQ'/>
         </section>
        
         <section className="text-center px-4 pt-[56px] pb-16 bg-white">

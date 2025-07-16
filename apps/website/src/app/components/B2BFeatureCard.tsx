@@ -10,8 +10,8 @@ type B2BFeatureCardProps = {
 const B2BFeatureCard: React.FC<B2BFeatureCardProps> = ({ icon, title, description, }) => (
  <div
   className="
-    relative bg-white group rounded-2xl border-2 border-zinc-100 p-6 flex flex-col
-    min-w-[220px] min-h-[160px] transition shadow-sm hover:shadow-md
+    relative bg-white group  border border-zinc-100 p-6 flex flex-col
+    w-[367px] min-h-[269px] transition hover:shadow-md
     hover:ring-purple-200 hover:border-[#BF56FF]
     before:content-[''] before:absolute before:inset-0 before:rounded-xl
     before:opacity-0 before:transition-all before:duration-300

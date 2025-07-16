@@ -3,6 +3,7 @@ import B2BFeatureCard from '@/app/components/B2BFeatureCard';
 import B2BReasonCard from '@/app/components/B2BReasonCard';
 import FAQSection from '@/app/components/FAQsection';
 import Navbar from '@/app/components/navbar';
+import SolutionFAQ from '@/app/components/SolutionFAQ';
 
 
 const features = [
@@ -64,6 +65,30 @@ const reasons = [
     icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-rocket h-6 w-6 text-purple-500" aria-hidden="true"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path></svg>,
     title: 'Scalable Solution',
     description: 'Grow your B2B communications effortlessly. Handle increasing chat volumes while maintaining consistent quality and response times.'
+  },
+];
+
+
+const b2BFaq = [
+  {
+    question: "How can a B2B chatbot benefit my enterprise?",
+    answer: "AI (Artificial Intelligence) is a technology that allows machines to think, learn, and perform tasks that usually require human intelligence, like understanding language, making decisions, or recognizing patterns. Powered by AI, chatbot solutions can answer questions in natural languages. People use AI chatbot solutions for customer service, answering FAQs, booking appointments, and more, helping businesses save time and cost.",
+  },
+  {
+    question: "Can the chatbot integrate with our existing business tools?",
+    answer: "Yes, our B2B chatbot is designed to integrate seamlessly with common business tools including CRM systems, help desk software, and enterprise resource planning (ERP) systems. This ensures smooth data flow and consistent operations across your business processes.",
+  },
+  {
+    question: "How does the B2B chatbot handle complex business queries?",
+    answer: "Our B2B chatbot uses advanced AI to understand and respond to complex business queries. For highly specific or sensitive matters, it can seamlessly escalate to human agents while maintaining context. The bot learns from interactions to continuously improve its responses.",
+  },
+  {
+    question: "Is the B2B chatbot secure for enterprise use?",
+    answer: "Yes, our B2B chatbot is built with enterprise-grade security. It includes data encryption, secure authentication, and compliance with major security standards. You can also configure access controls and data handling policies to match your security requirements.",
+  },
+  {
+    question: "Can we customize the chatbot for our specific industry?",
+answer: "Absolutely. Our B2B chatbot is highly customizable to your industry, business processes, and brand voice. You can train it on your specific products, services, and industry terminology to ensure accurate and relevant responses to your business clients."
   },
 ];
 
@@ -257,7 +282,7 @@ export default function B2BChatBotPage() {
           ))}
         </div>
       </section>
-      <section><FAQSection/></section>
+      <section><SolutionFAQ faqs={b2BFaq} title='FAQ' subtitle='B2B Chatbot FAQ'/></section>
       <section className="text-center px-4 pt-[56px] pb-16 bg-white">
         <h1 className="text-xl sm:text-2xl md:text-5xl font-medium text-[#1E1E1E] leading-tight">
          Trustworthy Chat with<span className="bg-gradient-to-r from-[#DAC0FF] to-[#BF56FF] bg-clip-text text-transparent"> Your Data</span>
