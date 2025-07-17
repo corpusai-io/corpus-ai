@@ -19,8 +19,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </div>
             </main>
           </div>
-
-         
         </div>
       </body>
     </html>

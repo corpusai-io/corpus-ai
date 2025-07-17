@@ -3,14 +3,32 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
-export default function Page({ setIsMobileSidebarOpen }: { setIsMobileSidebarOpen?: (val: boolean) => void }) {
+interface PageProps {
+  setIsMobileSidebarOpen: (value: boolean) => void;
+  setIsSidebarVisible: (value: boolean) => void;
+}
+
+
+export default function Page({
+  setIsMobileSidebarOpen,
+  setIsSidebarVisible,
+}: PageProps) {
+  
   const [search, setSearch] = useState("");
-  const [activeItem, setActiveItem] = useState("");
+
+  const pathname = usePathname();
   const [showInstall, setShowInstall] = useState(false);
   const router = useRouter();
+const [activeItem, setActiveItem] = useState(() => {
+  const saved = localStorage.getItem("activeItem");
+  return saved || "";
+});
 
-  const itemRoutes: Record<string, string> = {
+
+  
+  const itemRoutes = {
     "Website Chatbot": "/Components/chatbots-docs-pages/Website-Chatbot",
     "File Chatbot": "/Components/chatbots-docs-pages/File-Chatbot",
     "Chatbot Data Store": "/ChatbotDatastore",
@@ -36,27 +54,40 @@ export default function Page({ setIsMobileSidebarOpen }: { setIsMobileSidebarOpe
     "Telegram", "Slack", "Shopify", "Wordpress", "Your Website", "Zapier", "Zapier with Lead Generation",
   ];
 
-  useEffect(() => {
-    const savedItem = localStorage.getItem("activeItem");
-    const savedRoute = localStorage.getItem("activeRoute");
-    const savedShowInstall = localStorage.getItem("showInstall");
+ useEffect(() => {
+  const savedItem = localStorage.getItem("activeItem");
+  const savedRoute = localStorage.getItem("activeRoute");
+  const savedShowInstall = localStorage.getItem("showInstall");
 
-    if (window.location.pathname === "/") {
-      setActiveItem("");
-      localStorage.removeItem("activeItem");
-      localStorage.removeItem("activeRoute");
-      localStorage.removeItem("showInstall");
-      setShowInstall(false);
-      return;
-    }
+  const currentPath = window.location.pathname;
 
+  // Clear everything if on home page
+  if (currentPath === "/") {
+    setActiveItem("");
+    localStorage.removeItem("activeItem");
+    localStorage.removeItem("activeRoute");
+    localStorage.removeItem("showInstall");
+    setShowInstall(false);
+    return;
+  }
+
+  // Restore saved state only if currentPath matches savedRoute
+  if (savedRoute && savedRoute !== "/" && savedRoute === currentPath) {
     if (savedItem) setActiveItem(savedItem);
     if (savedShowInstall === "true") setShowInstall(true);
+  }
 
-    if (savedRoute && savedRoute !== "/" && savedRoute !== window.location.pathname) {
-      router.push(savedRoute);
-    }
-  }, []);
+
+  if (
+    savedRoute &&
+    savedRoute !== "/" &&
+    savedRoute !== currentPath &&
+    !activeItem
+  ) {
+    router.push(savedRoute);
+  }
+}, []);
+
 
   useEffect(() => {
     if (activeItem) {
@@ -72,32 +103,40 @@ export default function Page({ setIsMobileSidebarOpen }: { setIsMobileSidebarOpe
     }
   }, [activeItem]);
 
-const handleClick = (itemName) => {
-    setActiveItem(itemName);
-    setShowInstall(installItems.includes(itemName));
+const handleClick = (itemName: string) => {
+  setActiveItem(itemName);
+  setShowInstall(installItems.includes(itemName));
 
-    // ✅ Close sidebar and icon both
-    if (window.innerWidth <= 1024) {
-      setIsMobileSidebarOpen(false);
-      setIsSidebarVisible(false); // ✅ Close the icon state
-    }
-  };
+  // 👇 Close both on mobile
+  if (typeof setIsMobileSidebarOpen === 'function') {
+    setIsMobileSidebarOpen(false);
+  }
+  if (typeof setIsSidebarVisible === 'function') {
+    setIsSidebarVisible(false);
+  }
+};
 
-  const navLink = (name: string, display: string | null = null) => (
+
+  
+const navLink = (name, display = null, showArrow = false) => {
+  const isActive = pathname === itemRoutes[name];
+
+  return (
     <Link href={itemRoutes[name] || "/"} onClick={() => handleClick(name)}>
       <div
-        className={`block py-[3px] pl-2 rounded-md cursor-pointer transition hover:bg-[#F2F2F2] hover:text-[#1E1E1E] ${
-          activeItem === name
-            ? "bg-[#F4E2FF] text-[#BF56FF]"
-            : "text-[#7E7E7E]"
-        }`}
+        className={`flex justify-between items-center py-[3px] pl-2 pr-2 rounded-md cursor-pointer transition
+          ${isActive ? "bg-[#F4E2FF] text-[#BF56FF]" : "text-[#7E7E7E] hover:bg-[#F2F2F2] hover:text-[#1E1E1E]"}
+        `}
       >
-        {display ?? name}
+        <span >{typeof display === "string" ? display : display ?? name}</span>
+        {showArrow && <img src="/Website Assets/Arrow Left.svg" alt="" className="pl-10"/>}
       </div>
     </Link>
   );
+};
 
   return (
+    
     <div className="h-screen bg-white flex flex-col overflow-y-hidden">
       <header className="sticky top-0 z-10 bg-white lg:block sm:hidden hidden">
         <div className="flex items-center justify-between p-3">
@@ -124,23 +163,26 @@ const handleClick = (itemName) => {
         </form>
       </header>
 
-      <div className={`flex-1 px-3 text-sm list-none text-gray-700 lg:mt-3 mt-20 ${showInstall ? 'overflow-y-auto' : 'overflow-hidden'}`}>
-        {/* Example section */}
+      <div className={`flex-1 px-3 text-sm list-none text-gray-700 lg:mt-3 mt-20  ${showInstall ? 'overflow-y-auto' : 'overflow-hidden'}`}>
+        {/* Section: Chatbot */}
         <li>
           <div className="flex items-start gap-2">
             <img src="/Website Assets/Robot.svg" alt="" />
             <span>Chatbot</span>
-            <div className="ml-[95px]">
-              <img src="/Website Assets/Arrow Down.svg" alt="" />
-            </div>
+          <div className="ml-[100px]">
+            <img src="/Website Assets/Arrow Down.svg" alt="" />
           </div>
-          <div className="border-l border-gray-300 text-gray-500 ml-3 px-3">
+          </div>
+          <div className="border-l border-gray-300 text-gray-500 ml-3">
+           <div className="px-3">
             {navLink("Website Chatbot")}
             {navLink("File Chatbot")}
             {navLink("Chatbot Data Store")}
             {navLink("Chatbot Query Logs")}
             {navLink("Chatbot Customization")}
-            {navLink("Use Documents From Google")}
+            {navLink("Use Documents From Google Drive")}
+           </div>
+           
           </div>
         </li>
 
@@ -156,20 +198,19 @@ const handleClick = (itemName) => {
               onClick={() => setShowInstall(prev => !prev)}
             >
               Install On
-              <img src="/Website Assets/Arrow Left.svg" alt="" />
+              <img src="/Website Assets/Arrow Left.svg" alt="" className="pr-2"/>
             </span>
             {showInstall && (
               <ul className="ml-3 ">
                 {installItems.map((item) => navLink(item))}
               </ul>
             )}
-           <div className="flex justify-between cursor-pointer rounded-md ml-3 hover:bg-[#F2F2F2] hover:text-[#1E1E1E]">
-            {navLink("Connect")}
-            <img src="/Website Assets/Arrow Left.svg"  alt="" />
+           <div className="cursor-pointer rounded-md ml-3 hover:bg-[#F2F2F2] hover:text-[#1E1E1E]">
+            {navLink("Connect", null, true)}
+            
             </div>
-            <div className="flex justify-between cursor-pointer ml-3 rounded-md my-2  hover:bg-[#F2F2F2] hover:text-[#1E1E1E]">
-            {navLink("RESTful API")}
-            <img src="/Website Assets/Arrow Left.svg" alt="" />
+            <div className="cursor-pointer ml-3 rounded-md my-2  hover:bg-[#F2F2F2] hover:text-[#1E1E1E]">
+            {navLink("RESTful API", null, true)}
             </div>
             </div>
 
@@ -178,13 +219,14 @@ const handleClick = (itemName) => {
 
         {/* Section: Access Settings */}
         <li>
-          <div
-            onClick={() => handleClick("Access Settings")}
-            className={`py-1 rounded-md flex items-center gap-2 hover:bg-[#F2F2F2] hover:text-[#1E1E1E] ${activeItem === "Access Settings" ? "bg-[#F4E2FF] text-[#BF56FF]" : "text-gray-700"}`}
-          >
-            <img src="/Website Assets/Sheild Plus.svg" alt="" />
-            <Link href="/Components/chatbots-docs-pages/Access_Setting">Access Settings</Link>
-          </div>
+        <Link href="/Components/chatbots-docs-pages/Access_Setting" onClick={() => handleClick("Access Settings")}>
+  <div
+    className={`py-1 rounded-md flex items-center gap-2 hover:bg-[#F2F2F2] hover:text-[#1E1E1E] ${pathname === "/Components/chatbots-docs-pages/Access_Setting" ? "bg-[#F4E2FF] text-[#BF56FF]" : "text-gray-700"}`}
+  >
+    <img src="/Website Assets/Sheild Plus.svg" alt="" />
+    Access Settings
+  </div>
+</Link>
         </li>
 
         {/* Section: Billing */}
@@ -203,23 +245,22 @@ const handleClick = (itemName) => {
 
         {/* Section: FAQ */}
      <li>
+<Link href="/Components/chatbots-docs-pages/FAQ" onClick={() => handleClick("FAQ")}>
   <div
-    onClick={() => handleClick("FAQ")}
     className={`flex items-center gap-2 mb-[23px] py-1 rounded-md cursor-pointer transition ${
-      activeItem === "FAQ"
+      pathname === "/Components/chatbots-docs-pages/FAQ"
         ? "bg-[#F4E2FF] text-[#BF56FF]"
         : "text-[#7E7E7E] hover:bg-[#F2F2F2] hover:text-[#1E1E1E]"
     }`}
   >
     <img src="/Website Assets/Question Mark.svg" alt="" />
-    <Link href="/Components/chatbots-docs-pages/FAQ">{/* Link inside the styled div */}
-      <span>{'FAQ'}</span>
-    </Link>
+    <span>{'FAQ'}</span>
   </div>
+</Link>
 </li>
 
         {showInstall && (
-          <div className="fixed bottom-[45px] left-0 w-60 h-7 bg-white/75 z-50 pointer-events-none"></div>
+          <div className="fixed bottom-[45px] left-0 w-60 h-7 bg-white/75 z-50 pointer-events-none hidden lg:block"></div>
         )}
       </div>
 

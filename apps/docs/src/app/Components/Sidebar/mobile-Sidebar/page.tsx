@@ -5,7 +5,8 @@ interface Props {
   showSearchBar: boolean;
   setShowSearchBar: (value: boolean) => void;
   setIsMobileSidebarOpen: (value: boolean) => void;
-  setIsSidebarVisible: (value: boolean) => void; // 👈 NEW
+  setIsSidebarVisible: (value: boolean) => void;
+  isSidebarVisible: boolean; // ✅ NEW: accept from props
   isMobile: boolean;
 }
 
@@ -13,10 +14,12 @@ export default function MobileSidebar({
   showSearchBar,
   setShowSearchBar,
   setIsMobileSidebarOpen,
-  isMobile, // ✅ THIS WAS MISSING
+  setIsSidebarVisible,
+  isSidebarVisible, // ✅ use this
+  isMobile,
 }: Props) {
   const [search, setSearch] = useState('');
-  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // ✅ Reset sidebar icon visibility on layout switch
@@ -33,7 +36,7 @@ export default function MobileSidebar({
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       timeoutRef.current = setTimeout(() => {
         setShowSearchBar(false);
-      }, 20000);
+      }, 5000);
     }
 
     return () => {
@@ -124,6 +127,7 @@ export default function MobileSidebar({
           </form>
         </div>
       )}
+      
     </>
   );
 }
