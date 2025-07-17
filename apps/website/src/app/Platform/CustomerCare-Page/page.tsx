@@ -75,6 +75,29 @@ const reasons = [
   },
 ];
 
+const customerCareFaq = [
+  {
+    question: "How can a B2B chatbot benefit my enterprise?",
+    answer: "AI (Artificial Intelligence) is a technology that allows machines to think, learn, and perform tasks that usually require human intelligence, like understanding language, making decisions, or recognizing patterns. Powered by AI, chatbot solutions can answer questions in natural languages. People use AI chatbot solutions for customer service, answering FAQs, booking appointments, and more, helping businesses save time and cost.",
+  },
+  {
+    question: "Can the chatbot integrate with our existing business tools?",
+    answer: "Yes, our B2B chatbot is designed to integrate seamlessly with common business tools including CRM systems, help desk software, and enterprise resource planning (ERP) systems. This ensures smooth data flow and consistent operations across your business processes.",
+  },
+  {
+    question: "How does the B2B chatbot handle complex business queries?",
+    answer: "Our B2B chatbot uses advanced AI to understand and respond to complex business queries. For highly specific or sensitive matters, it can seamlessly escalate to human agents while maintaining context. The bot learns from interactions to continuously improve its responses.",
+  },
+  {
+    question: "Is the B2B chatbot secure for enterprise use?",
+    answer: "Yes, our B2B chatbot is built with enterprise-grade security. It includes data encryption, secure authentication, and compliance with major security standards. You can also configure access controls and data handling policies to match your security requirements.",
+  },
+  {
+    question: "Can we customize the chatbot for our specific industry?",
+answer: "Absolutely. Our B2B chatbot is highly customizable to your industry, business processes, and brand voice. You can train it on your specific products, services, and industry terminology to ensure accurate and relevant responses to your business clients."
+  },
+];
+
 export default function CustomerCarePage(){
     
     return (

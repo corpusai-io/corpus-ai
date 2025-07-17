@@ -1,11 +1,6 @@
 
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --font-primary: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
 
 @theme inline {
   --color-background: var(--background);
@@ -28,12 +23,6 @@
   font-style: normal;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
 
 body {
 
@@ -125,4 +114,16 @@ html, body {
   100% {
     transform: translate(0%, 0%) scale(1);
   }
+}
+@keyframes blink {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+
+.group:hover .blink-on-group-hover path {
+  animation: blink 1s ;
 }
