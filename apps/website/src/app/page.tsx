@@ -225,7 +225,7 @@ export default function Home() {
           <p className="text-gray-600 mb-4">
             Creating a chatbot based on your documents allows you to build on content you already have.
           </p>
-          <a href="#" className="text-black font-medium inline-flex items-center">
+          <a href="#" className="text-black font-medium inline-flex items-center hover:ml-3 duration-300 transition">
             Read More
             <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -249,7 +249,7 @@ export default function Home() {
           <p className="text-gray-600 mb-4">
             Chatbots streamline business operations by automating customer service and complex processes.
           </p>
-          <a href="#" className="text-black font-medium inline-flex items-center">
+          <a href="#" className="text-black font-medium inline-flex items-center hover:ml-3 duration-300 transition">
             Read More
             <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -273,7 +273,7 @@ export default function Home() {
           <p className="text-gray-600 mb-4">
             Corpus Retriever benchmarks retrieval accuracy using the MTB dataset.
           </p>
-          <a href="#" className="text-black font-medium inline-flex items-center">
+          <a href="#" className="text-black font-medium inline-flex items-center hover:ml-3 duration-300 transition">
             Read More
             <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />

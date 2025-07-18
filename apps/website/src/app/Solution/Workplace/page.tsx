@@ -110,19 +110,19 @@ const EducationFAQ = [
   },
   {
     question:"What types of tasks can the internal chatbot automate?",
-    answer: "",
+    answer: "An enterprise chatbot can automate a wide range of tasks, including employee support, IT troubleshooting, knowledge base queries, and process approvals. It can help streamline daily work, reduce human intervention, and increase productivity.",
   },
   {
     question: "Is our company data safe with the internal chatbot?",
-    answer: "",
+    answer: "Corpus AI takes data security very seriously and employs strict data protection measures in line with industry standard security protocols. All data is encrypted, and access control and private cloud deployment are implemented to ensure the security and privacy of company information.",
   },
   {
     question: "How long does it take to deploy the internal chatbot?",
-    answer: "",
+    answer: "Deploying a Corpus AI internal chatbot takes just a few hours. Because of its no-code platform, organizations can quickly customize and integrate to ensure a quick go-live and up and running.",
   },
   {
     question: "What support options does Corpus offer?",
-    answer: "",
+    answer: "Corpus offers a full range of support options, including online help documentation, 24/7 customer support, regular software updates, and feature upgrades. Additionally, users have access to dedicated technical support and consulting services as needed to ensure smooth use of the chatbot and optimize its performance.",
   }
 ];
 
@@ -168,7 +168,7 @@ export default function Workplace(){
                 {/* Chat Bubbles */}
                 <div className="flex flex-col gap-2 mb-4">
                   <div data-aos="fade-up" data-aos-duration="200" className="self-start bg-zinc-100 text-[#1E1E1E] rounded-lg px-4 py-2 text-sm max-w-[80%]">How can I assist you with workplace operations today?</div>
-                  <div data-aos="fade-up" data-aos-duration="400" className="self-end bg-purple-100 text-[#1E1E1E] rounded-lg px-4 py-2 text-sm max-w-[80%]">I need help accessing the employee vacation policy.</div>
+                  <div data-aos="fade-up" data-aos-duration="400" className="self-end bg-gradient-to-b from-[#FDFCFF] to-[#F1E6FF] text-[#1E1E1E] rounded-lg px-4 py-2 text-sm max-w-[80%]">I need help accessing the employee vacation policy.</div>
                   <div data-aos="fade-up" data-aos-duration="600" className="self-start bg-[#F0F0F0] border border-zinc-100 text-[#1E1E1E] rounded-lg px-4 py-2 text-sm max-w-[90%] shadow-sm">
                     <span className='font-medium'>I'll help you find the vacation policy document:</span><br/>
                     <br/>• Retrieving policy from knowledge base<br/>• You can access it at the HR portal?<br/> • Would you like me to summarize the key points
@@ -176,7 +176,7 @@ export default function Workplace(){
                 </div>
                 {/* Input Box */}
                 <div className="flex items-center gap-2 mt-20">
-                  <input
+                  <input disabled
                     type="text"
                     className="flex-1 rounded-lg border border-zinc-200 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300 bg-white/80 placeholder-zinc-400"
                     placeholder="Ask about anything"
@@ -231,7 +231,7 @@ export default function Workplace(){
             <div className="flex-1 flex flex-col items-start ml-3 justify-center max-w-lg">
               <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-[#BF56FF] text-sm font-medium inline-block">Step 2</span>
               <h3 className="text-2xl sm:text-3xl font-semibold text-[#000000] mb-3">AI-Powered Interactions & Intelligent Responses</h3>
-              <p className="text-[#7F7A7A] text-base font-medium sm:text-lg">Through machine learning and NLP, Denser AI enables intelligent interactions, quickly identifying and accurately responding to employee needs and optimizing daily workflows.</p>
+              <p className="text-[#7F7A7A] text-base font-medium sm:text-lg">Through machine learning and NLP, Corpus AI enables intelligent interactions, quickly identifying and accurately responding to employee needs and optimizing daily workflows.</p>
             </div>
             <img className=' ' src="/assets/workspace 2.png" alt="" />
           </section>

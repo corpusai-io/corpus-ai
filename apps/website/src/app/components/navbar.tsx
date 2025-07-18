@@ -13,7 +13,7 @@ export default function Navbar(){
   const closeDropdown = () => setIsVisible(false);
     return(
 
-<header className="sticky z-20 text-gray-600 max-w-6xl body-font border-1 bg-white border-[#ECECEC] outline-0 rounded-[10px] shadow-[0_8px_16px_0_rgba(194,194,194,0.15)] w-[94%] mx-auto mt-[55px]">
+<header className="sticky z-20 text-gray-600 max-w-6xl body-font border-1 bg-white border-[#ECECEC] outline-0 rounded-[10px] shadow-[0_8px_16px_0_rgba(194,194,194,0.15)] w-[94%] mx-auto mt-[50px]">
   <div className="container-fluid p-2 flex  flex-wrap items-center justify-between">
     <div className='flex justify-between  w-auto gap-10'>
     <Link prefetch={true} href="/" className="flex title-font font-medium text-center items-center text-black  md:mb-0"><img src="/logo.svg" alt="Corpus AI Logo" className="ml-3 h-6 w-auto"/>
@@ -198,7 +198,7 @@ export default function Navbar(){
         <div className="grid grid-cols-2 gap-[31px]">
           <div>
 
-             <div className="flex items-start space-x-3 py-4" onClick={closeDropdown}>
+             <div className="flex items-start space-x-3 py-4  hover:bg-gray-100 rounded-md" onClick={closeDropdown}>
       <span><Image src="/education.svg" alt="Chat" width={24} height={24} /></span>
      <Link prefetch={true} href='/Solution/Education'><div>
         <p className="font-medium text-[#1E1E1E]">Education</p>
@@ -207,7 +207,7 @@ export default function Navbar(){
       </Link>
       </div>
 
-       <div className="flex items-start space-x-3 py-4" onClick={closeDropdown}>
+       <div className="flex items-start space-x-3 py-4  hover:bg-gray-100 rounded-md" onClick={closeDropdown}>
       <span><Image src="/healthcare.svg" alt="Chat" width={24} height={24} /></span>
       
       <Link prefetch={true} href='/Solution/Healthcare'><div>
@@ -217,7 +217,7 @@ export default function Navbar(){
       </Link>
       </div>
 
-       <div className="flex items-start space-x-3 py-4" onClick={closeDropdown}>
+       <div className="flex items-start space-x-3 py-4  hover:bg-gray-100 rounded-md" onClick={closeDropdown}>
       <span><Image src="/workspace.svg" alt="Chat" width={24} height={24} /></span>
       <Link prefetch={true} href='/Solution/Workplace'><div>
         <p className="font-medium text-[#1E1E1E]">Workplace</p>
@@ -229,7 +229,7 @@ export default function Navbar(){
           </div>
           <div>
 
-             <div className="flex items-start space-x-3 py-4" onClick={closeDropdown}>
+             <div className="flex items-start space-x-3 py-4  hover:bg-gray-100 rounded-md" onClick={closeDropdown}>
       <span><Image src="/government.svg" alt="Chat" width={24} height={24} /></span>
      <Link prefetch={true} href='/Solution/Government'><div>
         <p className="font-medium text-[#1E1E1E]">Government</p>
@@ -238,7 +238,7 @@ export default function Navbar(){
       </Link>
       </div>
 
-      <Link prefetch={true} href='/Solution/Legal'>  <div className="flex items-start space-x-3 py-4" onClick={closeDropdown}>
+      <Link prefetch={true} href='/Solution/Legal'>  <div className="flex items-start space-x-3 py-4 hover:bg-gray-100 rounded-md" onClick={closeDropdown}>
       <span><Image src="/legal.svg" alt="Chat" width={24} height={24} /></span>
      <div>
         <p className="font-medium text-[#1E1E1E]">Legal</p>

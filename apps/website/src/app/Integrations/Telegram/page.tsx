@@ -118,19 +118,19 @@ const EducationFAQ = [
   },
   {
     question:"How do I link my CorpusAI chatbot to my Telegram bot?",
-    answer: "",
+    answer: "Absolutely. Once added to a group or messaged directly, your bot can respond with helpful, accurate answers drawn from your connected knowledge base.",
   },
   {
     question: "Will the bot work in group chats and private messages?",
-    answer: "",
+    answer: "Yes. You can configure your bot to respond only to admins or specific users via your Telegram bot settings or by adjusting your CorpusAI chatbot behavior.",
   },
   {
     question: "Can I limit who the bot responds to in Telegram?",
-    answer: "",
+    answer: "Yes! The integration process is fully visual and requires no coding. Just copy your token, paste it in, and you're ready to go.",
   },
   {
     question: "Is setup really no-code?",
-    answer: "",
+    answer: `You can disconnect your Telegram bot anytime from the Integrations panel in your CorpusAI dashboard. This won’t delete your chatbot or knowledge base.`,
   },
   
 ];
@@ -188,7 +188,7 @@ export default function Telegram(){
               </div>
 
               <div className="flex-1 flex flex-col items-start justify-center max-w-lg mt-10 lg:mt-0">
-                <span className="mb-2 px-1 py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-semibold inline-block">Setup 1</span>
+                <span className="mb-2 px-1 py-1 rounded-full text-purple-500 text-sm font-semibold inline-block">Setup 1</span>
                 <h3 className="text-2xl sm:text-3xl font-bold text-black mb-3">Access Integration Settings</h3>
                 <p className="text-[#7F7A7A] text-base sm:text-lg">Open your chatbot dashboard, go to the Integrations tab, and select Telegram to begin setup.</p>
               </div>
@@ -202,7 +202,7 @@ export default function Telegram(){
             <div className="flex flex-col lg:flex-row items-center justify-center w-full max-w-6xl gap-10 px-2 sm:px-4">
             
               <div className="flex-1 flex flex-col items-start justify-center max-w-lg mt-10 lg:mt-0">
-                <span className="mb-2 px-1py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-semibold inline-block">Setup 2</span>
+                <span className="mb-2 px-1py-1 rounded-full text-purple-500 text-sm font-semibold inline-block">Setup 2</span>
                 <h3 className="text-2xl sm:text-3xl font-bold text-black mb-3">Connect Your Telegram Bot</h3>
                 <p className="text-[#7F7A7A] text-base sm:text-lg">Paste your bot token from @BotFather, authorize connection, and confirm the bot name and icon.</p>
               </div>
@@ -220,7 +220,7 @@ export default function Telegram(){
                 <Image src={TELEGRAM_CHANNEL_IMG} width={300} height={300} alt="Slack auth" className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg h-auto object-contain" />
               </div>
               <div className="flex-1 flex flex-col items-start justify-center max-w-lg mt-10 lg:mt-0">
-                <span className="mb-2 px-1 py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-medium inline-block">Setup 3</span>
+                <span className="mb-2 px-1 py-1 rounded-full text-purple-500 text-sm font-medium inline-block">Setup 3</span>
                 <h3 className="text-2xl sm:text-3xl font-bold text-black mb-3">Start Using in Channels</h3>
                 <p className="text-[#7F7A7A] text-base sm:text-lg">Invite your bot to any Telegram group or message it directly. Users can ask questions and get instant replies based on your knowledge base.</p>
               </div>

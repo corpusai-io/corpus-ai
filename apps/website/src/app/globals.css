@@ -127,3 +127,19 @@ html, body {
 .group:hover .blink-on-group-hover path {
   animation: blink 1s ;
 }
+
+.faq-answer-static {
+  transition: max-height 0.1s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.1s;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding-top: 0;
+  padding-bottom: 0;
+  display: block;
+}
+.faq-answer-static.open {
+  max-height: 500px; /* Should be larger than your largest answer */
+  opacity: 1;
+  padding-top: 0.5rem;
+  padding-bottom: 1rem;
+}

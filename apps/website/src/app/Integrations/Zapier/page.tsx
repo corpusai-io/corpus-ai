@@ -113,19 +113,19 @@ const EducationFAQ = [
   },
   {
     question:"Is there customer support for setting up my Zapier Chatbot?",
-    answer: "",
+    answer: "Before starting, ensure you have: An existing Corpus.ai chatbot (Create one using our Website Chatbot or File Chatbot guides), a Zapier account, and access to the applications you want to integrate. Follow our step-by-step guide to connect CorpusAI to your Zapier workflows in minutes!",
   },
   {
     question: "What do I need to set up CorpusAI on Zapier?",
-    answer: "",
+    answer: "Absolutely! Our team is here to help you make the most of your Zapier AI chatbot integration. Whether you need technical assistance or advice on optimizing workflows, we're just a message away.",
   },
   {
     question: "What kind of tasks can the Corpus chatbot automate in Zapier?",
-    answer: "",
+    answer: "Yes, CorpusAI integrated with Zapier supports over 80 languages, allowing you to engage with a global audience. Whether you're managing customer inquiries or automating workflows, the multilingual feature ensures you can offer personalized and seamless support to clients from diverse regions.",
   },
   {
     question: "Does CorpusAI's Zapier bot support multiple languages?",
-    answer: "",
+    answer: "Zapier chatbot can automate various tasks to improve workflow efficiency. For example, it can automatically respond to messages in Slack by processing text and posting replies directly to channels. It can also log chat interactions into Google Sheets by creating a new row for every conversation, allowing you to track customer inquiries seamlessly.",
   },
   
 ];
@@ -183,9 +183,9 @@ export default function Zapier(){
               </div>
 
               <div className="flex-1 flex flex-col items-start justify-center max-w-lg mt-10 lg:mt-0">
-                <span className="mb-2 px-1 py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-semibold inline-block">Setup</span>
+                <span className="mb-2 px-1 py-1 rounded-full text-purple-500 text-sm font-semibold inline-block">Setup</span>
                 <h3 className="text-2xl sm:text-3xl font-bold text-black mb-3">Setup Integration</h3>
-                <p className="text-[#7F7A7A] text-base sm:text-lg">Log in to your Zapier account, click Create Zap, and search for CorpusAI. Choose your trigger or action event and connect your Denser Chat account using your API key.</p>
+                <p className="text-[#7F7A7A] text-base sm:text-lg">Log in to your Zapier account, click Create Zap, and search for CorpusAI. Choose your trigger or action event and connect your Corpus Chat account using your API key.</p>
               </div>
             </div>
             </div>
@@ -196,7 +196,7 @@ export default function Zapier(){
             
             <div className="flex flex-col lg:flex-row items-center justify-center w-full max-w-6xl gap-10 px-2 sm:px-4">
               <div className="flex-1 flex flex-col items-start justify-center max-w-lg mt-10 lg:mt-0">
-                <span className="mb-2 px-1py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-semibold inline-block">Configure</span>
+                <span className="mb-2 px-1py-1 rounded-full text-purple-500 text-sm font-semibold inline-block">Configure</span>
                 <h3 className="text-2xl sm:text-3xl font-bold text-black mb-3">Configure Workflow</h3>
                 <p className="text-[#7F7A7A] text-base sm:text-lg">Configure your workflow steps by selecting triggers and actions. Map data between apps and set up the automation rules according to your needs.</p>
               </div>
@@ -213,7 +213,7 @@ export default function Zapier(){
                 <Image src={GO_LIVE_IMG} width={300} height={300} alt="Slack auth" className="w-full max-w-xs sm-max-w-sm md:max-w-md lg:max-w-lg h-auto object-contain" />
               </div>
               <div className="flex-1 flex flex-col items-start justify-center max-w-lg mt-10 lg:mt-0">
-                <span className="mb-2 px-1 py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-semibold inline-block">Test</span>
+                <span className="mb-2 px-1 py-1 rounded-full text-purple-500 text-sm font-semibold inline-block">Test</span>
                 <h3 className="text-2xl sm:text-3xl font-bold text-black mb-3">Test and Deploy</h3>
                 <p className="text-[#7F7A7A] text-base sm:text-lg">Test your integration to ensure everything works as expected. Once satisfied, turn on your Zap and start automating your workflows.</p>
               </div>

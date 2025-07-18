@@ -27,7 +27,7 @@ const SolutionFAQ: React.FC<WebsiteFAQProps> = ({
  
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+    <div data-aos = "fade-up" data-aos-duration = "300" className="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
       <div className="text-center mb-12">
         <h1 className="text-lg font-semibold text-[#BF56FF] mb-2">{title}</h1>
         <h2 className="text-4xl font-semibold text-black mb-4">{subtitle}</h2>
@@ -38,24 +38,27 @@ const SolutionFAQ: React.FC<WebsiteFAQProps> = ({
         {faqs.map((faq, index) => (
           <div key={index} className="border-b border-b-[#C9C9C9] overflow-hidden">
             <button
-              className={`w-full px-6 py-4 text-left flex justify-between items-center ${openIndex === index ? 'bg-gray-50' : 'bg-white'}`}
+              className={`w-full px-6 py-4 text-left flex justify-between gap-4 items-start ${openIndex === index ? '' : 'bg-white'}`}
               onClick={() => toggleFAQ(index)}
+              aria-expanded={openIndex === index}
+              aria-controls={`faq-answer-${index}`}
             >
-              <h3  className="text-lg font-medium text-black">{faq.question}</h3>
+              <h3 className="text-lg font-medium text-black">{faq.question}</h3>
               <span className="text-[#8D8D8D] text-xl font-light">
                 {openIndex === index ? '−' : '+'}
               </span>
             </button>
-
-            {openIndex === index && (
-              <div className="px-6 pb-4 pt-2 bg-gray-50">
-                {faq.answer ? (
-                  <p className="text-gray-600 whitespace-pre-line">{faq.answer}</p>
-                ) : (
-                  <div className="h-8 bg-gray-200 animate-pulse rounded"></div>
-                )}
-              </div>
-            )}
+            <div
+              id={`faq-answer-${index}`}
+              className={`faq-answer-static${openIndex === index ? ' open' : ''}  px-6`}
+              aria-hidden={openIndex !== index}
+            >
+              {faq.answer ? (
+                <p className="text-gray-600 whitespace-pre-line">{faq.answer}</p>
+              ) : (
+                <div className="h-8 bg-gray-200 animate-pulse rounded"></div>
+              )}
+            </div>
           </div>
         ))}
       </div>

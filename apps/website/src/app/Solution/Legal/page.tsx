@@ -97,15 +97,15 @@ const EducationFAQ = [
   },
   {
     question:"What types of legal documents can the system process?",
-    answer: "",
+    answer: "The system can analyze a wide range of legal documents including contracts, pleadings, briefs, statutes, case law, regulatory filings, and internal legal memoranda. It handles multiple formats including PDF, Word, and text files.",
   },
   {
     question: "How does the AI assistant maintain confidentiality?",
-    answer: "",
+    answer: "We implement strict security measures including access controls and private cloud deployment options. All processing adheres to legal professional privilege and client confidentiality requirements.",
   },
   {
     question: "How accurate is the legal research and analysis?",
-    answer: "",
+    answer: "The AI provides highly accurate results by using advanced RAG technology to analyze your firm's documents, legal databases, and case law. However, it's designed to assist legal professionals, not replace their judgment. All AI-generated research and analysis should be reviewed by qualified legal professionals.",
   },
   
 ];
@@ -143,7 +143,7 @@ export default function legal(){
                 {/* Chat Bubbles */}
                 <div className="flex flex-col gap-2 mb-4">
                   <div data-aos="fade-up" data-aos-duration="200" className="self-start bg-zinc-100 text-[#1E1E1E] rounded-lg px-4 py-2 text-sm max-w-[80%]">How can I assist you with workplace operations today?</div>
-                  <div data-aos="fade-up" data-aos-duration="400" className="self-end bg-purple-100 text-[#1E1E1E] rounded-lg px-4 py-2 text-sm max-w-[80%]">I need help accessing the employee vacation policy.</div>
+                  <div data-aos="fade-up" data-aos-duration="400" className="self-end bg-gradient-to-b from-[#FDFCFF] to-[#F1E6FF] text-[#1E1E1E] rounded-lg px-4 py-2 text-sm max-w-[80%]">I need help accessing the employee vacation policy.</div>
                   <div data-aos="fade-up" data-aos-duration="600" className="self-start bg-[#F0F0F0] border border-zinc-100 text-[#1E1E1E] rounded-lg px-4 py-2 text-sm max-w-[90%] shadow-sm">
                     <span className='font-medium'>I'll help you find the vacation policy document:</span><br/>
                     <br/>• Retrieving policy from knowledge base<br/>• You can access it at the HR portal?<br/> • Would you like me to summarize the key points
@@ -151,7 +151,7 @@ export default function legal(){
                 </div>
                 {/* Input Box */}
                 <div className="flex items-center gap-2 mt-20">
-                  <input
+                  <input disabled
                     type="text"
                     className="flex-1 rounded-lg border border-zinc-200 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300 bg-white/80 placeholder-zinc-400"
                     placeholder="Ask about anything"
@@ -167,7 +167,7 @@ export default function legal(){
           <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 mb-20">
             <div className="text-center mb-2 text-purple-400 font-semibold">Features</div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-zinc-900 text-center mb-10">How Internal Chatbots Revolutionize<br className='hidden sm:block'/>  Business Operations</h2>
-            <div className="w-full grid grid-cols-1  md:grid-cols-3 items-stretch justify-center gap-6 max-w-5xl mx-auto">
+            <div className="w-full grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 place-items-center gap-6 max-w-5xl mx-auto">
               {features.map((f, i) => (
                 <EducationFeatureCard key={i} icon={f.icon} title={f.title} description={f.description}  />
               ))}
@@ -176,7 +176,7 @@ export default function legal(){
     
          
          <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 mb-20 max-w-7xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-[#000000] text-center mb-12">Why Choose Corpus Internal Chatbot?</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-4xl font-semibold text-[#000000] text-center mb-12">Why Legal Professionals Choose Corpus Chat</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
               {reasons.map((r, i) => (
                 <B2BReasonCard key={i} icon={r.icon} title={r.title} description={r.description} />

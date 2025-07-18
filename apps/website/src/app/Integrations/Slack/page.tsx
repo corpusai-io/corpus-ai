@@ -125,19 +125,19 @@ const EducationFAQ = [
   },
   {
     question:"How do I use the chatbot in Slack?",
-    answer: "",
+    answer: "Simply create a message starting with @CorpusAI followed by your question in any Slack channel. The chatbot will respond within the message thread in a few seconds.",
   },
   {
     question: "How can I test the integration?",
-    answer: "",
+    answer: "We recommend creating a dedicated test channel to avoid disturbing other users. You can ask questions and verify the chatbot's responses in this channel.",
   },
   {
     question: "What permissions does the integration require?",
-    answer: "",
+    answer: "CorpusAI requests minimal permissions to access your Slack workspace. You can review all requested permissions during the authorization process.",
   },
   {
     question: "How do I remove the Slack integration?",
-    answer: "",
+    answer: "You can easily revoke the integration by clicking the red 'Uninstall' button on the Slack integration tile. This will remove the chatbot's access to your workspace.",
   },
   
 ];
@@ -193,7 +193,7 @@ export default function Slack(){
                 <Image src={INTEGRATE_SLACK_IMG} width={300} height={300} alt="Slack Integration" className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg h-auto object-contain" />
               </div>
               <div className="flex-1 flex flex-col items-start justify-center max-w-lg mt-10 lg:mt-0">
-                <span className="mb-2 px-1 py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-semibold inline-block">Setup 1</span>
+                <span className="mb-2 px-1 py-1 rounded-full text-purple-500 text-sm font-semibold inline-block">Setup 1</span>
                 <h3 className="text-2xl sm:text-3xl font-bold text-black mb-3">Access Integration Settings</h3>
                 <p className="text-[#7F7A7A] text-base sm:text-lg">Navigate to your chatbot&apos;s main screen and select Integrations to find the Slack integration tile.</p>
               </div>
@@ -207,7 +207,7 @@ export default function Slack(){
             
             <div className="flex flex-col lg:flex-row items-center justify-center w-full max-w-6xl gap-10 px-2 sm:px-4">
               <div className="flex-1 flex flex-col items-start justify-center max-w-lg mt-10 lg:mt-0">
-                <span className="mb-2 px-1 py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-semibold inline-block">Setup 2</span>
+                <span className="mb-2 px-1 py-1 rounded-full text-purple-500 text-sm font-semibold inline-block">Setup 2</span>
                 <h3 className="text-2xl sm:text-3xl font-bold text-black mb-3">Install and Authorize</h3>
                 <p className="text-[#7F7A7A] text-base sm:text-lg">Click the Install button on the Slack tile and authorize access on the Slack authentication page. Choose your workspace if you have multiple options.</p>
               </div>
@@ -224,7 +224,7 @@ export default function Slack(){
                 <Image src={CHANNEL_IMAGE_IMG} width={300} height={300} alt="Slack auth" className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg h-auto object-contain" />
               </div>
               <div className="flex-1 flex flex-col items-start justify-center max-w-lg mt-10 lg:mt-0">
-                <span className="mb-2 px-1 py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-semibold inline-block">Setup 3</span>
+                <span className="mb-2 px-1 py-1 rounded-full text-purple-500 text-sm font-semibold inline-block">Setup 3</span>
                 <h3 className="text-2xl sm:text-3xl font-bold text-black mb-3">Start Using in Channels</h3>
                 <p className="text-[#7F7A7A] text-base sm:text-lg">Create a message starting with @CorpusAI followed by your question in any Slack channel. Receive responses within the message thread.</p>
               </div>

@@ -118,19 +118,19 @@ const EducationFAQ = [
   },
   {
     question:" How do I link my Corpus AI chatbot to WhatsApp?",
-    answer: "",
+    answer: `Go to your chatbot’s Integrations page, select Whatsapp, and paste in your Whatsapp bot token. After authorizing, your bot will be ready to respond to users in Whatsapp.`,
   },
   {
     question: "Will the bot work in group chats and private messages?",
-    answer: "",
+    answer: "Absolutely. Once added to a group or messaged directly, your bot can respond with helpful, accurate answers drawn from your connected knowledge base.",
   },
   {
     question: "Can I limit who the bot responds to on WhatsApp?",
-    answer: "",
+    answer: "Yes. You can configure your bot to respond only to admins or specific users via your Whatsapp bot settings or by adjusting your CorpusAI chatbot behavior.",
   },
   {
     question: "Is setup really no-code?",
-    answer: "",
+    answer: "Yes! The integration process is fully visual and requires no coding. Just copy your token, paste it in, and you're ready to go.",
   },
   
 ];
@@ -188,7 +188,7 @@ export default function Whatsapp(){
               </div>
 
               <div className="flex-1 flex flex-col items-start justify-center max-w-lg mt-10 lg:mt-0">
-                <span className="mb-2 px-1 py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-semibold inline-block">Setup 1</span>
+                <span className="mb-2 px-1 py-1 rounded-full text-purple-500 text-sm font-semibold inline-block">Setup 1</span>
                 <h3 className="text-2xl sm:text-3xl font-bold text-black mb-3">Access Integration Settings</h3>
                 <p className="text-[#7F7A7A] text-base sm:text-lg">Open your Corpus AI chatbot dashboard, navigate to the Integrations tab, and select WhatsApp to start the setup process.</p>
               </div>
@@ -202,7 +202,7 @@ export default function Whatsapp(){
             <div className="flex flex-col lg:flex-row items-center justify-center w-full max-w-6xl gap-10 px-2 sm:px-4">
             
               <div className="flex-1 flex flex-col items-start justify-center max-w-lg mt-10 lg:mt-0">
-                <span className="mb-2 px-1py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-semibold inline-block">Setup 2</span>
+                <span className="mb-2 px-1py-1 rounded-full text-purple-500 text-sm font-semibold inline-block">Setup 2</span>
                 <h3 className="text-2xl sm:text-3xl font-bold text-black mb-3">Connect Your WhatsApp Business API</h3>
                 <p className="text-[#7F7A7A] text-base sm:text-lg">Sign up for a WhatsApp Business API account through Meta’s Business Manager. Enter your API credentials in the Corpus AI dashboard to authorize the connection.</p>
               </div>
@@ -220,7 +220,7 @@ export default function Whatsapp(){
                 <Image src={GO_LIVE_IMG} width={300} height={300} alt="Slack auth" className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg h-auto object-contain" />
               </div>
               <div className="flex-1 flex flex-col items-start justify-center max-w-lg mt-10 lg:mt-0">
-                <span className="mb-2 px-1 py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-semibold inline-block">Setup 3</span>
+                <span className="mb-2 px-1 py-1 rounded-full text-purple-500 text-sm font-semibold inline-block">Setup 3</span>
                 <h3 className="text-2xl sm:text-3xl font-bold text-black mb-3">Start Engaging on WhatsApp</h3>
                 <p className="text-[#7F7A7A] text-base sm:text-lg">Add your bot to WhatsApp groups or share its number for direct messaging. Users can ask questions, and your bot will respond instantly with insights from your connected documents.</p>
               </div>

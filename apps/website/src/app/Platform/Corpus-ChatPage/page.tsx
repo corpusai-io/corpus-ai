@@ -6,6 +6,7 @@ import FAQSection from '@/app/components/FAQsection';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import SolutionFAQ from '@/app/components/SolutionFAQ';
+import Pricingg from '@/app/components/Pricingg';
 const features = [
   {
     icon: (
@@ -57,21 +58,24 @@ const steps = [
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-message-circle w-5 h-5 text-primary" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path></svg>
     ),
     title: 'Upload Your Content',
-    description: 'Simply paste your website URL or upload your documents. We support PDFs, Word docs, and more.'
+    description: 'Simply paste your website URL or upload your documents. We support PDFs, Word docs, and more.',
+    delay: "0"
   },
   {
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-sparkles w-5 h-5 text-primary" aria-hidden="true"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path><path d="M20 3v4"></path><path d="M22 5h-4"></path><path d="M4 17v2"></path><path d="M5 18H3"></path></svg>
     ),
     title: 'AI Processing',
-    description: 'Our AI analyzes your content, understanding the context and creating a knowledge base.'
+    description: 'Our AI analyzes your content, understanding the context and creating a knowledge base.',
+    delay:"200"
   },
   {
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-thumbs-up w-5 h-5 text-primary" aria-hidden="true"><path d="M7 10v12"></path><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"></path></svg>
     ),
     title: 'Start Chatting',
-    description: 'Ask questions naturally and get accurate answers from your content instantly.'
+    description: 'Ask questions naturally and get accurate answers from your content instantly.',
+    delay:"400"
   },
 ];
 
@@ -114,7 +118,39 @@ const CorpusChatPage = () => {
       once: true // Only animate once on scroll
     });
   }, []);
-  
+
+//   const [width1, setWidth] = useState('60%');
+
+// useEffect(() => {
+//   const timeout = setTimeout(() => {
+//     setWidth('100%');   
+//   }, 100);
+
+//   return () => clearTimeout(timeout);
+// }, []);
+
+//   const [progress, setProgress] = useState(40);
+
+//  useEffect(() => {
+//     const timeout = setTimeout(() => {
+//       setProgress(65); 
+//         }, 50); 
+
+//     return () => clearTimeout(timeout);
+//   }, []);
+
+
+ const [boxWidths, setBoxWidths] = useState([40, 35, 33, 30, 30]);
+
+  // Animate progress bars after all card animations are done
+  useEffect(() => {
+    // Card delays: 0, 400, 800, 1200; duration: 200ms each; last card finishes at 1400ms
+    const totalDelay = 1400 + 200; // 1600ms
+    const timeout = setTimeout(() => {
+      setBoxWidths([80, 70, 70, 65, 100]);
+    }, totalDelay);
+    return () => clearTimeout(timeout);
+  }, []);
 
   return (
     <div className="min-h-screen w-full bg-transparent flex flex-col items-center justify-center px-2 sm:px-4 relative">
@@ -155,14 +191,14 @@ const CorpusChatPage = () => {
             <div data-aos="fade-up" data-aos-duration="200" data-aos-delay="0" className="shadow-lg chatCard1 w-[280px] rounded-2xl mt-8 border border-zinc-100/20 bg-white p-5 flex flex-col items-center justify-center gap-4 relative" style={{ minHeight: '320px' }}>
               {/* Header */}
               <div className="absolute top-4 left-4 flex items-center gap-2">
-                <div className="flex h-6 w-6 items-center justify-center rounded-xl bg-purple-50">
+                <div className="flex p-1 items-center justify-center rounded-md bg-purple-50">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-message-square text-purple-400"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                 </div>
                 <span className="font-medium text-zinc-900 text-base">Live Chat</span>
               </div>
               {/* Chat bubbles */}
               <div className="flex flex-col gap-2 mt-8 mb-2 w-full h-full">
-                <div className="rounded-xl bg-[#F6F1FB] text-xs text-zinc-700 w-fit max-w-[200px] px-3 py-2 self-center shadow-sm">Hi i need help with my account<div className="text-[10px] text-zinc-400 mt-1 text-left">2:30 PM</div></div>
+                <div className="rounded-xl bg-gradient-to-b from-[#FDFCFF] to-[#F1E6FF] text-xs text-zinc-700 w-fit max-w-[200px] px-3 py-2 self-center shadow-sm">Hi i need help with my account<div className="text-[10px] text-zinc-400 mt-1 text-left">2:30 PM</div></div>
                 <div className="rounded-xl bg-white border border-zinc-100 text-xs text-zinc-800 w-fit max-w-[200px] px-3 py-2 self-center shadow">Hello, I'll be happy to help you with your account. What seems<div className="text-[10px] text-zinc-400 mt-1 text-left">2:30 PM</div></div>
               </div>
               {/* Model Selector Dropdown (static, centered) */}
@@ -190,7 +226,7 @@ const CorpusChatPage = () => {
             {/* Smart Highlight Card */}
             <div data-aos="fade-up" data-aos-duration="200" data-aos-delay="400" className="shadow-lg w-[280px] h-fit rounded-2xl border border-zinc-100/20 bg-white p-5 flex flex-col gap-4">
               <div className="flex items-center gap-2 mb-1">
-                <div className="flex h-7 w-7 items-center justify-center rounded-xl bg-purple-50">
+                <div className="flex p-1 items-center justify-center rounded-md bg-purple-50">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-sparkles text-purple-400"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path><path d="M20 3v4"></path><path d="M22 5h-4"></path><path d="M4 17v2"></path><path d="M5 18H3"></path></svg>
                 </div>
                 <div>
@@ -211,9 +247,9 @@ const CorpusChatPage = () => {
             </div>
 
             {/* Stats Card */}
-            <div data-aos="fade-up" data-aos-duration="200" data-aos-delay="800" className="shadow-lg h-fit  w-[280px] rounded-2xl border border-zinc-100/20  p-5 flex flex-col gap-4">
+            <div data-aos="fade-up" data-aos-duration="200" data-aos-delay="800" className="shadow-lg h-fit bg-white  w-[280px] rounded-2xl border border-zinc-100/20  p-5 flex flex-col gap-4">
               <div className="flex items-center justify-between mb-1">
-                <div className="flex h-7 w-7 items-center justify-center rounded-xl bg-purple-50">
+                <div className="flex p-1 items-center justify-center rounded-md bg-purple-50">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-bar-chart-2 text-purple-400"><path d="M18 20V10"></path><path d="M12 20V4"></path><path d="M6 20v-6"></path></svg>
                 </div>
                 <span className="text-xs font-medium text-zinc-400">Last 30 days</span>
@@ -224,21 +260,21 @@ const CorpusChatPage = () => {
                   <span className="text-sm font-semibold text-zinc-900">98.3%</span>
                 </div>
                 <div className="h-1.5 overflow-hidden rounded-full bg-zinc-100">
-                  <div className="h-full rounded-full bg-gradient-to-r from-purple-400 to-purple-400/80" style={{ width: '98.3%' }}></div>
+                  <div className="h-full rounded-full bg-gradient-to-r from-purple-400 to-purple-400/80 duration-1000" style={{ width: `${boxWidths[0]}%` }}></div>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-zinc-500">Query Logs</span>
                   <span className="text-sm font-semibold text-zinc-900">2.4K</span>
                 </div>
                 <div className="h-1.5 overflow-hidden rounded-full bg-zinc-100">
-                  <div className="h-full rounded-full bg-gradient-to-r from-purple-300 to-purple-400/80" style={{ width: '75%' }}></div>
+                  <div className="h-full rounded-full bg-gradient-to-r from-purple-300 to-purple-400/80 duration-1000" style={{ width: `${boxWidths[1]}%` }}></div>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-zinc-500">Lead Generation</span>
                   <span className="flex items-center text-xs text-green-600 font-medium">+30%<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-1"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></span>
                 </div>
                 <div className="h-1.5 overflow-hidden rounded-full bg-zinc-100">
-                  <div className="h-full rounded-full bg-green-600" style={{ width: '65%' }}></div>
+                  <div className="h-full rounded-full bg-green-600 duration-1000" style={{ width: `${boxWidths[2]}%` }}></div>
                 </div>
                 <div className="flex justify-between gap-2 pt-1">
                   <div className="rounded-xl p-2">
@@ -256,7 +292,7 @@ const CorpusChatPage = () => {
             {/* File Processing Card */}
             <div data-aos="fade-up" data-aos-duration="200" data-aos-delay="1200" className="shadow-lg w-[280px] rounded-2xl border border-zinc-100/20 bg-white p-5 flex flex-col gap-4">
               <div className="flex items-center justify-between mb-1">
-                <div className="flex h-7 w-7 items-center justify-center rounded-xl bg-purple-50">
+                <div className="flex p-1 items-center justify-center rounded-md bg-purple-50">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-file-text text-purple-400"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
                 </div>
                 <div className="rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-600">Parsed</div>
@@ -281,9 +317,11 @@ const CorpusChatPage = () => {
                   <div className="flex items-center gap-1.5"><div className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-500"></div><span className="text-zinc-600">Processing</span></div>
                   <span className="text-zinc-500">65% Complete</span>
                 </div>
-                <div className="h-1 overflow-hidden rounded-full bg-zinc-100 mt-2">
-                  <div className="h-full rounded-full bg-gradient-to-r from-purple-400 to-purple-400/80" style={{ width: '65%' }}></div>
-                </div>
+                 <div className="w-full h-2 rounded-full bg-zinc-100 mt-2 overflow-hidden">
+      <div
+        className="h-full rounded-full bg-gradient-to-r bg-green-600 transition-all duration-1000 ease-in-out" style={{ width: `${boxWidths[3]}%` }}
+      ></div>
+    </div>
               </div>
             </div>
           </div>
@@ -306,9 +344,9 @@ const CorpusChatPage = () => {
         <p data-aos="fade-up" data-aos-duration="500" className="text-[#8D8D8D] text-center max-w-2xl mb-10 text-base sm:text-lg">Setting up your AI chat assistant is quick and easy. Follow these steps to transform your content into an interactive knowledge base.</p>
         <div className="flex flex-col lg:flex-row items-center justify-center w-full max-w-6xl gap-10 px-2 sm:px-4">
         
-          <div data-aos="fade-right" data-aos-duration="500" className="flex-1 flex flex-col gap-10 w-full">
+          <div className="flex-1 flex flex-col gap-10 w-full">
             {steps.map((step, idx) => (
-              <div key={idx} className="flex items-start gap-4 w-full">
+              <div data-aos="fade-right"  data-aos-duration="500" data-aos-delay={step.delay} key={idx} className="flex items-start gap-4 w-full">
                 <div className="flex flex-col items-center mr-2">
                   <div className="w-9 h-9 rounded-full border-purple-200 flex items-center justify-center text-lg font-bold text-purple-400 mb-1">{idx + 1}</div>
                   {idx < steps.length - 1 && <div className="w-1 h-16 bg-purple-100" />}
@@ -337,22 +375,24 @@ const CorpusChatPage = () => {
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide text-purple-400 lucide-sparkles w-4 text-primary" aria-hidden="true"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path><path d="M20 3v4"></path><path d="M22 5h-4"></path><path d="M4 17v2"></path><path d="M5 18H3"></path></svg>
                   <span className="text-sm font-medium text-purple-500">Document Processed</span>
                 </div>
-                <div className="w-full h-2 rounded-full bg-purple-100 mb-2">
-                  <div className="h-full rounded-full bg-purple-400" style={{ width: '100%' }}></div>
-                </div>
+               <div className="w-full h-2 rounded-full bg-purple-100 mb-2 overflow-hidden duration-1000" style={{ width: `${boxWidths[4]}%` }}>
+      <div
+        className="h-full rounded-full bg-purple-400 transition-all duration-1000 ease-in-out"
+      ></div>
+    </div>
                 </div>
                 <div className="flex justify-between text-xs mb-2">
                   <span className="text-zinc-400">Content Analyzed</span>
                   <span className="text-zinc-900 font-medium">100%</span>
                 </div>
                 <div className="mb-3">
-                  <div className="bg-purple-50/80 rounded-xl px-3 py-2 text-sm text-zinc-800 shadow-sm w-fit max-w-full">
+                  <div className="bg-gradient-to-b from-[#FDFCFF] to-[#F1E6FF] rounded-xl px-3 py-2 text-sm text-zinc-800 shadow-sm w-fit max-w-full">
                     I've Analyzed your document. What would you like to know about it
                     <div className="text-[10px] text-zinc-400 mt-1 text-right">2:30 PM</div>
                   </div>
                 </div>
                 <form className="flex items-center gap-2 mt-2">
-                  <input type="text" placeholder="Ask about anything" className="flex-1 rounded-lg border border-zinc-200 bg-white/70 px-3 py-2 text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-purple-200" />
+                  <input disabled type="text" placeholder="Ask about anything" className="flex-1 rounded-lg border border-zinc-200 bg-white/70 px-3 py-2 text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-purple-200" />
                   <button type="submit" className="bg-purple-500 hover:bg-purple-600 text-white rounded-lg p-2 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" className="w-5 h-5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                   </button>
@@ -363,12 +403,12 @@ const CorpusChatPage = () => {
         </div>
       </section>
      <section >
-        <div className="text-center py-5 px-4 max-w-7xl mx-auto">
+        {/* <div className="text-center py-5 px-4 max-w-7xl mx-auto">
              <h4 className="text-sm text-[#BF56FF] font-semibold mb-5 uppercase">Pricing</h4>
              <h2 className="text-3xl sm:text-4xl font-bold mb-8">Simple Pricing</h2>
              <p className="mb-12 text-[#8D8D8D] max-w-6xl mx-auto">Use Corpus Chat for free. Upgrade to enable custom domains and more advanced features.</p>
-             </div>
-       <PricingPage/>
+             </div> */}
+       <Pricingg/>
        </section>
       {/* <FAQSection/> */}
       <SolutionFAQ faqs={corpusChatFaq} title='FAQ' subtitle='Frequently Asked Questions' />

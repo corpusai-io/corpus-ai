@@ -93,15 +93,15 @@ const EducationFAQ = [
   },
   {
     question:"How do you ensure the chatbot's responses are accurate and reliable?",
-    answer: "",
+    answer: "To ensure the accuracy and reliability of responses, our chatbot for government is built on advanced RAG (Retrieval-Augmented Generation) technology. This allows us to leverage powerful language models and continuous training to deliver precise, relevant answers.",
   },
   {
     question: "How do you ensure the chatbot's performance during high-traffic periods?",
-    answer: "",
+    answer: "Our chatbot is built to handle high-traffic volumes with ease. Thanks to its cloud-based infrastructure, it can scale dynamically to meet demand spikes during high-traffic periods, such as tax filing season or public emergencies.",
   },
   {
     question: "Can the chatbot be used to guide citizens through complex government processes?",
-    answer: "",
+    answer: "Absolutely. Our government chatbot is designed to assist users in navigating complex government processes, from applying for permits to understanding tax filings or social services. It provides step-by-step guidance, answers common questions, and helps users complete forms or applications.",
   },
   
 ];
@@ -148,7 +148,7 @@ export default function Government(){
                 {/* Chat Bubbles */}
                 <div className="flex flex-col gap-2 mb-4">
                   <div data-aos="fade-up" data-aos-duration="200" className="self-start bg-zinc-100 text-[#1E1E1E] rounded-lg px-4 py-2 text-sm max-w-[80%]">How can I assist you with workplace operations today?</div>
-                  <div data-aos="fade-up" data-aos-duration="400" className="self-end bg-purple-100 text-[#1E1E1E] rounded-lg px-4 py-2 text-sm max-w-[80%]">I need help accessing the employee vacation policy.</div>
+                  <div data-aos="fade-up" data-aos-duration="400" className="self-end bg-gradient-to-b from-[#FDFCFF] to-[#F1E6FF] text-[#1E1E1E] rounded-lg px-4 py-2 text-sm max-w-[80%]">I need help accessing the employee vacation policy.</div>
                   <div data-aos="fade-up" data-aos-duration="600" className="self-start bg-[#F0F0F0] border border-zinc-100 text-[#1E1E1E] rounded-lg px-4 py-2 text-sm max-w-[90%] shadow-sm">
                     <span className='font-medium'>I'll help you find the vacation policy document:</span><br/>
                     <br/>• Retrieving policy from knowledge base<br/>• You can access it at the HR portal?<br/> • Would you like me to summarize the key points
@@ -156,7 +156,7 @@ export default function Government(){
                 </div>
                 {/* Input Box */}
                 <div className="flex items-center gap-2 mt-20">
-                  <input
+                  <input disabled
                     type="text"
                     className="flex-1 rounded-lg border border-zinc-200 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300 bg-white/80 placeholder-zinc-400"
                     placeholder="Ask about anything"
@@ -190,43 +190,60 @@ export default function Government(){
           </section>
     
           {/* Deploy & Scale Section */}
-          
-         <section data-aos="fade-right" data-aos-duration="600" className="w-full flex bg-[#F9F0FF] flex-col gap-4 md:gap-8 lg:justify-between  lg:flex-row items-center justify-center pt-20 pb-10 max-w-7xl mx-auto">
-           
-            {/* Left: Integrations Card */}
-            <img className=' ' src="/assets/Government 1.png" alt="" />
-            {/* Right: Text */}
-            <div className="flex-1 flex flex-col items-start justify-center max-w-lg">
-              <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-[#BF56FF] text-sm font-medium inline-block">Step 1</span>
-              <h3 className="text-2xl sm:text-3xl font-semibold text-zinc-900 mb-3">Ingest</h3>
-              <p className="text-[#7F7A7A] text-base font-medium sm:text-lg">The Corpus AI chatbot helps gather and parse all relevant documents and web pages from your government portal.</p>
+          <div className='bg-[#F9F0FF] mt-10 lg:mt-20 px-4 pb-7 md:pb-10'>
+        <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center pl-7 pr-2 justify-center  mt-20 mb-10 mx-auto max-w-7xl">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 text-center mb-12">How It Works</h2>
+          <div className="flex flex-col lg:flex-row md:justify-between items-center justify-center w-full  gap-10">
+            {/* Left: Card with Tabs and Form */}
+            <img className='order-2 lg:order-1 lg:w-1/2' src="/assets/government 1.png" alt="" />
+            {/* Right: Setup Info */}
+            <div className="flex-1 flex flex-col items-start justify-center mb-10 lg:mb-0 order-1">
+              <span className="mb-2 px-2 py-1 rounded-full  text-purple-500 text-sm font-medium inline-block">Step 1</span>
+              <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">Ingest</h3>
+              <p className="text-zinc-500 text-base sm:text-lg">The Corpus AI chatbot helps gather and parse all relevant documents and web pages from your government portal.</p>
             </div>
-          </section>
+          </div>
+        </section>
+  
+        {/* Analyze Section */}
+        <section data-aos="fade-left" data-aos-duration="500" className="w-full overflow-x-hidden pl-7 pr-2 flex flex-col lg:flex-row items-center justify-center mt-2 mb-10 max-w-7xl mx-auto">
+          {/* Left: Text */}
+          <div className="flex-1 flex flex-col items-start justify-center mb-10 lg:mb-0">
+            <span className="mb-2 px-2 py-1 rounded-full text-purple-500 text-sm font-medium inline-block">Step 2</span>
+            <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">Deploy</h3>
+            <p className="text-zinc-500 text-base sm:text-lg">After ingesting the knowledge, you can deploy Denser Chat to your website—whether internally or externally—with just a few lines of code.
+</p>
+          </div>
+          {/* Right: Image Card */}
+          <div className="flex-1 flex items-center justify-center">
+            <img src="/assets/Group 1321315412.png" alt="Chatbot Build Status" className="w-full" />
+          </div>
+        </section>
+  
+        {/* Chat Section */}
+      <section
+  data-aos="fade-right"
+  data-aos-duration="500"
+  className="w-full flex flex-col-reverse lg:flex-row gap-8 px-6 items-center justify-between mt-20 mb-10 max-w-7xl mx-auto"
+>
+   <img
+    src="/assets/Group 1321315410.png"
+    alt="Is Corpusbot Free?"
+    className="mb-10 lg:mb-0 lg:w-1/2"
+  />
+  {/* Text first in DOM */}
+  <div className="flex-1 flex flex-col items-start justify-center mb-10 lg:mb-0">
+    <span className="mb-2 px-2 py-1 rounded-full text-purple-500 text-sm font-medium inline-block">Step 3</span>
+    <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">Ask Away</h3>
+    <p className="text-zinc-500 text-base sm:text-lg">
+      Citizens and staff simply type their questions—Corpus Chat delivers fast and accurate answers.
+    </p>
+  </div>
 
-           <section data-aos="fade-right" data-aos-duration="600" className="w-full flex bg-[#F9F0FF] flex-col gap-4 md:gap-8 lg:justify-between  lg:flex-row items-center justify-center pt-20 pb-10 max-w-7xl mx-auto">
-           
-            {/* Left: Integrations Card */}
-           
-            {/* Right: Text */}
-            <div className="flex-1 flex flex-col items-start ml-3 justify-center max-w-lg">
-              <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-[#BF56FF] text-sm font-medium inline-block">Step 2</span>
-              <h3 className="text-2xl sm:text-3xl font-semibold text-zinc-900 mb-3">Deploy</h3>
-              <p className="text-[#7F7A7A] text-base font-medium sm:text-lg">After ingesting the knowledge, you can deploy Denser Chat to your website—whether internally or externally—with just a few lines of code.</p>
-            </div>
-            <img className=' ' src="/assets/Group 1321315412.png" alt="" />
-          </section>
-
-          <section data-aos="fade-right" data-aos-duration="600" className="w-full flex bg-[#F9F0FF] flex-col gap-4 md:gap-8 lg:justify-between  lg:flex-row items-center justify-center pt-20 pb-10 max-w-7xl mx-auto">
-           
-            {/* Left: Integrations Card */}
-            <img className=' ' src="/assets/Group 1321315410.png" alt="" />
-            {/* Right: Text */}
-            <div className="flex-1 flex flex-col items-start justify-center max-w-lg">
-              <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-[#BF56FF] text-sm font-medium inline-block">Step 3</span>
-              <h3 className="text-2xl sm:text-3xl font-semibold text-zinc-900 mb-3">Ask Away</h3>
-              <p className="text-[#7F7A7A] text-base font-medium sm:text-lg">Citizens and staff simply type their questions—Corpus Chat delivers fast and accurate answers.</p>
-            </div>
-          </section>
+  {/* Image second in DOM */}
+ 
+</section>
+          </div>
             <section>
                 <div>
       {/* Your other content */}
