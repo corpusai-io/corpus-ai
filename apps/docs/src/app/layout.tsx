@@ -4,6 +4,7 @@ import SidebarPage from './Components/Sidebar/page'; // desktop
 import MobileSidebar from './Components/Sidebar/mobile-Sidebar/page';
 import useIsMobile from './hooks/useIsMobile'; // ✅ import the hook
 import './globals.css'; //Global CSS
+import { ThemeProvider } from '../LighMode';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const isMobile = useIsMobile(); // ✅ use the hook
@@ -27,10 +28,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
       <html lang="en" className="h-full">
         <body className="m-0 p-0 overflow-y-auto overflow-x-hidden h-full">
+           <ThemeProvider>
           <div className="flex min-h-screen">
             {/* Desktop Sidebar */}
-            <aside className="w-64 hidden lg:block fixed top-0 left-0 h-full z-14 bg-white border-r border-gray-200 overflow-y-auto">
-              <SidebarPage  />
+            <aside className="w-64  hidden lg:block fixed top-0 left-0 h-full z-14 bg-[#0000] border-r border-gray-200 overflow-y-auto">
+             < SidebarPage  />
             </aside>
 
             {/* Mobile Top Bar */}
@@ -57,7 +59,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 ></div>
 
                 <div className="flex flex-1 z-10 transition-all duration-300 ease-in-out">
-                  <div className="relative w-64 bg-white h-full shadow-lg z-50 sidebar-drawer">
+                  <div className="relative w-64 bg-black h-full shadow-lg z-50 sidebar-drawer">
                     <SidebarPage
                       setIsMobileSidebarOpen={setIsMobileSidebarOpen}
                       setIsSidebarVisible={setIsSidebarVisible}
@@ -68,13 +70,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             )}
             {/* Main Content */}
             <div
-              className={`flex flex-1 ml-0 mr-0 lg:ml-64 lg:mr-64 lg:mt-[10px] z-10 transition-all duration-300 ease-in-out ${showSearchBar ? 'mt-[100px]' : 'mt-[60px]'}`}
+              className={`flex flex-1 ml-0 mr-0 lg:ml-70 lg:mr-64 lg:mt-[20px] z-10 transition-all duration-300 ease-in-out ${showSearchBar ? 'mt-[100px]' : 'mt-[60px]'}`}
             >
-              <main className="flex-1 px-4 sm:px-4 py-1">
+              <main className="flex-1 lg:px-4 px-2 py-1">
                 <div className="max-w-[1200px] mx-auto w-full">{children}</div>
               </main>
             </div>
           </div>
+          </ThemeProvider>
         </body>
       </html>
   );

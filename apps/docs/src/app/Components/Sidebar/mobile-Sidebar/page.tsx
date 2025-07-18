@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
+import { useTheme } from '../../../../LighMod';
 
 interface Props {
   showSearchBar: boolean;
@@ -19,7 +20,7 @@ export default function MobileSidebar({
   isMobile,
 }: Props) {
   const [search, setSearch] = useState('');
-
+  const { darkMode, toggleDarkMode } = useTheme();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // ✅ Reset sidebar icon visibility on layout switch
@@ -46,9 +47,9 @@ export default function MobileSidebar({
 
   return (
     <>
-    
+
       {/* Top bar */}
-      <div className="py-[14px] px-[25px] w-full h-15 bg-white transition-all duration-300 fixed top-0 left-0 z-50">
+      <div className="py-[14px] px-[25px] w-full h-15 bg-white dark:bg-[#202020] transition-all duration-300 fixed top-0 left-0 z-50">
         <div className="flex justify-between items-center">
           {/* Flip / Close Button */}
           {!isSidebarVisible ? (
@@ -83,8 +84,18 @@ export default function MobileSidebar({
           {/* Right Side */}
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 p-0.5 pl-3 pr-3 rounded-3xl border border-gray-200 cursor-pointer">
-              <img src="/Website Assets/Brightness.svg" alt="Brightness" className="w-5" />
-              <img src="/Website Assets/Moon.svg" alt="Moon" className="w-5" />
+              <img
+                src="/Website Assets/Brightness.svg"
+                alt="Light Mode"
+                onClick={() => { if (darkMode) toggleDarkMode(); }}
+                className={`w-8 h-8 p-1 rounded-full cursor-pointer ${!darkMode ? 'bg-[#E9E9E9]' : ''}`}
+              />
+              <img
+                src="/Website Assets/Moon.svg"
+                alt="Dark Mode"
+                onClick={() => { if (!darkMode) toggleDarkMode(); }}
+                className={`w-8 h-8 p-1 rounded-full cursor-pointer ${darkMode ? 'bg-[#303030]' : ''}`}
+              />
             </div>
 
             {/* Toggle between Search and Close icon */}
@@ -127,7 +138,7 @@ export default function MobileSidebar({
           </form>
         </div>
       )}
-      
+
     </>
   );
 }

@@ -7,8 +7,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-<html lang="en" className="h-full">
-      <body className="m-0 p-0 overflow-y-auto overflow-x-hidden h-full">
+<div className="h-full">
+      <div className="m-0 p-0 overflow-y-auto overflow-x-hidden h-full">
         <div className="flex min-h-screen">
 
           {/* Main Content + Right Sidebar Container */}
@@ -20,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </main>
           </div>
         </div>
-      </body>
-    </html>
+      </div>
+    </div>
   );
 }

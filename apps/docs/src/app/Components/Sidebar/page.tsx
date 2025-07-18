@@ -4,30 +4,30 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
+import { useTheme } from "../../../LighMode";
 
 interface PageProps {
   setIsMobileSidebarOpen: (value: boolean) => void;
   setIsSidebarVisible: (value: boolean) => void;
 }
 
-
 export default function Page({
   setIsMobileSidebarOpen,
   setIsSidebarVisible,
 }: PageProps) {
-  
-  const [search, setSearch] = useState("");
 
+  const [search, setSearch] = useState("");
+  const { darkMode, toggleDarkMode } = useTheme();
   const pathname = usePathname();
   const [showInstall, setShowInstall] = useState(false);
   const router = useRouter();
-const [activeItem, setActiveItem] = useState(() => {
-  const saved = localStorage.getItem("activeItem");
-  return saved || "";
-});
+  const [activeItem, setActiveItem] = useState(() => {
+    const saved = localStorage.getItem("activeItem");
+    return saved || "";
+  });
 
 
-  
+
   const itemRoutes = {
     "Website Chatbot": "/Components/chatbots-docs-pages/Website-Chatbot",
     "File Chatbot": "/Components/chatbots-docs-pages/File-Chatbot",
@@ -54,39 +54,39 @@ const [activeItem, setActiveItem] = useState(() => {
     "Telegram", "Slack", "Shopify", "Wordpress", "Your Website", "Zapier", "Zapier with Lead Generation",
   ];
 
- useEffect(() => {
-  const savedItem = localStorage.getItem("activeItem");
-  const savedRoute = localStorage.getItem("activeRoute");
-  const savedShowInstall = localStorage.getItem("showInstall");
+  useEffect(() => {
+    const savedItem = localStorage.getItem("activeItem");
+    const savedRoute = localStorage.getItem("activeRoute");
+    const savedShowInstall = localStorage.getItem("showInstall");
 
-  const currentPath = window.location.pathname;
+    const currentPath = window.location.pathname;
 
-  // Clear everything if on home page
-  if (currentPath === "/") {
-    setActiveItem("");
-    localStorage.removeItem("activeItem");
-    localStorage.removeItem("activeRoute");
-    localStorage.removeItem("showInstall");
-    setShowInstall(false);
-    return;
-  }
+    // Clear everything if on home page
+    if (currentPath === "/") {
+      setActiveItem("");
+      localStorage.removeItem("activeItem");
+      localStorage.removeItem("activeRoute");
+      localStorage.removeItem("showInstall");
+      setShowInstall(false);
+      return;
+    }
 
-  // Restore saved state only if currentPath matches savedRoute
-  if (savedRoute && savedRoute !== "/" && savedRoute === currentPath) {
-    if (savedItem) setActiveItem(savedItem);
-    if (savedShowInstall === "true") setShowInstall(true);
-  }
+    // Restore saved state only if currentPath matches savedRoute
+    if (savedRoute && savedRoute !== "/" && savedRoute === currentPath) {
+      if (savedItem) setActiveItem(savedItem);
+      if (savedShowInstall === "true") setShowInstall(true);
+    }
 
 
-  if (
-    savedRoute &&
-    savedRoute !== "/" &&
-    savedRoute !== currentPath &&
-    !activeItem
-  ) {
-    router.push(savedRoute);
-  }
-}, []);
+    if (
+      savedRoute &&
+      savedRoute !== "/" &&
+      savedRoute !== currentPath &&
+      !activeItem
+    ) {
+      router.push(savedRoute);
+    }
+  }, []);
 
 
   useEffect(() => {
@@ -103,42 +103,42 @@ const [activeItem, setActiveItem] = useState(() => {
     }
   }, [activeItem]);
 
-const handleClick = (itemName: string) => {
-  setActiveItem(itemName);
-  setShowInstall(installItems.includes(itemName));
+  const handleClick = (itemName: string) => {
+    setActiveItem(itemName);
+    setShowInstall(installItems.includes(itemName));
 
-  // 👇 Close both on mobile
-  if (typeof setIsMobileSidebarOpen === 'function') {
-    setIsMobileSidebarOpen(false);
-  }
-  if (typeof setIsSidebarVisible === 'function') {
-    setIsSidebarVisible(false);
-  }
-};
+    // 👇 Close both on mobile
+    if (typeof setIsMobileSidebarOpen === 'function') {
+      setIsMobileSidebarOpen(false);
+    }
+    if (typeof setIsSidebarVisible === 'function') {
+      setIsSidebarVisible(false);
+    }
+  };
 
 
-  
-const navLink = (name, display = null, showArrow = false) => {
-  const isActive = pathname === itemRoutes[name];
 
-  return (
-    <Link href={itemRoutes[name] || "/"} onClick={() => handleClick(name)}>
-      <div
-        className={`flex justify-between items-center py-[3px] pl-2 pr-2 rounded-md cursor-pointer transition
+  const navLink = (name, display = null, showArrow = false) => {
+    const isActive = pathname === itemRoutes[name];
+
+    return (
+      <Link href={itemRoutes[name] || "/"} onClick={() => handleClick(name)}>
+        <div
+          className={`flex justify-between items-center py-[3px] pl-2 pr-2 rounded-md cursor-pointer transition
           ${isActive ? "bg-[#F4E2FF] text-[#BF56FF]" : "text-[#7E7E7E] hover:bg-[#F2F2F2] hover:text-[#1E1E1E]"}
         `}
-      >
-        <span >{typeof display === "string" ? display : display ?? name}</span>
-        {showArrow && <img src="/Website Assets/Arrow Left.svg" alt="" className="pl-10"/>}
-      </div>
-    </Link>
-  );
-};
+        >
+          <span >{typeof display === "string" ? display : display ?? name}</span>
+          {showArrow && <img src="/Website Assets/Arrow Left.svg" alt="" className="pl-10" />}
+        </div>
+      </Link>
+    );
+  };
 
   return (
-    
-    <div className="h-screen bg-white flex flex-col overflow-y-hidden">
-      <header className="sticky top-0 z-10 bg-white lg:block sm:hidden hidden">
+
+    <div className="h-screen bg-white dark:bg-red-500 flex flex-col overflow-y-hidden ">
+      <header className="sticky top-0 z-10 bg-white lg:block sm:hidden hidden dark:bg-[#202020]">
         <div className="flex items-center justify-between p-3">
           <div className="flex items-center space-x-2">
             <img src="/Website Assets/Logo.svg" alt="" />
@@ -169,20 +169,20 @@ const navLink = (name, display = null, showArrow = false) => {
           <div className="flex items-start gap-2">
             <img src="/Website Assets/Robot.svg" alt="" />
             <span>Chatbot</span>
-          <div className="ml-[100px]">
-            <img src="/Website Assets/Arrow Down.svg" alt="" />
-          </div>
+            <div className="ml-[100px]">
+              <img src="/Website Assets/Arrow Down.svg" alt="" />
+            </div>
           </div>
           <div className="border-l border-gray-300 text-gray-500 ml-3">
-           <div className="px-3">
-            {navLink("Website Chatbot")}
-            {navLink("File Chatbot")}
-            {navLink("Chatbot Data Store")}
-            {navLink("Chatbot Query Logs")}
-            {navLink("Chatbot Customization")}
-            {navLink("Use Documents From Google Drive")}
-           </div>
-           
+            <div className="px-3">
+              {navLink("Website Chatbot")}
+              {navLink("File Chatbot")}
+              {navLink("Chatbot Data Store")}
+              {navLink("Chatbot Query Logs")}
+              {navLink("Chatbot Customization")}
+              {navLink("Use Documents From Google Drive")}
+            </div>
+
           </div>
         </li>
 
@@ -198,35 +198,35 @@ const navLink = (name, display = null, showArrow = false) => {
               onClick={() => setShowInstall(prev => !prev)}
             >
               Install On
-              <img src="/Website Assets/Arrow Left.svg" alt="" className="pr-2"/>
+              <img src="/Website Assets/Arrow Left.svg" alt="" className="pr-2" />
             </span>
             {showInstall && (
               <ul className="ml-3 ">
                 {installItems.map((item) => navLink(item))}
               </ul>
             )}
-           <div className="cursor-pointer rounded-md ml-3 hover:bg-[#F2F2F2] hover:text-[#1E1E1E]">
-            {navLink("Connect", null, true)}
-            
+            <div className="cursor-pointer rounded-md ml-3 hover:bg-[#F2F2F2] hover:text-[#1E1E1E]">
+              {navLink("Connect", null, true)}
+
             </div>
             <div className="cursor-pointer ml-3 rounded-md my-2  hover:bg-[#F2F2F2] hover:text-[#1E1E1E]">
-            {navLink("RESTful API", null, true)}
+              {navLink("RESTful API", null, true)}
             </div>
-            </div>
+          </div>
 
 
         </li>
 
         {/* Section: Access Settings */}
         <li>
-        <Link href="/Components/chatbots-docs-pages/Access_Setting" onClick={() => handleClick("Access Settings")}>
-  <div
-    className={`py-1 rounded-md flex items-center gap-2 hover:bg-[#F2F2F2] hover:text-[#1E1E1E] ${pathname === "/Components/chatbots-docs-pages/Access_Setting" ? "bg-[#F4E2FF] text-[#BF56FF]" : "text-gray-700"}`}
-  >
-    <img src="/Website Assets/Sheild Plus.svg" alt="" />
-    Access Settings
-  </div>
-</Link>
+          <Link href="/Components/chatbots-docs-pages/Access_Setting" onClick={() => handleClick("Access Settings")}>
+            <div
+              className={`py-1 rounded-md flex items-center gap-2 hover:bg-[#F2F2F2] hover:text-[#1E1E1E] ${pathname === "/Components/chatbots-docs-pages/Access_Setting" ? "bg-[#F4E2FF] text-[#BF56FF]" : "text-gray-700"}`}
+            >
+              <img src="/Website Assets/Sheild Plus.svg" alt="" />
+              Access Settings
+            </div>
+          </Link>
         </li>
 
         {/* Section: Billing */}
@@ -236,28 +236,27 @@ const navLink = (name, display = null, showArrow = false) => {
             <span>Billing</span>
           </div>
           <div className="border-l border-gray-300 text-gray-500 space-y-2 ml-3 ">
-           <div className="px-3">
-            {navLink("Upgrade Plan")}
-            {navLink("AWS Marketplace")}
+            <div className="px-3">
+              {navLink("Upgrade Plan")}
+              {navLink("AWS Marketplace")}
             </div>
           </div>
         </li>
 
         {/* Section: FAQ */}
-     <li>
-<Link href="/Components/chatbots-docs-pages/FAQ" onClick={() => handleClick("FAQ")}>
-  <div
-    className={`flex items-center gap-2 mb-[23px] py-1 rounded-md cursor-pointer transition ${
-      pathname === "/Components/chatbots-docs-pages/FAQ"
-        ? "bg-[#F4E2FF] text-[#BF56FF]"
-        : "text-[#7E7E7E] hover:bg-[#F2F2F2] hover:text-[#1E1E1E]"
-    }`}
-  >
-    <img src="/Website Assets/Question Mark.svg" alt="" />
-    <span>{'FAQ'}</span>
-  </div>
-</Link>
-</li>
+        <li>
+          <Link href="/Components/chatbots-docs-pages/FAQ" onClick={() => handleClick("FAQ")}>
+            <div
+              className={`flex items-center gap-2 mb-[23px] py-1 rounded-md cursor-pointer transition ${pathname === "/Components/chatbots-docs-pages/FAQ"
+                  ? "bg-[#F4E2FF] text-[#BF56FF]"
+                  : "text-[#7E7E7E] hover:bg-[#F2F2F2] hover:text-[#1E1E1E]"
+                }`}
+            >
+              <img src="/Website Assets/Question Mark.svg" alt="" />
+              <span>{'FAQ'}</span>
+            </div>
+          </Link>
+        </li>
 
         {showInstall && (
           <div className="fixed bottom-[45px] left-0 w-60 h-7 bg-white/75 z-50 pointer-events-none hidden lg:block"></div>
@@ -268,12 +267,23 @@ const navLink = (name, display = null, showArrow = false) => {
       <div className="sticky bottom-0 bg-white border-t border-gray-300 lg:block hidden">
         <div className="ml-3 mr-5 mt-1 flex justify-between text-gray-500 py-2">
           <div className="flex gap-2 p-0.5 pl-3 pr-3 rounded-3xl border border-gray-200 ">
-            <img src="/Website Assets/Brightness.svg" alt="" />
-            <img src="/Website Assets/Moon.svg" alt="" />
+            <img
+              src="/Website Assets/Brightness.svg"
+              alt="Light Mode"
+              onClick={() => { if (darkMode) toggleDarkMode(); }}
+              className={`w-8 h-8 p-1 rounded-full cursor-pointer ${!darkMode ? 'bg-[#E9E9E9]' : ''}`}
+            />
+
+            <img
+              src="/Website Assets/Moon.svg"
+              alt="Dark Mode"
+              onClick={() => { if (!darkMode) toggleDarkMode(); }}
+              className={`w-8 h-8 p-1 rounded-full cursor-pointer ${darkMode ? 'bg-[#303030]' : ''}`}
+            />
           </div>
           <img src="/Website Assets/Sidebar-Flip.svg" alt="" />
         </div>
       </div>
-    </div> 
+    </div>
   );
 }
