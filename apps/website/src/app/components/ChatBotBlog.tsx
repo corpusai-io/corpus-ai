@@ -1,3 +1,4 @@
+import Link from "next/link";
 
 interface ChatBotBlog {
     tag: string;
@@ -14,7 +15,7 @@ export default function ChatBotBlog({tag, title, date, description, downTagText}
             <p className="text-[#7F7A7A]">{date}</p>
         </div>
         <div className="bottom flex flex-col gap-2">
-            <h3 className="text-black text-2xl group-hover:text-[#BF56FF] duration-200 ease-linear font-semibold">{title}</h3>
+           <Link href=""><h3 className="text-black text-2xl group-hover:text-[#BF56FF] duration-200 ease-linear font-semibold">{title}</h3></Link>
             <p className="text-[#7F7A7A]">{description}</p>
             <p className="text-[#7F7A7A] ml-2">{downTagText}</p>
         </div>
