@@ -102,7 +102,7 @@ const HeroLeftSideContent = {
   tagText: 'WordPress Integration',
   title1: 'CorpusChat:',
   title2: 'WordPress Plugin',
-  paragraph: 'Seamlessly integrate your DenserAI chatbot with WordPress using our official plugin. No code embedding required—just install, activate, and configure.'
+  paragraph: 'Seamlessly integrate your CorpusAI chatbot with WordPress using our official plugin. No code embedding required—just install, activate, and configure.'
 }
 
 const HeroRightSideContent = {
@@ -126,19 +126,19 @@ const EducationFAQ = [
   },
   {
     question:"How do I configure where the chatbot appears?",
-    answer: "",
+    answer: "In the plugin settings, you can choose between three options: All Pages, Home Page Only, or Specific Pages. For specific pages, you can list page IDs separated by commas.",
   },
   {
     question: "Can anonymous visitors use the chatbot?",
-    answer: "",
+    answer: "Yes, but you need to set the chatbot mode to 'public' in your Corpus Security configuration. This allows public visitors to interact with the chatbot on your website.",
   },
   {
     question: "Is coding knowledge required for installation?",
-    answer: "",
+    answer: "No coding knowledge is required. The plugin can be installed directly from WordPress or uploaded as a ZIP file, with simple point-and-click configuration.",
   },
   {
     question: "How do I find my Corpus Chatbot ID?",
-    answer: "",
+    answer: "You can find your chatbot ID in your Corpus account. This ID needs to be entered in the plugin settings to connect your WordPress site with your specific chatbot.",
   },
   
 ];
@@ -195,9 +195,9 @@ export default function Slack(){
               </div>
 
               <div className="flex-1 flex flex-col items-start justify-center max-w-lg mt-10 lg:mt-0">
-                <span className="mb-2 px-1 py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-semibold inline-block">Setup 1</span>
+                <span className="mb-2 px-1 py-1 rounded-full text-purple-500 text-sm font-semibold inline-block">Setup 1</span>
                 <h3 className="text-2xl sm:text-3xl font-bold text-black mb-3">Install WordPress Plugin</h3>
-                <p className="text-[#7F7A7A] text-base sm:text-lg">Choose between two installation methods: directly through WordPress plugins or manual ZIP upload. You will need an existing Denser chatbot before starting.</p>
+                <p className="text-[#7F7A7A] text-base sm:text-lg">Choose between two installation methods: directly through WordPress plugins or manual ZIP upload. You will need an existing Corpus chatbot before starting.</p>
               </div>
             </div>
             </div>
@@ -208,7 +208,7 @@ export default function Slack(){
             
             <div className="flex flex-col lg:flex-row items-center justify-center w-full max-w-6xl gap-10 px-2 sm:px-4">
               <div className="flex-1 flex flex-col items-start justify-center max-w-lg mt-10 lg:mt-0">
-                <span className="mb-2 px-1py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-semibold inline-block">Setup 2</span>
+                <span className="mb-2 px-1py-1 rounded-full text-purple-500 text-sm font-semibold inline-block">Setup 2</span>
                 <h3 className="text-2xl sm:text-3xl font-bold text-black mb-3">Configure Chatbot Settings</h3>
                 <p className="text-[#7F7A7A] text-base sm:text-lg">Enter your Corpus chatbot ID in the Settings panel and enable public mode for website visitors. Select where your chatbot appears: all pages, homepage only, or specific pages by ID.</p>
               </div>
@@ -225,7 +225,7 @@ export default function Slack(){
                 <Image src={GO_LIVE_IMG} width={300} height={300} alt="Slack auth" className="w-full max-w-xs sm-max-w-sm md:max-w-md lg:max-w-lg h-auto object-contain" />
               </div>
               <div className="flex-1 flex flex-col items-start justify-center max-w-lg mt-10 lg:mt-0">
-                <span className="mb-2 px-1 py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-semibold inline-block">Setup 3</span>
+                <span className="mb-2 px-1 py-1 rounded-full text-purple-500 text-sm font-semibold inline-block">Setup 3</span>
                 <h3 className="text-2xl sm:text-3xl font-bold text-black mb-3">Go Live</h3>
                 <p className="text-[#7F7A7A] text-base sm:text-lg">Save your settings and your chatbot will be instantly available on your selected pages. No code embedding required - the plugin handles everything automatically.</p>
               </div>

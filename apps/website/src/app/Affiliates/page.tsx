@@ -9,7 +9,7 @@ export default function AffiliateBenefits() {
     },
     {
       title: '60-Day Cookie Period',
-      description: "Our 60-day cookie period ensures you get credited for sales even if they don’t happen immediately after the referral.",
+      description: `Our 60-day cookie period ensures you get credited for sales even if they don’t happen immediately after the referral.`,
     },
     {
       title: 'Seamless Integration',
@@ -27,15 +27,15 @@ const EducationFAQ = [
   },
   {
     question:"Is there a minimum payout threshold?",
-    answer: "",
+    answer: "Yes, we have a minimum payout threshold of $50. Once your commissions reach this threshold, you'll be eligible for a payout.",
   },
   {
     question: "How do I track my referrals and commissions?",
-    answer: "",
+    answer: "Upon signing up for our affiliate program, you'll receive access to a personalized dashboard where you can track your referrals, clicks, and commissions in real-time.",
   },
   {
     question: "Can I promote Corpus products through paid advertising?",
-    answer: "",
+    answer: "No, we do not allow affiliates to promote Corpus.ai products through paid advertising channels such as Google Ads or Facebook Ads. However, you can promote our products through organic channels such as your website, blog, social media, or email newsletter.",
   },
   
 ];
@@ -52,7 +52,7 @@ const EducationFAQ = [
                 </span>
               </h1>
               <p className="text-[#7F7A7A] mb-8 mx-auto text-base sm:text-lg">
-                Join our affiliate program and start earning passive income today! Denser.ai offers cutting-edge <br/>AI-powered solutions, and we're excited to partner with you to spread the word.
+                Join our affiliate program and start earning passive income today! Corpus.ai offers cutting-edge <br/>AI-powered solutions, and we're excited to partner with you to spread the word.
               </p>
               <button className="bg-[#BF56FF] text-white rounded-full px-4 py-3 text-base  mx-auto shadow-md">Join Our Affliate Program</button>
             </div>

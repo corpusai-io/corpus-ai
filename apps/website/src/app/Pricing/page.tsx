@@ -7,6 +7,7 @@ import AOS from 'aos';
 import { useEffect } from 'react';
 import PricingPage from '../components/Pricing';
 import SolutionFAQ from '@/app/components/SolutionFAQ';
+import Pricingg from '../components/Pricingg';
 
 const EducationFAQ = [
   {
@@ -15,23 +16,23 @@ const EducationFAQ = [
   },
   {
     question:"How can the CorpusAI chatbot solution help my business?",
-    answer: "",
+    answer: "CorpusAI provides AI chatbot solutions for various industries, including legal, education, government, and healthcare. DenserChat and Denser Retriever leverage advanced natural language processing to enhance customer engagement, provide 24/7 support, and streamline operations, making them ideal for B2B businesses to improve customer experience and reduce operational costs.",
   },
   {
     question: "Can the CorpusChat chatbot solution handle complex documents like PDFs or Word files?",
-    answer: "",
+    answer: "Yes, our chatbot solution can be integrated with PDFs, Word documents, and other types of content, allowing users to interact with documents directly. This feature is handy for B2B businesses that want to automate information retrieval and responses from large documents or manuals.",
   },
   {
-    question: "How do these chatbot solutions improve customer satisfaction?",
-    answer: "",
+    question: "How do the chatbot solutions improve customer satisfaction?",
+    answer: "By integrating AI-powered chatbot solutions like DenserChat and DenserRetriever, businesses can offer faster, more personalized service. Chatbots provide instant responses to customer inquiries, reduce waiting times, and ensure 24/7 availability. This leads to higher customer satisfaction and a more streamlined experience.",
   },
   {
     question: "Will these chatbot solutions save my business money?",
-    answer: "",
+    answer: "Yes, both DenserChat and DenserRetriever can significantly reduce operational costs. DenserChat automates customer support and lead generation, reducing the need for human agents to handle repetitive inquiries. DenserRetriever optimizes data retrieval processes, allowing B2B businesses to operate more efficiently without requiring additional resources.",
   },
    {
     question: "How easy is it to integrate CorpusChat and CorpusRetriever into my current systems?",
-    answer: "",
+    answer: "Both chatbot software solutions are designed for seamless integration. DenserChat can be easily added to websites, document management systems, and more, while DenserRetriever can work with your existing databases and repositories. As a leading chatbot solution provider, Denser provides full technical support to ensure a smooth and efficient implementation process.",
   },
   
 ];
@@ -49,12 +50,13 @@ export default function Zapier(){
         <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br bg-transparent px-2 sm:px-4 py-8">
           
         
-    <section className='mt-5'>
+    {/* <section className='mt-5'>
         <div className="text-center py-5 px-4 max-w-7xl mx-auto">
         <h4 className="text-sm text-[#BF56FF] font-semibold mb-5 uppercase">Pricing</h4>
         <h2 className="text-3xl sm:text-4xl font-semibold mb-5">Simple Pricing</h2>
         <p className="mb-1 text-[#8D8D8D] font-medium mx-auto">Use Corpus Chat for free. Upgrade to enable custom domains and more advanced features.</p>
-        </div><PricingPage/></section>
+        </div></section> */}
+        <Pricingg/>
            <section>
                 <div>
       {/* Your other content */}

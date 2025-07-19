@@ -25,7 +25,7 @@ const HeroRightSide:React.FC<HeroRightSide>=({logo, msg1, msg2, msg3}) =>{
             <div data-aos="fade-up" data-aos-duration="600"   className="self-start bg-zinc-100 text-[#1E1E1E] rounded-lg px-4 py-2 text-sm max-w-[80%]">
              {msg1}
             </div>
-            <div data-aos="fade-up" data-aos-duration="500" data-aos-delay="700" className="self-end bg-purple-100 rounded-lg text-[#1E1E1E] px-4 py-2 text-sm max-w-[80%]">
+            <div data-aos="fade-up" data-aos-duration="500" data-aos-delay="700" className="self-end bg-gradient-to-b from-[#FDFCFF] to-[#F1E6FF] rounded-lg text-[#1E1E1E] px-4 py-2 text-sm max-w-[80%]">
              {msg2}
             </div>
             <p data-aos="fade-up" data-aos-duration="600" data-aos-delay="1200" dangerouslySetInnerHTML={{ __html: msg3 }} className="self-start bg-white border border-zinc-100 text-zinc-700 rounded-lg px-4 py-2 text-sm max-w-[90%] shadow-sm" />
@@ -33,7 +33,7 @@ const HeroRightSide:React.FC<HeroRightSide>=({logo, msg1, msg2, msg3}) =>{
           </div>
           {/* Input Box */}
           <div className="flex items-center gap-2 mt-2">
-            <input
+            <input disabled
               type="text"
               className="flex-1 rounded-lg border border-zinc-200 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300 bg-white/80 placeholder-zinc-400"
               placeholder="Ask about anything"

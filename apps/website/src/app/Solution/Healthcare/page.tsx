@@ -92,11 +92,11 @@ const EducationFAQ = [
   },
   {
     question: "What types of medical data can the system process?",
-    answer: "",
+    answer: "The system can process diverse medical data including lab results, imaging reports, medication histories, clinical notes, vital signs, and research literature. This comprehensive analysis helps provide a complete picture for clinical decision-making.",
   },
   {
     question:`What makes Corpus' clinical AI assistant different from other solutions?`,
-    answer: "",
+    answer: "Our system uniquely combines advanced RAG technology with medical knowledge processing, enabling real-time analysis of patient data against current medical literature and clinical guidelines. This provides doctors with contextually relevant insights and evidence-based recommendations specific to each patient case.",
   }
 ];
 
@@ -140,7 +140,7 @@ export default function Healthcare(){
                 {/* Chat Bubbles */}
                 <div className="flex flex-col gap-2 mb-4">
                   <div data-aos="fade-up" data-aos-duration="200" className="self-start bg-zinc-100 text-zinc-700 rounded-lg px-4 py-2 text-sm max-w-[80%]">Reviewing patient #247's history. What specific information would you like to know, Dr. Smith?</div>
-                  <div data-aos="fade-up" data-aos-duration="400" className="self-end bg-purple-100 rounded-lg px-4 py-2 text-sm max-w-[80%]">Show me their recent cardiac symptoms and medication history.</div>
+                  <div data-aos="fade-up" data-aos-duration="400" className="self-end bg-gradient-to-b from-[#FDFCFF] to-[#F1E6FF] rounded-lg px-4 py-2 text-sm max-w-[80%]">Show me their recent cardiac symptoms and medication history.</div>
                   <div data-aos="fade-up" data-aos-duration="600" className="self-start bg-[#F0F0F0] border border-zinc-100 text-[#1E1E1E] rounded-lg px-4 py-2 text-sm max-w-[90%] shadow-sm">
                     <span className='font-bold'>Patient #247 Summary:</span><br/>
                     <br/>History: Hypertension (2020), Type 2 Diabetes Symptoms: Chest pain, shortness of breath, nocturnal dyspnea <br/>Meds: Metformin 1000mg, Lisinopril 10mg<br/> Note: BP rising over last 3 visits<br/><br/><span className='font-bold'>Next Steps:</span><br/><br/>Cardiac stress test<br/> Adjust BP meds<br/> Cardiology referral
@@ -148,7 +148,7 @@ export default function Healthcare(){
                 </div>
                 {/* Input Box */}
                 <div className="flex items-center gap-2 mt-20">
-                  <input
+                  <input disabled
                     type="text"
                     className="flex-1 rounded-lg border border-zinc-200 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300 bg-white/80 placeholder-zinc-400"
                     placeholder="Ask about anything"
@@ -182,43 +182,60 @@ export default function Healthcare(){
           </section>
     
           {/* Deploy & Scale Section */}
-          
-          <section data-aos="fade-right" data-aos-duration="600" className="w-full flex bg-[#F9F0FF] flex-col gap-4 md:gap-8 lg:justify-between  lg:flex-row items-center justify-center pt-20 pb-10 max-w-7xl mx-auto">
-           
-            {/* Left: Integrations Card */}
-            <img className=' ' src="/assets/healthcare 1.png" alt="" />
-            {/* Right: Text */}
-            <div className="flex-1 flex flex-col items-start justify-center max-w-lg">
-              <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-[#BF56FF] text-sm font-medium inline-block">Step 1</span>
-              <h3 className="text-2xl sm:text-3xl font-semibold text-zinc-900 mb-3">Data Integration</h3>
-              <p className="text-[#7F7A7A] text-base font-medium sm:text-lg">Seamlessly integrate with your existing systems to gather comprehensive patient records, lab results, imaging data, and clinical notes into a unified knowledge base.</p>
+         <div className='bg-[#F9F0FF] mt-10 lg:mt-20 px-4 pb-7 md:pb-10'>
+        <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center pl-7 pr-2 justify-center  mt-20 mb-10 mx-auto max-w-7xl">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 text-center mb-12">How It Works</h2>
+          <div className="flex flex-col lg:flex-row md:justify-between items-center justify-center w-full  gap-10">
+            {/* Left: Card with Tabs and Form */}
+            <img className='order-2 lg:order-1 lg:w-1/2' src="/assets/healthcare 1.png" alt="" />
+            {/* Right: Setup Info */}
+            <div className="flex-1 flex flex-col items-start justify-center mb-10 lg:mb-0 order-1">
+              <span className="mb-2 px-2 py-1 rounded-full  text-purple-500 text-sm font-medium inline-block">Step 1</span>
+              <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">Data Integration</h3>
+              <p className="text-zinc-500 text-base sm:text-lg">Seamlessly integrate with your existing systems to gather comprehensive patient records, lab results, imaging data, and clinical notes into a unified knowledge base.</p>
             </div>
-          </section>
+          </div>
+        </section>
+  
+        {/* Analyze Section */}
+        <section data-aos="fade-left" data-aos-duration="500" className="w-full overflow-x-hidden pl-7 pr-2 flex flex-col lg:flex-row items-center justify-center mt-2 mb-10 max-w-7xl mx-auto">
+          {/* Left: Text */}
+          <div className="flex-1 flex flex-col items-start justify-center mb-10 lg:mb-0">
+            <span className="mb-2 px-2 py-1 rounded-full text-purple-500 text-sm font-medium inline-block">Step 2</span>
+            <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">Secure Deployment</h3>
+            <p className="text-zinc-500 text-base sm:text-lg">Deploy Corpus Chat in your secure healthcare environment, protecting sensitive patient information while maintaining high performance.
+</p>
+          </div>
+          {/* Right: Image Card */}
+          <div className="flex-1 flex items-center justify-center">
+            <img src="/assets/healthcare 2.png" alt="Chatbot Build Status" className="w-full" />
+          </div>
+        </section>
+  
+        {/* Chat Section */}
+      <section
+  data-aos="fade-right"
+  data-aos-duration="500"
+  className="w-full flex flex-col-reverse lg:flex-row gap-8 px-6 items-center justify-between mt-20 mb-10 max-w-7xl mx-auto"
+>
+   <img
+    src="/assets/healthcare 3.png"
+    alt="Is Corpusbot Free?"
+    className="mb-10 lg:mb-0 lg:w-1/2"
+  />
+  {/* Text first in DOM */}
+  <div className="flex-1 flex flex-col items-start justify-center mb-10 lg:mb-0">
+    <span className="mb-2 px-2 py-1 rounded-full text-purple-500 text-sm font-medium inline-block">Step 3</span>
+    <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">Clinical Support</h3>
+    <p className="text-zinc-500 text-base sm:text-lg">
+      Medical professionals can quickly access and analyze patient histories, receive evidence-based recommendations, and make informed clinical decisions with AI assistance.
+    </p>
+  </div>
 
-           <section data-aos="fade-right" data-aos-duration="600" className="w-full flex bg-[#F9F0FF] flex-col gap-4 md:gap-8 lg:justify-between  lg:flex-row items-center justify-center pt-20 pb-10 max-w-7xl mx-auto">
-           
-            {/* Left: Integrations Card */}
-           
-            {/* Right: Text */}
-            <div className="flex-1 flex flex-col items-start ml-3 justify-center max-w-lg">
-              <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-[#BF56FF] text-sm font-medium inline-block">Step 2</span>
-              <h3 className="text-2xl sm:text-3xl font-semibold text-zinc-900 mb-3">Secure Deployment</h3>
-              <p className="text-[#7F7A7A] text-base font-medium sm:text-lg">Deploy Corpus Chat in your secure healthcare environment, protecting sensitive patient information while maintaining high performance..</p>
-            </div>
-            <img className=' ' src="/assets/healthcare 2.png" alt="" />
-          </section>
-
-          <section data-aos="fade-right" data-aos-duration="600" className="w-full flex bg-[#F9F0FF] flex-col gap-4 md:gap-8 lg:justify-between  lg:flex-row items-center justify-center pt-20 pb-10 max-w-7xl mx-auto">
-           
-            {/* Left: Integrations Card */}
-            <img className=' ' src="/assets/healthcare 3.png" alt="" />
-            {/* Right: Text */}
-            <div className="flex-1 flex flex-col items-start justify-center max-w-lg">
-              <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-[#BF56FF] text-sm font-medium inline-block">Step 3</span>
-              <h3 className="text-2xl sm:text-3xl font-semibold text-zinc-900 mb-3">Clinical Support</h3>
-              <p className="text-[#7F7A7A] text-base font-medium sm:text-lg">Medical professionals can quickly access and analyze patient histories, receive evidence-based recommendations, and make informed clinical decisions with AI assistance.</p>
-            </div>
-          </section>
+  {/* Image second in DOM */}
+ 
+</section>
+          </div>
             <section>
                 <div>
       {/* Your other content */}

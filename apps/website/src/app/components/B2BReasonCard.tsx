@@ -12,7 +12,7 @@ export default function B2BReasonCard({ icon, title, description }: B2BReasonCar
    <div
   className="
     relative bg-white group rounded-2xl border-2 border-zinc-100 p-6 flex flex-col
-    min-w-[220px] min-h-[160px] transition shadow-sm hover:shadow-md
+    min-w-[367px] min-h-[269px] transition shadow-sm hover:shadow-md
     hover:ring-purple-200 hover:border-purple-300
     before:content-[''] before:absolute before:inset-0 before:rounded-2xl
     before:opacity-0 before:transition-all before:duration-300
@@ -30,7 +30,7 @@ export default function B2BReasonCard({ icon, title, description }: B2BReasonCar
       <div className="font-semibold text-lg text-[#1E1E1E] mb-1 duration-200 group-hover:text-[#BF56FF]">
         {title}
       </div>
-      <div className="text-[#7D7D7D] text-sm">{description}</div>
+      <div className="text-[#7D7D7D] text-lg font-medium">{description}</div>
     </div>
   );
 }

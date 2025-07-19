@@ -81,19 +81,19 @@ const EducationFAQ = [
   },
   {
     question: "Why do educational institutions need chatbots?",
-    answer: "",
+    answer: "AI chatbots for education provide instant support, reduce the workload for educators and staff, and enhance student learning experiences while improving institutional efficiency.",
   },
   {
     question: "How can schools start using Corpus Chat?",
-    answer: "",
+    answer: "Schools can create a Denser Chat by providing a website URL or uploading a collection of documents. Once built, the chatbot can be deployed either publicly or internally with just a few lines of code.",
   },
   {
     question: "How do education AI chatbots support teachers and staff?",
-    answer: "",
+    answer: "They automate responses to FAQs, help organize course materials, provide smart teaching suggestions, and generate feedback on student queries to improve engagement.",
   },
   {
     question: "How can an AI chatbot improve school administration?",
-    answer: "",
+    answer: "It can handle admissions inquiries, guide users through the application process, and act as a digital campus assistant, ready to handle student and staff inquiries.",
   },
 ];
 
@@ -135,14 +135,14 @@ export default function Education(){
                 {/* Chat Bubbles */}
                 <div className="flex flex-col gap-2 mb-4">
                   <div data-aos="fade-up" data-aos-duration="200" className="self-start bg-zinc-100 text-zinc-700 rounded-lg px-4 py-2 text-sm max-w-[80%]">Hi! How can I help you today?</div>
-                  <div data-aos="fade-up" data-aos-duration="400" className="self-end bg-purple-100 rounded-lg px-4 py-2 text-sm max-w-[80%]">I need help with my recent order.</div>
+                  <div data-aos="fade-up" data-aos-duration="400" className="self-end bg-gradient-to-b from-[#FDFCFF] to-[#F1E6FF] rounded-lg px-4 py-2 text-sm max-w-[80%]">I need help with my recent order.</div>
                   <div data-aos="fade-up" data-aos-duration="600" className="self-start bg-white border border-zinc-100 text-zinc-700 rounded-lg px-4 py-2 text-sm max-w-[90%] shadow-sm">
                     I'll be happy to help! Could you please provide your order number?
                   </div>
                 </div>
                 {/* Input Box */}
                 <div className="flex items-center gap-2 mt-20">
-                  <input
+                  <input disabled
                     type="text"
                     className="flex-1 rounded-lg border border-zinc-200 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300 bg-white/80 placeholder-zinc-400"
                     placeholder="Ask about anything"
@@ -167,7 +167,7 @@ export default function Education(){
     
          
          <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 mb-10 max-w-7xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-zinc-900 text-center mb-12">Why Choose Corpus AI for Customer Service</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-black text-center mb-12">Why Choose Corpus Chat for Education?</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
               {reasons.map((r, i) => (
                 <B2BReasonCard key={i} icon={r.icon} title={r.title} description={r.description} />
@@ -175,56 +175,72 @@ export default function Education(){
             </div>
           </section>
     
-          {/* Deploy & Scale Section */}
           
-          <section data-aos="fade-right" data-aos-duration="600" className="w-full flex bg-[#F9F0FF] flex-col gap-4 md:gap-8 lg:justify-between  lg:flex-row items-center justify-center pt-20 pb-10 max-w-7xl mx-auto">
-           
-            {/* Left: Integrations Card */}
-            <img className=' ' src="/assets/Group 1321315402.png" alt="" />
-            {/* Right: Text */}
-            <div className="flex-1 flex flex-col items-start justify-center max-w-lg">
-              <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-[#BF56FF] text-sm font-medium inline-block">Step 1</span>
-              <h3 className="text-2xl sm:text-3xl font-semibold text-zinc-900 mb-3">Ingest</h3>
-              <p className="text-[#7F7A7A] text-base font-medium sm:text-lg">The Corpus Chat collaborates with your institution to gather and parse relevant documents, web pages, and PDFs—including course catalogs, admissions FAQs, policy manuals, and more.</p>
+          
+          <div className='bg-[#F9F0FF] mt-10 lg:mt-20 px-4 pb-7 md:pb-10'>
+        <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center pl-7 pr-2 justify-center  mt-20 mb-10 mx-auto max-w-7xl">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 text-center mb-12">Add Chatbot to Your Website</h2>
+          <div className="flex flex-col lg:flex-row md:justify-between items-center justify-center w-full  gap-10">
+            {/* Left: Card with Tabs and Form */}
+            <img className='order-2 lg:order-1 lg:w-1/2' src="/assets/Group 1321315402.png" alt="" />
+            {/* Right: Setup Info */}
+            <div className="flex-1 flex flex-col items-start justify-center mb-10 lg:mb-0 order-1">
+              <span className="mb-2 px-2 py-1 rounded-full  text-purple-500 text-sm font-medium inline-block">Step 1</span>
+              <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">Ingest</h3>
+              <p className="text-zinc-500 text-base sm:text-lg">The Corpus Chat collaborates with your institution to gather and parse relevant documents, web pages, and PDFs—including course catalogs, admissions FAQs, policy manuals, and more.</p>
             </div>
-          </section>
+          </div>
+        </section>
+  
+        {/* Analyze Section */}
+        <section data-aos="fade-left" data-aos-duration="500" className="w-full overflow-x-hidden pl-7 pr-2 flex flex-col lg:flex-row items-center justify-center mt-2 mb-10 max-w-7xl mx-auto">
+          {/* Left: Text */}
+          <div className="flex-1 flex flex-col items-start justify-center mb-10 lg:mb-0">
+            <span className="mb-2 px-2 py-1 rounded-full text-purple-500 text-sm font-medium inline-block">Step 2</span>
+            <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">Deploy</h3>
+            <p className="text-zinc-500 text-base sm:text-lg">After ingesting the knowledge, you can deploy Corpus Chat to your website—whether internally or externally—with just a few lines of code.
+</p>
+          </div>
+          {/* Right: Image Card */}
+          <div className="flex-1 flex items-center justify-center">
+            <img src="/assets/Group 1321315412.png" alt="Chatbot Build Status" className="w-full" />
+          </div>
+        </section>
+  
+        {/* Chat Section */}
+      <section
+  data-aos="fade-right"
+  data-aos-duration="500"
+  className="w-full flex flex-col-reverse lg:flex-row gap-8 px-6 items-center justify-between mt-20 mb-10 max-w-7xl mx-auto"
+>
+   <img
+    src="/assets/Group 1321315410.png"
+    alt="Is Corpusbot Free?"
+    className="mb-10 lg:mb-0 lg:w-1/2"
+  />
+  {/* Text first in DOM */}
+  <div className="flex-1 flex flex-col items-start justify-center mb-10 lg:mb-0">
+    <span className="mb-2 px-2 py-1 rounded-full text-purple-500 text-sm font-medium inline-block">Step 3</span>
+    <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">Ask Away</h3>
+    <p className="text-zinc-500 text-base sm:text-lg">
+      Students, parents, and faculty simply type their questions—Corpus Chat delivers precise, authoritative answers in real-time.
+    </p>
+  </div>
 
-           <section data-aos="fade-right" data-aos-duration="600" className="w-full flex bg-[#F9F0FF] flex-col gap-4 md:gap-8 lg:justify-between  lg:flex-row items-center justify-center pt-20 pb-10 max-w-7xl mx-auto">
-           
-            {/* Left: Integrations Card */}
-           
-            {/* Right: Text */}
-            <div className="flex-1 flex flex-col items-start ml-3 justify-center max-w-lg">
-              <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-[#BF56FF] text-sm font-medium inline-block">Step 2</span>
-              <h3 className="text-2xl sm:text-3xl font-semibold text-zinc-900 mb-3">Deploy</h3>
-              <p className="text-[#7F7A7A] text-base font-medium sm:text-lg">After ingesting the knowledge, you can deploy Corpus Chat to your website—whether internally or externally—with just a few lines of code.</p>
-            </div>
-            <img className=' ' src="/assets/Group 1321315412.png" alt="" />
-          </section>
-
-          <section data-aos="fade-right" data-aos-duration="600" className="w-full flex bg-[#F9F0FF] flex-col gap-4 md:gap-8 lg:justify-between  lg:flex-row items-center justify-center pt-20 pb-10 max-w-7xl mx-auto">
-           
-            {/* Left: Integrations Card */}
-            <img className=' ' src="/assets/Group 1321315410.png" alt="" />
-            {/* Right: Text */}
-            <div className="flex-1 flex flex-col items-start justify-center max-w-lg">
-              <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-[#BF56FF] text-sm font-medium inline-block">Step 3</span>
-              <h3 className="text-2xl sm:text-3xl font-semibold text-zinc-900 mb-3">Ask Away</h3>
-              <p className="text-[#7F7A7A] text-base font-medium sm:text-lg">Students, parents, and faculty simply type their questions—Corpus Chat delivers precise, authoritative answers in real-time.</p>
-            </div>
-          </section>
+  {/* Image second in DOM */}
+ 
+</section>
+          </div>
             <section>
                 <div>
-      {/* Your other content */}
-      <SolutionFAQ
-        faqs={EducationFAQ}
-        title="FAQ"
-        subtitle="Education Chatbot FAQ"
-      />
-    </div>
+             <SolutionFAQ
+              faqs={EducationFAQ}
+              title="FAQ"
+              subtitle="Education Chatbot FAQ"/>
+          </div>
 
-</section>
-          {/* Why Choose Section */}
+        </section>
+          
           
          
           <section className="text-center px-4 pt-[56px] pb-16 bg-white">
