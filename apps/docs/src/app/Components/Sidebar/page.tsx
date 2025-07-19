@@ -116,8 +116,6 @@ export default function Page({
     }
   };
 
-
-
   const navLink = (name, display = null, showArrow = false) => {
     const isActive = pathname === itemRoutes[name];
 
@@ -136,34 +134,71 @@ export default function Page({
   };
 
   return (
-
-    <div className="h-screen bg-white dark:bg-red-500 flex flex-col overflow-y-hidden ">
+    <>
+    <div className="h-screen bg-white dark:bg-[#202020] flex flex-col overflow-y-hidden ">
       <header className="sticky top-0 z-10 bg-white lg:block sm:hidden hidden dark:bg-[#202020]">
         <div className="flex items-center justify-between p-3">
-          <div className="flex items-center space-x-2">
-            <img src="/Website Assets/Logo.svg" alt="" />
-            <img src="/Website Assets/Corpus AI logo.svg" alt="" />
-            <img src="/Website Assets/Docs.svg" alt="" />
-          </div>
-          <img src="/Website Assets/Dots Sidebar.svg" alt="" />
-        </div>
-        <hr className="ml-1 mr-1 border-gray-200" />
-        <form className="mt-3 bg-[#F8F8F8] rounded py-1 pl-2 ml-1.5 mr-2 ">
+      <div className="flex items-center space-x-2">
+        <img src="/Website Assets/Logo.svg" alt="Main Logo" />
+{/* Darkmode & lightmode images start */}
+  <img
+    src="/Website Assets/Corpus AI logo.svg"
+    alt="Docs Icon"
+    className="block dark:hidden"
+  /> 
+
+  {/* Dark mode image */}
+  <img
+    src="/Website Assets/corpus-ai-white-logo.svg"
+    alt="Docs Icon"
+    className="hidden dark:block"
+  />      
+        
+  <img
+    src="/Website Assets/Docs.svg"
+    alt="Docs Icon"
+    className="block dark:hidden"
+  />
+
+  {/* Dark mode image */}
+  <img
+    src="/Website Assets/Docs-white.svg"
+    alt="Docs Icon"
+    className="hidden dark:block"
+  />
+        
+      </div>
+       <img
+    src="/Website Assets/Dots Sidebar.svg"
+    alt="Docs Icon"
+    className="block dark:hidden"
+  />
+
+  {/* Dark mode image */}
+  <img
+    src="/Website Assets/icon-white.svg"
+    alt="Docs Icon"
+    className="hidden dark:block"
+  />
+  {/* Darkmode & lightmode images end */}
+  </div>
+        <hr className="ml-1 mr-1 border-[#E5E5E5] dark:border-[#2C2C2C]" />
+        <form className="mt-3 bg-[#F8F8F8] rounded py-1 pl-2 ml-1.5 mr-2 dark:bg-[#1E1E1E] dark:border-1 dark:border-[#2C2C2C]">
           <span className="absolute">
-            <img src="/Website Assets/Search.svg" alt="" />
+            <img src="/Website Assets/Search.svg" alt="" className="mt-0.5"/>
           </span>
           <input
             type="text"
             placeholder="Search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="px-7 outline-0 bg-[#F8F8F8] w-full"
+            className="px-7 outline-0 bg-[#F8F8F8] w-full dark:bg-[#1E1E1E] placeholder:text-[#7E7E7E] dark:text-white"
             required
           />
         </form>
       </header>
 
-      <div className={`flex-1 px-3 text-sm list-none text-gray-700 lg:mt-3 mt-20  ${showInstall ? 'overflow-y-auto' : 'overflow-hidden'}`}>
+      <div className={`flex-1 px-3 text-sm list-none text-[#7E7E7E] lg:mt-3 mt-20  ${showInstall ? 'overflow-y-auto' : 'overflow-hidden'}`}>
         {/* Section: Chatbot */}
         <li>
           <div className="flex items-start gap-2">
@@ -173,7 +208,7 @@ export default function Page({
               <img src="/Website Assets/Arrow Down.svg" alt="" />
             </div>
           </div>
-          <div className="border-l border-gray-300 text-gray-500 ml-3">
+          <div className="border-l border-[#D8D8D8] dark:border-[#2C2C2C] text-[#7E7E7E] ml-3">
             <div className="px-3">
               {navLink("Website Chatbot")}
               {navLink("File Chatbot")}
@@ -192,7 +227,7 @@ export default function Page({
             <img src="/Website Assets/Setting.svg" alt="" />
             <span>Integration</span>
           </div>
-          <div className="text-gray-500 pr-3 border-l border-gray-300 ml-3">
+          <div className="text-[#7E7E7E] pr-3 border-l border-[#D8D8D8] dark:border-[#2C2C2C] ml-3">
             <span
               className="flex justify-between cursor-pointer pl-2 ml-3 py-[2px] rounded-md hover:bg-[#F2F2F2] hover:text-[#1E1E1E]"
               onClick={() => setShowInstall(prev => !prev)}
@@ -221,7 +256,7 @@ export default function Page({
         <li>
           <Link href="/Components/chatbots-docs-pages/Access_Setting" onClick={() => handleClick("Access Settings")}>
             <div
-              className={`py-1 rounded-md flex items-center gap-2 hover:bg-[#F2F2F2] hover:text-[#1E1E1E] ${pathname === "/Components/chatbots-docs-pages/Access_Setting" ? "bg-[#F4E2FF] text-[#BF56FF]" : "text-gray-700"}`}
+              className={`py-1 rounded-md flex items-center gap-2 hover:bg-[#F2F2F2] hover:text-[#1E1E1E] ${pathname === "/Components/chatbots-docs-pages/Access_Setting" ? "bg-[#F4E2FF] text-[#BF56FF]" : "text-[#7E7E7E]"}`}
             >
               <img src="/Website Assets/Sheild Plus.svg" alt="" />
               Access Settings
@@ -235,7 +270,7 @@ export default function Page({
             <img src="/Website Assets/Dollar.svg" alt="" />
             <span>Billing</span>
           </div>
-          <div className="border-l border-gray-300 text-gray-500 space-y-2 ml-3 ">
+          <div className="border-l border-[#D8D8D8] dark:border-[#2C2C2C] text-[#7E7E7E] space-y-2 ml-3 ">
             <div className="px-3">
               {navLink("Upgrade Plan")}
               {navLink("AWS Marketplace")}
@@ -247,7 +282,7 @@ export default function Page({
         <li>
           <Link href="/Components/chatbots-docs-pages/FAQ" onClick={() => handleClick("FAQ")}>
             <div
-              className={`flex items-center gap-2 mb-[23px] py-1 rounded-md cursor-pointer transition ${pathname === "/Components/chatbots-docs-pages/FAQ"
+              className={`flex items-center gap-2 mb-[23px] py-0.5 rounded-md cursor-pointer transition ${pathname === "/Components/chatbots-docs-pages/FAQ"
                   ? "bg-[#F4E2FF] text-[#BF56FF]"
                   : "text-[#7E7E7E] hover:bg-[#F2F2F2] hover:text-[#1E1E1E]"
                 }`}
@@ -264,26 +299,27 @@ export default function Page({
       </div>
 
       {/* Footer */}
-      <div className="sticky bottom-0 bg-white border-t border-gray-300 lg:block hidden">
-        <div className="ml-3 mr-5 mt-1 flex justify-between text-gray-500 py-2">
-          <div className="flex gap-2 p-0.5 pl-3 pr-3 rounded-3xl border border-gray-200 ">
+      <div className="sticky bottom-0 bg-white border-t ml-1 mr-1 border-[#E5E5E5] dark:border-[#2C2C2C] lg:block hidden dark:bg-[#202020]">
+        <div className="ml-3 mr-5  flex justify-between text-[#7E7E7E] py-2">
+          <div className="flex gap-1 p-[2px] rounded-3xl  border-1 border-[#E5E5E5] dark:border-[#2C2C2C] ">
             <img
               src="/Website Assets/Brightness.svg"
               alt="Light Mode"
               onClick={() => { if (darkMode) toggleDarkMode(); }}
-              className={`w-8 h-8 p-1 rounded-full cursor-pointer ${!darkMode ? 'bg-[#E9E9E9]' : ''}`}
+              className={`w-6 h-6 p-1 rounded-full cursor-pointer text-[#7E7E7E] ${!darkMode ? 'bg-[#E9E9E9]' : ''}`}
             />
 
             <img
               src="/Website Assets/Moon.svg"
               alt="Dark Mode"
               onClick={() => { if (!darkMode) toggleDarkMode(); }}
-              className={`w-8 h-8 p-1 rounded-full cursor-pointer ${darkMode ? 'bg-[#303030]' : ''}`}
+              className={`w-6 h-6 p-1 rounded-full cursor-pointer ${darkMode ? 'bg-[#303030]' : ''}`}
             />
           </div>
           <img src="/Website Assets/Sidebar-Flip.svg" alt="" />
         </div>
       </div>
     </div>
+</>
   );
 }

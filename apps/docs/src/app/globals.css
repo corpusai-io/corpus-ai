@@ -1,12 +1,12 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   --background: #F8F8F8;
   --foreground: #171717;
   --color-background: #F8F8F8;
   --color-foreground: #171717;
-  --font-sans: ui-sans-serif, system-ui, sans-serif;
-  --font-mono: ui-monospace, monospace;
+ 
 }
 
 html {

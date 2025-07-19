@@ -5,6 +5,7 @@ import MobileSidebar from './Components/Sidebar/mobile-Sidebar/page';
 import useIsMobile from './hooks/useIsMobile'; // ✅ import the hook
 import './globals.css'; //Global CSS
 import { ThemeProvider } from '../LighMode';
+import Testingbugs from "./testpage"; 
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const isMobile = useIsMobile(); // ✅ use the hook
@@ -27,9 +28,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
       <html lang="en" className="h-full">
-        <body className="m-0 p-0 overflow-y-auto overflow-x-hidden h-full">
+        <body className="m-0 p-0 overflow-y-auto overflow-x-hidden h-full ">
+         
            <ThemeProvider>
-          <div className="flex min-h-screen">
+          <div className="flex min-h-screen dark:bg-[#1E1E1E]">
             {/* Desktop Sidebar */}
             <aside className="w-64  hidden lg:block fixed top-0 left-0 h-full z-14 bg-[#0000] border-r border-gray-200 overflow-y-auto">
              < SidebarPage  />

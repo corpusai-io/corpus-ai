@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { useTheme } from '../../../../LighMod';
+import { useTheme } from '../../../../LighMode';
 
 interface Props {
   showSearchBar: boolean;
@@ -29,7 +29,6 @@ export default function MobileSidebar({
       setIsSidebarVisible(false);
     }
   }, [isMobile]);
-
 
   // Auto close search bar after 8 seconds
   useEffect(() => {
@@ -77,25 +76,50 @@ export default function MobileSidebar({
           {/* Left Side */}
           <div className="flex items-center gap-2">
             <img src="/Website Assets/Logo.svg" alt="Logo" />
-            <img src="/Website Assets/Corpus AI logo.svg" alt="Corpus AI" />
-            <img src="/Website Assets/Docs.svg" alt="Docs" />
+{/* Mobile View Darkmode & lightmode images start */}
+  <img
+    src="/Website Assets/Corpus AI logo.svg"
+    alt="Docs Icon"
+    className="block dark:hidden"
+  /> 
+
+  {/* Dark mode image */}
+  <img
+    src="/Website Assets/corpus-ai-white-logo.svg"
+    alt="Docs Icon"
+    className="hidden dark:block"
+  />      
+        
+  <img
+    src="/Website Assets/Docs.svg"
+    alt="Docs Icon"
+    className="block dark:hidden"
+  />
+
+  {/* Dark mode image */}
+  <img
+    src="/Website Assets/Docs-white.svg"
+    alt="Docs Icon"
+    className="hidden dark:block"
+  />
+{/* Mobile view Darkmode & lightmode images end */}
           </div>
 
           {/* Right Side */}
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 p-0.5 pl-3 pr-3 rounded-3xl border border-gray-200 cursor-pointer">
+            <div className="flex gap-1 p-[2px] rounded-3xl  border-1 border-[#E5E5E5] dark:border-[#2C2C2C]">
               <img
-                src="/Website Assets/Brightness.svg"
-                alt="Light Mode"
-                onClick={() => { if (darkMode) toggleDarkMode(); }}
-                className={`w-8 h-8 p-1 rounded-full cursor-pointer ${!darkMode ? 'bg-[#E9E9E9]' : ''}`}
-              />
-              <img
-                src="/Website Assets/Moon.svg"
-                alt="Dark Mode"
-                onClick={() => { if (!darkMode) toggleDarkMode(); }}
-                className={`w-8 h-8 p-1 rounded-full cursor-pointer ${darkMode ? 'bg-[#303030]' : ''}`}
-              />
+              src="/Website Assets/Brightness.svg"
+              alt="Light Mode"
+              onClick={() => { if (darkMode) toggleDarkMode(); }}
+              className={`w-6 h-6 p-1 rounded-full cursor-pointer text-[#7E7E7E] ${!darkMode ? 'bg-[#E9E9E9]' : ''}`}
+            />
+               <img
+              src="/Website Assets/Moon.svg"
+              alt="Dark Mode"
+              onClick={() => { if (!darkMode) toggleDarkMode(); }}
+              className={`w-6 h-6 p-1 rounded-full cursor-pointer ${darkMode ? 'bg-[#303030]' : ''}`}
+            />
             </div>
 
             {/* Toggle between Search and Close icon */}
@@ -121,13 +145,13 @@ export default function MobileSidebar({
       {/* Search Bar on Top Right */}
       {showSearchBar && (
         <div className="fixed top-[68px] right-[7px] z-50">
-          <form className="shadow-md bg-[#F8F8F8] rounded-[5px] w-[200px] py-2 px-2 flex items-center">
+          <form className="shadow-md bg-[#F8F8F8] rounded-[5px] w-[200px] py-2 px-2 flex items-center dark:bg-[#1E1E1E] dark:border-1">
             <input
               type="text"
               placeholder="Search"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="outline-none bg-[#F8F8F8] px-2 w-full text-sm"
+              className="outline-none bg-[#F8F8F8] px-2 w-full text-sm  dark:bg-[#1E1E1E] placeholder:text-[#7E7E7E] dark:text-white"
               required
             />
             <img

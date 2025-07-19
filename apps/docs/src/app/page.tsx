@@ -1,71 +1,71 @@
 'use client';
 import Link from 'next/link';
-import { ThemeProvider, useTheme } from '../LighMode';
+import { useTheme } from '../LighMode';
 
 export default function Welcome() {
   const { darkMode } = useTheme();
 
   return (
-    <>
-   
-<p className="text-sm">
-  Mode: {darkMode ? '🌙 Dark' : '☀️ Light'}
-</p>
-<p className="text-sm">
-  Mode: {darkMode ? '🌙 Dark:bg-black' : '☀️ Light:bg-white'}
-</p>
-
-<div className="bg-white dark:bg-blac p-4">
-  Dark mode test
-</div>
-
-
-
-      <div className="flex-1 mt-7 lg:ml-1 lg:mr-5 sm:ml-auto">
-        <h1 className="font-bold text-[25px] lg:text-left md:text-left text-center">Welcome to CorpusAI&apos;s documentation</h1>
+    <>  
+      <div className="flex-1 mt-7 lg:ml-1 lg:mr-5 sm:ml-auto"> 
+        <h1 className="font-bold text-[25px] lg:text-left md:text-left text-center dark:text-[#fff]">Welcome to CorpusAI&apos;s documentation</h1>
 
         {/* Welcome Page Cards */}
 
         <div className="grid grid-cols-2 gap-4 mt-12  ">
-          <div className="group bg-white px-4 py-4 rounded-[10px] border-1 border-[#DFDFDF] shadow-[0_4px_8px_rgba(216,216,216,0.25)] hover:shadow-[0_4px_15px_rgba(255,255,255,0.25)] hover:bg-[#FAFAFA] cursor-pointer">
+        {/* Card 1 START here */}
+          <div className="group bg-white dark:bg-[#202020] dark:hover:bg-[#1E1E1E] px-4 py-4 rounded-[10px] border-1 border-[#DFDFDF] dark:border-[#2C2C2C] shadow-[0_4px_8px_rgba(216,216,216,0.25)]  hover:shadow-[0_4px_15px_rgba(255,255,255,0.25)] hover:bg-[#FAFAFA] cursor-pointer">
             <div className="rounded">
-              <div className="w-8 bg-[#F8F8F8] group-hover:bg-[#FFFFFF] border-1 border-[#DDDDDD] p-1.5 rounded-[5px]">
+              <div className="w-8 bg-[#F8F8F8] dark:bg-[#1E1E1E] group-hover:bg-[#FFFFFF] dark:group-hover:bg-[#1E1E1E] border-1 border-[#DDDDDD] dark:border-[#2C2C2C] p-1.5 rounded-[5px]">
                 <img src="/Website Assets/Robot.svg" alt="" />
               </div>
 
-              <h3 className="pt-3 text-[#1E1E1E] font-medium">Chatbot</h3>
+              <h3 className="pt-3 text-[#1E1E1E] font-medium dark:text-[#fff]">Chatbot</h3>
               <p className="text-[#7F7F7F]">Learn how to create a chatbot with CorpusAI</p>
             </div>
           </div>
+          {/* Card 1 END here */}
 
-         <div className="group bg-white dark:bg-red-500  px-4 py-4 rounded-[10px] border-1 border-[#DFDFDF] shadow-[0_4px_8px_rgba(216,216,216,0.25)] hover:shadow-[0_4px_15px_rgba(255,255,255,0.25)] hover:bg-[#FAFAFA] cursor-pointer">
+        {/* Card 2 START here */}
+         <div className="group bg-white dark:bg-[#202020] dark:hover:bg-[#1E1E1E] px-4 py-4 rounded-[10px] border-1 border-[#DFDFDF] dark:border-[#2C2C2C] shadow-[0_4px_8px_rgba(216,216,216,0.25)] hover:shadow-[0_4px_15px_rgba(255,255,255,0.25)] hover:bg-[#FAFAFA] cursor-pointer">
             <div className="rounded">
-              <div className="w-8 bg-[#F8F8F8] group-hover:bg-[#FFFFFF] border-1 border-[#DDDDDD] p-1.5 rounded-[5px]">
+              <div className="w-8 bg-[#F8F8F8] dark:bg-[#1E1E1E] group-hover:bg-[#FFFFFF] dark:group-hover:bg-[#1E1E1E] border-1 border-[#DDDDDD] dark:border-[#2C2C2C] p-1.5 rounded-[5px]">
                 <img src="/Website Assets/Setting.svg" alt="" />
               </div>
-              <h3 className="pt-3 text-[#1E1E1E] font-medium">Integration</h3>
+              <h3 className="pt-3 text-[#1E1E1E] font-medium dark:text-[#fff]">Integration</h3>
               <p className="text-gray-500">Integrate CorpusAI with your favorite tools</p>
             </div>
           </div>
-         <div className="group bg-white px-4 py-4 rounded-[10px] border-1 border-[#DFDFDF] shadow-[0_4px_8px_rgba(216,216,216,0.25)] hover:shadow-[0_4px_15px_rgba(255,255,255,0.25)] hover:bg-[#FAFAFA] cursor-pointer">
+           {/* Card 2 END here */}
+
+        {/* Card 3 START here */}
+         <div className="group bg-white dark:bg-[#202020] dark:hover:bg-[#1E1E1E] px-4 py-4 rounded-[10px] border-1 border-[#DFDFDF] dark:border-[#2C2C2C] shadow-[0_4px_8px_rgba(216,216,216,0.25)] hover:shadow-[0_4px_15px_rgba(255,255,255,0.25)] hover:bg-[#FAFAFA] cursor-pointer">
             <div className="rounded">
-              <div className="w-8 bg-[#F8F8F8] group-hover:bg-[#FFFFFF] border-1 border-[#DDDDDD] p-1.5 rounded-[5px]">
+              <div className="w-8 bg-[#F8F8F8] dark:bg-[#1E1E1E] group-hover:bg-[#FFFFFF] dark:group-hover:bg-[#1E1E1E] border-1 border-[#DDDDDD] dark:border-[#2C2C2C] p-1.5 rounded-[5px]">
                 <img src="/Website Assets/Dollar.svg" alt="" />
               </div>
-              <h3 className="pt-3 text-[#1E1E1E] font-medium">Billing</h3>
+              <h3 className="pt-3 text-[#1E1E1E] font-medium dark:text-[#fff]">Billing</h3>
               <p className="text-gray-500">Understand how billing works in CorpusAI</p>
             </div>
           </div>
-          <div className="group bg-white px-4 py-4 rounded-[10px] border-1 border-[#DFDFDF] shadow-[0_4px_8px_rgba(216,216,216,0.25)] hover:shadow-[0_4px_15px_rgba(255,255,255,0.25)]  hover:bg-[#FAFAFA] cursor-pointer">
+          {/* Card 3 END here */}
+
+          {/* Card 4 START here */}
+          <div className="group bg-white dark:bg-[#202020] dark:hover:bg-[#2C2C2C] px-4 py-4 rounded-[10px] border-1 border-[#DFDFDF] dark:border-[#2C2C2C] shadow-[0_4px_8px_rgba(216,216,216,0.25)] hover:shadow-[0_4px_15px_rgba(255,255,255,0.25)]  hover:bg-[#FAFAFA] cursor-pointer">
             <div className="rounded">
-              <div className="w-8 bg-[#F8F8F8] group-hover:bg-[#FFFFFF] border-1 border-[#DDDDDD] p-1.5 rounded-[5px]">
+              <div className="w-8 bg-[#F8F8F8] dark:bg-[#1E1E1E] group-hover:bg-[#FFFFFF] dark:group-hover:bg-[#1E1E1E] border-1 border-[#DDDDDD] dark:border-[#2C2C2C] p-1.5 rounded-[5px]">
                 <img src="/Website Assets/Question Mark.svg" alt="" />
               </div>
-              <h3 className="pt-3 text-[#1E1E1E] font-medium">FAQ</h3>
+              <h3 className="pt-3 text-[#1E1E1E] font-medium dark:text-[#fff]">FAQ</h3>
               <p className="text-gray-500">Find answers to frequently asked questions</p>
             </div>
           </div>
+          {/* Card 4 END here */}
+
+
         </div>
+
+
         <div className="lg:mt-30 md:mt-24 mt-13 text-right">
           {/* Top horizontal line */}
           <hr className="border-gray-200" />
