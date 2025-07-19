@@ -4,12 +4,7 @@ import SidebarPage from './Components/Sidebar/page'; // desktop
 import MobileSidebar from './Components/Sidebar/mobile-Sidebar/page';
 import useIsMobile from './hooks/useIsMobile'; // ✅ import the hook
 import './globals.css'; //Global CSS
-<<<<<<< HEAD
-import { ThemeProvider } from '../LighMode';
-import Testingbugs from "./testpage"; 
-=======
-import { ThemeProvider } from '../LightMode';
->>>>>>> 17426b562239428382e7bc7d74b5cab5faf959f5
+import { ThemeProvider } from './LightMode';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const isMobile = useIsMobile(); // ✅ use the hook

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
-import { useTheme } from '../../../LightMode';
+import { useTheme } from '../../LightMode';
 
 interface PageProps {
   setIsMobileSidebarOpen: (value: boolean) => void;
@@ -139,12 +139,8 @@ export default function Page({
     }
   };
 
-<<<<<<< HEAD
-  const navLink = (name, display = null, showArrow = false) => {
-=======
   // Fix the navLink function with proper typing
   const navLink = (name: ItemRouteKey, display: string | null = null, showArrow: boolean = false) => {
->>>>>>> 17426b562239428382e7bc7d74b5cab5faf959f5
     const isActive = pathname === itemRoutes[name];
 
     return (
