@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { useTheme } from '../../../../LighMod';
+import { useTheme } from '../../../../LightMode';
 
 interface Props {
   showSearchBar: boolean;

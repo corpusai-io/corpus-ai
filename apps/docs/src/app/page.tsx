@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { ThemeProvider, useTheme } from '../LighMode';
+import { ThemeProvider, useTheme } from '../LightMode';
 
 export default function Welcome() {
   const { darkMode } = useTheme();
