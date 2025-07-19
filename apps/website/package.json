@@ -12,6 +12,7 @@
     "aos": "^2.3.4",
     "next": "15.4.0-canary.51",
     "react": "19.1.0",
+    "react-calendly": "^4.4.0",
     "react-dom": "19.1.0"
   },
   "devDependencies": {
