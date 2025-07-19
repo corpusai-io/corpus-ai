@@ -184,44 +184,59 @@ export default function legal(){
             </div>
           </section>
     
-          {/* Deploy & Scale Section */}
-          
-          <section data-aos="fade-right" data-aos-duration="600" className="w-full flex bg-[#F9F0FF] flex-col gap-4 md:gap-8 lg:justify-between  lg:flex-row items-center justify-center pt-20 pb-10 max-w-7xl mx-auto">
-           
-            {/* Left: Integrations Card */}
-            <img className=' ' src="/legal/legal 1.png" alt="" />
-            {/* Right: Text */}
-            <div className="flex-1 flex flex-col items-start justify-center max-w-lg">
-              <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-[#BF56FF] text-sm font-medium inline-block">Step 1</span>
-              <h3 className="text-2xl sm:text-3xl font-semibold text-zinc-900 mb-3">Connect Your Resources</h3>
-              <p className="text-[#7F7A7A] text-base font-medium sm:text-lg">Integrate with your legal database, document management system, and case files. Our AI indexes your firm's documents, precedents, and legal resources for instant access.</p>
+        <div className='bg-[#F9F0FF] mt-10 lg:mt-20 px-4 pb-7 md:pb-10'>
+        <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center pl-7 pr-2 justify-center  mt-20 mb-10 mx-auto max-w-7xl">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 text-center mb-12">How It Works</h2>
+          <div className="flex flex-col lg:flex-row md:justify-between items-center justify-center w-full  gap-10">
+            {/* Left: Card with Tabs and Form */}
+            <img className='order-2 lg:order-1 lg:w-1/2' src="/legal/legal 1.png" alt="" />
+            {/* Right: Setup Info */}
+            <div className="flex-1 flex flex-col items-start justify-center mb-10 lg:mb-0 order-1">
+              <span className="mb-2 px-2 py-1 rounded-full  text-purple-500 text-sm font-medium inline-block">Step 1</span>
+              <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">Connect Your Resources</h3>
+              <p className="text-zinc-500 text-base sm:text-lg">Integrate with your legal database, document management system, and case files. Our AI indexes your firm's documents, precedents, and legal resources for instant access..</p>
             </div>
-          </section>
+          </div>
+        </section>
+  
+        {/* Analyze Section */}
+        <section data-aos="fade-left" data-aos-duration="500" className="w-full overflow-x-hidden pl-7 pr-2 flex flex-col lg:flex-row items-center justify-center mt-2 mb-10 max-w-7xl mx-auto">
+          {/* Left: Text */}
+          <div className="flex-1 flex flex-col items-start justify-center mb-10 lg:mb-0">
+            <span className="mb-2 px-2 py-1 rounded-full text-purple-500 text-sm font-medium inline-block">Step 2</span>
+            <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">Secure Setup</h3>
+            <p className="text-zinc-500 text-base sm:text-lg">Deploy on your preferred infrastructure with enterprise-grade security. Maintain client confidentiality and comply with legal data protection requirements.</p>
+          </div>
+          {/* Right: Image Card */}
+          <div className="flex-1 flex items-center justify-center">
+            <img src="/legal/legal 2.png" alt="Chatbot Build Status" className="w-full" />
+          </div>
+        </section>
+  
+        {/* Chat Section */}
+      <section
+  data-aos="fade-right"
+  data-aos-duration="500"
+  className="w-full flex flex-col-reverse lg:flex-row gap-8 px-6 items-center justify-between mt-20 mb-10 max-w-7xl mx-auto"
+>
+   <img
+    src="/legal/legal 3.png"
+    alt="Is Corpusbot Free?"
+    className="mb-10 lg:mb-0 lg:w-1/2"
+  />
+  {/* Text first in DOM */}
+  <div className="flex-1 flex flex-col items-start justify-center mb-10 lg:mb-0">
+    <span className="mb-2 px-2 py-1 rounded-full text-purple-500 text-sm font-medium inline-block">Step 3</span>
+    <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">Enhance Your Practice</h3>
+    <p className="text-zinc-500 text-base sm:text-lg">
+    Start using AI to automate research, document review, and case analysis. Free up time for strategic work and client interaction.
+    </p>
+  </div>
 
-           <section data-aos="fade-right" data-aos-duration="600" className="w-full flex bg-[#F9F0FF] flex-col gap-4 md:gap-8 lg:justify-between  lg:flex-row items-center justify-center pt-20 pb-10 max-w-7xl mx-auto">
-           
-            {/* Left: Integrations Card */}
-           
-            {/* Right: Text */}
-            <div className="flex-1 flex flex-col items-start ml-3 justify-center max-w-lg">
-              <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-[#BF56FF] text-sm font-medium inline-block">Step 2</span>
-              <h3 className="text-2xl sm:text-3xl font-semibold text-[#000000] mb-3">Secure Setup</h3>
-              <p className="text-[#7F7A7A] text-base font-medium sm:text-lg">Deploy on your preferred infrastructure with enterprise-grade security. Maintain client confidentiality and comply with legal data protection requirements.</p>
-            </div>
-            <img className=' ' src="/legal/legal 2.png" alt="" />
-          </section>
-
-          <section data-aos="fade-right" data-aos-duration="600" className="w-full flex bg-[#F9F0FF] flex-col gap-4 md:gap-8 lg:justify-between  lg:flex-row items-center justify-center pt-20 pb-10 max-w-7xl mx-auto">
-           
-            {/* Left: Integrations Card */}
-            <img className=' ' src="/legal/legal 3.png" alt="" />
-            {/* Right: Text */}
-            <div className="flex-1 flex flex-col items-start justify-center max-w-lg">
-              <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-[#BF56FF] text-sm font-medium inline-block">Step 3</span>
-              <h3 className="text-2xl sm:text-3xl font-semibold text-[#000000] mb-3">Enhance Your Practice</h3>
-              <p className="text-[#7F7A7A] text-base font-medium sm:text-lg">Start using AI to automate research, document review, and case analysis. Free up time for strategic work and client interaction.</p>
-            </div>
-          </section>
+  {/* Image second in DOM */}
+ 
+</section>
+          </div>
             <section>
                 <div>
       {/* Your other content */}

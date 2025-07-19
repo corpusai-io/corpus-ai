@@ -5,6 +5,7 @@ import TestimonialsSlider from '@/app/components/testimonalsSlider';
 import TestimonialsSliders from '@/app/components/testimonalsSliders';
 import FAQSection from '@/app/components/FAQsection'
 import PricingPage from './components/Pricing';
+import Pricingg from './components/Pricingg';
 export default function Home() {
    
   return (
@@ -184,15 +185,16 @@ export default function Home() {
   </div>
 </section>
 
-
+ <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br bg-transparent px-2 sm:px-4 py-8">
 <section >
-   <div className="text-center py-5 px-4 max-w-7xl mx-auto">
+   {/* <div className="text-center py-5 px-4 max-w-7xl mx-auto">
         <h4 className="text-sm text-[#BF56FF] font-semibold mb-5 uppercase">Pricing</h4>
         <h2 className="text-3xl sm:text-4xl font-bold mb-8">Simple Pricing</h2>
         <p className="mb-12 text-[#8D8D8D] max-w-2xl mx-auto">Use Corpus Chat for free. Upgrade to enable custom domains and more advanced features.</p>
-        </div>
-  <PricingPage/>
+        </div> */}
+  <Pricingg/>
   </section>
+  </div>
 <section className="bg-white">
   <div className="max-w-6xl mx-auto px-4 py-12">
     
