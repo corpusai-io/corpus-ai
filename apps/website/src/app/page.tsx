@@ -50,7 +50,7 @@ export default function Home() {
             Get Started
           </a>
           <a
-            href="#"
+            href="/demo"
             className="bg-white border-[1.5px] border-gray-300 hover:bg-gray-100 text-[#1E1E1E] font-medium px-6 py-2 rounded-full w-full sm:w-auto text-center transition duration-200"
           >
             Book a Meeting
