@@ -4,12 +4,34 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
-import { useTheme } from "../../../LighMode";
+import { useTheme } from '../../../LightMode';
 
 interface PageProps {
   setIsMobileSidebarOpen: (value: boolean) => void;
   setIsSidebarVisible: (value: boolean) => void;
 }
+
+// Define the type for item routes keys
+type ItemRouteKey = 
+  | "Website Chatbot"
+  | "File Chatbot"
+  | "Chatbot Data Store"
+  | "Chatbot Query Logs"
+  | "Chatbot Customization"
+  | "Use Documents From Google"
+  | "Telegram"
+  | "Slack"
+  | "Shopify"
+  | "Wordpress"
+  | "Your Website"
+  | "Zapier"
+  | "Zapier with Lead Generation"
+  | "Connect"
+  | "RESTful API"
+  | "Access Settings"
+  | "Upgrade Plan"
+  | "AWS Marketplace"
+  | "FAQ";
 
 export default function Page({
   setIsMobileSidebarOpen,
@@ -21,14 +43,17 @@ export default function Page({
   const pathname = usePathname();
   const [showInstall, setShowInstall] = useState(false);
   const router = useRouter();
-  const [activeItem, setActiveItem] = useState(() => {
+  const [activeItem, setActiveItem] = useState('');
+
+  useEffect(() => {
     const saved = localStorage.getItem("activeItem");
-    return saved || "";
-  });
+    if (saved) {
+      setActiveItem(saved);
+    }
+  }, []);
 
-
-
-  const itemRoutes = {
+  // Type the itemRoutes object properly
+  const itemRoutes: Record<ItemRouteKey, string> = {
     "Website Chatbot": "/Components/chatbots-docs-pages/Website-Chatbot",
     "File Chatbot": "/Components/chatbots-docs-pages/File-Chatbot",
     "Chatbot Data Store": "/ChatbotDatastore",
@@ -50,7 +75,7 @@ export default function Page({
     "FAQ": "/Components/chatbots-docs-pages/FAQ",
   };
 
-  const installItems = [
+  const installItems: ItemRouteKey[] = [
     "Telegram", "Slack", "Shopify", "Wordpress", "Your Website", "Zapier", "Zapier with Lead Generation",
   ];
 
@@ -77,7 +102,6 @@ export default function Page({
       if (savedShowInstall === "true") setShowInstall(true);
     }
 
-
     if (
       savedRoute &&
       savedRoute !== "/" &&
@@ -88,16 +112,15 @@ export default function Page({
     }
   }, []);
 
-
   useEffect(() => {
     if (activeItem) {
       localStorage.setItem("activeItem", activeItem);
-      const route = itemRoutes[activeItem];
+      const route = itemRoutes[activeItem as ItemRouteKey];
       if (route) {
         localStorage.setItem("activeRoute", route);
       }
 
-      const isInstallItem = installItems.includes(activeItem);
+      const isInstallItem = installItems.includes(activeItem as ItemRouteKey);
       setShowInstall(isInstallItem);
       localStorage.setItem("showInstall", isInstallItem ? "true" : "false");
     }
@@ -105,7 +128,7 @@ export default function Page({
 
   const handleClick = (itemName: string) => {
     setActiveItem(itemName);
-    setShowInstall(installItems.includes(itemName));
+    setShowInstall(installItems.includes(itemName as ItemRouteKey));
 
     // 👇 Close both on mobile
     if (typeof setIsMobileSidebarOpen === 'function') {
@@ -116,7 +139,12 @@ export default function Page({
     }
   };
 
+<<<<<<< HEAD
   const navLink = (name, display = null, showArrow = false) => {
+=======
+  // Fix the navLink function with proper typing
+  const navLink = (name: ItemRouteKey, display: string | null = null, showArrow: boolean = false) => {
+>>>>>>> 17426b562239428382e7bc7d74b5cab5faf959f5
     const isActive = pathname === itemRoutes[name];
 
     return (
@@ -126,7 +154,7 @@ export default function Page({
           ${isActive ? "bg-[#F4E2FF] text-[#BF56FF]" : "text-[#7E7E7E] hover:bg-[#F2F2F2] hover:text-[#1E1E1E]"}
         `}
         >
-          <span >{typeof display === "string" ? display : display ?? name}</span>
+          <span>{display ?? name}</span>
           {showArrow && <img src="/Website Assets/Arrow Left.svg" alt="" className="pl-10" />}
         </div>
       </Link>
@@ -215,7 +243,7 @@ export default function Page({
               {navLink("Chatbot Data Store")}
               {navLink("Chatbot Query Logs")}
               {navLink("Chatbot Customization")}
-              {navLink("Use Documents From Google Drive")}
+              {navLink("Use Documents From Google")}
             </div>
 
           </div>
