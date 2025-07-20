@@ -1,5 +1,6 @@
 import B2BFeatureCard from '@/app/components/B2BFeatureCard';
 import CustomerCareFAQ from '@/app/components/CustomerCareFAQ';
+import SolutionFAQ from '@/app/components/SolutionFAQ';
 const features = [
     {
       icon: (
@@ -50,6 +51,29 @@ const features = [
       highlight: false,
     },
   ];
+
+  const chatWithPdfFaq = [
+  {
+    question: "How does AI chat work for PDFs?",
+    answer: "Our chat with PDF tool can assist with various tasks like answers, explanations, analysis, and even providing creative suggestions. It's ideal for learning, quick information retrieval, problem-solving, and expert insight.",
+  },
+  {
+    question: "Is my conversation data private and secure?",
+    answer: "Yes, your privacy is our top priority. All conversations are encrypted, and we never share your data with third parties. Your documents and chats are processed securely in isolated environments and automatically deleted after analysis, ensuring complete confidentiality.",
+  },
+  {
+    question: "How accurate are the AI PDF chat's responses?",
+    answer: "Our AI delivers precise and contextually accurate responses, thanks to its advanced training on a wide range of data. Corpus Chat with PDF provides transparency by citing sources directly from your document for every response. While the AI is highly reliable, we recommend verifying critical information with authoritative sources.",
+  },
+  {
+    question: "Can I use the PDF chat assistant in different languages?",
+    answer: "Absolutely! CorpusChat PDF chat supports multiple languages, enabling you to generate conversations in various languages with ease. Try CorpusAI PDF chat today, reading is not more a difficult thing.",
+  },
+  {
+    question: "Is CorpusAI PDF chat free to use?",
+    answer: "Yes, CorpusAI PDF chat is free to use, offering its features and benefits without any subscription fees or hidden charges. If you have more PDFs to uphold and read, you can also pay for a higher level.",
+  },
+];
 export default function ChatWithPdfPage(){
     return(
         <div className="min-h-screen w-full flex flex-col items-center justify-center bg-transparent px-2 sm:px-4 py-8">
@@ -81,18 +105,18 @@ export default function ChatWithPdfPage(){
               </div>
               {/* Chat Bubbles */}
               <div className="flex flex-col gap-2 mb-4">
-                <div data-aos="fade-up" data-aos-duration="200" className="self-end bg-purple-100 rounded-lg px-4 py-2 text-sm max-w-[80%]">Analyze this research paper for me</div>
+                <div data-aos="fade-up" data-aos-duration="200" className="self-end bg-gradient-to-b from-[#FDFCFF] to-[#F1E6FF] rounded-lg px-4 py-2 text-sm max-w-[80%]">Analyze this research paper for me</div>
                 <div data-aos="fade-up" data-aos-duration="400" className="self-start bg-zinc-100 text-zinc-700 rounded-lg px-4 py-2 text-sm max-w-[80%]">I'll analyze the paper and provide a summary. The key findings are:</div>
                 <div data-aos="fade-up" data-aos-duration="600" className="self-start bg-white border border-zinc-100 text-zinc-700 rounded-lg px-4 py-2 text-sm max-w-[90%] shadow-sm">
                   [Page 3] The study demonstrates a 40% improvement in efficiency<br/>
                   [Page 5] New methodology reduces error rates by 60%<br/>
                   [Page 8] Results are validated across multiple datasets
                 </div>
-                <div data-aos="fade-up" data-aos-duration="700" className="self-end bg-purple-100 rounded-lg px-4 py-2 text-sm max-w-[80%]">Thanks a lot!</div>
+                <div data-aos="fade-up" data-aos-duration="700" className="self-end bg-gradient-to-b from-[#FDFCFF] to-[#F1E6FF] rounded-lg px-4 py-2 text-sm max-w-[80%]">Thanks a lot!</div>
               </div>
               {/* Input Box */}
-              <div className="flex items-center gap-2 mt-20">
-                <input
+              <div className="flex items-center gap-2 mt-8">
+                <input disabled
                   type="text"
                   className="flex-1 rounded-lg border border-zinc-200 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300 bg-white/80 placeholder-zinc-400"
                   placeholder="Ask about anything"
@@ -108,7 +132,7 @@ export default function ChatWithPdfPage(){
         <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 mb-10">
           <div className="text-center mb-2 text-purple-400 font-semibold">Features</div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 text-center mb-10">Elevate Your Customer Service<br className='hidden sm:block'/> with AI Chatbot</h2>
-          <div className="w-full grid grid-cols-1  md:grid-cols-3 md:flex-row items-stretch justify-center gap-6 max-w-5xl mx-auto">
+          <div className="w-full grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 place-items-center  gap-2 justify-center max-w-6xl mx-auto">
             {features.map((f, i) => (
               <B2BFeatureCard key={i} icon={f.icon} title={f.title} description={f.description} />
             ))}
@@ -116,14 +140,15 @@ export default function ChatWithPdfPage(){
         </section>
   
         {/* 3 Steps Section */}
+        <div className='bg-[#F9F0FF] px-4 lg:pb-8'>
         <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 mb-10">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 text-center mb-12">How to chat with PDF</h2>
-          <div className="flex flex-col lg:flex-row md:justify-between items-center justify-center w-full  gap-10 px-2 sm:px-4">
+          <div className="flex flex-col lg:flex-row md:justify-between items-center justify-center w-full  gap-10">
             {/* Left: Card with Tabs and Form */}
-            <img className='order-3' src="/assets/ChatWithPdf.svg" alt="" />
+            <img className='order-3 lg:order-1 lg:w-1/2' src="/assets/ChatWithPdf.svg" alt="chat-with-pdf-img" />
             {/* Right: Setup Info */}
             <div className="flex-1 flex order-1 flex-col items-start justify-center max-w-lg mt-10 lg:mt-0">
-              <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-medium inline-block">Upload</span>
+              <span className="mb-2 px-2 py-1 rounded-full text-purple-500 text-sm font-medium inline-block">Upload</span>
               <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">Upload your PDF or <br /> <span>Document</span></h3>
               <p className="text-zinc-500 text-base sm:text-lg">SImply upload your PDFs, and Word files, or paste your website URL to start. With our user-friendly platform, you can easily understand key information with AI.</p>
             </div>
@@ -131,34 +156,36 @@ export default function ChatWithPdfPage(){
         </section>
   
         {/* Analyze Section */}
-        <section data-aos="fade-left" data-aos-duration="500" className="w-full overflow-x-hidden flex flex-col lg:flex-row items-center justify-center mt-2 mb-10 max-w-7xl mx-auto">
+        <section data-aos="fade-left" data-aos-duration="500" className="w-full overflow-x-hidden flex flex-col lg:flex-row items-center md:px-8 justify-center mt-2 mb-10 max-w-7xl mx-auto">
           {/* Left: Text */}
           <div className="flex-1 flex flex-col items-start justify-center mb-10 lg:mb-0">
-            <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-medium inline-block">Analyze</span>
+            <span className="mb-2 px-2 py-1 rounded-full  text-purple-500 text-sm font-medium inline-block">Analyze</span>
             <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">Analyze Your PDF</h3>
             <p className="text-zinc-500 text-base sm:text-lg">Get instant answers, summaries, and extract key information directly from your uploaded content. CorpusChat PDF chat makes it easy to extract important details, enhancing comprehension and enabling faster, more informed decision-making.</p>
           </div>
           {/* Right: Image Card */}
           <div className="flex-1 flex items-center justify-center w-full">
-            <img src="/assets/summarizeImg.svg" alt="Summarize Example" className="w-full max-w-xl rounded-2xl shadow-xl border border-white/40 bg-white/70" />
+            <img src="/assets/summarizeImg.svg" alt="Summarize Example" className="w-full" />
           </div>
         </section>
   
         {/* Chat Section */}
-        <section data-aos="fade-right" data-aos-duration="200" className="w-full flex flex-col gap-8 lg:flex-row items-center  justify-center mt-20 mb-10 max-w-7xl mx-auto">
+        <section data-aos="fade-right" data-aos-duration="200" className="w-full flex flex-col gap-8 lg:flex-row items-center md:px-2  justify-center mt-20 mb-10 max-w-7xl mx-auto">
           {/* Left: Image */}
-          <div className="flex-1 order-2 flex items-center justify-center w-full mb-10 lg:mb-0">
-            <img src="/assets/summarizeFeature.svg" alt="Chatting with PDF" className="w-full max-w-xl rounded-2xl shadow-xl border border-white/40 bg-white/70" />
+          <div className="flex-1 order-2 md:order-1 flex items-center justify-center w-full mb-10 lg:mb-0">
+            <img src="/assets/summ.svg" alt="Chatting with PDF" className="w-full rounded-2xl" />
           </div>
           {/* Right: Text */}
           <div className="flex-1 order-1 flex flex-col items-start justify-center">
-            <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-medium inline-block">Chat</span>
+            <span className="mb-2 px-2 py-1 rounded-full text-purple-500 text-sm font-medium inline-block">Chat</span>
             <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">Start Chatting with PDF</h3>
             <p className="text-zinc-500 text-base sm:text-lg">Start conversations with multiple PDFs—ask questions naturally, receive instant answers, and understand complex information. Easily manage and organize all your documents—create your own document library.</p>
           </div>
         </section>
-  <section>
-        <CustomerCareFAQ/>
+        </div>
+
+  <section className='mt-10 lg:mt-20'>
+        <SolutionFAQ faqs={chatWithPdfFaq} title='FAQ' subtitle='Chat with PDF FAQ'/>
         </section>
        
         <section className="text-center px-4 pt-[56px] pb-16 bg-white">

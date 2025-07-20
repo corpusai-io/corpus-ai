@@ -5,13 +5,14 @@
   "scripts": {
     "dev": "next dev -p 3000",
     "build": "next build",
-    "start": "PORT=3002 next start",
+    "start": "cross-env PORT=3002 next start",
     "lint": "next lint"
   },
   "dependencies": {
     "aos": "^2.3.4",
     "next": "15.4.0-canary.51",
     "react": "19.1.0",
+    "react-calendly": "^4.4.0",
     "react-dom": "19.1.0"
   },
   "devDependencies": {

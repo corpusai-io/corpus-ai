@@ -1,6 +1,7 @@
 import B2BFeatureCard from '@/app/components/B2BFeatureCard';
 import B2BReasonCard from '@/app/components/B2BReasonCard';
 import CustomerCareFAQ from '@/app/components/CustomerCareFAQ';
+import SolutionFAQ from '@/app/components/SolutionFAQ';
 
 const features = [
   {
@@ -77,6 +78,36 @@ const empoweringCards = [
   }
 ];
 
+
+ const faq = [
+  {
+    question: "Is CorpusAI  document chat tool free to use?",
+    answer: "Yes! CorpusAI chat doc is free for up to 100 documents or 50MB of storage, with unlimited interactions. If you require additional storage or advanced features, our premium plans are available to suit your needs.",
+  },
+  {
+    question: "Can CorpusAI chat doc support multiple file types?",
+    answer: "Absolutely. Chat with doc supports a variety of file formats, including Word, PDF, TXT, PowerPoint, CSV, and TSV. If you need assistance with other formats, please contact our support team, and we'll be happy to help.",
+  },
+  {
+    question: "Can I access the CorpusAI chat doc on my mobile device?",
+    answer: "Yes, the CorpusAI chat doc is fully optimized for both iOS and Android, making it easy to access and interact with your documents on the go, whether you're at home or on the move.",
+  },
+  {
+    question: "Can CorpusAI chat doc summarize long and complex documents?",
+    answer: "Yes! DenserChat can quickly generate concise summaries of long and intricate documents, helping you save time and focus on the most critical information.",
+  },
+  {
+    question: "Does CorpusAI chat with doc provide citation references for its responses?",
+    answer: "Yes! Every response from DenserAI chat with doc includes source references from your document. This ensures transparency and allows you to verify the information directly within your files.",
+  },
+
+  {
+    question: "How secure is my data with CorpusAI chat with doc?",
+    answer: "We prioritize your privacy and security. All documents uploaded to DenserChat are encrypted and stored securely. We do not share your data with third parties, ensuring your information remains confidential.",
+  },
+
+ 
+];
 export default function ChatWithBotPage(){
    
     return(
@@ -110,7 +141,7 @@ export default function ChatWithBotPage(){
                 </div>
                 {/* Chat Bubbles */}
                 <div className="flex flex-col gap-2 mb-4">
-                  <div data-aos="fade-up" data-aos-duration="400" className="self-end bg-purple-100 rounded-lg px-4 py-2 text-sm max-w-[80%]">Can you summarize this research paper for me?</div>
+                  <div data-aos="fade-up" data-aos-duration="400" className="self-end bg-gradient-to-b from-[#FDFCFF] to-[#F1E6FF] rounded-lg px-4 py-2 text-sm max-w-[80%]">Can you summarize this research paper for me?</div>
                   <div data-aos="fade-up" data-aos-duration="600" className="self-start bg-white border border-zinc-100 text-zinc-700 rounded-lg px-4 py-2 text-sm max-w-[90%] shadow-sm">
                     I'll analyze the paper and provide a comprehensive summary. The main findings are:<br />
                     <ul data-aos="fade-up" data-aos-duration="800" className="list-disc pl-5 mt-1">
@@ -119,11 +150,11 @@ export default function ChatWithBotPage(){
                       <li>Results are validated across multiple datasets</li>
                     </ul>
                   </div>
-                  <div className="self-end bg-purple-100 rounded-lg px-4 py-2 text-sm max-w-[80%]">Thanks a lot!</div>
+                  <div className="self-end bg-gradient-to-b from-[#FDFCFF] to-[#F1E6FF] rounded-lg px-4 py-2 text-sm max-w-[80%]">Thanks a lot!</div>
                 </div>
                 {/* Input Box */}
                 <div className="flex items-center gap-2 mt-2">
-                  <input
+                  <input disabled
                     type="text"
                     className="flex-1 rounded-lg border border-zinc-200 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300 bg-white/80 placeholder-zinc-400"
                     placeholder="Ask about anything"
@@ -158,7 +189,7 @@ export default function ChatWithBotPage(){
             </div>
             {/* Right: Upload Info */}
             <div className="flex-1 flex flex-col items-start justify-center max-w-lg">
-              <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-medium inline-block">Upload</span>
+              <span className="mb-2 px-2 py-1 rounded-full text-purple-500 text-sm font-medium inline-block">Upload</span>
               <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">Upload Your PDF or Document</h3>
               <p className="text-zinc-500 text-base sm:text-lg">Simply upload your .doc, .txt, .csv, or .tsv files, or provide a URL if your content is online. Chat with Doc quickly analyzes your material, allowing you to start interacting immediately.</p>
             </div>
@@ -169,7 +200,7 @@ export default function ChatWithBotPage(){
         <section data-aos="fade-left" data-aos-duration="500" className="w-full flex flex-col lg:flex-row items-center justify-center mt-20 mb-10 max-w-7xl mx-auto">
           {/* Left: Text */}
           <div className="flex-1 flex flex-col items-start justify-center max-w-lg mb-10 lg:mb-0">
-            <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-medium inline-block">Ask</span>
+            <span className="mb-2 px-2 py-1 rounded-full text-purple-500 text-sm font-medium inline-block">Ask</span>
             <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">Ask Your Question</h3>
             <p className="text-zinc-500 text-base sm:text-lg">Engage in natural, conversational queries with your document. Whether you're researching, studying, or seeking quick information, just ask and receive instant answers with the CorpusAI chat doc.</p>
           </div>
@@ -189,7 +220,7 @@ export default function ChatWithBotPage(){
           </div>
           {/* Right: Text */}
           <div className="flex-1 flex flex-col items-start justify-center max-w-lg mb-10 lg:mb-0">
-            <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-medium inline-block">Learn</span>
+            <span className="mb-2 px-2 py-1 rounded-full text-purple-500 text-sm font-medium inline-block">Learn</span>
             <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">AI-Driven Insights</h3>
             <p className="text-zinc-500 text-base sm:text-lg">CorpusAI Chat with doc delivers accurate and relevant responses based on your document's content. Our advanced AI ensures you get precise information and meaningful insights every time.</p>
           </div>
@@ -205,7 +236,7 @@ export default function ChatWithBotPage(){
             ))}
           </div>
         </section>
-  <CustomerCareFAQ/>
+  <SolutionFAQ faqs={faq} title='FAQ' subtitle='Chat Doc FAQ'/>
         <section className="text-center px-4 pt-[56px] pb-16 bg-white">
         <h1 className="text-xl sm:text-2xl md:text-5xl font-medium text-[#1E1E1E] leading-tight">
          Trustworthy Chat with<span className="bg-gradient-to-r from-[#DAC0FF] to-[#BF56FF] bg-clip-text text-transparent"> Your Data</span>

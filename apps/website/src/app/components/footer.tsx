@@ -1,3 +1,6 @@
+// apps/website/src/app/components/footer.tsx - Updated version
+import Link from 'next/link';
+
 export default function Footer() {
   return (
     <footer className="text-gray-600 body-font ">
@@ -81,8 +84,12 @@ export default function Footer() {
         <div className="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
           <p className="text-gray-500 text-sm text-center sm:text-left">© 2025. Corpus AI. All Rights Reserved</p>
           <span className="inline-flex sm:ml-auto sm:mt-0 mt-2 justify-center sm:justify-start">
-            <a className="text-gray-500">Terms</a>
-            <a className="ml-3 text-gray-500">Privacy Policy</a>
+            <Link href="/legal/terms" className="text-gray-500 hover:text-[#BF56FF] transition-colors duration-200">
+              Terms
+            </Link>
+            <Link href="/legal/privacy" className="ml-3 text-gray-500 hover:text-[#BF56FF] transition-colors duration-200">
+              Privacy Policy
+            </Link>
           </span>
         </div>
       </div>

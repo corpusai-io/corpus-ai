@@ -5,8 +5,7 @@ import TestimonialsSlider from '@/app/components/testimonalsSlider';
 import TestimonialsSliders from '@/app/components/testimonalsSliders';
 import FAQSection from '@/app/components/FAQsection'
 import PricingPage from './components/Pricing';
-import Navbar from './components/navbar';
-import Link from 'next/link';
+import Pricingg from './components/Pricingg';
 export default function Home() {
    
   return (
@@ -51,7 +50,7 @@ export default function Home() {
             Get Started
           </a>
           <a
-            href="#"
+            href="/demo"
             className="bg-white border-[1.5px] border-gray-300 hover:bg-gray-100 text-[#1E1E1E] font-medium px-6 py-2 rounded-full w-full sm:w-auto text-center transition duration-200"
           >
             Book a Meeting
@@ -186,15 +185,16 @@ export default function Home() {
   </div>
 </section>
 
-
+ <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br bg-transparent px-2 sm:px-4 py-8">
 <section >
-   <div className="text-center py-5 px-4 max-w-7xl mx-auto">
+   {/* <div className="text-center py-5 px-4 max-w-7xl mx-auto">
         <h4 className="text-sm text-[#BF56FF] font-semibold mb-5 uppercase">Pricing</h4>
         <h2 className="text-3xl sm:text-4xl font-bold mb-8">Simple Pricing</h2>
         <p className="mb-12 text-[#8D8D8D] max-w-2xl mx-auto">Use Corpus Chat for free. Upgrade to enable custom domains and more advanced features.</p>
-        </div>
-  <PricingPage/>
+        </div> */}
+  <Pricingg/>
   </section>
+  </div>
 <section className="bg-white">
   <div className="max-w-6xl mx-auto px-4 py-12">
     
@@ -227,7 +227,7 @@ export default function Home() {
           <p className="text-gray-600 mb-4">
             Creating a chatbot based on your documents allows you to build on content you already have.
           </p>
-          <a href="#" className="text-black font-medium inline-flex items-center">
+          <a href="#" className="text-black font-medium inline-flex items-center hover:ml-3 duration-300 transition">
             Read More
             <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -251,7 +251,7 @@ export default function Home() {
           <p className="text-gray-600 mb-4">
             Chatbots streamline business operations by automating customer service and complex processes.
           </p>
-          <a href="#" className="text-black font-medium inline-flex items-center">
+          <a href="#" className="text-black font-medium inline-flex items-center hover:ml-3 duration-300 transition">
             Read More
             <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -275,7 +275,7 @@ export default function Home() {
           <p className="text-gray-600 mb-4">
             Corpus Retriever benchmarks retrieval accuracy using the MTB dataset.
           </p>
-          <a href="#" className="text-black font-medium inline-flex items-center">
+          <a href="#" className="text-black font-medium inline-flex items-center hover:ml-3 duration-300 transition">
             Read More
             <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />

@@ -1,8 +1,8 @@
 import B2BReasonCard from '@/app/components/B2BReasonCard';
 import CustomerCareFAQ from '@/app/components/CustomerCareFAQ';
 import websiteFAQ from '@/app/components/websiteFAQ';
-
-
+import SolutionFAQ from '@/app/components/SolutionFAQ';
+import B2BFeatureCard from '@/app/components/B2BFeatureCard';
 export default function ChatBotOnWebPage(){
     const features = [
         {
@@ -77,6 +77,38 @@ export default function ChatBotOnWebPage(){
         description: 'Automatic plugin updates through WordPress ensure you always have the latest features and security improvements.'
       },
     ];
+     const chatbotWebFaq = [
+  {
+    question: "What is an AI chatbot for website?",
+    answer: "An AI chatbot for website is an advanced tool by DenserAI that integrates into your website to provide 24/7 customer support, answer queries instantly, and enhance user experience with no coding required.",
+  },
+  {
+    question: "Is any coding required to set up an AI chatbot for website?",
+    answer: "No, adding an AI chatbot for website doesn't require coding or technical experience. With DenserAI, you can easily integrate our AI chatbot into your website by copying and pasting a code snippet or using integrations with platforms like WordPress and Shopify.",
+  },
+  {
+    question: "Does the CorpusAI chatbot support more languages?",
+    answer: "Absolutely. Our AI chatbot for website supports instant localization in over 80 languages, making it perfect for websites targeting a global audience.",
+  },
+  {
+    question: "Can I embed an AI chatbot for my website?",
+    answer: "Yes. Embedding our AI chatbot for website is simple—just insert a script into your website's HTML code, and you're ready to go.",
+  },
+  {
+    question: "How does CorpusAI chatbot for website compare with others?",
+    answer: "CorpusAI chatbot for website stands out with its advanced RAG (Retrieval-Augmented Generation) models, designed to scale with your business needs. Unlike many other website chatbots, DenserAI offers a comprehensive, all-in-one RAG-based platform.",
+  },
+
+  {
+    question: "Do you offer a free trial for adding an AI chatbot to a website?",
+    answer: "Yes, we offer a free trial for all new users. Sign up to explore DenserAI and create an AI chatbot for your website. Visit our products page for more information on our plans.",
+  },
+
+   {
+    question: "How can an AI chatbot for website benefit my business?",
+    answer: "An AI chatbot for website can significantly improve your business by automating workflows, reducing response times, and offering personalized service to more customers. CorpusAI chatbot for website integrates with your existing systems, ensuring smooth collaboration and cost savings.",
+  },
+];
     return(
     
       
@@ -111,14 +143,14 @@ export default function ChatBotOnWebPage(){
                 {/* Chat Bubbles */}
                 <div className="flex flex-col gap-2 mb-4">
                   <div data-aos="fade-up" data-aos-duration="200" className="self-start bg-zinc-100 text-zinc-700 rounded-lg px-4 py-2 text-sm max-w-[80%]">Hi! How can I help you with your website today?</div>
-                  <div data-aos="fade-up" data-aos-duration="400" className="self-end text-zinc-700 bg-purple-100 rounded-lg px-4 py-2 text-sm max-w-[80%]">I want to add a chatbot to my website. Is it difficult?</div>
+                  <div data-aos="fade-up" data-aos-duration="400" className="self-end text-zinc-700 bg-gradient-to-b from-[#FDFCFF] to-[#F1E6FF] rounded-lg px-4 py-2 text-sm max-w-[80%]">I want to add a chatbot to my website. Is it difficult?</div>
                   <div data-aos="fade-up" data-aos-duration="600" className="self-start bg-white border border-zinc-100 text-zinc-700 rounded-lg px-4 py-2 text-sm max-w-[90%] shadow-sm">
                     <p>Not at all! you can add our chatbot to your website in minutes without any coding. Would you like to know how it works?</p>
                   </div>
                 </div>
                 {/* Input Box */}
                 <div className="flex items-center gap-2 mt-20">
-                  <input
+                  <input disabled
                     type="text"
                     className="flex-1 rounded-lg border border-zinc-200 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300 bg-white/80 placeholder-zinc-400"
                     placeholder="Ask about anything"
@@ -131,25 +163,26 @@ export default function ChatBotOnWebPage(){
             </div>
         </div>
         {/* Features Section */}
-        <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 mb-10">
+        <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 lg:mt-28 mb-10">
           <div className="text-center mb-2 text-purple-400 font-semibold">Features</div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 text-center mb-10">Smart CorpusAI Chatbot on Your Website</h2>
-          <div className="w-full grid grid-cols-1  md:grid-cols-3 md:flex-row items-stretch justify-center gap-6 max-w-5xl mx-auto">
+          <div className="w-full grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 md:flex-row place-items-center gap-6 max-w-5xl mx-auto">
             {features.map((f, i) => (
-              <B2BReasonCard key={i} icon={f.icon} title={f.title} description={f.description}  />
+              <B2BFeatureCard key={i} icon={f.icon} title={f.title} description={f.description}  />
             ))}
           </div>
         </section>
   
         {/* 3 Steps Section */}
-        <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 mb-10">
+        <div className='bg-[#F9F0FF] mt-10 lg:mt-20 px-4 pb-7 md:pb-10'>
+        <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center pl-7 pr-2 justify-center  mt-20 mb-10 mx-auto max-w-7xl">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 text-center mb-12">Add Chatbot to Your Website</h2>
-          <div className="flex flex-col lg:flex-row md:justify-between items-center justify-center w-full  gap-10 px-2 sm:px-4">
+          <div className="flex flex-col lg:flex-row md:justify-between items-center justify-center w-full  gap-10">
             {/* Left: Card with Tabs and Form */}
-            <img className='order-1' src="/assets/addChatBotImage.svg" alt="" />
+            <img className='order-2 lg:order-1 lg:w-1/2' src="/assets/addChatBotImage.svg" alt="" />
             {/* Right: Setup Info */}
-            <div className="flex-1 flex order-1 flex-col items-start justify-center max-w-lg mt-10 lg:mt-0">
-              <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-medium inline-block">Setup</span>
+            <div className="flex-1 flex flex-col items-start justify-center mb-10 lg:mb-0 order-1">
+              <span className="mb-2 px-2 py-1 rounded-full  text-purple-500 text-sm font-medium inline-block">Setup</span>
               <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">Provide Your Website<br /> <span>Domain</span></h3>
               <p className="text-zinc-500 text-base sm:text-lg">Simply input your website's domain or subdomain. Corpus AI chatbot will crawl all publicly accessible pages to create a comprehensive knowledge base of your web's content.</p>
             </div>
@@ -157,35 +190,49 @@ export default function ChatBotOnWebPage(){
         </section>
   
         {/* Analyze Section */}
-        <section data-aos="fade-left" data-aos-duration="500" className="w-full overflow-x-hidden flex flex-col lg:flex-row items-center justify-center mt-2 mb-10 max-w-7xl mx-auto">
+        <section data-aos="fade-left" data-aos-duration="500" className="w-full overflow-x-hidden pl-7 pr-2 flex flex-col lg:flex-row items-center justify-center mt-2 mb-10 max-w-7xl mx-auto">
           {/* Left: Text */}
           <div className="flex-1 flex flex-col items-start justify-center mb-10 lg:mb-0">
-            <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-medium inline-block">Process</span>
+            <span className="mb-2 px-2 py-1 rounded-full text-purple-500 text-sm font-medium inline-block">Process</span>
             <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">Analyze & Index</h3>
             <p className="text-zinc-500 text-base sm:text-lg">Corpus AI chatbots learn from every page—understanding text, images, charts, and tables—ensuring it capture all the key information. Once the process is complete, your website chatbot is ready to engage.</p>
           </div>
           {/* Right: Image Card */}
-          <div className="flex-1 flex items-center justify-center w-full">
-            <img src="/assets/chatBotBuild.svg" alt="Chatbot Build Status" className="w-full max-w-xl rounded-2xl shadow-xl border border-white/40 bg-white/70" />
+          <div className="flex-1 flex items-center justify-center">
+            <img src="/assets/chatBotBuild.svg" alt="Chatbot Build Status" className="w-full" />
           </div>
         </section>
   
         {/* Chat Section */}
-        <section data-aos="fade-right" data-aos-duration="500" className="w-full flex flex-col gap-8 lg:flex-row items-center justify-center mt-20 mb-10 max-w-7xl mx-auto">
-          {/* Left: Image */}
-          <div className="flex-1 flex items-center justify-center w-full mb-10 lg:mb-0">
-            <img src="/assets/corpusFree.svg" alt="Is Corpusbot Free?" className="w-full max-w-xl rounded-2xl shadow-xl border border-white/40 bg-white/70" />
-          </div>
-          {/* Right: Text */}
-          <div className="flex-1 flex flex-col items-start justify-center max-w-lg">
-            <span className="mb-2 px-2 py-1 rounded-full bg-purple-50 text-purple-500 text-sm font-medium inline-block">Launch</span>
-            <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">Start Chatting</h3>
-            <p className="text-zinc-500 text-base sm:text-lg">Deploy the chatbot on your website and answer questions in natural languages. From your products to services and policies, the AI chatbot provides full customer support on your website. Customers will receive instant, AI-powered responses with direct links to the relevant pages for more details.</p>
-          </div>
-        </section>
+      <section
+  data-aos="fade-right"
+  data-aos-duration="500"
+  className="w-full flex flex-col-reverse lg:flex-row gap-8 px-6 items-center justify-between mt-20 mb-10 max-w-7xl mx-auto"
+>
+   <img
+    src="/assets/corpusFree.svg"
+    alt="Is Corpusbot Free?"
+    className="mb-10 lg:mb-0 lg:w-1/2"
+  />
+  {/* Text first in DOM */}
+  <div className="flex-1 flex flex-col items-start justify-center mb-10 lg:mb-0">
+    <span className="mb-2 px-2 py-1 rounded-full text-purple-500 text-sm font-medium inline-block">Launch</span>
+    <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">Start Chatting</h3>
+    <p className="text-zinc-500 text-base sm:text-lg">
+      Deploy the chatbot on your website and answer questions in natural languages. From your products to services and policies, the AI chatbot provides full customer support on your website. Customers will receive instant, AI-powered responses with direct links to the relevant pages for more details.
+    </p>
+  </div>
+
+  {/* Image second in DOM */}
+ 
+</section>
+
+
+
+        </div>
   
         {/* Why Choose Section */}
-        <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 mb-10 max-w-7xl mx-auto">
+        <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 lg:mt-36 mb-10 max-w-7xl mx-auto">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-zinc-900 text-center mb-12">Why Choose CorpusAI Website Chatbot</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
             {reasons.map((r, i) => (
@@ -193,8 +240,10 @@ export default function ChatBotOnWebPage(){
             ))}
           </div>
         </section>
-            <CustomerCareFAQ/>
-  <section className="text-center px-4 pt-[56px] pb-16 bg-white">
+        <section className='mt-20'>
+            <SolutionFAQ faqs={chatbotWebFaq} title='FAQ' subtitle='AI Chatbot for Website FAQ'/>
+            </section>
+        <section className="text-center px-4 pt-[56px] pb-16 bg-white">
         <h1 className="text-xl sm:text-2xl md:text-5xl font-medium text-[#1E1E1E] leading-tight">
          Trustworthy Chat with<span className="bg-gradient-to-r from-[#DAC0FF] to-[#BF56FF] bg-clip-text text-transparent"> Your Data</span>
         </h1>
