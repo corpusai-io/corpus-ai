@@ -106,13 +106,6 @@ export default function TermsPage() {
               </div>
 
               <div className="mb-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4 border-b border-gray-200 pb-2">Governing Law</h2>
-                <p className="text-gray-700 leading-relaxed">
-                  These Terms of Service shall be governed by and construed in accordance with the laws of the United States. Any disputes arising under these terms shall be subject to the exclusive jurisdiction of the courts in the United States.
-                </p>
-              </div>
-
-              <div className="mb-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4 border-b border-gray-200 pb-2">Contact Us</h2>
                 <p className="text-gray-700 leading-relaxed">
                   If you have any questions or concerns about these Terms of Service, please contact us at:
