@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "dotenv -e .env.development -- serverless offline --host 0.0.0.0 --httpPort 8002 --lambdaPort 3004 --config serverless.development.yaml",
     "build": "tsc",
+    "start": "node dist/index.js",
     "test": "jest",
     "lint": "eslint src/**/*.ts"
   },
