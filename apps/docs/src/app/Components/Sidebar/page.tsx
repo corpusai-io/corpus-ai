@@ -147,7 +147,7 @@ export default function Page({
       <Link href={itemRoutes[name] || "/"} onClick={() => handleClick(name)}>
         <div
           className={`flex justify-between items-center py-[3px] pl-2 pr-2 rounded-md cursor-pointer transition
-          ${isActive ? "bg-[#F4E2FF] text-[#BF56FF]" : "text-[#7E7E7E] hover:bg-[#F2F2F2] hover:text-[#1E1E1E]"}
+          ${isActive ? "bg-[#F4E2FF] text-[#BF56FF] dark:bg-[#3F2152] " : "text-[#7E7E7E] hover:bg-[#F2F2F2] hover:text-[#1E1E1E] dark:hover:bg-[#2A2A2A] dark:hover:text-[#fff]"}
         `}
         >
           <span>{display ?? name}</span>
@@ -253,7 +253,7 @@ export default function Page({
           </div>
           <div className="text-[#7E7E7E] pr-3 border-l border-[#D8D8D8] dark:border-[#2C2C2C] ml-3">
             <span
-              className="flex justify-between cursor-pointer pl-2 ml-3 py-[2px] rounded-md hover:bg-[#F2F2F2] hover:text-[#1E1E1E]"
+              className="flex justify-between cursor-pointer pl-2 ml-3 py-[1px] rounded-md hover:bg-[#F2F2F2] hover:text-[#1E1E1E] dark:hover:bg-[#2A2A2A] dark:hover:text-[#fff]"
               onClick={() => setShowInstall(prev => !prev)}
             >
               Install On
@@ -264,11 +264,11 @@ export default function Page({
                 {installItems.map((item) => navLink(item))}
               </ul>
             )}
-            <div className="cursor-pointer rounded-md ml-3 hover:bg-[#F2F2F2] hover:text-[#1E1E1E]">
+            <div className="cursor-pointer rounded-md ml-3 hover:bg-[#F2F2F2] hover:text-[#1E1E1E] dark:hover:bg-[#2A2A2A] dark:hover:text-[#fff]">
               {navLink("Connect", null, true)}
 
             </div>
-            <div className="cursor-pointer ml-3 rounded-md my-2  hover:bg-[#F2F2F2] hover:text-[#1E1E1E]">
+            <div className="cursor-pointer ml-3 rounded-md my-2  hover:bg-[#F2F2F2] hover:text-[#1E1E1E] dark:hover:bg-[#2A2A2A] dark:hover:text-[#fff]">
               {navLink("RESTful API", null, true)}
             </div>
           </div>
@@ -280,7 +280,7 @@ export default function Page({
         <li>
           <Link href="/Components/chatbots-docs-pages/Access_Setting" onClick={() => handleClick("Access Settings")}>
             <div
-              className={`py-1 rounded-md flex items-center gap-2 hover:bg-[#F2F2F2] hover:text-[#1E1E1E] ${pathname === "/Components/chatbots-docs-pages/Access_Setting" ? "bg-[#F4E2FF] text-[#BF56FF]" : "text-[#7E7E7E]"}`}
+              className={`py-1 rounded-md flex items-center gap-2 hover:bg-[#F2F2F2] hover:text-[#1E1E1E] dark:hover:bg-[#2A2A2A] dark:hover:text-[#fff] ${pathname === "/Components/chatbots-docs-pages/Access_Setting" ? "bg-[#F4E2FF] text-[#BF56FF]" : "text-[#7E7E7E]"}`}
             >
               <img src="/Website Assets/Sheild Plus.svg" alt="" />
               Access Settings
@@ -308,7 +308,7 @@ export default function Page({
             <div
               className={`flex items-center gap-2 mb-[23px] py-0.5 rounded-md cursor-pointer transition ${pathname === "/Components/chatbots-docs-pages/FAQ"
                   ? "bg-[#F4E2FF] text-[#BF56FF]"
-                  : "text-[#7E7E7E] hover:bg-[#F2F2F2] hover:text-[#1E1E1E]"
+                  : "text-[#7E7E7E] hover:bg-[#F2F2F2] hover:text-[#1E1E1E] dark:hover:bg-[#2A2A2A] dark:hover:text-[#fff]"
                 }`}
             >
               <img src="/Website Assets/Question Mark.svg" alt="" />
@@ -318,7 +318,7 @@ export default function Page({
         </li>
 
         {showInstall && (
-          <div className="fixed bottom-[45px] left-0 w-60 h-7 bg-white/75 z-50 pointer-events-none hidden lg:block"></div>
+          <div className="fixed bottom-[45px] left-0 w-60 h-7 bg-white/75 dark:bg-[#202020]/75 z-50 pointer-events-none hidden lg:block"></div>
         )}
       </div>
 
