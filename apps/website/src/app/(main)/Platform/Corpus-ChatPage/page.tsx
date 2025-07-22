@@ -1,8 +1,7 @@
 'use client'; 
 import React, { useEffect, useState } from 'react';
 import FeatureCard from '@/app/components/FeatureCard';
-import PricingPage from '@/app/components/Pricing';
-import FAQSection from '@/app/components/FAQsection';
+
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import SolutionFAQ from '@/app/components/SolutionFAQ';

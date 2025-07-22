@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react"
-import ChatBotBlog from "../../components/ChatBotBlog"
+import ChatBotBlog from "@/app/components/ChatBotBlog"
 
 const blogData = [
     {

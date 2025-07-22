@@ -574,7 +574,7 @@ export default function Navbar() {
                   }`}
               >
                 <div className="ml-4 mt-2 flex flex-col space-y-2 text-sm text-gray-700">
-                  <Link prefetch={true} href='/Solution/Legal' onClick={closeDropdown}>
+                  <Link prefetch={true} href='/Resources/Blog' onClick={closeDropdown}>
                       <div className="flex items-start gap-[3px] hover:bg-gray-100 p-2 rounded-md " >
 
                        <div>

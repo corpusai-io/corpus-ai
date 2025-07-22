@@ -95,7 +95,7 @@ function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
             </div>
           </div>
 
-          <button className="w-full border border-gray-300 flex cursor-pointer duration-300 items-center justify-center py-2 rounded-md hover:bg-[#BF56FF] hover:text-white transition duration-200">
+          <button className="w-full border border-gray-300 flex cursor-pointer duration-300 items-center justify-center py-2 rounded-md hover:bg-[#BF56FF] hover:text-white transition ">
             <FcGoogle className="text-xl mr-2 bg-white rounded-full" />
             <span>Google</span>
           </button>

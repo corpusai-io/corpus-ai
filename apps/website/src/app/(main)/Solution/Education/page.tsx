@@ -1,6 +1,6 @@
 import EducationFeatureCard from '@/app/components/EducationFeatureCard';
 import B2BReasonCard from '@/app/components/B2BReasonCard';
-import CustomerCareFAQ from '@/app/components/CustomerCareFAQ';
+
 import SolutionFAQ from '@/app/components/SolutionFAQ';
 const features = [
   {

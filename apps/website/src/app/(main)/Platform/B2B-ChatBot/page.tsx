@@ -1,8 +1,7 @@
 
 import B2BFeatureCard from '@/app/components/B2BFeatureCard';
 import B2BReasonCard from '@/app/components/B2BReasonCard';
-import FAQSection from '@/app/components/FAQsection';
-import Navbar from '@/app/components/navbar';
+
 import SolutionFAQ from '@/app/components/SolutionFAQ';
 
 

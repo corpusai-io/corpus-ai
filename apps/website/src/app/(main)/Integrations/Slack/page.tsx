@@ -1,8 +1,8 @@
 "use client"
-import B2BFeatureCard from '../../components/B2BFeatureCard';
-import B2BReasonCard from '../../components/B2BReasonCard';
-import HeroLeftSide from '../../components/HeroLeftSide';
-import HeroRightSide from '../../components/HeroRightSide';
+import B2BFeatureCard from '@/app/components/B2BFeatureCard';
+import B2BReasonCard from '@/app/components/B2BReasonCard';
+import HeroLeftSide from '@/app/components/HeroLeftSide';
+import HeroRightSide from '@/app/components/HeroRightSide';
 import SolutionFAQ from '@/app/components/SolutionFAQ';
 import Image from 'next/image';
 import 'aos/dist/aos.css';

@@ -1,8 +1,7 @@
 import B2BFeatureCard from '@/app/components/B2BFeatureCard';
 import B2BReasonCard from '@/app/components/B2BReasonCard';
-import addChatBotImage from '../assets/addChatBotImage.svg';
-import integrateChatbot from '../assets/integrate-chatbot.webp';
-import CustomerCareFAQ from '@/app/components/CustomerCareFAQ';
+
+
 import SolutionFAQ from '@/app/components/SolutionFAQ';
 const features = [
   {

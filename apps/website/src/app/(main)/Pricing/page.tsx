@@ -1,13 +1,11 @@
 "use client"
-import B2BFeatureCard from '@/app/components/B2BFeatureCard';
-import B2BReasonCard from '@/app/components/B2BReasonCard';
-import Image from 'next/image';
+
 import 'aos/dist/aos.css';
 import AOS from 'aos';
 import { useEffect } from 'react';
-import PricingPage from '../components/Pricing';
+
 import SolutionFAQ from '@/app/components/SolutionFAQ';
-import Pricingg from '../components/Pricingg';
+import Pricingg from '@/app/components/Pricingg';
 
 const EducationFAQ = [
   {

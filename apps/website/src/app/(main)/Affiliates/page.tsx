@@ -1,5 +1,5 @@
 import React from 'react';
-import SolutionFAQ from '../components/SolutionFAQ';
+import SolutionFAQ from '@/app/components/SolutionFAQ';
 
 export default function AffiliateBenefits() {
   const benefits = [
