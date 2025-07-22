@@ -4,8 +4,10 @@ import FeaturesSection from '@/app/components/FeaturesSection';
 import TestimonialsSlider from '@/app/components/testimonalsSlider';
 import TestimonialsSliders from '@/app/components/testimonalsSliders';
 import FAQSection from '@/app/components/FAQsection'
-import PricingPage from './components/Pricing';
-import Pricingg from './components/Pricingg';
+
+import Pricingg from '@/app/components/Pricingg';
+// import { Link } from 'lucide-react';
+import Link from 'next/link';
 export default function Home() {
    
   return (
@@ -43,12 +45,12 @@ export default function Home() {
 
         
         <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
-          <a
-            href="#"
+         <Link href='/Sign-In'><span
+            
             className="bg-[#BF56FF] hover:bg-[#a843e6] text-white font-medium px-6 py-2 rounded-full w-full sm:w-auto text-center transition duration-200"
           >
             Get Started
-          </a>
+          </span></Link>
           <a
             href="/demo"
             className="bg-white border-[1.5px] border-gray-300 hover:bg-gray-100 text-[#1E1E1E] font-medium px-6 py-2 rounded-full w-full sm:w-auto text-center transition duration-200"
@@ -301,12 +303,11 @@ export default function Home() {
 
         
         <div className="mt-[24px] flex flex-col sm:flex-row justify-center items-center gap-4">
-          <a
-            href="#"
+          <Link href='/Sign-In'
             className="hover:bg-gradient-to-r from-[#FC5990] to-[#AC5DE6]  text-black border-[#E0E0E0] shadow font-medium px-6 py-2 rounded-lg w-full sm:w-auto "
           >
             Get Started for Free
-          </a>
+          </Link>
         </div>
       </section>
    
