@@ -185,7 +185,7 @@ export default function Slack(){
           </section>
           
           {/*Slack Integraion section*/}
-          <section  className="w-full flex flex-col items-center mt-20 mb-10">
+          <section  className="w-full flex flex-col items-center pt-20 pb-10 bg-[#F9F0FF]">
             <div data-aos="fade-up" data-aos-duration="600">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 text-center mb-12">Simple Integration Steps</h2>
             <div className="flex flex-col-reverse lg:flex-row items-center justify-center w-full max-w-6xl gap-10 px-2 sm:px-4">

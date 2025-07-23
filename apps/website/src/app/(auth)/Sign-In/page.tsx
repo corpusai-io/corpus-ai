@@ -2,12 +2,13 @@
 
 import { useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
-
+import { Eye, EyeOff } from "lucide-react";
 export default function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
   e.preventDefault();
   const formData = new FormData(e.currentTarget);
@@ -15,9 +16,10 @@ function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
   const email = formData.get("email");
   alert("Email is " + email);
 }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
-      <div className="w-full max-w-6xl flex flex-col lg:flex-row items-center justify-between gap-10 p-8">
+      <div className="w-full max-w-6xl flex flex-col lg:flex-row lg:items-start items-center justify-between gap-10 p-8">
         {/* Left Side - Form */}
         <div className="w-full max-w-md space-y-6">
           <div className="flex flex-col items-center">
@@ -59,15 +61,24 @@ function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Password</label>
-              <input
-                type="password"
-                value={password}
-                required
-                name='password'
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-                className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  required
+                  name="password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Password"
+                  className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-2.5 text-sm text-purple-500 hover:underline focus:outline-none"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
             </div>
             <button className="w-full bg-[#BF56FF] cursor-pointer hover:bg-purple-500 duration-300 text-white py-2 rounded-md font-medium shadow-lg">
               {isSignUp ? 'Sign Up' : 'Sign In'}
@@ -104,7 +115,7 @@ function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         {/* Right Side - Illustration */}
         <div className="hidden lg:block w-full max-w-xl">
           <img src="logo.svg" />
-          <p className="text-gray-600 mb-6 text-center lg:text-left">
+          <p className="text-gray-600 text-center lg:text-left">
             Trustworthy with Your{' '}
             <span className="text-[#BF56FF] font-medium">Website and Data</span>
           </p>
