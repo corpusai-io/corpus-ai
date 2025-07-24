@@ -1,12 +1,20 @@
 'use client'; 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import TelegramStep1 from "./Telegram-Pages/Telegram-setup-1";
+import TelegramStep2 from "./Telegram-Pages/Telegram-Step-2";
+import TelegramStep3 from "./Telegram-Pages/Telegram-Step-3";
+import TelegramFeatures from './Telegram-Pages/Telegram-Benefits-Features';
+import TelegramBenefitsFeatures from "./Telegram-Pages/Telegram-Features";
+import TelegramFAQ from "./Telegram-Pages/Telegram-FAQ";
+import AnimatedSection from './AnimatedSection';
+
 
 const sections = [
   { id: "Telegram", text: "Create a Telegram Page" },
   { id: "Link_Telegram", text: "Link your Chatbot to Telegram" },
   { id: "Test_Telegram", text: "Test your Telegram Integration" },
-  { id: "Add_To_Channel", text: "Optional: Add your Bot to a Telegram Channel" },
+  { id: "Optional_BOT", text: "Optional: Add your Bot to a Telegram Channel" },
   { id: "Revoke_Telegram", text: "Revoke Telegram Integration" },
 ];
 
@@ -46,8 +54,8 @@ export default function WebsiteChatbot(){
 
     return(
         <>
-             <main className="flex-1 flex">
-             <div id="Telegram" className="w-full max-w-auto overflow-x-hidden">
+        <main className="flex-1 flex">
+        <div id="Telegram" className="w-full max-w-auto overflow-x-hidden">
 
            {/* Create a Telegram Page Start Here*/}
              <p className="flex items-center text-[#7F7F7F]" >Integration
@@ -95,25 +103,45 @@ export default function WebsiteChatbot(){
                 Type <b className="text-[#000]">/newbot</b> to trigger the new bot command. Follow the instructions and note down your API Token. 
               </p>
         {/* Create a Telegram Page End Here*/}
-
+        <main className='overflow-y-hidden'>
         {/* Link your Chatbot to telegram Start Here*/}
-          <h1 id="Link_Telegram">Link your Chatbot to telegram</h1>
+          <div id="Link_Telegram">
+            <AnimatedSection ><TelegramStep1 /></AnimatedSection>
+          </div>
         {/* Link your Chatbot to telegram End Here*/}
 
         {/* Test your Telegram Integration Start Here*/}
-           <h1 id="Test_Telegram" className="mt-[300px]">Test your Telegram Integration</h1> 
+           <div id="Test_Telegram">
+              <AnimatedSection ><TelegramStep2 /></AnimatedSection>
+            </div> 
         {/* Test your Telegram Integration End Here*/}
 
         {/* Optional: Add your Bot to a Telegram Channel Start Here*/}
-           <h1 id="Optional_BOT">Optional: Add your Bot to a Telegram Channel</h1>
+           <div id="Optional_BOT">
+            
+              <AnimatedSection ><TelegramStep3 /></AnimatedSection>
+           </div>
         {/* Optional: Add your Bot to a Telegram Channel End Here */}
 
         {/* Revoke Telegram Integration Start Here*/}
-          <h1 id="Revoke_Telegram">Revoke Telegram Integration</h1>
+          <div id="Revoke_Telegram">
+
+          </div>
         {/* Revoke Telegram Integration End Here */}
+
+        {/* Telegram Benefits Start Here */}
+        <AnimatedSection ><TelegramBenefitsFeatures/></AnimatedSection>
+        {/* Telegram Benefits Features END Here */}
+
+        {/* Telegram Features Start Here */}
+              <AnimatedSection ><TelegramFeatures /></AnimatedSection>
+        {/* Telegram Features END Here */}
         
-       
-       
+        {/* Telegram FAQ Start Here */}
+        <AnimatedSection ><TelegramFAQ /></AnimatedSection>
+        {/* Telegram FAQ END Here */}
+
+        </main>
         </div>
   </main>
 

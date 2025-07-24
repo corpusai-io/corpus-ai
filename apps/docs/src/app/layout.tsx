@@ -74,7 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             )}
             {/* Main Content */}
             <div
-              className={`flex flex-1 ml-0 mr-0 lg:ml-62 lg:mr-64 lg:mt-[20px] z-10 transition-all duration-300 ease-in-out ${showSearchBar ? 'mt-[100px]' : 'mt-[60px]'}`}
+              className={`flex flex-1 ml-0 mr-0 lg:ml-65 lg:mr-64 lg:mt-[20px] z-10 transition-all duration-300 ease-in-out ${showSearchBar ? 'mt-[100px]' : 'mt-[60px]'}`}
             >
               <main className="flex-1 lg:px-4 px-2 py-1">
                 <div className="max-w-[1200px] mx-auto w-full">{children}</div>
