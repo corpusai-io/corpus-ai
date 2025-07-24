@@ -330,8 +330,8 @@ export default function Navbar() {
 
         <div className='flex items-center '>
 
-          <Link href='/Sign-In' className='pointer'>
-          <button className="inline-flex items-center mr-3 self-end bg-[#BF56FF] border-1 border-white py-1 px-3 focus:outline-none text-white font-medium rounded-[10px] text-base mt-0 md:mt-0 shadow-[0_4px_8px_0_rgba(220, 220, 220, 1)] lg:inline-flex hidden transition-all duration-300 hover:scale-105 hover:bg-gradient-to-r from-[#FC5990] to-[#AC5DE6] " >Get Started</button></Link>
+          <Link href='/Sign-In'>
+          <button className="inline-flex items-center mr-3 self-end bg-[#BF56FF] border-1 border-white py-1 px-3 focus:outline-none text-white font-medium rounded-[10px] text-base mt-0 md:mt-0 shadow-[0_4px_8px_0_rgba(220, 220, 220, 1)] lg:inline-flex hidden transition-all duration-300 hover:scale-105 hover:bg-gradient-to-r from-[#FC5990] to-[#AC5DE6] cursor-pointer " >Get Started</button></Link>
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             id="menu-toggle"
@@ -595,9 +595,9 @@ export default function Navbar() {
             </div>
 
            
-            <button className="inline-flex items-center self-start bg-[#BF56FF] border-1 border-white py-2 px-4 focus:outline-none text-white font-medium rounded-[10px] text-base mt-4 shadow-[0_4px_8px_0_rgba(220, 220, 220, 1)] transition-all duration-300 hover:scale-105 hover:bg-gradient-to-r from-[#FC5990] to-[#AC5DE6] mr-2 mb-4">
+           <Link href='/Sign-In'> <button className="inline-flex items-center self-start bg-[#BF56FF] border-1 border-white py-2 px-4 focus:outline-none text-white font-medium rounded-[10px] text-base mt-4 shadow-[0_4px_8px_0_rgba(220, 220, 220, 1)] transition-all duration-300 hover:scale-105 hover:bg-gradient-to-r from-[#FC5990] to-[#AC5DE6] mr-2 mb-4">
               Get Started
-            </button>
+            </button></Link>
           </nav>
         </div>
       </div>
