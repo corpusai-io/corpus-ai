@@ -1,6 +1,15 @@
 'use client'; 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import AddChatbot from "./website-Pages/Website-chatbot-add-code";
+import Process from "./website-Pages/process-code";
+import ChatbotGuide from "./website-Pages/CHatbot-Guide";
+import WebsiteReasons from './website-Pages/Website-Reason';
+import WebsiteFeatures from './website-Pages/Website-Features';
+import WebsiteChatbotDesign from "./website-Pages/website-chatbot";
+import FAQ from "./website-Pages/Website-FAQ";
+import AnimatedSection from "./AnimatedSection";
+
 
 export default function WebsiteChatbot(){
   const [activeSection, setActiveSection] = useState<'web' | 'file'>('web');
@@ -10,6 +19,28 @@ export default function WebsiteChatbot(){
 
   // Disable File tab if content is empty or only whitespace
   const fileTabLocked = fileContent.trim() === '';
+
+  const [showTopSection, setShowTopSection] = useState(true);
+
+useEffect(() => {
+  const handleScroll = () => {
+    const scrollTop = window.scrollY;
+
+    if (scrollTop > 15) {
+      setShowTopSection(false); // hide if scroll past 100px
+    } else {
+      setShowTopSection(true); // show when near top
+    }
+  };
+
+  window.addEventListener('scroll', handleScroll);
+
+  return () => {
+    window.removeEventListener('scroll', handleScroll);
+  };
+}, []);
+
+  
     return(
         <>
           
@@ -21,9 +52,10 @@ export default function WebsiteChatbot(){
                         
             {/* Website Chatbot Content */}
 
-            <h2  className="font-bold  mt-1 text-[20px]">Website Chatbot</h2>
+            <h2  className="font-bold  mt-1 text-[20px] dark:text-white">Website Chatbot</h2>
 
-            <p className="text-justify mt-2 text-[#777777]  space-y-2 ">After you log in with one the following: Google login, Facebook login or sign up with Corpus, you will see the chatbot home as follows.</p>    
+            <p className="text-justify mt-2 text-[#777777]  space-y-2 dark:text-white">After you log in with one the following: Google login, Facebook login or sign up with Corpus, you will see the chatbot home as follows.</p>    
+            
             <div className="bg-white mx-auto mt-4 py-[30px] pt-3 px-5 w-auto h-auto shadow-lg rounded-[10px] ">
             <div className="flex justify-between">
                 <div>
@@ -44,10 +76,12 @@ export default function WebsiteChatbot(){
             <button className="bg-[#BF56FF] border-1 border-[#EAEAEA] p-2 mt-1 rounded-[5px] cursor-pointer text-white">Create Now</button>
             </div>
             
-            </div>
-            <p className=" text-justify mt-3 mb-3 text-[#777777]">
+            </div> 
+            <p className=" text-justify mt-3 mb-3 text-[#777777] dark:text-white">
               When you click Create Now button, you will reach the chatbot building page (see below). Make sure  that the WEB tab is selected and input the website you’d like to crawl (https://corpusai.io in this case). Click the button Build Now to start building a chatbot on the website.
             </p>
+          {showTopSection && (
+  <div className="transition-opacity duration-300">
           {/* This section for future added more information*/}
           <div className="bg-white w-auto pt-[15px] pl-[25px] rounded-t-[20px] shadow-lg ">
             <div className="">
@@ -97,7 +131,6 @@ export default function WebsiteChatbot(){
             <p className="text-[#7A7A7A] mb-2 mt-1 text-[10px] ">
               Enter the URL of the website you want to build a chatbot for.
             </p>
-          
           </div>
         )}
 
@@ -107,20 +140,33 @@ export default function WebsiteChatbot(){
           </div>
         )}
       </div>
-    </div>      
+    </div>   
     </div>
-          </div>
-        </div>
+  </div>
+  </div>
+  )}
+<main className="overflow-y-hidden">
+  {/* All your content including <AnimatedSection /> */}
+
+<AnimatedSection><AddChatbot /></AnimatedSection>
+<AnimatedSection><Process /></AnimatedSection>
+<AnimatedSection><ChatbotGuide /></AnimatedSection>
+<AnimatedSection><WebsiteReasons /></AnimatedSection>
+<AnimatedSection><WebsiteFeatures /></AnimatedSection>
+<AnimatedSection><WebsiteChatbotDesign /></AnimatedSection>
+<AnimatedSection><FAQ /></AnimatedSection>
+</main>
+    </div>
   </main>
 
    {/*  Fixed Right Sidebar */}
-          <aside className=" w-64 fixed top-0 right-[20px] h-full p-4 pt-[30px] z-0">
+          <aside className=" w-64 fixed top-0 right-[20px] h-full p-4 pt-[30px] z-0 lg:block sm:hidden hidden">
             <div className="flex items-center gap-2 text-gray-400 font-medium mb-2">
               <img src="/Website Assets/Sidebar-Alighment.svg" alt="" />
               <span>On this page</span>
             </div>
             <ul>
-              <li className="bg-white p-1 pl-4 rounded border border-[#EAEAEA]">
+              <li className="bg-white p-1 pl-4 rounded border border-[#EAEAEA] dark:bg-[#202020] dark:border-[#2C2C2C] text-[#7F7F7F]">
                 <p>No Heading</p>
               </li>
             </ul>
