@@ -178,8 +178,10 @@ useEffect(() => {
   <img
     src="/website-assets/corpus-ai-white-logo.svg"
     alt="Docs Icon"
-    className="hidden dark:block"
-  />      
+    className="hidden dark:block w-[100px] h-auto"
+    style={{ filter: 'brightness(0) invert(1)' }}
+  />
+      
         
   <img
     src="/website-assets/Docs.svg"
