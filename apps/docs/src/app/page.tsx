@@ -81,9 +81,9 @@ export default function Welcome() {
               </div>
 
               {/* Link */}
-              <Link href="/Components/chatbots-docs-pages/Website-Chatbot/" className="block mt-2 text-right dark:text-white">
+              {/* <Link href="/Components/chatbots-docs-pages/Website-Chatbot/" className="block mt-2 text-right dark:text-white">
                 Website Chatbot
-              </Link>
+              </Link> */}
             </div>
           </div>
         </div>

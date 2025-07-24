@@ -70,10 +70,8 @@ app.use('/dashboard', createProxy(currentServices.dashboard, {
   '^/dashboard': ''
 }));
 
-// Docs Routes AND its assets - MUST come before catch-all
-app.use('/docs', createProxy(currentServices.docs, {
-  '^/docs': ''
-}));
+// Docs Routes AND its assets - MUST come before catch-all  
+app.use('/docs', createProxy(currentServices.docs));
 
 // Handle docs-specific Next.js assets when accessed via /docs
 app.use('/_next/static', (req, res, next) => {
@@ -86,8 +84,10 @@ app.use('/_next/static', (req, res, next) => {
   next();
 });
 
-// Handle Website Assets that docs uses
-app.use('/Website%20Assets', createProxy(currentServices.docs));
+// Handle Website Assets that docs uses - route to docs with /docs prefix
+app.use('/Website%20Assets', createProxy(currentServices.docs, {
+  '^/Website%20Assets': '/docs/Website%20Assets'
+}));
 
 // Health check endpoint
 app.get('/health', (req, res) => {

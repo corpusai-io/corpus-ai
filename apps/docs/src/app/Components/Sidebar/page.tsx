@@ -79,7 +79,7 @@ export default function Page({
     "Telegram", "Slack", "Shopify", "Wordpress", "Your Website", "Zapier", "Zapier with Lead Generation",
   ];
 
-  useEffect(() => {
+useEffect(() => {
     const savedItem = localStorage.getItem("activeItem");
     const savedRoute = localStorage.getItem("activeRoute");
     const savedShowInstall = localStorage.getItem("showInstall");
@@ -102,6 +102,8 @@ export default function Page({
       if (savedShowInstall === "true") setShowInstall(true);
     }
 
+    // REMOVE THIS BLOCK - it causes auto-redirects
+    /* 
     if (
       savedRoute &&
       savedRoute !== "/" &&
@@ -110,6 +112,7 @@ export default function Page({
     ) {
       router.push(savedRoute);
     }
+    */
   }, []);
 
   useEffect(() => {

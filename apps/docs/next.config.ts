@@ -16,16 +16,18 @@ const shouldUseStandalone = () => {
 };
 
 const nextConfig: NextConfig = {
+  // FORCE basePath for proxy routing
+  basePath: '/docs',
+  assetPrefix: '/docs', 
+  trailingSlash: true,
+  
   output: shouldUseStandalone() ? 'standalone' : undefined,
   eslint: {
     ignoreDuringBuilds: true,
   },
   typescript: {
-    // Since you're using --no-lint in build, might as well ignore type errors too
-    // Remove this if you want type checking during builds
     ignoreBuildErrors: true,
   },
 };
-
 
 export default nextConfig;
