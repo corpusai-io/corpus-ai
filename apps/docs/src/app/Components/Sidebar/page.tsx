@@ -154,7 +154,7 @@ useEffect(() => {
         `}
         >
           <span>{display ?? name}</span>
-          {showArrow && <img src="/Website Assets/Arrow Left.svg" alt="" className="pl-10" />}
+          {showArrow && <img src="/website-assets/Arrow Left.svg" alt="" className="pl-10" />}
         </div>
       </Link>
     );
@@ -166,44 +166,44 @@ useEffect(() => {
       <header className="sticky top-0 z-10 bg-white lg:block sm:hidden hidden dark:bg-[#202020]">
         <div className="flex items-center justify-between p-3">
       <div className="flex items-center space-x-2">
-        <img src="/Website Assets/Logo.svg" alt="Main Logo" />
+        <img src="/website-assets/Logo.svg" alt="Main Logo" />
 {/* Darkmode & lightmode images start */}
   <img
-    src="/Website Assets/Corpus AI logo.svg"
+    src="/website-assets/corpusai-logo.svg"
     alt="Docs Icon"
-    className="block dark:hidden"
+    className="block dark:hidden w-[100px] h-auto"
   /> 
 
   {/* Dark mode image */}
   <img
-    src="/Website Assets/corpus-ai-white-logo.svg"
+    src="/website-assets/corpus-ai-white-logo.svg"
     alt="Docs Icon"
     className="hidden dark:block"
   />      
         
   <img
-    src="/Website Assets/Docs.svg"
+    src="/website-assets/Docs.svg"
     alt="Docs Icon"
     className="block dark:hidden"
   />
 
   {/* Dark mode image */}
   <img
-    src="/Website Assets/Docs-white.svg"
+    src="/website-assets/Docs-white.svg"
     alt="Docs Icon"
     className="hidden dark:block"
   />
         
       </div>
        <img
-    src="/Website Assets/Dots Sidebar.svg"
+    src="/website-assets/Dots Sidebar.svg"
     alt="Docs Icon"
     className="block dark:hidden"
   />
 
   {/* Dark mode image */}
   <img
-    src="/Website Assets/icon-white.svg"
+    src="/website-assets/icon-white.svg"
     alt="Docs Icon"
     className="hidden dark:block"
   />
@@ -212,7 +212,7 @@ useEffect(() => {
         <hr className="ml-1 mr-1 border-[#E5E5E5] dark:border-[#2C2C2C]" />
         <form className="mt-3 bg-[#F8F8F8] rounded py-1 pl-2 ml-1.5 mr-2 dark:bg-[#1E1E1E] dark:border-1 dark:border-[#2C2C2C]">
           <span className="absolute">
-            <img src="/Website Assets/Search.svg" alt="" className="mt-0.5"/>
+            <img src="/website-assets/Search.svg" alt="" className="mt-0.5"/>
           </span>
           <input
             type="text"
@@ -229,10 +229,10 @@ useEffect(() => {
         {/* Section: Chatbot */}
         <li>
           <div className="flex items-start gap-2">
-            <img src="/Website Assets/Robot.svg" alt="" />
+            <img src="/website-assets/Robot.svg" alt="" />
             <span>Chatbot</span>
             <div className="ml-[100px]">
-              <img src="/Website Assets/Arrow Down.svg" alt="" />
+              <img src="/website-assets/Arrow Down.svg" alt="" />
             </div>
           </div>
           <div className="border-l border-[#D8D8D8] dark:border-[#2C2C2C] text-[#7E7E7E] ml-3">
@@ -251,7 +251,7 @@ useEffect(() => {
         {/* Section: Integration */}
         <li>
           <div className="flex items-center gap-2">
-            <img src="/Website Assets/Setting.svg" alt="" />
+            <img src="/website-assets/Setting.svg" alt="" />
             <span>Integration</span>
           </div>
           <div className="text-[#7E7E7E] pr-3 border-l border-[#D8D8D8] dark:border-[#2C2C2C] ml-3">
@@ -260,7 +260,7 @@ useEffect(() => {
               onClick={() => setShowInstall(prev => !prev)}
             >
               Install On
-              <img src="/Website Assets/Arrow Left.svg" alt="" className="pr-2" />
+              <img src="/website-assets/Arrow Left.svg" alt="" className="pr-2" />
             </span>
             {showInstall && (
               <ul className="ml-3 ">
@@ -285,7 +285,7 @@ useEffect(() => {
             <div
               className={`py-1 rounded-md flex items-center gap-2 hover:bg-[#F2F2F2] hover:text-[#1E1E1E] dark:hover:bg-[#2A2A2A] dark:hover:text-[#fff] ${pathname === "/Components/chatbots-docs-pages/Access_Setting" ? "bg-[#F4E2FF] text-[#BF56FF]" : "text-[#7E7E7E]"}`}
             >
-              <img src="/Website Assets/Sheild Plus.svg" alt="" />
+              <img src="/website-assets/Sheild Plus.svg" alt="" />
               Access Settings
             </div>
           </Link>
@@ -294,7 +294,7 @@ useEffect(() => {
         {/* Section: Billing */}
         <li>
           <div className="flex items-center gap-2">
-            <img src="/Website Assets/Dollar.svg" alt="" />
+            <img src="/website-assets/Dollar.svg" alt="" />
             <span>Billing</span>
           </div>
           <div className="border-l border-[#D8D8D8] dark:border-[#2C2C2C] text-[#7E7E7E] space-y-2 ml-3 ">
@@ -314,7 +314,7 @@ useEffect(() => {
                   : "text-[#7E7E7E] hover:bg-[#F2F2F2] hover:text-[#1E1E1E] dark:hover:bg-[#2A2A2A] dark:hover:text-[#fff]"
                 }`}
             >
-              <img src="/Website Assets/Question Mark.svg" alt="" />
+              <img src="/website-assets/Question Mark.svg" alt="" />
               <span>{'FAQ'}</span>
             </div>
           </Link>
@@ -328,22 +328,33 @@ useEffect(() => {
       {/* Footer */}
       <div className="sticky bottom-0 bg-white border-t ml-1 mr-1 border-[#E5E5E5] dark:border-[#2C2C2C] lg:block hidden dark:bg-[#202020]">
         <div className="ml-3 mr-5  flex justify-between text-[#7E7E7E] py-2">
-          <div className="flex gap-1 p-[2px] rounded-3xl  border-1 border-[#E5E5E5] dark:border-[#2C2C2C] ">
+          <div className="flex gap-2 p-1 rounded-full border border-[#E5E5E5] dark:border-[#2C2C2C] transition-all duration-300">
+            {/* Light Mode Icon */}
             <img
-              src="/Website Assets/Brightness.svg"
+              src="/website-assets/Brightness.svg"
               alt="Light Mode"
               onClick={() => { if (darkMode) toggleDarkMode(); }}
-              className={`w-6 h-6 p-1 rounded-full cursor-pointer text-[#7E7E7E] ${!darkMode ? 'bg-[#E9E9E9]' : ''}`}
+              className={`
+                w-7 h-7 p-1 rounded-full cursor-pointer transition-all duration-300
+                hover:scale-110 hover:bg-[#EDEDED] dark:hover:bg-[#3A3A3A]
+                ${!darkMode ? 'bg-[#FFD700] shadow-md scale-110' : 'opacity-60'}
+              `}
             />
 
+            {/* Dark Mode Icon */}
             <img
-              src="/Website Assets/Moon.svg"
+              src="/website-assets/Moon.svg"
               alt="Dark Mode"
               onClick={() => { if (!darkMode) toggleDarkMode(); }}
-              className={`w-6 h-6 p-1 rounded-full cursor-pointer ${darkMode ? 'bg-[#303030]' : ''}`}
+              className={`
+                w-7 h-7 p-1 rounded-full cursor-pointer transition-all duration-300
+                hover:scale-110 hover:bg-[#EDEDED] dark:hover:bg-[#3A3A3A]
+                ${darkMode ? 'bg-[#4B4B4B] shadow-md scale-110' : 'opacity-60'}
+              `}
             />
           </div>
-          <img src="/Website Assets/Sidebar-Flip.svg" alt="" />
+
+          <img src="/website-assets/Sidebar-Flip.svg" alt="" />
         </div>
       </div>
     </div>

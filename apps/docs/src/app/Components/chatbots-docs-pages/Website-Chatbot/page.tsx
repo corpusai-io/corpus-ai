@@ -66,7 +66,7 @@ useEffect(() => {
             </div>
            <div className="text-center mt-2 space-y-1">
             <img 
-              src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Box website chatbot.svg" 
+              src="/website-assets/chatbot-docs-pages-icons/Website chatbot/Box website chatbot.svg" 
               alt="" 
               className="mx-auto w-[100px]" 
             />
@@ -100,7 +100,7 @@ useEffect(() => {
                           : 'hover:bg-gray-100 text-gray-600 flex gap-3'}
                       `}
                       >
-                      <img src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Browser-icon.svg" alt=""/> Web
+                      <img src="/website-assets/chatbot-docs-pages-icons/Website chatbot/Browser-icon.svg" alt=""/> Web
                     </button>
                   </li>
 
@@ -118,7 +118,7 @@ useEffect(() => {
                   : 'hover:bg-gray-100 text-gray-600 flex gap-3'}
             `}
           >
-            <img src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/File-icon.svg" alt=""/> File
+            <img src="/website-assets/chatbot-docs-pages-icons/Website chatbot/File-icon.svg" alt=""/> File
           </button>
         </li>
       </ul>
@@ -162,7 +162,7 @@ useEffect(() => {
    {/*  Fixed Right Sidebar */}
           <aside className=" w-64 fixed top-0 right-[20px] h-full p-4 pt-[30px] z-0 lg:block sm:hidden hidden">
             <div className="flex items-center gap-2 text-gray-400 font-medium mb-2">
-              <img src="/Website Assets/Sidebar-Alighment.svg" alt="" />
+              <img src="/website-assets/Sidebar-Alighment.svg" alt="" />
               <span>On this page</span>
             </div>
             <ul>

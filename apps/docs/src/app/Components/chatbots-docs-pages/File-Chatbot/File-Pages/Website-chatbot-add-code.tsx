@@ -23,7 +23,7 @@ export default function WebsitePages() {
                 <li>
                   <button className="cursor-pointer text-left px-4 py-2 rounded-[14px] text-gray-400 font-semibold flex items-center gap-2">
                     <img
-                      src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Gray-Browser-icon.svg"
+                      src="/website-assets/chatbot-docs-pages-icons/Website chatbot/Gray-Browser-icon.svg"
                       alt=""
                       className="w-4 h-4"
                     />
@@ -35,7 +35,7 @@ export default function WebsitePages() {
                     className="cursor-pointer w-full text-left px-4 py-2 rounded-md bg-gray-200 text-purple-600  flex items-center gap-2"
                   >
                     <img
-                      src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/color-File-icon.svg"
+                      src="/website-assets/chatbot-docs-pages-icons/Website chatbot/color-File-icon.svg"
                       alt=""
                       className="w-4 h-4"
                     />
@@ -55,7 +55,7 @@ export default function WebsitePages() {
                 <div className="text-center my-5 py-4 bg-[#F9F0FF] border border-[#E7C0FF] rounded-[5px]">
   <div className="flex flex-col items-center justify-center space-y-2 ">
     <img
-      src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Arrow-Up-icon.svg"
+      src="/website-assets/chatbot-docs-pages-icons/Website chatbot/Arrow-Up-icon.svg"
       alt=""
       className="w-4 h-4"
     />

@@ -59,7 +59,7 @@ export default function WebsiteChatbot(){
 
            {/* Create a Telegram Page Start Here*/}
              <p className="flex items-center text-[#7F7F7F]" >Integration
-               <img src="/Website Assets/Arrow Left.svg" alt="" className="w-4 h-4"/>
+               <img src="/website-assets/Arrow Left.svg" alt="" className="w-4 h-4"/>
                Install On</p>
 
                <h1  className="font-bold mt-2 text-2xl">Telegram</h1>
@@ -71,19 +71,19 @@ export default function WebsiteChatbot(){
               <div className="bg-[#fff] p-5 mt-2 max-w-auto rounded-[10px] shadow">
                  <div className="flex item-center gap-3">
                     
-                      <img src="/Website Assets/chatbot-docs-pages-icons/Telegram Icons/i.svg" alt=""  className="bg-[#BF56FF] p-1 mt-1 rounded-[24px] w-4 h-4"/>
-                      {/* <img src="/Website Assets/chatbot-docs-pages-icons/Telegram Icons/telegram-!-icon.svg" alt=""  className="absolute left-88 top-42.5"/> */}
+                      <img src="/website-assets/chatbot-docs-pages-icons/Telegram Icons/i.svg" alt=""  className="bg-[#BF56FF] p-1 mt-1 rounded-[24px] w-4 h-4"/>
+                      {/* <img src="/website-assets/chatbot-docs-pages-icons/Telegram Icons/telegram-!-icon.svg" alt=""  className="absolute left-88 top-42.5"/> */}
                    
                     
                     <p className=" text-[#7F7F7F]">This guide assumes you already have a chatbot at Denser.ai. If not, follow one of these  guides to create your chatbot by feeding it documents about your products:</p>
               </div> 
                <div className="text-[14px] pl-8 pt-2">
                   <div className="flex gap-3">
-                      <img src="/Website Assets/chatbot-docs-pages-icons/Telegram Icons/Dot-icon.svg" alt="" />
+                      <img src="/website-assets/chatbot-docs-pages-icons/Telegram Icons/Dot-icon.svg" alt="" />
                       Website Chatbot
                   </div>
                   <div className="flex gap-3">
-                      <img src="/Website Assets/chatbot-docs-pages-icons/Telegram Icons/Dot-icon.svg" alt="" />
+                      <img src="/website-assets/chatbot-docs-pages-icons/Telegram Icons/Dot-icon.svg" alt="" />
                       File Chatbot
                   </div>
                 </div>
@@ -93,7 +93,7 @@ export default function WebsiteChatbot(){
             </p> 
            <div className="bg-[#3B2563] flex items-center justify-center p-[15px] mt-4 w-full h-auto pb-[40px] pt-[30px]">
   <img 
-    src="/Website Assets/chatbot-docs-pages-icons/Telegram Icons/Telegram-chat.svg" 
+    src="/website-assets/chatbot-docs-pages-icons/Telegram Icons/Telegram-chat.svg" 
     alt="Telegram Chat Icon" 
     className="" 
   />
@@ -148,7 +148,7 @@ export default function WebsiteChatbot(){
 
 <div className="w-64 pt-13 fixed top-0 right-0 overflow-y-auto lg:block sm:hidden hidden">
   <div className="flex items-center gap-2 text-gray-400 font-medium mb-2">
-    <img src="/Website Assets/Sidebar-Alighment.svg" alt="" />
+    <img src="/website-assets/Sidebar-Alighment.svg" alt="" />
     <span>On this page</span>
   </div>
 

@@ -15,7 +15,7 @@ export default function WebsiteFeatures() {
 
                         </div>
                         <div className="w-8 bg-[#F6E7FF] border border-[#F0D7FF] p-1.5 rounded-[8px] shadow-[0_0_25px_rgba(127,17,224,0.2)]">
-                            <img src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Flashlight-icon.svg" alt="" />
+                            <img src="/website-assets/chatbot-docs-pages-icons/Website chatbot/Flashlight-icon.svg" alt="" />
                         </div>
                         <div className='space-y-1'>
                             <h3 className='font-bold'>Powerful Integrations</h3>
@@ -33,7 +33,7 @@ export default function WebsiteFeatures() {
 
                         </div>
                         <div className="w-8 bg-[#F6E7FF] border border-[#F0D7FF] p-1.5 rounded-[8px] shadow-[0_0_25px_rgba(127,17,224,0.2)]">
-                            <img src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/People-icon.svg" alt="" />
+                            <img src="/website-assets/chatbot-docs-pages-icons/Website chatbot/People-icon.svg" alt="" />
                         </div>
                         <div className='space-y-1'>
                             <h3 className='font-bold'>User-Friendly Setup</h3>
@@ -51,7 +51,7 @@ export default function WebsiteFeatures() {
 
                         </div>
                         <div className="w-8 bg-[#F6E7FF] border border-[#F0D7FF] p-1.5 rounded-[8px] shadow-[0_0_25px_rgba(127,17,224,0.2)]">
-                            <img src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Browser-icon.svg" alt="" />
+                            <img src="/website-assets/chatbot-docs-pages-icons/Website chatbot/Browser-icon.svg" alt="" />
                         </div>
                         <div className='space-y-1'>
                             <h3 className='font-bold'>No Language Barrier</h3>

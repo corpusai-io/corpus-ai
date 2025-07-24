@@ -16,7 +16,7 @@ export default function TelegramStep1() {
           </p>
         </div>
         <img 
-          src="/Website Assets/chatbot-docs-pages-icons/Telegram Icons/Telegram-Step-2.svg" 
+          src="/website-assets/chatbot-docs-pages-icons/Telegram Icons/Telegram-Step-2.svg" 
           alt="Telegram Step" 
           className="w-full max-w-[400px] h-auto object-contain"
         />

@@ -7,7 +7,7 @@ export default function WebsiteChatbotDesign() {
             <div className="bg-white py-10 mt-6">
                 <div>
                     {/* <div>
-                        <img src="/website Assets/chatbot-docs-pages-icons/Website Chatbot/chatbot-icon.svg" alt="" />
+                        <img src="/website-Assets/chatbot-docs-pages-icons/Website Chatbot/chatbot-icon.svg" alt="" />
                         <h3>AI Assistant</h3>
 
                     </div> */}

@@ -37,7 +37,7 @@ export default function WebsiteChatbot() {
                 <div className="flex items-center flex-wrap gap-2 cursor-pointer">
                   <div className="flex items-center lg:gap-18 py-1 gap-23 px-3 bg-[#fff] rounded-[7px] border border-[#EAEAEA]">
                     <span className="text-[#7F7F7F]">Private</span>
-                    <img src="/Website Assets/Arrow Down.svg" className="inline-block" alt="" />
+                    <img src="/website-assets/Arrow Down.svg" className="inline-block" alt="" />
                   </div>
 
                   <button className="border border-[#EAEAEA] text-[#fff] bg-[#BF56FF] px-3 py-1 rounded-[5px] cursor-pointer">Save</button>
@@ -70,7 +70,7 @@ export default function WebsiteChatbot() {
               <div className="lg:mt-[20px] text-[#BF56FF] font-bold pl-[21px] mt-[10px] lg:pl-[28px]">API Documentation</div>
 
               <div className="mt-4 pt-[80px] border-[#EAEAEA] border-t-1 text-center ">
-                <img src="/Website Assets/chatbot-docs-pages-icons/Access Setting Icons/Key-Icon.svg" alt="" className="bg-[#F0D7FF] mb-[10px] p-[20px] rounded-[5px] mx-auto" />
+                <img src="/website-assets/chatbot-docs-pages-icons/Access Setting Icons/Key-Icon.svg" alt="" className="bg-[#F0D7FF] mb-[10px] p-[20px] rounded-[5px] mx-auto" />
 
                 <p className="text-[#7F7F7F]">You can generate an API kev to access the API</p>
                 <div>
@@ -101,7 +101,7 @@ export default function WebsiteChatbot() {
 
       <div className="w-64 pt-13 fixed top-0 right-0 overflow-y-auto lg:block sm:hidden hidden">
         <div className="flex items-center gap-2 text-gray-400 font-medium mb-2">
-          <img src="/Website Assets/Sidebar-Alighment.svg" alt="" />
+          <img src="/website-assets/Sidebar-Alighment.svg" alt="" />
 
           <span>On this page</span>
         </div>

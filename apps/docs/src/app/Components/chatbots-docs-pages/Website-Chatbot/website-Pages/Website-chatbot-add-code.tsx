@@ -23,7 +23,7 @@ export default function WebsitePages() {
                 <li>
                   <button className=" text-left px-4 py-2 rounded-[14px] bg-gray-200 text-purple-600 font-semibold flex items-center gap-2">
                     <img
-                      src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Browser-icon.svg"
+                      src="/website-assets/chatbot-docs-pages-icons/Website chatbot/Browser-icon.svg"
                       alt=""
                       className="w-4 h-4"
                     />
@@ -36,7 +36,7 @@ export default function WebsitePages() {
                     className="w-full text-left px-4 py-2 rounded-md text-gray-400 flex items-center gap-2 cursor-not-allowed"
                   >
                     <img
-                      src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/File-icon.svg"
+                      src="/website-assets/chatbot-docs-pages-icons/Website chatbot/File-icon.svg"
                       alt=""
                       className="w-4 h-4"
                     />
@@ -67,7 +67,7 @@ export default function WebsitePages() {
                     <h4 className="font-semibold">Language</h4>
                     <div className="bg-white flex justify-between items-center border border-[#E9E9E9] rounded-[5px] py-1 px-3 w-35 max-w-xs">
                       English
-                      <img src="/Website Assets/Arrow Down.svg" alt="" className='cursor-pointer'/>
+                      <img src="/website-assets/Arrow Down.svg" alt="" className='cursor-pointer'/>
                     </div>
                     <p className="text-[#7A7A7A] text-sm mt-2 cursor-pointer">
                       Select language of source website

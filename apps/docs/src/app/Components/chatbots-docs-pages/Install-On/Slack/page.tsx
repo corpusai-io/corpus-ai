@@ -31,7 +31,7 @@ export default function WebsiteChatbot(){
                 <button className="border-1 border-[#EAEAEA] p-2 rounded-[5px] pt-1 pb-0 pl-3 pr-3 cursor-pointer h-9">Add Bot</button>
             </div>
            <div className="text-center mt-5 space-y-1">
-            <img src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Box website chatbot.svg" alt="" className="relative left-70 w-30 "/>
+            <img src="/website-assets/chatbot-docs-pages-icons/Website chatbot/Box website chatbot.svg" alt="" className="relative left-70 w-30 "/>
             <p className="mt-5 font-bold">There are no Chatbots</p>
             <p className="text-[#7F7F7F]">Create new chatbots to get started</p>
             
@@ -59,7 +59,7 @@ export default function WebsiteChatbot(){
                           : 'hover:bg-gray-100 text-gray-600 flex gap-3'}
                       `}
                       >
-                      <img src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Browser-icon.svg" alt=""/> Web
+                      <img src="/website-assets/chatbot-docs-pages-icons/Website chatbot/Browser-icon.svg" alt=""/> Web
                     </button>
                   </li>
 
@@ -77,7 +77,7 @@ export default function WebsiteChatbot(){
                   : 'hover:bg-gray-100 text-gray-600 flex gap-3'}
             `}
           >
-            <img src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/File-icon.svg" alt=""/> File
+            <img src="/website-assets/chatbot-docs-pages-icons/Website chatbot/File-icon.svg" alt=""/> File
           </button>
         </li>
       </ul>
@@ -112,7 +112,7 @@ export default function WebsiteChatbot(){
         
      <div className="w-64 pt-13 fixed top-0 right-0 overflow-y-auto lg:block sm:hidden hidden">
       <div className="flex items-center gap-2 text-gray-400 font-medium mb-2">
-        <img src="/Website Assets/Sidebar-Alighment.svg" alt="" />
+        <img src="/website-assets/Sidebar-Alighment.svg" alt="" />
         
         <span>On this page</span>
       </div>

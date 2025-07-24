@@ -84,9 +84,9 @@ app.use('/_next/static', (req, res, next) => {
   next();
 });
 
-// Handle Website Assets that docs uses - route to docs with /docs prefix
-app.use('/Website%20Assets', createProxy(currentServices.docs, {
-  '^/Website%20Assets': '/docs/Website%20Assets'
+// Handle website-assets that docs uses - route to docs with /docs prefix
+app.use('/website-assets', createProxy(currentServices.docs, {
+  '^/website-assets': '/docs/website-assets'
 }));
 
 // Health check endpoint

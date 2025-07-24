@@ -29,7 +29,7 @@ export default function WebsitePages() {
             <div className="space-y-4 py-4 text-[#7A7A7A] text-sm px-12">
               <div className="flex items-start gap-4">
                 <img
-                  src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Check-green.svg"
+                  src="/website-assets/chatbot-docs-pages-icons/Website chatbot/Check-green.svg"
                   alt=""
                   className="bg-[#D6FFEC] p-2 rounded-full w-10 h-10"
                 />
@@ -38,7 +38,7 @@ export default function WebsitePages() {
 
               <div className="flex items-start gap-4">
                 <img
-                  src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/round-circle.svg"
+                  src="/website-assets/chatbot-docs-pages-icons/Website chatbot/round-circle.svg"
                   alt=""
                   className="bg-[#D6FFEC] p-2.5 rounded-full w-10 h-10"
                 />
@@ -50,7 +50,7 @@ export default function WebsitePages() {
 
               <div className="flex items-start gap-4">
                 <img
-                  src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Check-gray.svg"
+                  src="/website-assets/chatbot-docs-pages-icons/Website chatbot/Check-gray.svg"
                   alt=""
                   className="bg-[#EDEDED] p-2 rounded-full w-10 h-10"
                 />
@@ -59,7 +59,7 @@ export default function WebsitePages() {
 
               <div className="flex items-start gap-4">
                 <img
-                  src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Check-gray.svg"
+                  src="/website-assets/chatbot-docs-pages-icons/Website chatbot/Check-gray.svg"
                   alt=""
                   className="bg-[#EDEDED] p-2 rounded-full w-10 h-10"
                 />

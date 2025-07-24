@@ -10,7 +10,7 @@ export default function WebsiteReasons() {
             {/* Card 1 Code start here */}
             <div className="space-y-4 border-1 border-[#EEEEEE] rounded-[10px] p-4 hover:text-[#BF56FF] hover:border-[#BF56FF] cursor-pointer hover:shadow-[0_0_25px_rgba(127,17,224,0.2)]">
                 <div className="w-8 bg-[#F6E7FF] border border-[#F0D7FF] p-1.5 rounded-[8px] shadow-[0_0_25px_rgba(127,17,224,0.2)]">
-                <img src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Brain-icon.svg" alt="" />
+                <img src="/website-assets/chatbot-docs-pages-icons/Website chatbot/Brain-icon.svg" alt="" />
                 </div>
                 <div className='space-y-1'>
                     <h3 className='font-bold'>Next Gen RAG Tech</h3>
@@ -24,7 +24,7 @@ export default function WebsiteReasons() {
             {/* Card 2 Code start here */}
               <div className="space-y-4 border-1 border-[#EEEEEE] rounded-[10px] p-4 hover:text-[#BF56FF] hover:border-[#BF56FF] cursor-pointer hover:shadow-[0_0_25px_rgba(127,17,224,0.2)]">
                 <div className="w-7 bg-[#F6E7FF] border-1 border-[#F0D7FF] p-1.5 rounded-[8px] shadow-[0_0_25px_rgba(127,17,224,0.2)]">
-                <img src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Browser-icon.svg" alt="" />
+                <img src="/website-assets/chatbot-docs-pages-icons/Website chatbot/Browser-icon.svg" alt="" />
                 </div>
                 <div className='space-y-2'>
                     <h3 className='font-bold'>Multi Lingual Support</h3>
@@ -38,7 +38,7 @@ export default function WebsiteReasons() {
             {/* Card 3 Code start here */}
               <div className="space-y-4 border-1 border-[#EEEEEE] rounded-[10px] p-4 hover:text-[#BF56FF] hover:border-[#BF56FF] cursor-pointer hover:shadow-[0_0_25px_rgba(127,17,224,0.2)]">
                 <div className="w-8 bg-[#F6E7FF] border-1 border-[#F0D7FF] p-1.5 rounded-[8px] shadow-[0_0_25px_rgba(127,17,224,0.2)]">
-                <img src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Flashlight-icon.svg" alt="" />
+                <img src="/website-assets/chatbot-docs-pages-icons/Website chatbot/Flashlight-icon.svg" alt="" />
                 </div>
                 <div className='space-y-2'>
                     <h3 className='font-bold'>Quick Integration</h3>
@@ -52,7 +52,7 @@ export default function WebsiteReasons() {
             {/* Card 4 Code start here */}
               <div className="space-y-4 border-1 border-[#EEEEEE] rounded-[10px] p-4 hover:text-[#BF56FF] hover:border-[#BF56FF] cursor-pointer hover:shadow-[0_0_25px_rgba(127,17,224,0.2)]">
                 <div className="w-8 bg-[#F6E7FF] border-1 border-[#F0D7FF] p-1.5 rounded-[8px] shadow-[0_0_25px_rgba(127,17,224,0.2)]">
-                <img src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Line-Chart-Icon.svg" alt="" />
+                <img src="/website-assets/chatbot-docs-pages-icons/Website chatbot/Line-Chart-Icon.svg" alt="" />
                 </div>
                 <div className='space-y-2'>
                     <h3 className='font-bold'>Performance Analytics</h3>
@@ -66,7 +66,7 @@ export default function WebsiteReasons() {
             {/* Card 5 Code start here */}
               <div className="space-y-4 border-1 border-[#EEEEEE] rounded-[10px] p-4 hover:text-[#BF56FF] hover:border-[#BF56FF] cursor-pointer hover:shadow-[0_0_25px_rgba(127,17,224,0.2)]">
                 <div className="w-8 bg-[#F6E7FF] border-1 border-[#F0D7FF] p-1.5 rounded-[8px] shadow-[0_0_25px_rgba(127,17,224,0.2)]">
-                <img src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Greater-Less-icon.svg" alt="" />
+                <img src="/website-assets/chatbot-docs-pages-icons/Website chatbot/Greater-Less-icon.svg" alt="" />
                 </div>
                 <div className='space-y-2'>
                     <h3 className='font-bold'>No Coding Required</h3>
@@ -80,7 +80,7 @@ export default function WebsiteReasons() {
             {/* Card 6 Code start here */}
               <div className="space-y-4 border-1 border-[#EEEEEE] rounded-[10px] p-4 hover:text-[#BF56FF] hover:border-[#BF56FF] cursor-pointer hover:shadow-[0_0_25px_rgba(127,17,224,0.2)]">
                 <div className="w-8 bg-[#F6E7FF] border-1 border-[#F0D7FF] p-1.5 rounded-[8px] shadow-[0_0_25px_rgba(127,17,224,0.2)]">
-                <img src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Notofication-icon.svg" alt="" />
+                <img src="/website-assets/chatbot-docs-pages-icons/Website chatbot/Notofication-icon.svg" alt="" />
                 </div>
                 <div className='space-y-2'>
                     <h3 className='font-bold'>Easy Updates</h3>

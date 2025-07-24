@@ -17,7 +17,7 @@ export default function WebsitePages() {
                 <p className='font-semibold text-justify'>
                   recognition, and a stable subscription system as key development priorities
                   <img
-                    src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/circle-stars.svg"
+                    src="/website-assets/chatbot-docs-pages-icons/Website chatbot/circle-stars.svg"
                     alt=""
                     className="inline w-4 h-4 align-middle ml-1"
                   />
@@ -45,7 +45,7 @@ export default function WebsitePages() {
                         <div className='flex'>
                           Premium)
                         <img
-                          src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/circle-stars.svg"
+                          src="/website-assets/chatbot-docs-pages-icons/Website chatbot/circle-stars.svg"
                           alt=""
                           className="inline w-4 h-4 align-middle"
                         />
@@ -64,7 +64,7 @@ export default function WebsitePages() {
                       <li>
                         Week 3: SEC and user authentication
                         <img
-                          src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/circle-stars.svg"
+                          src="/website-assets/chatbot-docs-pages-icons/Website chatbot/circle-stars.svg"
                           alt=""
                           className="inline w-4 h-4 align-middle"
                         />

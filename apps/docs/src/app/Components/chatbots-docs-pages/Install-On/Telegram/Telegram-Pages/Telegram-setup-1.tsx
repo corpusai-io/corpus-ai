@@ -10,7 +10,7 @@ export default function TelegramStep1() {
 
       <div className="flex flex-col lg:flex-row gap-5 items-center max-w-7xl mx-auto px-4">
         <img 
-          src="/Website Assets/chatbot-docs-pages-icons/Telegram Icons/TelegramStep-1.svg" 
+          src="/website-assets/chatbot-docs-pages-icons/Telegram Icons/TelegramStep-1.svg" 
           alt="Telegram Step" 
           className="w-full max-w-[400px] h-auto object-contain"
         />

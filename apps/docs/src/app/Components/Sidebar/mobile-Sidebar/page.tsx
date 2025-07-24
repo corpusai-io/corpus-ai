@@ -53,7 +53,7 @@ export default function MobileSidebar({
           {/* Flip / Close Button */}
           {!isSidebarVisible ? (
             <img
-              src="/Website Assets/Sidebar-Flip.svg"
+              src="/website-assets/Sidebar-Flip.svg"
               alt="Flip"
               className="cursor-pointer"
               onClick={() => {
@@ -63,7 +63,7 @@ export default function MobileSidebar({
             />
           ) : (
             <img
-              src="/Website Assets/Close-ICon/close-iii.svg"
+              src="/website-assets/Close-ICon/close-iii.svg"
               alt="Close"
               className="cursor-pointer w-6"
               onClick={() => {
@@ -75,30 +75,30 @@ export default function MobileSidebar({
 
           {/* Left Side */}
           <div className="flex items-center gap-2">
-            <img src="/Website Assets/Logo.svg" alt="Logo" />
+            <img src="/website-assets/Logo.svg" alt="Logo" />
 {/* Mobile View Darkmode & lightmode images start */}
   <img
-    src="/Website Assets/Corpus AI logo.svg"
+    src="/website-assets/corpusai-logo.svg"
     alt="Docs Icon"
     className="block dark:hidden"
   /> 
 
   {/* Dark mode image */}
   <img
-    src="/Website Assets/corpus-ai-white-logo.svg"
+    src="/website-assets/corpus-ai-white-logo.svg"
     alt="Docs Icon"
     className="hidden dark:block"
   />      
         
   <img
-    src="/Website Assets/Docs.svg"
+    src="/website-assets/Docs.svg"
     alt="Docs Icon"
     className="block dark:hidden"
   />
 
   {/* Dark mode image */}
   <img
-    src="/Website Assets/Docs-white.svg"
+    src="/website-assets/Docs-white.svg"
     alt="Docs Icon"
     className="hidden dark:block"
   />
@@ -109,13 +109,13 @@ export default function MobileSidebar({
           <div className="flex items-center gap-4">
             <div className="flex gap-1 p-[2px] rounded-3xl  border-1 border-[#E5E5E5] dark:border-[#2C2C2C]">
               <img
-              src="/Website Assets/Brightness.svg"
+              src="/website-assets/Brightness.svg"
               alt="Light Mode"
               onClick={() => { if (darkMode) toggleDarkMode(); }}
               className={`w-6 h-6 p-1 rounded-full cursor-pointer text-[#7E7E7E] ${!darkMode ? 'bg-[#E9E9E9]' : ''}`}
             />
                <img
-              src="/Website Assets/Moon.svg"
+              src="/website-assets/Moon.svg"
               alt="Dark Mode"
               onClick={() => { if (!darkMode) toggleDarkMode(); }}
               className={`w-6 h-6 p-1 rounded-full cursor-pointer ${darkMode ? 'bg-[#303030]' : ''}`}
@@ -125,14 +125,14 @@ export default function MobileSidebar({
             {/* Toggle between Search and Close icon */}
             {!showSearchBar ? (
               <img
-                src="/Website Assets/Search.svg"
+                src="/website-assets/Search.svg"
                 alt="Search"
                 className="cursor-pointer w-5"
                 onClick={() => setShowSearchBar(true)}
               />
             ) : (
               <img
-                src="/Website Assets/Close-ICon/clos-iv.png"
+                src="/website-assets/Close-ICon/clos-iv.png"
                 alt="Close"
                 className="cursor-pointer w-5"
                 onClick={() => setShowSearchBar(false)}
@@ -155,7 +155,7 @@ export default function MobileSidebar({
               required
             />
             <img
-              src="/Website Assets/Search.svg"
+              src="/website-assets/Search.svg"
               alt="Search"
               className="w-5 cursor-pointer ml-2"
             />

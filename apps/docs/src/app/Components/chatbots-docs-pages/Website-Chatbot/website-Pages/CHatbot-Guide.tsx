@@ -22,7 +22,7 @@ export default function WebsitePages() {
                 <div className="flex items-center gap-2">
                   <span>Ability to store up to 100 documents or web pages</span>
                   <img
-                    src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/circle-stars.svg"
+                    src="/website-assets/chatbot-docs-pages-icons/Website chatbot/circle-stars.svg"
                     alt=""
                     className="w-4 h-4"
                   />
@@ -33,13 +33,13 @@ export default function WebsitePages() {
                 <p>
                   This free plan is described as "ideal for startups wanting to test basic features at no cost"
                   <img
-                    src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/circle-stars.svg"
+                    src="/website-assets/chatbot-docs-pages-icons/Website chatbot/circle-stars.svg"
                     alt=""
                     className="inline ml-1 w-4 h-4 align-middle"
                   />
                   and is "perfect for testing the tool at no cost"
                   <img
-                    src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/circle-stars.svg"
+                    src="/website-assets/chatbot-docs-pages-icons/Website chatbot/circle-stars.svg"
                     alt=""
                     className="inline ml-1 w-4 h-4 align-middle"
                   />
@@ -49,7 +49,7 @@ export default function WebsitePages() {
               <p className="font-bold text-justify">
                 If you need more features or capacity, Denser.ai also offers paid plans starting with the Starter Plan at $19 monthly, which includes 2 DenserBots and 1,500 queries per month
                 <img
-                  src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/circle-stars.svg"
+                  src="/website-assets/chatbot-docs-pages-icons/Website chatbot/circle-stars.svg"
                   alt=""
                   className="inline ml-1 w-4 h-4 align-middle"
                 />

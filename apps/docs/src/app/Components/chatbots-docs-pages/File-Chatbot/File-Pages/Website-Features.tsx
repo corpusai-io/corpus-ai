@@ -14,7 +14,7 @@ export default function WebsiteFeatures() {
 
                         </div>
                         <div className="w-8 bg-[#F6E7FF] border border-[#F0D7FF] p-1.5 rounded-[8px] shadow-[0_0_25px_rgba(127,17,224,0.2)]">
-                            <img src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Flashlight-icon.svg" alt="" />
+                            <img src="/website-assets/chatbot-docs-pages-icons/Website chatbot/Flashlight-icon.svg" alt="" />
                         </div>
                         <div className='space-y-1'>
                             <h3 className='font-bold'>Powerful AI Chat Tools</h3>
@@ -32,7 +32,7 @@ export default function WebsiteFeatures() {
 
                         </div>
                         <div className="w-8 bg-[#F6E7FF] border border-[#F0D7FF] p-1.5 rounded-[8px] shadow-[0_0_25px_rgba(127,17,224,0.2)]">
-                            <img src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/File-icon-2.svg" alt="" />
+                            <img src="/website-assets/chatbot-docs-pages-icons/Website chatbot/File-icon-2.svg" alt="" />
                         </div>
                         <div className='space-y-1'>
                             <h3 className='font-bold'>Multi-docs Support</h3>
@@ -50,7 +50,7 @@ export default function WebsiteFeatures() {
 
                         </div>
                         <div className="w-8 bg-[#F6E7FF] border border-[#F0D7FF] p-1.5 rounded-[8px] shadow-[0_0_25px_rgba(127,17,224,0.2)]">
-                            <img src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Search-Icon-3.svg" alt="" />
+                            <img src="/website-assets/chatbot-docs-pages-icons/Website chatbot/Search-Icon-3.svg" alt="" />
                         </div>
                         <div className='space-y-1'>
                             <h3 className='font-bold'>Smart Summary</h3>
@@ -68,7 +68,7 @@ export default function WebsiteFeatures() {
 
                         </div>
                         <div className="w-8 bg-[#F6E7FF] border border-[#F0D7FF] p-1.5 rounded-[8px] shadow-[0_0_25px_rgba(127,17,224,0.2)]">
-                            <img src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Question-Mark-icon.svg" alt="" />
+                            <img src="/website-assets/chatbot-docs-pages-icons/Website chatbot/Question-Mark-icon.svg" alt="" />
                         </div>
                         <div className='space-y-1'>
                             <h3 className='font-bold'>Enhanced Navigation</h3>
@@ -86,7 +86,7 @@ export default function WebsiteFeatures() {
 
                         </div>
                         <div className="w-8 bg-[#F6E7FF] border border-[#F0D7FF] p-1.5 rounded-[8px] shadow-[0_0_25px_rgba(127,17,224,0.2)]">
-                            <img src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Double-chat-icon.svg" alt="" />
+                            <img src="/website-assets/chatbot-docs-pages-icons/Website chatbot/Double-chat-icon.svg" alt="" />
                         </div>
                         <div className='space-y-1'>
                             <h3 className='font-bold'>Context-Aware Insights</h3>
@@ -104,7 +104,7 @@ export default function WebsiteFeatures() {
 
                         </div>
                         <div className="w-8 bg-[#F6E7FF] border border-[#F0D7FF] p-1.5 rounded-[8px] shadow-[0_0_25px_rgba(127,17,224,0.2)]">
-                            <img src="/Website Assets/chatbot-docs-pages-icons/Website chatbot/Search-icon-2.svg" alt="" />
+                            <img src="/website-assets/chatbot-docs-pages-icons/Website chatbot/Search-icon-2.svg" alt="" />
                         </div>
                         <div className='space-y-1'>
                             <h3 className='font-bold'>Advanced Keyword Search</h3>

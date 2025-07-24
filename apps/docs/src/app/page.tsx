@@ -17,7 +17,7 @@ export default function Welcome() {
           <div className="group bg-white dark:bg-[#202020] dark:hover:bg-[#2C2C2C] px-4 py-4 rounded-[10px] border-1 border-[#DFDFDF] dark:border-[#2C2C2C] shadow-[0_4px_8px_rgba(216,216,216,0.25)]  hover:shadow-[0_4px_15px_rgba(255,255,255,0.25)] dark:shadow-none dark:hover:shadow-none hover:bg-[#FAFAFA] cursor-pointer">
             <div className="rounded">
               <div className="w-8 bg-[#F8F8F8] dark:bg-[#1E1E1E] group-hover:bg-[#FFFFFF] dark:group-hover:bg-[#1E1E1E] border-1 border-[#DDDDDD] dark:border-[#2C2C2C] p-1.5 rounded-[5px]">
-                <img src="/Website Assets/Robot.svg" alt="" />
+                <img src="/website-assets/Robot.svg" alt="" />
               </div>
 
               <h3 className="pt-3 text-[#1E1E1E] font-medium dark:text-[#fff]">Chatbot</h3>
@@ -30,7 +30,7 @@ export default function Welcome() {
          <div className="group bg-white dark:bg-[#202020] dark:hover:bg-[#2C2C2C] px-4 py-4 rounded-[10px] border-1 border-[#DFDFDF] dark:border-[#2C2C2C] shadow-[0_4px_8px_rgba(216,216,216,0.25)] hover:shadow-[0_4px_15px_rgba(255,255,255,0.25)] dark:shadow-none dark:hover:shadow-none hover:bg-[#FAFAFA] cursor-pointer">
             <div className="rounded">
               <div className="w-8 bg-[#F8F8F8] dark:bg-[#1E1E1E] group-hover:bg-[#FFFFFF] dark:group-hover:bg-[#1E1E1E] border-1 border-[#DDDDDD] dark:border-[#2C2C2C] p-1.5 rounded-[5px]">
-                <img src="/Website Assets/Setting.svg" alt="" />
+                <img src="/website-assets/Setting.svg" alt="" />
               </div>
               <h3 className="pt-3 text-[#1E1E1E] font-medium dark:text-[#fff]">Integration</h3>
               <p className="text-gray-500">Integrate CorpusAI with your favorite tools</p>
@@ -42,7 +42,7 @@ export default function Welcome() {
          <div className="group bg-white dark:bg-[#202020] dark:hover:bg-[#2C2C2C] px-4 py-4 rounded-[10px] border-1 border-[#DFDFDF] dark:border-[#2C2C2C] shadow-[0_4px_8px_rgba(216,216,216,0.25)] hover:shadow-[0_4px_15px_rgba(255,255,255,0.25)] dark:shadow-none dark:hover:shadow-none hover:bg-[#FAFAFA] cursor-pointer">
             <div className="rounded">
               <div className="w-8 bg-[#F8F8F8] dark:bg-[#1E1E1E] group-hover:bg-[#FFFFFF] dark:group-hover:bg-[#1E1E1E] border-1 border-[#DDDDDD] dark:border-[#2C2C2C] p-1.5 rounded-[5px]">
-                <img src="/Website Assets/Dollar.svg" alt="" />
+                <img src="/website-assets/Dollar.svg" alt="" />
               </div>
               <h3 className="pt-3 text-[#1E1E1E] font-medium dark:text-[#fff]">Billing</h3>
               <p className="text-gray-500">Understand how billing works in CorpusAI</p>
@@ -54,7 +54,7 @@ export default function Welcome() {
           <div className="group bg-white dark:bg-[#202020] dark:hover:bg-[#2C2C2C] px-4 py-4 rounded-[10px] border-1 border-[#DFDFDF] dark:border-[#2C2C2C] shadow-[0_4px_8px_rgba(216,216,216,0.25)] hover:shadow-[0_4px_15px_rgba(255,255,255,0.25)] dark:shadow-none dark:hover:shadow-none  hover:bg-[#FAFAFA] cursor-pointer">
             <div className="rounded">
               <div className="w-8 bg-[#F8F8F8] dark:bg-[#1E1E1E] group-hover:bg-[#FFFFFF] dark:group-hover:bg-[#1E1E1E] border-1 border-[#DDDDDD] dark:border-[#2C2C2C] p-1.5 rounded-[5px]">
-                <img src="/Website Assets/Question Mark.svg" alt="" />
+                <img src="/website-assets/Question Mark.svg" alt="" />
               </div>
               <h3 className="pt-3 text-[#1E1E1E] font-medium dark:text-[#fff]">FAQ</h3>
               <p className="text-gray-500">Find answers to frequently asked questions</p>
@@ -77,7 +77,7 @@ export default function Welcome() {
               {/* Text and Arrow */}
               <div className="flex items-center justify-end text-[#7E7E7E]">
                 <span className="mr-2">Next</span>
-                <img src="/Website Assets/Arrow Left.svg" alt="" className="w-4 h-4" />
+                <img src="/website-assets/Arrow Left.svg" alt="" className="w-4 h-4" />
               </div>
 
               {/* Link */}
@@ -91,7 +91,7 @@ export default function Welcome() {
 
       <div className="w-64 pt-13 fixed right-0 top-0 lg:block sm:hidden hidden">
         <div className="flex items-center gap-2 text-[#7F7F7F] font-medium mb-2">
-          <img src="/Website Assets/Sidebar-Alighment.svg" alt="" />
+          <img src="/website-assets/Sidebar-Alighment.svg" alt="" />
 
           <span>On this page</span>
         </div>
