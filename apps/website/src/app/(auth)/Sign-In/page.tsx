@@ -69,12 +69,12 @@ function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
                   name="password"
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Password"
-                  className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                  className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400 "
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-2.5 text-sm text-purple-500 hover:underline focus:outline-none"
+                  className="absolute right-1 top-2.5 text-sm text-purple-500 hover:underline focus:outline-none bg-white"
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
