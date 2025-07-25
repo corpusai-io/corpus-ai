@@ -34,7 +34,7 @@ export default function Navbar() {
         <div className='flex justify-between  w-auto gap-10'>
           <Link prefetch={true} href="/" className="flex title-font font-medium text-center items-center text-black  md:mb-0"><img src="/logo.svg" alt="Corpus AI Logo" className="ml-3 h-6 w-auto" />
           </Link>
-          <nav id="nav-menu" className="hidden lg:flex flex-wrap items-center text-base justify-center gap-x-[30px] w-full lg:w-auto">
+          <nav id="nav-menu" className="hidden lg:flex flex-wrap items-center text-base justify-center gap-x-[25px] w-full lg:w-auto">
 
             <div className="relative group">
 
