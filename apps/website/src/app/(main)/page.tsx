@@ -144,16 +144,22 @@ export default function Home() {
     </div>
   </div>
 </section>
-
-<section className='bg-[#FAF6FF] mx-auto max-w-6xl' >
+<div className="bg-transparent  relative">
+      <section className="text-center py-16 px-4 max-w-7xl mx-auto relative z-10">
+        <h4 className="text-sm text-[#BF56FF] font-semibold mb-5 uppercase tracking-wide">Integrations</h4>
+        <h2 className="text-3xl sm:text-4xl font-bold mb-[25px]">Integrates With</h2>
+        <p className="mb-12 text-[#8D8D8D] max-w-2xl mx-auto">Seamlessly integrates with your favorite tools</p>
+        <img src="/INTEGRATION INTERACTION.svg"/>
+        </section></div>
+{/* <section className='bg-[#FAF6FF] mx-auto max-w-6xl' >
   <div className="text-center pt-5 px-4 max-w-7xl mx-auto">
         <h4 className="text-sm text-[#BF56FF] font-semibold mb-5 uppercase">Reviews</h4>
         <h2 className="text-3xl sm:text-4xl font-bold mb-[19px]">What Our Clients Says</h2>
         <p className="mb-[64px] text-[#8D8D8D]  mx-auto">Discover how Coprus AI is transforming businesses through intelligent automation and exceptional customer service</p>
         </div>
   <TestimonialsSlider/>
-  </section>
-<section className='bg-[#FAF6FF] mx-auto max-w-6xl'><TestimonialsSliders/></section>
+  </section> */}
+{/* <section className='bg-[#FAF6FF] mx-auto max-w-6xl'><TestimonialsSliders/></section> */}
 <section className="bg-white">
   <div className="relative w-full">
     <img
@@ -292,7 +298,16 @@ export default function Home() {
 <section >
   <FAQSection/>
 </section>
-
+<section>
+  <div className='md:mt-[154px] mt-[100px] md:mb-[188px] mb-[110px] text-center px-3'>
+    <h2 className='font-semibold lg:text-[40px] text-2xl md:text-3xl leading-snug'>“Corpus became the operating system for<br/> my day- cleared my plate and gave me back<br/> 12 hours a week”</h2>
+  <div className="w-[500px] mx-auto mt-[45px] h-[2px] bg-[#BBBBBB]" />
+  <div className='flex flex-col gap-[15px] mt-[45px] font-semibold'>
+    <h2 className=''>Hamza Fayaz</h2>
+    <h2 className='text-[#7B7B7B]'>CEO, Corpus AI</h2>
+  </div>
+  </div>
+</section>
  <section className="text-center px-4 pt-8 pb-16 bg-white">
         <h1 className="text-xl sm:text-2xl md:text-6xl font-semibold text-[#1E1E1E] ">
           Create Your<br/>Corpus <span className="bg-gradient-to-r from-[#DAC0FF] to-[#BF56FF] bg-clip-text text-transparent">Chatbot</span>

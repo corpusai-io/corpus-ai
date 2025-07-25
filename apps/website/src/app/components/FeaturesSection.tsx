@@ -80,8 +80,8 @@ export default function FeaturesSection() {
         </div>
 
         {/* Achievement Metrics */}
-        <div className="relative">
-          {/* Background Blobs */}
+        {/* <div className="relative">
+          
           <div className="absolute inset-0 -z-10 overflow-hidden">
             <div className="blob absolute top-10 left-10 bg-[#BF56FF] opacity-10 blur-3xl rounded-full w-72 h-72"></div>
             <div className="blob2 absolute bottom-10 right-10 bg-[#D0A8E9] opacity-15 blur-3xl rounded-full w-96 h-64"></div>
@@ -112,33 +112,33 @@ export default function FeaturesSection() {
                 }}
               >
                 <div className="relative p-8 text-center">
-                  {/* Metric */}
+                 
                   <div className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-[#BF56FF] to-[#D0A8E9] bg-clip-text text-transparent mb-3 group-hover:scale-105 transition-transform duration-300">
                     {achievement.metric}
                   </div>
                   
-                  {/* Title */}
+                 
                   <h4 className="font-semibold text-gray-900 mb-2 text-lg group-hover:text-[#BF56FF] transition-colors duration-300">
                     {achievement.title}
                   </h4>
                   
-                  {/* Description */}
+                 
                   <p className="text-sm text-[#8D8D8D] leading-relaxed">
                     {achievement.description}
                   </p>
 
-                  {/* Subtle accent line */}
+                 
                   <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-[#BF56FF] to-[#D0A8E9] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
 
-                {/* Hover glow effect */}
+              
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#BF56FF]/10 to-[#D0A8E9]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
             ))}
           </div>
 
 
-        </div>
+        </div> */}
       </section>
     </div>
   );
