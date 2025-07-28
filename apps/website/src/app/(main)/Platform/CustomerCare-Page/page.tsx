@@ -103,7 +103,7 @@ export default function CustomerCarePage(){
     return (
     
         <div className="min-h-screen w-full flex flex-col items-center justify-center bg-transparent px-2 sm:px-4 py-8">
-          <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-5xl gap-10 md:gap-16">
+          <div className="flex mt-8 lg:mt-12 flex-col md:flex-row items-center justify-center w-full max-w-5xl gap-10 md:gap-16">
             {/* Left Section */}
             <div className="flex-1 flex flex-col items-start justify-center text-left max-w-lg">
               <span className="mb-4 px-4 py-1 rounded-full bg-purple-100 text-purple-500 border text-sm font-medium inline-block">Customer Support</span>
@@ -117,7 +117,7 @@ export default function CustomerCarePage(){
               <button className="bg-purple-500 text-white rounded-full px-6 py-3 text-base font-semibold shadow-md hover:bg-purple-600 transition">Get Started</button>
             </div>
             {/* Right Section: Chat Card */}
-            <div className="flex-1 p-4 md:p-12 rounded-2xl border border-purple-200 flex items-center justify-center w-full">
+            <div className="flex-1 bg-[#FCF6FF] p-4 md:p-12 rounded-2xl border border-purple-200 flex items-center justify-center w-full">
               <div className="bg-white/70 backdrop-blur-md rounded-2xl shadow-xl p-6 sm:p-8 w-full max-w-md border border-white/40">
                 {/* Header */}
                 <div className="flex items-center gap-3 mb-4">

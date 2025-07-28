@@ -298,7 +298,7 @@ export default function Navbar() {
                   <div className='w-[245px]'>
                     <div className='mt-[23px] text-[#8D8D8D]'>Resources</div>
                     <div>
-                      <Link prefetch={true} href="/Resources/Blog"><div className="flex items-start space-x-3 py-3" onClick={closeDropdown}>
+                      <Link prefetch={true} href="/Resources/Blog"><div className="flex items-start hover:bg-gray-100 rounded-md  space-x-3 py-3" onClick={closeDropdown}>
                         <span><Image src="/pages-line.svg" alt="Chat" width={24} height={24} /></span>
                         <div>
                           <p className="font-medium text-[#1E1E1E]">Blog</p>
@@ -306,7 +306,7 @@ export default function Navbar() {
                         </div>
                       </div> </Link>
 
-                      <div className="flex items-start space-x-3 py-4" onClick={closeDropdown}>
+                      <div className="flex items-start hover:bg-gray-100 rounded-md cursor-pointer space-x-3 py-4" onClick={closeDropdown}>
                         <span><Image src="/file-line.svg" alt="Chat" width={24} height={24} /></span>
                         <div>
                           <p className="font-medium text-[#1E1E1E]">Documentation</p>

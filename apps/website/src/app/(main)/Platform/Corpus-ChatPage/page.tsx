@@ -327,7 +327,7 @@ const CorpusChatPage = () => {
         </div>
       </div>
       {/* Features Section */}
-      <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-10 mb-[161px]">
+      <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 lg:mt-32 mb-[161px]">
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black text-center mb-2">Everything you need for <br /><span className="text-[#BF56FF]">Interactive Content</span></h2>
         <p className="text-[#7D7D7D] text-center max-w-4xl mb-15 text-base sm:text-lg">Transform your websites and documents into interactive knowledge bases. Let users find answers through natural conversations.</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 w-full max-w-6xl px-2 sm:px-4">

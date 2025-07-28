@@ -1,15 +1,73 @@
+'use client';
 import Image from 'next/image';
 import LogoSlider from '@/app/components/LogoSlider';
 import FeaturesSection from '@/app/components/FeaturesSection';
-import TestimonialsSlider from '@/app/components/testimonalsSlider';
-import TestimonialsSliders from '@/app/components/testimonalsSliders';
 import FAQSection from '@/app/components/FAQsection'
+import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import SolutionFAQ from '@/app/components/SolutionFAQ';
 
 import Pricingg from '@/app/components/Pricingg';
 // import { Link } from 'lucide-react';
 import Link from 'next/link';
+
+
+const testimonials = [
+  {
+    quote: "Corpus became the operating system for my day — cleared my plate and gave me back 12 hours a week.",
+    name: "Hamza Fayaz",
+    title: "CEO, Corpus AI"
+  },
+  {
+    quote: "Thanks to Corpus, our team productivity jumped 30%. We can't imagine life without it.",
+    name: "Hamza Fayaz",
+    title: "CEO, Corpus AI"
+  },
+  {
+    quote: "A game-changer for founders. I recovered hours from my calendar each week.",
+    name: "Hamza Fayaz",
+    title: "CEO, Corpus AI"
+  }
+];
+ const faqs = [
+    {
+      question: "What is an AI chatbot solution?",
+      answer: "AI (Artificial Intelligence) is a technology that allows machines to think, learn, and perform tasks that usually require human intelligence, like understanding language, making decisions, or recognizing patterns. Powered by AI, chatbot solutions can answer questions in natural languages. People use AI chatbot solutions for customer service, answering FAQs, booking appointments, and more, helping businesses save time and cost."
+    },
+    {
+      question: "How can the CorpusAI chatbot solution help my business?",
+      answer: "CorpusAI provides AI chatbot solutions for various industries, including legal, education, government, and healthcare. CorpusChat and Corpus Retriever leverage advanced natural language processing to enhance customer engagement, provide 24/7 support, and streamline operations, making them ideal for B2B businesses to improve customer experience and reduce operational costs."
+    },
+    {
+      question: "Can the CorpusChat chatbot solution handle complex documents like PDFs or Word files?",
+      answer: "Yes, our chatbot solution can be integrated with PDFs, Word documents, and other types of content, allowing users to interact with documents directly. This feature is handy for B2B businesses that want to automate information retrieval and responses from large documents or manuals."
+    },
+    {
+      question: "How do these chatbot solutions improve customer satisfaction?",
+      answer: "By integrating AI-powered chatbot solutions like CorpusChat and CorpusRetriever, businesses can offer faster, more personalized service. Chatbots provide instant responses to customer inquiries, reduce waiting times, and ensure 24/7 availability. This leads to higher customer satisfaction and a more streamlined experience."
+    },
+    {
+      question: "Will these chatbot solutions save my business money?",
+      answer: "Yes, both CorpusChat and CorpusRetriever can significantly reduce operational costs. CorpusChat automates customer support and lead generation, reducing the need for human agents to handle repetitive inquiries. CorpusRetriever optimizes data retrieval processes, allowing B2B businesses to operate more efficiently without requiring additional resources."
+    },
+    {
+      question: "How easy is it to integrate CorpusChat and CorpusRetriever into my current systems?",
+      answer: "Both chatbot software solutions are designed for seamless integration. CorpusChat can be easily added to websites, document management systems, and more, while CorpusRetriever can work with your existing databases and repositories. As a leading chatbot solution provider, Corpus provides full technical support to ensure a smooth and efficient implementation process."
+    }
+  ];
 export default function Home() {
-   
+   const [index, setIndex] = useState(0);
+
+  // Auto-rotate every 6 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % testimonials.length);
+    }, 6000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const { quote, name, title } = testimonials[index];
   return (
      
     <main className="min-h-screen bg-transparent overflow-x-hidden">
@@ -81,7 +139,7 @@ export default function Home() {
   </span>
 </div>
 
-    <section className='mx-auto max-w-6xl'> <LogoSlider /> </section>
+    <section className='mx-auto max-w-6xl '> <LogoSlider /> </section>
 <section><FeaturesSection /></section>
 <section className='w-full pt-15'>
   <section className="text-center py-[24px] px-4 max-w-7xl mx-auto">
@@ -144,8 +202,8 @@ export default function Home() {
     </div>
   </div>
 </section>
-<div className="bg-transparent  relative">
-      <section className="text-center py-16 px-4 max-w-7xl mx-auto relative z-10">
+<div   className="bg-transparent  relative mt-20">
+      <section data-aos="fade-up" data-aos-duration="500" className="text-center  px-4 max-w-7xl mx-auto relative z-10">
         <h4 className="text-sm text-[#BF56FF] font-semibold mb-5 uppercase tracking-wide">Integrations</h4>
         <h2 className="text-3xl sm:text-4xl font-bold mb-[25px]">Integrates With</h2>
         <p className="mb-12 text-[#8D8D8D] max-w-2xl mx-auto">Seamlessly integrates with your favorite tools</p>
@@ -193,7 +251,7 @@ export default function Home() {
   </div>
 </section>
 
- <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br bg-transparent px-2 sm:px-4 py-8">
+ <div className="min-h-screen w-full  flex flex-col items-center justify-center bg-gradient-to-br bg-transparent px-2 sm:px-4 py-8">
 <section >
    {/* <div className="text-center py-5 px-4 max-w-7xl mx-auto">
         <h4 className="text-sm text-[#BF56FF] font-semibold mb-5 uppercase">Pricing</h4>
@@ -235,12 +293,12 @@ export default function Home() {
           <p className="text-gray-600 mb-4">
             Creating a chatbot based on your documents allows you to build on content you already have.
           </p>
-          <a href="#" className="text-black font-medium inline-flex items-center hover:ml-3 duration-300 transition">
-            Read More
-            <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+         <a href="#" className="text-black hover:text-[#a843e6] font-semibold text-sm inline-flex items-center group/link transition-colors">
+                Read More 
+               <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-right-short w-5 h-5 -rotate-45  transition-transform duration-200" viewBox="0 0 16 16">
+                <path fillRule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8"/>
             </svg>
-          </a>
+              </a>
         </div>
       </div>
 
@@ -259,12 +317,18 @@ export default function Home() {
           <p className="text-gray-600 mb-4">
             Chatbots streamline business operations by automating customer service and complex processes.
           </p>
-          <a href="#" className="text-black font-medium inline-flex items-center hover:ml-3 duration-300 transition">
+          {/* <a href="#" className="text-black font-medium inline-flex items-center hover:ml-3 duration-200 transition-all">
             Read More
             <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
-          </a>
+          </a> */}
+          <a href="#" className="text-black hover:text-[#a843e6] font-semibold text-sm inline-flex items-center group/link transition-colors">
+                Read More 
+                <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-right-short w-5 h-5 -rotate-45  transition-transform duration-200" viewBox="0 0 16 16">
+                <path fillRule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8"/>
+            </svg>
+              </a>
         </div>
       </div>
 
@@ -283,31 +347,69 @@ export default function Home() {
           <p className="text-gray-600 mb-4">
             Corpus Retriever benchmarks retrieval accuracy using the MTB dataset.
           </p>
-          <a href="#" className="text-black font-medium inline-flex items-center hover:ml-3 duration-300 transition">
-            Read More
-            <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          <a href="#" className="text-black hover:text-[#a843e6] font-semibold text-sm inline-flex items-center group/link transition-colors">
+                Read More 
+                {/* <svg className="w-4 h-4 ml-1 group-hover/link:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg> */}
+                
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-right-short w-5 h-5 -rotate-45  transition-transform duration-200" viewBox="0 0 16 16">
+                <path fillRule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8"/>
             </svg>
-          </a>
+              </a>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<section >
-  <FAQSection/>
+<section className='lg:mt-10'>
+  {/* <FAQSection/> */}
+  <SolutionFAQ faqs={faqs} title='FAQ' subtitle='Frequently Asked Questions'/>
 </section>
-<section>
-  <div className='md:mt-[154px] mt-[100px] md:mb-[188px] mb-[110px] text-center px-3'>
-    <h2 className='font-semibold lg:text-[40px] text-2xl md:text-3xl leading-snug'>“Corpus became the operating system for<br/> my day- cleared my plate and gave me back<br/> 12 hours a week”</h2>
-  <div className="w-[500px] mx-auto mt-[45px] h-[2px] bg-[#BBBBBB]" />
-  <div className='flex flex-col gap-[15px] mt-[45px] font-semibold'>
-    <h2 className=''>Hamza Fayaz</h2>
-    <h2 className='text-[#7B7B7B]'>CEO, Corpus AI</h2>
-  </div>
-  </div>
-</section>
+ <section>
+      <div className='md:mt-[154px] mt-[100px] md:mb-[188px] mb-[110px] text-center px-3'>
+
+        {/* Quote with animation */}
+        <AnimatePresence mode="wait">
+          <motion.h2
+            key={quote}
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -30 }}
+            transition={{ duration: 0.7 }}
+            className='font-semibold lg:text-[40px] text-2xl md:text-3xl leading-snug px-2'
+          >
+            “{quote}”
+          </motion.h2>
+        </AnimatePresence>
+
+        {/* Divider */}
+        <motion.div
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          transition={{ duration: 0.7, ease: "easeOut", delay: 0.3 }}
+          viewport={{ once: true }}
+          className="w-[500px] max-w-full mx-auto mt-[45px] h-[2px] bg-[#BBBBBB] origin-left"
+        />
+
+        {/* Author info */}
+        <motion.div
+          key={name}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className='flex flex-col gap-[15px] mt-[45px] font-semibold'
+        >
+          <h2 className='hover:text-purple-600 transition duration-300 cursor-pointer'>
+            {name}
+          </h2>
+          <h2 className='text-[#7B7B7B] text-sm md:text-base'>
+            {title}
+          </h2>
+        </motion.div>
+      </div>
+    </section>
  <section className="text-center px-4 pt-8 pb-16 bg-white">
         <h1 className="text-xl sm:text-2xl md:text-6xl font-semibold text-[#1E1E1E] ">
           Create Your<br/>Corpus <span className="bg-gradient-to-r from-[#DAC0FF] to-[#BF56FF] bg-clip-text text-transparent">Chatbot</span>

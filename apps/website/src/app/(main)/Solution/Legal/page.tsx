@@ -128,7 +128,7 @@ export default function legal(){
               <button className="bg-[#BF56FF] text-white rounded-full px-6 py-3 text-base font-medium shadow-md  ">Get Started</button>
             </div>
             {/* Right Section: Chat Card */}
-            <div className="flex-1 p-4 md:p-12 rounded-2xl border border-purple-200 flex items-center justify-center w-full">
+            <div className="flex-1 bg-[#FCF6FF] p-4 md:p-12 rounded-2xl border border-purple-200 flex items-center justify-center w-full">
               <div className="bg-white/70 backdrop-blur-md rounded-2xl shadow-xl p-6 sm:p-8 w-full max-w-md border border-white/40">
                 {/* Header */}
                 <div className="flex items-center gap-3 mb-4">
@@ -164,7 +164,7 @@ export default function legal(){
             </div>
           </div>
           {/* Features Section */}
-          <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 mb-20">
+          <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 lg:mt-32 mb-20">
             <div className="text-center mb-2 text-purple-400 font-semibold">Features</div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-zinc-900 text-center mb-10">How Internal Chatbots Revolutionize<br className='hidden sm:block'/>  Business Operations</h2>
             <div className="w-full grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 place-items-center gap-6 max-w-5xl mx-auto">
