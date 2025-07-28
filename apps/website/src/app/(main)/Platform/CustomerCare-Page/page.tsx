@@ -155,7 +155,7 @@ export default function CustomerCarePage(){
           <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-[150px] mb-[130px]">
             <div className="text-center mb-2 text-purple-400 font-semibold">Features</div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 text-center mb-10">Elevate Your Customer Service<br className='hidden sm:block'/> with AI Chatbot</h2>
-            <div className="w-full flex flex-col md:flex-row items-stretch justify-center gap-6 max-w-5xl mx-auto">
+            <div className="w-full flex flex-col md:flex-row items-center justify-center  gap-6 max-w-5xl mx-auto">
               {features.map((f, i) => (
                 <B2BFeatureCard key={i} icon={f.icon} title={f.title} description={f.description}  />
               ))}
@@ -178,7 +178,8 @@ export default function CustomerCarePage(){
           </section>
     
           {/* Customize Section */}
-          <section data-aos="fade-left" data-aos-duration="500" className="w-full flex flex-col lg:flex-row items-center justify-center px-12 pb-10 max-w-7xl mx-auto bg-[#F9F0FF]">
+          <div className='bg-[#F9F0FF] w-full'>
+          <section data-aos="fade-left" data-aos-duration="500" className="w-full flex flex-col lg:flex-row items-center justify-center px-12 pb-10 max-w-7xl mx-auto">
             {/* Left: Text */}
             <div className="flex-1 flex flex-col items-start justify-center max-w-lg mb-10 lg:mb-0">
               <span className="mb-2 px-2 py-1 rounded-full text-purple-500 text-sm font-medium inline-block">Customize</span>
@@ -188,9 +189,11 @@ export default function CustomerCarePage(){
             {/* Right: Glass Card with Form and Chat Preview */}
             <img  src="/assets/custom.svg" alt="" width={620} height={421}/>
           </section>
+          </div>
     
           {/* Deploy & Scale Section */}
-          <section data-aos="fade-right" data-aos-duration="600" className="w-full md:px-4 flex flex-col gap-4 md:gap-8 lg:justify-between  lg:flex-row items-center justify-center pt-[63px] pb-[150px] max-w-7xl mx-auto bg-[#F9F0FF]">
+          <div className='bg-[#F9F0FF] w-full'>
+          <section data-aos="fade-right" data-aos-duration="600" className="w-full md:px-4 flex flex-col gap-4 md:gap-8 lg:justify-between  lg:flex-row items-center justify-center pt-[63px] pb-[150px] max-w-7xl mx-auto ">
             {/* Left: Integrations Card */}
             <img src="/assets/integration.svg" alt="" width={668} height={421}/>
             {/* Right: Text */}
@@ -200,11 +203,12 @@ export default function CustomerCarePage(){
               <p className="text-zinc-500 text-base sm:text-lg">Once set up, your chatbot is ready to handle customer interactions immediately. It delivers instant answers to common questions and allows customers to leave messages for follow-up when necessary. This ensures continuous support, reduces response times, and enhances overall customer satisfaction.</p>
             </div>
           </section>
+          </div>
     
           {/* Why Choose Section */}
           <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-[150px] mb-10 max-w-7xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-zinc-900 text-center mb-12 leading-tight">Why Choose CorpusAI Customer <br/>Service Chatbot</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-zinc-900 text-center mb-12 leading-tight">Why Choose CorpusAI Customer <br/>Service Chatbot</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-6 lg:px-8 w-full max-w-7xl mx-auto place-items-center">
               {reasons.map((r, i) => (
                 <B2BReasonCard key={i} icon={r.icon} title={r.title} description={r.description} />
               ))}
@@ -213,7 +217,7 @@ export default function CustomerCarePage(){
           <div className='mt-[100px]'>
           <SolutionFAQ faqs={faq} title='FAQ' subtitle='Customer Service Chatbot FAQ'/>
           </div>
-          <section className="text-center px-4 pt-[56px] pb-16 bg-white">
+          <section className="text-center px-4 mt-[56px] lg:mt-32  pb-16 bg-white">
         <h1 className="text-xl sm:text-2xl md:text-5xl font-medium text-[#1E1E1E] leading-tight">
          Trustworthy Chat with<span className="bg-gradient-to-r from-[#DAC0FF] to-[#BF56FF] bg-clip-text text-transparent"> Your Data</span>
         </h1>

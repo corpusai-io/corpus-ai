@@ -141,7 +141,7 @@ export default function ChatWithPdfPage(){
   
         {/* 3 Steps Section */}
         <div className='bg-[#F9F0FF] px-4 lg:pb-8'>
-        <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 mb-10">
+        <section data-aos="fade-up" data-aos-duration="500" className="w-full  flex flex-col items-center mt-20 mb-10">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 text-center mb-12">How to chat with PDF</h2>
           <div className="flex flex-col lg:flex-row md:justify-between items-center justify-center w-full  gap-10">
             {/* Left: Card with Tabs and Form */}
@@ -154,8 +154,9 @@ export default function ChatWithPdfPage(){
             </div>
           </div>
         </section>
-  
+  </div>
         {/* Analyze Section */}
+        <div className='bg-[#F9F0FF]'>
         <section data-aos="fade-left" data-aos-duration="500" className="w-full overflow-x-hidden flex flex-col lg:flex-row items-center md:px-8 justify-center mt-2 mb-10 max-w-7xl mx-auto">
           {/* Left: Text */}
           <div className="flex-1 flex flex-col items-start justify-center mb-10 lg:mb-0">
@@ -168,8 +169,10 @@ export default function ChatWithPdfPage(){
             <img src="/assets/summarizeImg.svg" alt="Summarize Example" className="w-full" />
           </div>
         </section>
+        </div>
   
         {/* Chat Section */}
+        <div className='bg-[#F9F0FF]'>
         <section data-aos="fade-right" data-aos-duration="200" className="w-full flex flex-col gap-8 lg:flex-row items-center md:px-2  justify-center mt-20 mb-10 max-w-7xl mx-auto">
           {/* Left: Image */}
           <div className="flex-1 order-2 md:order-1 flex items-center justify-center w-full mb-10 lg:mb-0">
@@ -183,12 +186,13 @@ export default function ChatWithPdfPage(){
           </div>
         </section>
         </div>
+        
 
   <section className='mt-10 lg:mt-20'>
         <SolutionFAQ faqs={chatWithPdfFaq} title='FAQ' subtitle='Chat with PDF FAQ'/>
         </section>
        
-        <section className="text-center px-4 pt-[56px] pb-16 bg-white">
+        <section className="text-center px-4 mt-[56px] lg:mt-32 pb-16 bg-white">
         <h1 className="text-xl sm:text-2xl md:text-5xl font-medium text-[#1E1E1E] leading-tight">
          Trustworthy Chat with<span className="bg-gradient-to-r from-[#DAC0FF] to-[#BF56FF] bg-clip-text text-transparent"> Your Data</span>
         </h1>

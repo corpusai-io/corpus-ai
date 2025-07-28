@@ -170,7 +170,7 @@ export default function Telegram(){
              {/* Reason section */}
             <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 mb-10 max-w-7xl mx-auto">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 text-center mb-12">Key Integration Features</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-7xl gap-[22px]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-6 lg:px-8 w-full max-w-7xl mx-auto place-items-center">
               {reasons.map((r, i) => (
                 <B2BReasonCard key={i} icon={r.icon} title={r.title} description={r.description} />
               ))}
@@ -231,7 +231,7 @@ export default function Telegram(){
     
           
           <section>
-                <div>
+                <div className='mt-16'>
       {/* Your other content */}
       <SolutionFAQ
         faqs={EducationFAQ}
@@ -241,7 +241,7 @@ export default function Telegram(){
     </div>
 
 </section>
-           <section className="text-center px-4 pt-[56px] pb-16 bg-white">
+           <section className="text-center px-4 mt-[56px] lg:mt-32 pb-16 bg-white">
         <h1 className="text-xl sm:text-2xl md:text-5xl font-medium text-[#1E1E1E] leading-tight">
          Ready to Add<span> AI Power to</span><br/><span className="bg-gradient-to-r from-[#DAC0FF] to-[#BF56FF] bg-clip-text text-transparent"> Your Telegram?</span>
         </h1>

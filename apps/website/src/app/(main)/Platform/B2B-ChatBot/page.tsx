@@ -177,9 +177,10 @@ export default function B2BChatBotPage() {
       </section>
 
       {/* Customize Section */}
-      <section data-aos="fade-left" data-aos-duration="600"  className="w-full bg-[#F9F0FF] flex max-w-7xl px-12 flex-col lg:flex-row items-center justify-center pt-[63px] pb-[63px]  mx-auto">
+      <div className='bg-[#F9F0FF] w-full'>
+      <section data-aos="fade-left" data-aos-duration="600"   className="w-full  flex max-w-7xl px-12 flex-col lg:flex-row items-center justify-center pt-[63px] pb-[63px]  mx-auto">
         {/* Left: Text */}
-        <div className="flex-1 flex flex-col items-start justify-center max-w-lg mb-10 lg:mb-0">
+        <div  className="flex-1 flex flex-col items-start justify-center max-w-lg mb-10 lg:mb-0">
           <span className="mb-2 px-2 py-1 rounded-full text-purple-500 text-sm font-medium inline-block">Customize</span>
           <h3 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">Customize Your Bot</h3>
           <p className="text-zinc-500 text-base sm:text-lg">A powerful, AI-driven chatbot built to help B2B organizations automate inquiries, gather leads, and increase customer satisfaction—24/7.</p>
@@ -187,9 +188,11 @@ export default function B2BChatBotPage() {
         {/* Right: Glass Card with Form and Chat Preview */}
         <img src="/assets/custom.svg" alt="custom-integration-img" />
       </section>
+      </div>
 
       {/* Deploy & Scale Section */}
-      <section className="w-full  bg-[#F9F0FF]  pt-[63px] pb-[150px] max-w-7xl px-4">
+      <div className='bg-[#F9F0FF] w-full'>
+      <section data-aos="fade-right" data-aos-duration="600" className="w-full  bg-[#F9F0FF]  pt-[63px] pb-[150px] max-w-7xl px-4">
         <div className='max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between'>
         {/* Left: Integrations Card */}
         <img className='w-1/2' src="/assets/integrate.svg" alt="" />
@@ -201,18 +204,24 @@ export default function B2BChatBotPage() {
         </div>
         </div>
       </section>
+      </div>
 
       {/* Why Choose Section */}
       <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-[150px] mb-10 max-w-7xl mx-auto">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-black text-center mb-12">Why Choose Corpus AI for B2B</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-          {reasons.map((r, i) => (
-            <B2BReasonCard key={i} icon={r.icon} title={r.title} description={r.description} />
-          ))}
-        </div>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-black text-center mb-12">Why Choose Corpus AI for B2B</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-6 lg:px-8 w-full max-w-7xl mx-auto place-items-center">
+  {reasons.map((r, i) => (
+    <B2BReasonCard
+      key={i}
+      icon={r.icon}
+      title={r.title}
+      description={r.description}
+    />
+  ))}
+</div>
       </section>
       <section className='mt-20'><SolutionFAQ faqs={b2BFaq} title='FAQ' subtitle='B2B Chatbot FAQ'/></section>
-      <section className="text-center px-4 pt-[56px] pb-16 bg-white">
+      <section className="text-center px-4 mt-[56px] lg:mt-32 pb-16 bg-white">
         <h1 className="text-xl sm:text-2xl md:text-5xl font-medium text-[#1E1E1E] leading-tight">
          Trustworthy Chat with<span className="bg-gradient-to-r from-[#DAC0FF] to-[#BF56FF] bg-clip-text text-transparent"> Your Data</span>
         </h1>

@@ -18,10 +18,10 @@ function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
+    <div className="min-h-screen flex mt-7 md:items-center justify-center">
       <div className="w-full max-w-6xl flex flex-col lg:flex-row lg:items-start items-center justify-between gap-10 p-8">
         {/* Left Side - Form */}
-        <div className="w-full max-w-md space-y-6">
+        <div className="w-full  max-w-md space-y-6">
           <div className="flex flex-col items-center">
             <img src="/socials-icons/new-logo.svg" />
             <h2 className="text-2xl font-semibold mt-4">
@@ -114,8 +114,8 @@ function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 
         {/* Right Side - Illustration */}
         <div className="hidden lg:block w-full max-w-xl">
-          <img src="logo.svg" />
-          <p className="text-gray-600 text-center lg:text-left">
+          <img className='ml-10' src="logo.svg" />
+          <p className="text-gray-600 ml-10 text-center lg:text-left">
             Trustworthy with Your{' '}
             <span className="text-[#BF56FF] font-medium">Website and Data</span>
           </p>

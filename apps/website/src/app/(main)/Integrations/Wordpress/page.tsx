@@ -165,7 +165,7 @@ export default function Slack(){
           <section data-aos="fade-up" data-aos-duration="600" className="w-full flex flex-col items-center mt-20 lg:mt-32 mb-10">
             <div className="text-center mb-2 text-purple-400 font-semibold">Features</div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black text-center mb-10">Easy WordPress Integration</h2>
-            <div className="w-full flex flex-col md:flex-row items-stretch justify-center gap-6 max-w-5xl mx-auto">
+            <div className="w-full flex flex-col md:flex-row items-center justify-center gap-6 max-w-5xl mx-auto">
               {features.map((f, i) => (
                 <B2BFeatureCard key={i} icon={f.icon} title={f.title} description={f.description} />
               ))}
@@ -177,7 +177,7 @@ export default function Slack(){
              {/* Reason section */}
             <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 mb-10 max-w-7xl mx-auto">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black text-center mb-12">Key Integration Features</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-7xl gap-[22px]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-6 lg:px-8 w-full max-w-7xl mx-auto place-items-center">
               {reasons.map((r, i) => (
                 <B2BReasonCard key={i} icon={r.icon} title={r.title} description={r.description} />
               ))}
@@ -236,7 +236,7 @@ export default function Slack(){
     
           
     <section>
-                <div>
+                <div className='mt-16'>
       {/* Your other content */}
       <SolutionFAQ
         faqs={EducationFAQ}
@@ -246,7 +246,7 @@ export default function Slack(){
     </div>
 
 </section>
-           <section className="text-center px-4 pt-[56px] pb-16 bg-white">
+           <section className="text-center px-4 mt-[56px] lg:mt-32 pb-16 bg-white">
         <h1 className="text-xl sm:text-2xl md:text-5xl font-medium text-[#1E1E1E] leading-tight">
          Ready to Add<span> AI Power to</span><span className="bg-gradient-to-r from-[#DAC0FF] to-[#BF56FF] bg-clip-text text-transparent"> WordPress Sites?</span>
         </h1>

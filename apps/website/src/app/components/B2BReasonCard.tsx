@@ -21,7 +21,7 @@ export default function B2BReasonCard({ icon, title, description }: B2BReasonCar
   "
 >
       
-      <div className="mb-4 flex items-center ">
+      <div className="mb-4 flex items-center">
         
         <span className="bg-purple-100 rounded-lg border border-purple-200 p-2 text-[#BF56FF] text-xl shadow-[0_0_16px_2px_rgba(168,85,247,0.15)] mr-2 ">
           {icon}

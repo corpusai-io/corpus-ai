@@ -149,7 +149,7 @@ export default function Government(){
                 <div className="flex flex-col gap-2 mb-4">
                   <div data-aos="fade-up" data-aos-duration="200" className="self-start bg-zinc-100 text-[#1E1E1E] rounded-lg px-4 py-2 text-sm max-w-[80%]">How can I assist you with workplace operations today?</div>
                   <div data-aos="fade-up" data-aos-duration="400" className="self-end bg-gradient-to-b from-[#FDFCFF] to-[#F1E6FF] text-[#1E1E1E] rounded-lg px-4 py-2 text-sm max-w-[80%]">I need help accessing the employee vacation policy.</div>
-                  <div data-aos="fade-up" data-aos-duration="600" className="self-start bg-[#F0F0F0] border border-zinc-100 text-[#1E1E1E] rounded-lg px-4 py-2 text-sm max-w-[90%] shadow-sm">
+                  <div data-aos="fade-up" data-aos-duration="600" className="self-start mt-2 bg-zinc-100 border border-zinc-100 text-[#1E1E1E] rounded-lg px-4 py-2 text-sm max-w-[90%] shadow-sm">
                     <span className='font-medium'>I'll help you find the vacation policy document:</span><br/>
                     <br/>• Retrieving policy from knowledge base<br/>• You can access it at the HR portal?<br/> • Would you like me to summarize the key points
                   </div>
@@ -172,7 +172,7 @@ export default function Government(){
           <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 lg:mt-32 mb-20">
             <div className="text-center mb-2 text-purple-400 font-semibold">Features</div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-zinc-900 text-center mb-10">Why Does the Government Need a<br className='hidden sm:block'/>  Chatbot?</h2>
-            <div className="w-full grid grid-cols-1  md:grid-cols-3 items-stretch justify-center gap-6 max-w-5xl mx-auto">
+            <div className="w-full grid grid-cols-1  md:grid-cols-3 items-center justify-center gap-6 max-w-5xl mx-auto">
               {features.map((f, i) => (
                 <EducationFeatureCard key={i} icon={f.icon} title={f.title} description={f.description}  />
               ))}
@@ -181,7 +181,7 @@ export default function Government(){
     
          
          <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 mb-20 max-w-7xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-[#000000] text-center mb-12">Why Choose Our Local Government Chatbot</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-[#000000] text-center mb-12">Why Choose Our Local Government Chatbot</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
               {reasons.map((r, i) => (
                 <B2BReasonCard key={i} icon={r.icon} title={r.title} description={r.description} />
@@ -245,7 +245,7 @@ export default function Government(){
 </section>
           </div>
             <section>
-                <div>
+                <div className='lg:mt-12'>
       {/* Your other content */}
       <SolutionFAQ
         faqs={EducationFAQ}
@@ -258,7 +258,7 @@ export default function Government(){
           {/* Why Choose Section */}
           
          
-          <section className="text-center px-4 pt-[56px] pb-16 bg-white">
+          <section className="text-center px-4 mt-[56px] lg:mt-32 pb-16 bg-white">
         <h1 className="text-xl sm:text-2xl md:text-5xl font-medium text-[#1E1E1E] leading-tight">
          Ready to Transform <br/><span className="bg-gradient-to-r from-[#DAC0FF] to-[#BF56FF] bg-clip-text text-transparent"> your Public Portal?</span>
         </h1>

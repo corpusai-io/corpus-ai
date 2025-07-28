@@ -385,13 +385,13 @@ const CorpusChatPage = () => {
                   <span className="text-zinc-900 font-medium">100%</span>
                 </div>
                 <div className="mb-3">
-                  <div className="bg-gradient-to-b from-[#FDFCFF] to-[#F1E6FF] rounded-xl px-3 py-2 text-sm text-zinc-800 shadow-sm w-fit max-w-full">
+                  <div className="bg-gradient-to-b from-[#FDFCFF] to-[#F1E6FF] rounded-xl px-3 py-2 text-sm text-zinc-800 shadow-sm w-fit max-w-full mt-5">
                     I've Analyzed your document. What would you like to know about it
-                    <div className="text-[10px] text-zinc-400 mt-1 text-right">2:30 PM</div>
+                    <div className="text-[10px] text-zinc-400 mt-1 text-left">2:30 PM</div>
                   </div>
                 </div>
-                <form className="flex items-center gap-2 mt-2">
-                  <input disabled type="text" placeholder="Ask about anything" className="flex-1 rounded-lg border border-zinc-200 bg-white/70 px-3 py-2 text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-purple-200" />
+                <form className="flex items-center gap-2 mt-8">
+                  <input disabled type="text" placeholder="Ask about anything" className="flex-1  rounded-lg border border-zinc-200 bg-white/70 px-3 py-2 text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-purple-200" />
                   <button type="submit" className="bg-purple-500 hover:bg-purple-600 text-white rounded-lg p-2 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" className="w-5 h-5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                   </button>
@@ -411,7 +411,7 @@ const CorpusChatPage = () => {
        </section>
       {/* <FAQSection/> */}
       <SolutionFAQ faqs={corpusChatFaq} title='FAQ' subtitle='Frequently Asked Questions' />
-      <section className="text-center px-4 pt-[56px] pb-16 bg-white">
+      <section className="text-center px-4 mt-[56px] lg:mt-32 pb-16 bg-white">
         <h1 className="text-xl sm:text-2xl md:text-5xl font-medium text-[#1E1E1E] leading-tight">
           Ready to transform your content into<br/><span className="bg-gradient-to-r from-[#DAC0FF] to-[#BF56FF] bg-clip-text text-transparent">interactive conversations?</span>
         </h1>
