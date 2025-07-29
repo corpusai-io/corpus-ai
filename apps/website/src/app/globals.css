@@ -138,8 +138,289 @@ html, body {
   display: block;
 }
 .faq-answer-static.open {
-  max-height: 500px; /* Should be larger than your largest answer */
+  max-height: 500px; 
   opacity: 1;
   padding-top: 0.5rem;
   padding-bottom: 1rem;
+}
+
+ path.base-path {
+      stroke: #BF56FF;
+      stroke-dasharray: 6 6;
+      fill: none;
+    }
+
+    /* Glow dots */
+    .dot {
+      fill: #BF56FF;
+      stroke-linecap: round;
+      filter: drop-shadow(0 0 8px #6c63ff);
+      
+      animation: moveMain 1s linear infinite;
+    }
+
+    .dot.branch1,
+.dot.branch2 {
+  animation: moveBranch 1s linear infinite;
+  animation-delay: 0.8s;
+   
+}
+#blink-Logo{
+  animation: blink 1s infinite;
+}
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  2%,3% {
+    opacity: 0.5;
+  }
+}
+   
+.linePath{
+animation: path 1s linear infinite;
+}
+@keyframes path {
+  0%{
+    offset-rotate: 180deg;
+  }
+  38%{
+  offset-rotate: 0eg;
+ }
+ 40%{
+  offset-rotate: 0deg;
+ }
+ 42%{
+  offset-rotate: 0deg;
+ }
+ 44%{
+  offset-rotate: 0deg;
+ }
+ 46%{
+  offset-rotate: 0deg;
+ }
+ 48%{
+  offset-rotate: 0deg;
+ }
+ 50%{
+  offset-rotate: 0deg;
+ }
+}
+
+.linePath2{
+animation: path 1s linear infinite;
+}
+@keyframes path {
+  0%{
+    offset-rotate: 180deg;
+  }
+  38%{
+  offset-rotate: 0eg;
+ }
+ 40%{
+  offset-rotate: 0deg;
+ }
+ 42%{
+  offset-rotate: 0deg;
+ }
+ 44%{
+  offset-rotate: 0deg;
+ }
+ 46%{
+  offset-rotate: 0deg;
+ }
+ 48%{
+  offset-rotate: 0deg;
+ }
+ 50%{
+  offset-rotate: 0deg;
+ }
+}
+   @keyframes moveMain {
+  0% {
+    offset-distance: 0%;
+    opacity: 1;
+
+  }
+  60% {
+    offset-distance: 100%;
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+@keyframes moveBranch {
+  0%, 59.9% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+
+  
+  60% {
+    opacity: 1;
+    offset-distance: 0%;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 1;
+  }
+}
+    
+    .dot {
+      offset-path: path("M657 275.647H478.839M478.839 275.647H373.499");
+    }
+
+    .dot.branch1 {
+      offset-path: path("M478.839 275.647 L419.141 173.88 C415.551 167.76 408.986 164 401.89 164 H268.16");
+    }
+
+    .dot.branch2 {
+      offset-path: path("M478.839 275.647 L419.107 379.94 C415.544 386.162 408.922 390 401.752 390 H259");
+    }
+.dot2{
+  offset-path: path("M760 275.647H938.161 M938.161 275.647H1043.5") ;
+}
+.dot2.branch3{
+  offset-path: path("M938.161 275.647L997.859 173.88C1001.45 167.76 1008.01 164 1015.11 164H1148.84");
+}
+.dot2.branch4{
+  offset-path: path("M938.161 275.647L997.893 379.94C1001.46 386.162 1008.08 390 1015.25 390H1158");
+}
+  .dot2 {
+      fill: #BF56FF;
+      stroke-linecap: round;
+      filter: drop-shadow(0 0 8px #6c63ff);
+      animation: movesecMain 1s linear infinite;
+    }
+
+    .dot2.branch3,
+.dot2.branch4 {
+  animation: movesecBranch 1s linear infinite;
+  animation-delay: 1.8s; 
+}
+ @keyframes movesecMain {
+  0% {
+    offset-distance: 0%;
+    opacity: 1;
+  }
+  60% {
+    offset-distance: 100%;
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+@keyframes movesecBranch {
+  0%, 59.9% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+    offset-distance: 0%;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 1;
+  }
+}
+#myStrokePath {
+  
+  animation: dash 1.2s linear infinite;
+}
+@keyframes dash {
+  100% {
+    stroke:#E5BBFF;
+  }
+}
+
+#afterColor{
+   animation: bg-color 1s linear infinite;
+}
+@keyframes bg-color {
+  60% {
+    fill:#F1F1F1;
+  }
+  100% {
+    fill:#F2DBFF;
+  }
+}
+#websiteColor{
+   animation: bg-color 1s linear infinite;
+   animation-delay: 1.1s;
+}
+#websiteStroke {
+ animation: dash 1s linear infinite;
+   animation-delay: 1.1s;
+}
+@keyframes dash {
+  100% {
+    stroke:#E5BBFF;
+  }
+}
+@keyframes bg-color {
+  60% {
+    fill:#F1F1F1;
+  }
+  100% {
+    fill: #F2DBFF;
+  }
+}
+#telegramColor{
+   animation: bg-color 1s linear infinite;
+   animation-delay: 1.1s;
+}
+@keyframes bg-color {
+  60% {
+    fill:#F1F1F1;
+  }
+  100% {
+    fill: #F2DBFF;
+  }
+}
+#zapierColor{
+   animation: bg-color 1s linear infinite;
+   animation-delay: 1.1s;
+}
+#zapierStroke {
+ animation: dash 1s linear infinite;
+   animation-delay: 1.1s;
+}
+@keyframes dash {
+  100% {
+    stroke:#E5BBFF;
+  }
+}
+@keyframes bg-color {
+  60% {
+    fill:#F1F1F1;
+  }
+  100% {
+    fill: #F2DBFF;
+  }
+}
+#myStrokePath {
+  
+  animation: dash 1.2s linear infinite;
+}
+@keyframes dash {
+  100% {
+    stroke:#E5BBFF;
+  }
+}
+
+#wordpressColor{
+   animation: bg-color 1s linear infinite;
+}
+@keyframes bg-color {
+  60% {
+    fill:#F1F1F1;
+  }
+  100% {
+    fill:#F2DBFF;
+  }
 }
