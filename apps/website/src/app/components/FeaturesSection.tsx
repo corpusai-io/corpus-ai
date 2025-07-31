@@ -36,8 +36,8 @@ export default function FeaturesSection() {
   ];
 
   return (
-    <div className="bg-transparent text-gray-800 relative">
-      <section className="text-center py-16 px-4 max-w-7xl mx-auto relative z-10">
+    <div className="bg-transparent text-gray-800 relative mt-32">
+      <section className="text-center  px-4 max-w-7xl mx-auto relative z-10">
         <h4 className="text-sm text-[#BF56FF] font-semibold mb-5 uppercase tracking-wide">Deployment</h4>
         <h2 className="text-3xl sm:text-4xl font-bold mb-8">Easy to Deploy Your Chatbot</h2>
         <p className="mb-12 text-[#8D8D8D] max-w-2xl mx-auto">Create a powerful AI chatbot with Corpus AI in minutes – no technical expertise required.</p>
@@ -71,17 +71,20 @@ export default function FeaturesSection() {
               <p className="text-[#8D8D8D] mb-4 leading-relaxed">{item.desc}</p>
               <a href="#" className="text-[#BF56FF] hover:text-[#a843e6] font-medium text-sm inline-flex items-center group/link transition-colors">
                 Read More 
-                <svg className="w-4 h-4 ml-1 group-hover/link:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {/* <svg className="w-4 h-4 ml-1 group-hover/link:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+                </svg> */}
+                 <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-right-short w-5 h-5 -rotate-45  transition-transform duration-200" viewBox="0 0 16 16">
+                <path fillRule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8"/>
+            </svg>
               </a>
             </div>
           ))}
         </div>
 
         {/* Achievement Metrics */}
-        <div className="relative">
-          {/* Background Blobs */}
+        {/* <div className="relative">
+          
           <div className="absolute inset-0 -z-10 overflow-hidden">
             <div className="blob absolute top-10 left-10 bg-[#BF56FF] opacity-10 blur-3xl rounded-full w-72 h-72"></div>
             <div className="blob2 absolute bottom-10 right-10 bg-[#D0A8E9] opacity-15 blur-3xl rounded-full w-96 h-64"></div>
@@ -112,33 +115,33 @@ export default function FeaturesSection() {
                 }}
               >
                 <div className="relative p-8 text-center">
-                  {/* Metric */}
+                 
                   <div className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-[#BF56FF] to-[#D0A8E9] bg-clip-text text-transparent mb-3 group-hover:scale-105 transition-transform duration-300">
                     {achievement.metric}
                   </div>
                   
-                  {/* Title */}
+                 
                   <h4 className="font-semibold text-gray-900 mb-2 text-lg group-hover:text-[#BF56FF] transition-colors duration-300">
                     {achievement.title}
                   </h4>
                   
-                  {/* Description */}
+                 
                   <p className="text-sm text-[#8D8D8D] leading-relaxed">
                     {achievement.description}
                   </p>
 
-                  {/* Subtle accent line */}
+                 
                   <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-[#BF56FF] to-[#D0A8E9] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
 
-                {/* Hover glow effect */}
+              
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#BF56FF]/10 to-[#D0A8E9]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
             ))}
           </div>
 
 
-        </div>
+        </div> */}
       </section>
     </div>
   );

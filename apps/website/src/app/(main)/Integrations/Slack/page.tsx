@@ -154,7 +154,7 @@ export default function Slack(){
     
         <div className="min-h-screen w-full flex flex-col items-center justify-center bg-transparent px-2 sm:px-4 py-8">
           
-          <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-6xl gap-10 md:gap-16">
+          <div className="flex mt-8 lg:mt-12 flex-col md:flex-row items-center justify-center w-full max-w-6xl gap-10 md:gap-16">
             {/* Left Section */}
             <HeroLeftSide tagText = {HeroLeftSideContent.tagText} title1 = {HeroLeftSideContent.title1} title2 = {HeroLeftSideContent.title2} paragraph = {HeroLeftSideContent.paragraph}  />
             
@@ -162,10 +162,10 @@ export default function Slack(){
             <HeroRightSide logo={HeroRightSideContent.logo} msg1={HeroRightSideContent.msg1} msg2={HeroRightSideContent.msg2}  msg3={HeroRightSideContent.msg3}/>
           </div>
           {/* Features Section */}
-          <section data-aos="fade-up" data-aos-duration="600" className="w-full flex flex-col items-center max-w-6xl mt-20 mb-10">
+          <section data-aos="fade-up" data-aos-duration="600" className="w-full flex flex-col items-center max-w-6xl mt-20 lg:mt-32 mb-10">
             <div className="text-center mb-2 text-purple-400 font-semibold">Features</div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 text-center mb-10">Benefits of CorpusAI Slack Integration</h2>
-            <div className="w-full flex flex-col md:flex-row items-stretch justify-center gap-6 max-w-5xl mx-auto">
+            <div className="w-full flex flex-col md:flex-row items-center justify-center gap-6 max-w-5xl mx-auto">
               {features.map((f, i) => (
                 <B2BFeatureCard key={i} icon={f.icon} title={f.title} description={f.description} />
               ))}
@@ -233,7 +233,7 @@ export default function Slack(){
           </div>
           </section>
      <section>
-                <div>
+                <div className='mt-16'>
       {/* Your other content */}
       <SolutionFAQ
         faqs={EducationFAQ}
@@ -243,7 +243,7 @@ export default function Slack(){
     </div>
 
 </section>
-           <section className="text-center px-4 pt-[56px] pb-16 bg-white">
+           <section className="text-center px-4 mt-[56px] lg:mt-32 pb-16 bg-white">
         <h1 className="text-xl sm:text-2xl md:text-5xl font-medium text-[#1E1E1E] leading-tight">
          Ready to Add<span> AI Power to</span><span className="bg-gradient-to-r from-[#DAC0FF] to-[#BF56FF] bg-clip-text text-transparent"> your Slack?</span>
         </h1>

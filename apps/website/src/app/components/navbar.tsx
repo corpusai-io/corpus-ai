@@ -34,7 +34,7 @@ export default function Navbar() {
         <div className='flex justify-between  w-auto gap-10'>
           <Link prefetch={true} href="/" className="flex title-font font-medium text-center items-center text-black  md:mb-0"><img src="/logo.svg" alt="Corpus AI Logo" className="ml-3 h-6 w-auto" />
           </Link>
-          <nav id="nav-menu" className="hidden lg:flex flex-wrap items-center text-base justify-center gap-x-[30px] w-full lg:w-auto">
+          <nav id="nav-menu" className="hidden lg:flex flex-wrap items-center text-base justify-center gap-x-[25px] w-full lg:w-auto">
 
             <div className="relative group">
 
@@ -298,7 +298,7 @@ export default function Navbar() {
                   <div className='w-[245px]'>
                     <div className='mt-[23px] text-[#8D8D8D]'>Resources</div>
                     <div>
-                      <Link prefetch={true} href="/Resources/Blog"><div className="flex items-start space-x-3 py-3" onClick={closeDropdown}>
+                      <Link prefetch={true} href="/Resources/Blog"><div className="flex items-start hover:bg-gray-100 rounded-md  space-x-3 py-3" onClick={closeDropdown}>
                         <span><Image src="/pages-line.svg" alt="Chat" width={24} height={24} /></span>
                         <div>
                           <p className="font-medium text-[#1E1E1E]">Blog</p>
@@ -306,7 +306,7 @@ export default function Navbar() {
                         </div>
                       </div> </Link>
 
-                      <div className="flex items-start space-x-3 py-4" onClick={closeDropdown}>
+                      <div className="flex items-start hover:bg-gray-100 rounded-md cursor-pointer space-x-3 py-4" onClick={closeDropdown}>
                         <span><Image src="/file-line.svg" alt="Chat" width={24} height={24} /></span>
                         <div>
                           <p className="font-medium text-[#1E1E1E]">Documentation</p>

@@ -67,7 +67,7 @@ export default function Zapier(){
     </div>
 
 </section>
-           <section className="text-center px-4 pt-[56px] pb-16 bg-white">
+           <section className="text-center px-4 mt-[56px] lg:mt-32 pb-16 bg-white">
         <h1 className="text-xl sm:text-2xl md:text-5xl font-medium text-[#1E1E1E] leading-tight">
          Ready to Add<span> AI Power to</span><br/><span className="bg-gradient-to-r from-[#DAC0FF] to-[#BF56FF] bg-clip-text text-transparent"> Your Workflows?</span>
         </h1>

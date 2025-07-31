@@ -18,10 +18,10 @@ function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
+    <div className="min-h-screen flex mt-7 md:items-center justify-center">
       <div className="w-full max-w-6xl flex flex-col lg:flex-row lg:items-start items-center justify-between gap-10 p-8">
         {/* Left Side - Form */}
-        <div className="w-full max-w-md space-y-6">
+        <div className="w-full  max-w-md space-y-6">
           <div className="flex flex-col items-center">
             <img src="/socials-icons/new-logo.svg" />
             <h2 className="text-2xl font-semibold mt-4">
@@ -69,12 +69,12 @@ function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
                   name="password"
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Password"
-                  className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                  className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400 "
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-2.5 text-sm text-purple-500 hover:underline focus:outline-none"
+                  className="absolute right-1 top-2.5 text-sm text-purple-500 hover:underline focus:outline-none bg-white"
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
@@ -114,8 +114,8 @@ function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 
         {/* Right Side - Illustration */}
         <div className="hidden lg:block w-full max-w-xl">
-          <img src="logo.svg" />
-          <p className="text-gray-600 text-center lg:text-left">
+          <img className='ml-10' src="logo.svg" />
+          <p className="text-gray-600 ml-10 text-center lg:text-left">
             Trustworthy with Your{' '}
             <span className="text-[#BF56FF] font-medium">Website and Data</span>
           </p>

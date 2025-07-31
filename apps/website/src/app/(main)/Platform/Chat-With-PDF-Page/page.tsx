@@ -77,7 +77,7 @@ const features = [
 export default function ChatWithPdfPage(){
     return(
         <div className="min-h-screen w-full flex flex-col items-center justify-center bg-transparent px-2 sm:px-4 py-8">
-        <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-5xl gap-10 md:gap-16">
+        <div className="flex mt-8 lg:mt-12 flex-col md:flex-row items-center justify-center w-full max-w-5xl gap-10 md:gap-16">
           {/* Left Section */}
           <div className="flex-1 flex flex-col items-start justify-center text-left max-w-lg">
             <span className="mb-4 px-4 py-1 rounded-full bg-purple-100 text-purple-500 border text-sm font-medium inline-block">PDF Assistant</span>
@@ -91,7 +91,7 @@ export default function ChatWithPdfPage(){
             <button className="bg-purple-500 text-white rounded-full px-6 py-3 text-base font-semibold shadow-md hover:bg-purple-600 transition">Get Started</button>
           </div>
           {/* Right Section: Chat Card */}
-          <div className="flex-1 p-4 md:p-12 rounded-2xl border border-purple-200 flex items-center justify-center w-full">
+          <div className="flex-1 bg-[#FCF6FF] p-4 md:p-12 rounded-2xl border border-purple-200 flex items-center justify-center w-full">
             <div className="bg-white/70 backdrop-blur-md rounded-2xl shadow-xl p-6 sm:p-8 w-full max-w-md border border-white/40">
               {/* Header */}
               <div className="flex items-center gap-3 mb-4">
@@ -129,7 +129,7 @@ export default function ChatWithPdfPage(){
           </div>
         </div>
         {/* Features Section */}
-        <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 mb-10">
+        <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 lg:mt-32 mb-10">
           <div className="text-center mb-2 text-purple-400 font-semibold">Features</div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 text-center mb-10">Elevate Your Customer Service<br className='hidden sm:block'/> with AI Chatbot</h2>
           <div className="w-full grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 place-items-center  gap-2 justify-center max-w-6xl mx-auto">
@@ -141,7 +141,7 @@ export default function ChatWithPdfPage(){
   
         {/* 3 Steps Section */}
         <div className='bg-[#F9F0FF] px-4 lg:pb-8'>
-        <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 mb-10">
+        <section data-aos="fade-up" data-aos-duration="500" className="w-full  flex flex-col items-center mt-20 mb-10">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 text-center mb-12">How to chat with PDF</h2>
           <div className="flex flex-col lg:flex-row md:justify-between items-center justify-center w-full  gap-10">
             {/* Left: Card with Tabs and Form */}
@@ -154,8 +154,9 @@ export default function ChatWithPdfPage(){
             </div>
           </div>
         </section>
-  
+  </div>
         {/* Analyze Section */}
+        <div className='bg-[#F9F0FF]'>
         <section data-aos="fade-left" data-aos-duration="500" className="w-full overflow-x-hidden flex flex-col lg:flex-row items-center md:px-8 justify-center mt-2 mb-10 max-w-7xl mx-auto">
           {/* Left: Text */}
           <div className="flex-1 flex flex-col items-start justify-center mb-10 lg:mb-0">
@@ -168,8 +169,10 @@ export default function ChatWithPdfPage(){
             <img src="/assets/summarizeImg.svg" alt="Summarize Example" className="w-full" />
           </div>
         </section>
+        </div>
   
         {/* Chat Section */}
+        <div className='bg-[#F9F0FF]'>
         <section data-aos="fade-right" data-aos-duration="200" className="w-full flex flex-col gap-8 lg:flex-row items-center md:px-2  justify-center mt-20 mb-10 max-w-7xl mx-auto">
           {/* Left: Image */}
           <div className="flex-1 order-2 md:order-1 flex items-center justify-center w-full mb-10 lg:mb-0">
@@ -183,12 +186,13 @@ export default function ChatWithPdfPage(){
           </div>
         </section>
         </div>
+        
 
   <section className='mt-10 lg:mt-20'>
         <SolutionFAQ faqs={chatWithPdfFaq} title='FAQ' subtitle='Chat with PDF FAQ'/>
         </section>
        
-        <section className="text-center px-4 pt-[56px] pb-16 bg-white">
+        <section className="text-center px-4 mt-[56px] lg:mt-32 pb-16 bg-white">
         <h1 className="text-xl sm:text-2xl md:text-5xl font-medium text-[#1E1E1E] leading-tight">
          Trustworthy Chat with<span className="bg-gradient-to-r from-[#DAC0FF] to-[#BF56FF] bg-clip-text text-transparent"> Your Data</span>
         </h1>

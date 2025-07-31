@@ -8,7 +8,7 @@ interface HeroRightSide {
 }
 const HeroRightSide:React.FC<HeroRightSide>=({logo, msg1, msg2, msg3}) =>{
     return(
-        <div className="flex-1 p-4 md:p-12 rounded-2xl border border-purple-200 flex items-center justify-center">
+        <div className="flex-1 bg-[#FCF6FF] p-4 md:p-12 rounded-2xl border border-purple-200 flex items-center justify-center">
         <div className="bg-white/70 backdrop-blur-md rounded-2xl shadow-xl p-6 sm:p-4 w-full max-w-md border border-white/40">
           {/* Header */}
           <div className="flex items-center gap-3 mb-4">
