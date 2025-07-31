@@ -113,7 +113,7 @@ export default function ChatWithBotPage(){
     return(
         <div className="min-h-screen w-full flex flex-col items-center justify-center bg-transparent px-2 sm:px-4 py-8">
         {/* section 1 */}
-        <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-5xl gap-10 md:gap-16">
+        <div className="flex mt-8 lg:mt-12  flex-col md:flex-row items-center justify-center w-full max-w-5xl gap-10 md:gap-16">
           {/* Left Section */}
           <div className="flex-1 flex flex-col items-start justify-center text-left max-w-lg">
             <span className="mb-4 px-4 py-1 rounded-full bg-purple-100 text-purple-500 border text-sm font-medium inline-block">Document Chat</span>
@@ -127,7 +127,7 @@ export default function ChatWithBotPage(){
             <button className="bg-purple-500 text-white rounded-full px-6 py-3 text-base font-semibold shadow-md hover:bg-purple-600 transition">Get Started</button>
           </div>
           
-          <div className="flex-1 p-4 md:p-12 rounded-2xl border border-purple-200 flex items-center justify-center w-full">
+          <div className="flex-1 bg-[#FCF6FF] p-4 md:p-12 rounded-2xl border border-purple-200 flex items-center justify-center w-full">
               <div className="bg-white/70 backdrop-blur-md rounded-2xl shadow-xl p-6 sm:p-8 w-full max-w-md border border-white/40">
                 {/* Header */}
                 <div className="flex items-center gap-3 mb-4">
@@ -167,10 +167,10 @@ export default function ChatWithBotPage(){
             </div>
         </div>
         {/* Features Section */}
-        <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 mb-10">
+        <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 lg:mt-32 mb-10">
           <div className="text-center mb-2 text-purple-400 font-semibold">Features</div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 text-center mb-10">Smart CorpusAI Chatbot on Your Website</h2>
-          <div className="w-full grid grid-cols-1  md:grid-cols-3 md:flex-row items-stretch justify-center gap-6 max-w-5xl mx-auto">
+          <div className="w-full grid grid-cols-1  md:grid-cols-3 md:flex-row place-items-center gap-6 max-w-5xl mx-auto">
             {features.map((f, i) => (
               <B2BFeatureCard key={i} icon={f.icon} title={f.title} description={f.description}/>
             ))}
@@ -178,6 +178,7 @@ export default function ChatWithBotPage(){
         </section>
   
         {/* section3 */}
+        <div className='bg-[#F9F0FF] w-full'>
         <section data-aos="fade-up" data-aos-duration="500" className="w-full section3 flex flex-col items-center mt-20 mb-10">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 text-center mb-12">How to Chat with Docs</h2>
           <div className="flex flex-col lg:flex-row items-center justify-center w-full gap-10 px-2 sm:px-4">
@@ -195,9 +196,11 @@ export default function ChatWithBotPage(){
             </div>
           </div>
         </section>
+        </div>
   
         {/* Chat Section */}
-        <section data-aos="fade-left" data-aos-duration="500" className="w-full flex flex-col lg:flex-row items-center justify-center mt-20 mb-10 max-w-7xl mx-auto">
+        <div className='bg-[#F9F0FF] w-full'>
+        <section data-aos="fade-left" data-aos-duration="500" className="w-full flex pl-11 flex-col lg:flex-row items-center justify-center mt-20 mb-10 max-w-7xl mx-auto">
           {/* Left: Text */}
           <div className="flex-1 flex flex-col items-start justify-center max-w-lg mb-10 lg:mb-0">
             <span className="mb-2 px-2 py-1 rounded-full text-purple-500 text-sm font-medium inline-block">Ask</span>
@@ -209,8 +212,10 @@ export default function ChatWithBotPage(){
             <img src="/assets/summarizeImg.svg" alt="Summarize Example" className="w-full max-w-xl rounded-2xl shadow-xl border border-white/40 bg-white/70" />
           </div>
         </section>
+        </div>
         
         {/* AI-Driven Insights Section */}
+        <div className='bg-[#F9F0FF] w-full'>
         <section data-aos="fade-right" data-aos-duration="500" className="w-full flex flex-col-reverse lg:flex-row items-center justify-center mt-20 mb-10 max-w-7xl mx-auto">
           {/* Left: Image Card */}
           <div className="flex-1 flex items-center justify-center w-full mt-10 lg:mt-0">
@@ -225,19 +230,20 @@ export default function ChatWithBotPage(){
             <p className="text-zinc-500 text-base sm:text-lg">CorpusAI Chat with doc delivers accurate and relevant responses based on your document's content. Our advanced AI ensures you get precise information and meaningful insights every time.</p>
           </div>
         </section>
+        </div>
         
   
         {/* Why Choose Section */}
         <section data-aos="fade-up" data-aos-duration="500" className="w-full flex flex-col items-center mt-20 mb-10 max-w-7xl mx-auto">
           <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-900 text-center mb-12">We are Empowering</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-6 lg:px-8 w-full max-w-7xl mx-auto place-items-center">
             {empoweringCards.map((item, i) => (
               <B2BReasonCard key={i} icon={item.icon} title={item.title} description={item.description}/>
             ))}
           </div>
         </section>
   <SolutionFAQ faqs={faq} title='FAQ' subtitle='Chat Doc FAQ'/>
-        <section className="text-center px-4 pt-[56px] pb-16 bg-white">
+        <section className="text-center px-4 mt-[56px] lg:mt-32 pb-16 bg-white">
         <h1 className="text-xl sm:text-2xl md:text-5xl font-medium text-[#1E1E1E] leading-tight">
          Trustworthy Chat with<span className="bg-gradient-to-r from-[#DAC0FF] to-[#BF56FF] bg-clip-text text-transparent"> Your Data</span>
         </h1>

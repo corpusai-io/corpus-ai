@@ -36,8 +36,8 @@ export default function FeaturesSection() {
   ];
 
   return (
-    <div className="bg-transparent text-gray-800 relative">
-      <section className="text-center py-16 px-4 max-w-7xl mx-auto relative z-10">
+    <div className="bg-transparent text-gray-800 relative mt-32">
+      <section className="text-center  px-4 max-w-7xl mx-auto relative z-10">
         <h4 className="text-sm text-[#BF56FF] font-semibold mb-5 uppercase tracking-wide">Deployment</h4>
         <h2 className="text-3xl sm:text-4xl font-bold mb-8">Easy to Deploy Your Chatbot</h2>
         <p className="mb-12 text-[#8D8D8D] max-w-2xl mx-auto">Create a powerful AI chatbot with Corpus AI in minutes – no technical expertise required.</p>
@@ -71,9 +71,12 @@ export default function FeaturesSection() {
               <p className="text-[#8D8D8D] mb-4 leading-relaxed">{item.desc}</p>
               <a href="#" className="text-[#BF56FF] hover:text-[#a843e6] font-medium text-sm inline-flex items-center group/link transition-colors">
                 Read More 
-                <svg className="w-4 h-4 ml-1 group-hover/link:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {/* <svg className="w-4 h-4 ml-1 group-hover/link:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+                </svg> */}
+                 <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-right-short w-5 h-5 -rotate-45  transition-transform duration-200" viewBox="0 0 16 16">
+                <path fillRule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8"/>
+            </svg>
               </a>
             </div>
           ))}
