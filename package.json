@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "turbo dev --concurrency 15",
+    "dev:frontend": "turbo dev --filter=website --filter=docs --filter=dashboard --filter=backend --filter=@corpusai/ui --concurrency 10",
     "dev:with-proxy": "concurrently \"pnpm dev\" \"pnpm proxy:dev\"",
     "proxy:dev": "cross-env NODE_ENV=development node proxy-server.js",
     "proxy:prod": "NODE_ENV=production node proxy-server.js",
