@@ -22,6 +22,7 @@ COPY --from=pruner /app/out/full/ .
 COPY turbo.json turbo.json
 
 ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV production
 
 RUN echo "RAILWAY_ENVIRONMENT_NAME: $RAILWAY_ENVIRONMENT_NAME"
 
