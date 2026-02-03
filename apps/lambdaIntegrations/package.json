@@ -5,22 +5,23 @@
   "main": "src/index.ts",
   "scripts": {
     "build": "tsc",
-    "dev": "serverless offline",
+    "dev": "dotenv -e .env.development -- serverless offline",
     "deploy": "serverless deploy",
     "deploy:dev": "serverless deploy --stage dev",
     "deploy:prod": "serverless deploy --stage prod",
-    "logs:whatsapp": "serverless logs -f whatsappHandler --tail",
+    "logs:whatsapp": "serverless logs -f whatsapp Handler --tail",
     "logs:telegram": "serverless logs -f telegramHandler --tail",
     "clean": "rm -rf .serverless dist node_modules"
   },
   "dependencies": {
     "@corpusai/aws-common": "workspace:*",
-    "openai": "^4.0.0",
-    "axios": "^1.6.0"
+    "axios": "^1.6.0",
+    "openai": "^4.0.0"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.119",
     "@types/node": "^20.0.0",
+    "dotenv-cli": "^7.4.4",
     "serverless": "^3.38.0",
     "serverless-offline": "^13.0.0",
     "serverless-plugin-typescript": "^2.1.5",

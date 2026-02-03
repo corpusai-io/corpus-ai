@@ -115,5 +115,5 @@ plugins:
 
 custom:
   serverless-offline:
-    httpPort: 8003
-    websocketPort: 8004
+    httpPort: 8007
+    websocketPort: 8008
