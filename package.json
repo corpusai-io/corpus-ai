@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "turbo dev --concurrency 11",
+    "dev": "turbo dev --concurrency 15",
     "build": "turbo build",
     "clean": "git clean -xdf node_modules",
     "clean:ws": "turbo clean",

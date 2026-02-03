@@ -1,6 +1,14 @@
 version: "3.8"
 
 services:
+  dynamodb-local:
+    image: amazon/dynamodb-local
+    container_name: corpus-dynamodb-local
+    ports:
+      - "8000:8000"
+    command: "-jar DynamoDBLocal.jar -sharedDb -inMemory"
+    restart: always
+
   backend:
     build:
       context: .
@@ -13,7 +21,10 @@ services:
       - "8001"
     environment:
       - NODE_ENV=${NODE_ENV:-production}
-      - DATABASE_URL=${DATABASE_URL}
+      - AWS_REGION=${AWS_REGION:-us-west-2}
+      - DYNAMODB_ENDPOINT=http://dynamodb-local:8000
+    depends_on:
+      - dynamodb-local
 
 
 
@@ -29,7 +40,10 @@ services:
       - "8002"
     environment:
       - NODE_ENV=${NODE_ENV:-production}
-      - DATABASE_URL=${DATABASE_URL}
+      - AWS_REGION=${AWS_REGION:-us-west-2}
+      - DYNAMODB_ENDPOINT=http://dynamodb-local:8000
+    depends_on:
+      - dynamodb-local
 
 
   dashboard:

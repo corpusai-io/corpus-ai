@@ -1,0 +1,102 @@
+service: corpus-lambda-build
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: ${env:AWS_REGION, 'us-west-2'}
+  stage: ${opt:stage, 'dev'}
+  timeout: 900 # 15 minutes (max for Lambda)
+  memorySize: 2048
+  architecture: x86_64
+
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
+    NODE_OPTIONS: '--enable-source-maps'
+
+    # AWS Configuration
+    AWS_REGION: ${env:AWS_REGION}
+    S3_BUCKET_NAME: ${env:S3_BUCKET_NAME}
+    S3_REGION: ${env:S3_REGION}
+    SQS_BUILD_QUEUE_URL: ${env:SQS_BUILD_QUEUE_URL}
+
+    # DynamoDB Tables
+    AWS_DYNAMO_CHATBOT_TABLE: ${env:AWS_DYNAMO_CHATBOT_TABLE}
+    AWS_DYNAMO_USER_TABLE: ${env:AWS_DYNAMO_USER_TABLE}
+
+    # OpenAI
+    OPENAI_API_KEY: ${env:OPENAI_API_KEY}
+    OPENAI_MODEL: ${env:OPENAI_MODEL}
+    OPENAI_EMBEDDING_MODEL: ${env:OPENAI_EMBEDDING_MODEL, 'text-embedding-3-small'}
+
+    # Pinecone
+    PINECONE_API_KEY: ${env:PINECONE_API_KEY}
+    PINECONE_ENVIRONMENT: ${env:PINECONE_ENVIRONMENT, 'us-east-1'}
+    PINECONE_REGION: ${env:PINECONE_REGION, 'us-east-1'}
+
+  iam:
+    role:
+      statements:
+        # S3 permissions
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:ListBucket
+          Resource:
+            - arn:aws:s3:::${env:S3_BUCKET_NAME}
+            - arn:aws:s3:::${env:S3_BUCKET_NAME}/*
+
+        # SQS permissions
+        - Effect: Allow
+          Action:
+            - sqs:ReceiveMessage
+            - sqs:DeleteMessage
+            - sqs:GetQueueAttributes
+          Resource:
+            - arn:aws:sqs:${env:SQS_REGION}:*:corpus-ai-queue
+
+        # DynamoDB permissions
+        - Effect: Allow
+          Action:
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:Query
+            - dynamodb:Scan
+          Resource:
+            - arn:aws:dynamodb:${env:AWS_REGION}:*:table/${env:AWS_DYNAMO_CHATBOT_TABLE}
+            - arn:aws:dynamodb:${env:AWS_REGION}:*:table/${env:AWS_DYNAMO_USER_TABLE}
+
+functions:
+  buildHandler:
+    handler: src/index.handler
+    description: Process chatbot build jobs from SQS
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - BuildQueue
+              - Arn
+          batchSize: 1 # Process one at a time
+          maximumBatchingWindowInSeconds: 0
+
+resources:
+  Resources:
+    BuildQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: corpus-ai-build-queue-${self:provider.stage}
+        VisibilityTimeout: 900 # Match Lambda timeout
+        MessageRetentionPeriod: 1209600 # 14 days
+        ReceiveMessageWaitTimeSeconds: 20 # Long polling
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 8003
+    lambdaPort: 8004

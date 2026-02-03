@@ -1,0 +1,30 @@
+{
+  "name": "@corpusai/lambda-websocket",
+  "version": "0.0.1",
+  "private": true,
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "serverless offline",
+    "deploy": "serverless deploy",
+    "deploy:dev": "serverless deploy --stage dev",
+    "deploy:prod": "serverless deploy --stage prod",
+    "logs": "serverless logs -f wsHandler --tail",
+    "invoke": "serverless invoke local -f wsHandler",
+    "clean": "rm -rf .serverless dist node_modules"
+  },
+  "dependencies": {
+    "@corpusai/aws-common": "workspace:*",
+    "@aws-sdk/client-apigatewaymanagementapi": "^3.450.0",
+    "@aws-sdk/client-dynamodb": "^3.450.0",
+    "openai": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.119",
+    "@types/node": "^20.0.0",
+    "serverless": "^3.38.0",
+    "serverless-offline": "^13.0.0",
+    "serverless-plugin-typescript": "^2.1.5",
+    "typescript": "^5.0.0"
+  }
+}

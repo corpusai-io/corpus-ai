@@ -1,0 +1,119 @@
+service: corpus-lambda-websocket
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: ${env:AWS_REGION, 'us-west-2'}
+  stage: ${opt:stage, 'dev'}
+  timeout: 300 # 5 minutes
+  memorySize: 1024
+  architecture: x86_64
+
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
+    NODE_OPTIONS: '--enable-source-maps'
+
+    # AWS Configuration
+    AWS_REGION: ${env:AWS_REGION}
+
+    # DynamoDB Tables
+    AWS_DYNAMO_CHATBOT_TABLE: ${env:AWS_DYNAMO_CHATBOT_TABLE}
+    AWS_DYNAMO_USER_TABLE: ${env:AWS_DYNAMO_USER_TABLE}
+    AWS_DYNAMO_QUERY_LOG_TABLE: ${env:AWS_DYNAMO_QUERY_LOG_TABLE}
+
+    # OpenAI
+    OPENAI_API_KEY: ${env:OPENAI_API_KEY}
+    OPENAI_MODEL: ${env:OPENAI_MODEL}
+    OPENAI_EMBEDDING_MODEL: ${env:OPENAI_EMBEDDING_MODEL, 'text-embedding-3-small'}
+
+    # Pinecone
+    PINECONE_API_KEY: ${env:PINECONE_API_KEY}
+    PINECONE_ENVIRONMENT: ${env:PINECONE_ENVIRONMENT, 'us-east-1'}
+    PINECONE_REGION: ${env:PINECONE_REGION, 'us-east-1'}
+
+    # WebSocket Connection Table
+    WEBSOCKET_CONNECTION_TABLE: corpus-ws-connections-${self:provider.stage}
+
+  iam:
+    role:
+      statements:
+        # DynamoDB permissions
+        - Effect: Allow
+          Action:
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+            - dynamodb:Query
+            - dynamodb:Scan
+          Resource:
+            - arn:aws:dynamodb:${env:AWS_REGION}:*:table/${env:AWS_DYNAMO_CHATBOT_TABLE}
+            - arn:aws:dynamodb:${env:AWS_REGION}:*:table/${env:AWS_DYNAMO_USER_TABLE}
+            - arn:aws:dynamodb:${env:AWS_REGION}:*:table/${env:AWS_DYNAMO_QUERY_LOG_TABLE}
+            - arn:aws:dynamodb:${env:AWS_REGION}:*:table/corpus-ws-connections-${self:provider.stage}
+
+        # API Gateway Management API permissions
+        - Effect: Allow
+          Action:
+            - execute-api:ManageConnections
+            - execute-api:Invoke
+          Resource:
+            - arn:aws:execute-api:${env:AWS_REGION}:*:*
+
+functions:
+  wsConnect:
+    handler: src/handlers/connect.handler
+    description: Handle WebSocket connection
+    events:
+      - websocket:
+          route: $connect
+
+  wsDisconnect:
+    handler: src/handlers/disconnect.handler
+    description: Handle WebSocket disconnection
+    events:
+      - websocket:
+          route: $disconnect
+
+  wsMessage:
+    handler: src/handlers/message.handler
+    description: Handle WebSocket messages (chat queries)
+    events:
+      - websocket:
+          route: $default
+
+  wsChat:
+    handler: src/handlers/chat.handler
+    description: Handle chat route specifically
+    events:
+      - websocket:
+          route: chat
+
+resources:
+  Resources:
+    # WebSocket Connection Table
+    WebSocketConnectionTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: corpus-ws-connections-${self:provider.stage}
+        AttributeDefinitions:
+          - AttributeName: connectionId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: connectionId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TimeToLiveSpecification:
+          AttributeName: ttl
+          Enabled: true
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 8003
+    websocketPort: 8004
