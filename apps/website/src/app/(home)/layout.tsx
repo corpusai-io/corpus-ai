@@ -1,0 +1,27 @@
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "@/app/globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  weight: ["300", "400", "500", "600", "700"],
+});
+
+export const metadata: Metadata = {
+  title: "Corpus AI — Agentic AI That Acts, Not Just Answers",
+  description:
+    "Build AI agents that query databases, take actions, and resolve issues autonomously. The next generation of business AI.",
+};
+
+export default function HomeLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body
+        className={`${inter.className} ${inter.variable} font-sans antialiased bg-white text-[#111827]`}
+      >
+        {children}
+      </body>
+    </html>
+  );
+}

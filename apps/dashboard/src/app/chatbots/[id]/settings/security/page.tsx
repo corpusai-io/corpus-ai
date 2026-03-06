@@ -1,42 +1,79 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { accessControlApi, chatbotApi } from '@/lib/api';
-import { Button, Input, Label } from '@corpusai/ui';
 import {
-  ArrowLeft,
   Copy,
+  Check,
   Eye,
   EyeOff,
   Key,
+  Globe,
+  Lock,
   Mail,
   RefreshCw,
   Shield,
   Trash2,
   Users,
+  Loader2,
+  Code,
+  X,
 } from 'lucide-react';
 
 interface AccessUser {
   email: string;
   grantedAt: number;
-  language?: string;
 }
 
 type AccessMode = 'public' | 'private' | 'whitelist';
 
+const ACCESS_MODES: {
+  value: AccessMode;
+  label: string;
+  description: string;
+  icon: React.ReactNode;
+}[] = [
+  {
+    value: 'public',
+    label: 'Public',
+    description: 'Anyone can chat with this bot',
+    icon: <Globe className="h-5 w-5 text-[#22C55E]" />,
+  },
+  {
+    value: 'private',
+    label: 'Private',
+    description: 'Only you can use this bot',
+    icon: <Lock className="h-5 w-5 text-[#F59E0B]" />,
+  },
+  {
+    value: 'whitelist',
+    label: 'Whitelist',
+    description: 'Only approved emails can chat',
+    icon: <Shield className="h-5 w-5 text-[#BF56FF]" />,
+  },
+];
+
 export default function SecurityPage() {
   const params = useParams();
-  const router = useRouter();
   const chatbotId = params.id as string;
 
   const [accessMode, setAccessMode] = useState<AccessMode>('public');
-  const [apiKey, setApiKey] = useState<string>('');
+  const [apiKey, setApiKey] = useState('');
   const [showApiKey, setShowApiKey] = useState(false);
   const [whitelist, setWhitelist] = useState<AccessUser[]>([]);
   const [newEmail, setNewEmail] = useState('');
-  const [embedCode, setEmbedCode] = useState('');
   const [loading, setLoading] = useState(true);
+  const [modeUpdating, setModeUpdating] = useState(false);
+  const [copied, setCopied] = useState<string | null>(null);
+
+  // Regenerate dialog
+  const [showRegenDialog, setShowRegenDialog] = useState(false);
+  const [regenLoading, setRegenLoading] = useState(false);
+
+  // Remove email dialog
+  const [removeEmail, setRemoveEmail] = useState<string | null>(null);
+  const [removeLoading, setRemoveLoading] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -45,22 +82,16 @@ export default function SecurityPage() {
   const loadData = async () => {
     try {
       setLoading(true);
-      const [chatbotData, accessData] = await Promise.all([
+      const [chatbotData, accessData]: any[] = await Promise.all([
         chatbotApi.get(chatbotId),
         accessControlApi.list(chatbotId),
       ]);
 
-      // Set access mode from chatbot data (if available)
-      setAccessMode(chatbotData.chatbot?.accessMode || 'public');
-
-      // Set whitelist
-      setWhitelist(accessData.users || []);
-
-      // Generate API key (masked)
-      setApiKey('••••••••••••••••••••••••');
-
-      // Generate embed code
-      generateEmbedCode();
+      setAccessMode(
+        ((chatbotData as any).chatbot?.accessMode?.toLowerCase() as AccessMode) || 'public'
+      );
+      setWhitelist((accessData as any).users || []);
+      setApiKey((accessData as any).apiKey || '');
     } catch (err: any) {
       console.error('Failed to load security settings:', err);
     } finally {
@@ -68,34 +99,20 @@ export default function SecurityPage() {
     }
   };
 
-  const generateEmbedCode = () => {
-    const code = `<!-- Corpus AI Chatbot Widget -->
-<script>
-  window.corpusAI = {
-    chatbotId: '${chatbotId}',
-    apiKey: 'YOUR_API_KEY',
-  };
-</script>
-<script src="https://cdn.corpus-ai.com/widget.js"></script>`;
-
-    setEmbedCode(code);
-  };
-
   const handleUpdateAccessMode = async (mode: AccessMode) => {
+    setModeUpdating(true);
     try {
       await accessControlApi.updateMode(chatbotId, mode);
       setAccessMode(mode);
-      alert('Access mode updated successfully!');
     } catch (err: any) {
       alert('Failed to update access mode: ' + err.message);
+    } finally {
+      setModeUpdating(false);
     }
   };
 
   const handleAddEmail = async () => {
-    if (!newEmail || !newEmail.includes('@')) {
-      alert('Please enter a valid email address');
-      return;
-    }
+    if (!newEmail || !newEmail.includes('@')) return;
 
     try {
       await accessControlApi.grant(chatbotId, newEmail);
@@ -106,283 +123,365 @@ export default function SecurityPage() {
     }
   };
 
-  const handleRemoveEmail = async (email: string) => {
-    if (!confirm(`Remove ${email} from whitelist?`)) return;
+  const handleRemoveEmail = async () => {
+    if (!removeEmail) return;
+    setRemoveLoading(true);
 
     try {
-      await accessControlApi.revoke(chatbotId, email);
-      setWhitelist(whitelist.filter((u) => u.email !== email));
+      await accessControlApi.revoke(chatbotId, removeEmail);
+      setWhitelist(whitelist.filter((u) => u.email !== removeEmail));
+      setRemoveEmail(null);
     } catch (err: any) {
       alert('Failed to remove email: ' + err.message);
+    } finally {
+      setRemoveLoading(false);
     }
   };
 
   const handleRegenerateApiKey = async () => {
-    if (
-      !confirm(
-        'Regenerating the API key will invalidate the old key. Continue?'
-      )
-    )
-      return;
-
+    setRegenLoading(true);
     try {
-      const { apiKey: newKey } = await accessControlApi.generateApiKey(
-        chatbotId
-      );
-      setApiKey(newKey);
+      const data: any = await accessControlApi.generateApiKey(chatbotId);
+      setApiKey(data.apiKey);
       setShowApiKey(true);
-      alert('API key regenerated successfully! Make sure to save it.');
+      setShowRegenDialog(false);
     } catch (err: any) {
       alert('Failed to regenerate API key: ' + err.message);
+    } finally {
+      setRegenLoading(false);
     }
   };
 
-  const handleCopyToClipboard = (text: string) => {
+  const copyToClipboard = (text: string, key: string) => {
     navigator.clipboard.writeText(text);
-    alert('Copied to clipboard!');
+    setCopied(key);
+    setTimeout(() => setCopied(null), 2000);
   };
+
+  const embedCode = `<script src="https://widget.corpusai.com/embed.js" data-chatbot-id="${chatbotId}"${apiKey ? ` data-api-key="${apiKey}"` : ''}></script>`;
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-white p-8">
-        <div className="mx-auto max-w-4xl">
-          <div className="flex items-center justify-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#BF56FF] border-t-transparent"></div>
+      <div className="v4-animate-in mx-auto max-w-4xl space-y-6">
+        <div className="v4-shimmer rounded-lg" style={{ height: '32px', width: '256px' }} />
+        <div className="v4-shimmer rounded-lg" style={{ height: '16px', width: '192px' }} />
+        <div className="v4-card">
+          <div className="v4-shimmer rounded-lg mb-4" style={{ height: '24px', width: '128px' }} />
+          <div className="space-y-3">
+            <div className="v4-shimmer rounded-lg" style={{ height: '64px' }} />
+            <div className="v4-shimmer rounded-lg" style={{ height: '64px' }} />
+            <div className="v4-shimmer rounded-lg" style={{ height: '64px' }} />
           </div>
+        </div>
+        <div className="v4-card">
+          <div className="v4-shimmer rounded-lg mb-4" style={{ height: '24px', width: '96px' }} />
+          <div className="v4-shimmer rounded-lg" style={{ height: '40px' }} />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-white p-8">
-      <div className="mx-auto max-w-4xl">
-        {/* Header */}
-        <div className="mb-8">
-          <Button
-            variant="ghost"
-            onClick={() => router.push(`/chatbots/${chatbotId}/settings`)}
-            className="mb-4"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Settings
-          </Button>
-          <h1 className="text-3xl font-bold text-gray-900">
-            Security & Access Control
-          </h1>
-          <p className="mt-2 text-gray-600">
-            Manage who can access your chatbot
-          </p>
-        </div>
+    <div className="v4-animate-in mx-auto max-w-4xl space-y-6">
+      {/* Header */}
+      <div className="mb-2">
+        <h1 className="text-2xl font-bold text-white">Security &amp; Access Control</h1>
+        <p className="mt-1 text-[#A1A1AA]">Manage who can access your chatbot</p>
+      </div>
 
-        <div className="space-y-6">
-          {/* Access Mode */}
-          <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-            <div className="mb-4 flex items-center gap-2">
-              <Shield className="h-5 w-5 text-[#BF56FF]" />
-              <h2 className="text-xl font-semibold text-gray-900">
-                Access Mode
-              </h2>
-            </div>
-
-            <div className="space-y-3">
-              <label className="flex items-start gap-3 rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50 cursor-pointer">
-                <input
-                  type="radio"
-                  name="accessMode"
-                  checked={accessMode === 'public'}
-                  onChange={() => handleUpdateAccessMode('public')}
-                  className="mt-1 h-4 w-4 border-gray-300 text-[#BF56FF] focus:ring-[#BF56FF]"
-                />
-                <div>
-                  <p className="font-medium text-gray-900">Public</p>
-                  <p className="text-sm text-gray-600">
-                    Anyone can access your chatbot
-                  </p>
-                </div>
-              </label>
-
-              <label className="flex items-start gap-3 rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50 cursor-pointer">
-                <input
-                  type="radio"
-                  name="accessMode"
-                  checked={accessMode === 'private'}
-                  onChange={() => handleUpdateAccessMode('private')}
-                  className="mt-1 h-4 w-4 border-gray-300 text-[#BF56FF] focus:ring-[#BF56FF]"
-                />
-                <div>
-                  <p className="font-medium text-gray-900">Private</p>
-                  <p className="text-sm text-gray-600">
-                    Only you can access your chatbot
-                  </p>
-                </div>
-              </label>
-
-              <label className="flex items-start gap-3 rounded-lg border border-gray-200 p-4 transition-colors hover:bg-gray-50 cursor-pointer">
-                <input
-                  type="radio"
-                  name="accessMode"
-                  checked={accessMode === 'whitelist'}
-                  onChange={() => handleUpdateAccessMode('whitelist')}
-                  className="mt-1 h-4 w-4 border-gray-300 text-[#BF56FF] focus:ring-[#BF56FF]"
-                />
-                <div>
-                  <p className="font-medium text-gray-900">Whitelist Only</p>
-                  <p className="text-sm text-gray-600">
-                    Only whitelisted users can access
-                  </p>
-                </div>
-              </label>
-            </div>
+      <div className="space-y-6">
+        {/* Access Mode */}
+        <div className="v4-card">
+          <div className="mb-4 flex items-center gap-2">
+            <Shield className="h-5 w-5 text-[#BF56FF]" />
+            <h2 className="text-lg font-semibold text-white">Access Mode</h2>
           </div>
 
-          {/* API Key */}
-          <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+          <div className="space-y-2">
+            {ACCESS_MODES.map((mode) => (
+              <label
+                key={mode.value}
+                className={`flex cursor-pointer items-start gap-3 rounded-xl border p-4 transition-colors ${
+                  accessMode === mode.value
+                    ? 'border-[#BF56FF]/40 bg-[#BF56FF]/[0.06]'
+                    : 'border-white/[0.06] hover:bg-white/[0.02]'
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="accessMode"
+                  checked={accessMode === mode.value}
+                  onChange={() => handleUpdateAccessMode(mode.value)}
+                  disabled={modeUpdating}
+                  className="accent-[#BF56FF] mt-0.5"
+                />
+                <div className="flex items-start gap-3">
+                  {mode.icon}
+                  <div>
+                    <p className="font-medium text-white">{mode.label}</p>
+                    <p className="text-sm text-[#A1A1AA]">{mode.description}</p>
+                  </div>
+                </div>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Whitelist */}
+        {accessMode === 'whitelist' && (
+          <div className="v4-card">
             <div className="mb-4 flex items-center gap-2">
-              <Key className="h-5 w-5 text-[#BF56FF]" />
-              <h2 className="text-xl font-semibold text-gray-900">API Key</h2>
+              <Users className="h-5 w-5 text-[#BF56FF]" />
+              <h2 className="text-lg font-semibold text-white">Authorized Emails</h2>
             </div>
 
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="apiKey">Your API Key</Label>
-                <div className="mt-2 flex gap-2">
-                  <div className="relative flex-1">
-                    <Input
-                      id="apiKey"
-                      type={showApiKey ? 'text' : 'password'}
-                      value={apiKey}
-                      readOnly
-                      className="pr-10"
-                    />
-                    <button
-                      onClick={() => setShowApiKey(!showApiKey)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                    >
-                      {showApiKey ? (
-                        <EyeOff className="h-4 w-4" />
-                      ) : (
-                        <Eye className="h-4 w-4" />
-                      )}
-                    </button>
-                  </div>
-                  <Button
-                    variant="outline"
-                    onClick={() => handleCopyToClipboard(apiKey)}
-                  >
-                    <Copy className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    onClick={handleRegenerateApiKey}
-                    className="border-orange-200 text-orange-600 hover:bg-orange-50"
-                  >
-                    <RefreshCw className="mr-2 h-4 w-4" />
-                    Regenerate
-                  </Button>
-                </div>
-                <p className="mt-2 text-sm text-gray-500">
-                  Keep your API key secure. Never share it publicly.
+            <div className="mb-4">
+              <div className="flex gap-2">
+                <input
+                  type="email"
+                  placeholder="user@example.com"
+                  value={newEmail}
+                  onChange={(e) => setNewEmail(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') handleAddEmail();
+                  }}
+                  className="w-full px-3 py-2 rounded-lg bg-white/[0.04] border border-white/[0.08] text-white placeholder-[#52525B] focus:outline-none focus:border-white/[0.16] text-sm transition-colors"
+                />
+                <button
+                  onClick={handleAddEmail}
+                  disabled={!newEmail.includes('@')}
+                  className="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium bg-white text-[#08080A] hover:bg-white/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                >
+                  <Mail className="h-4 w-4" />
+                  Add
+                </button>
+              </div>
+            </div>
+
+            {whitelist.length === 0 ? (
+              <div className="rounded-xl border border-dashed border-white/[0.10] p-8 text-center">
+                <p className="text-sm text-[#A1A1AA]">
+                  No whitelisted users yet. Add emails above.
                 </p>
               </div>
-            </div>
-          </div>
-
-          {/* Whitelist */}
-          {accessMode === 'whitelist' && (
-            <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-              <div className="mb-4 flex items-center gap-2">
-                <Users className="h-5 w-5 text-[#BF56FF]" />
-                <h2 className="text-xl font-semibold text-gray-900">
-                  Email Whitelist
-                </h2>
-              </div>
-
-              <div className="mb-4">
-                <Label htmlFor="newEmail">Add Email</Label>
-                <div className="mt-2 flex gap-2">
-                  <Input
-                    id="newEmail"
-                    type="email"
-                    placeholder="user@example.com"
-                    value={newEmail}
-                    onChange={(e) => setNewEmail(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') handleAddEmail();
-                    }}
-                  />
-                  <Button
-                    onClick={handleAddEmail}
-                    className="bg-gradient-to-r from-[#FC5990] to-[#AC5DE6] hover:opacity-90"
+            ) : (
+              <div className="space-y-2">
+                {whitelist.map((user) => (
+                  <div
+                    key={user.email}
+                    className="flex items-center justify-between rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-2.5"
                   >
-                    <Mail className="mr-2 h-4 w-4" />
-                    Add
-                  </Button>
+                    <div className="flex items-center gap-2 text-sm">
+                      <Mail className="h-4 w-4 text-[#71717A]" />
+                      <span className="text-white">{user.email}</span>
+                      <span className="text-xs text-[#52525B]">
+                        Added {new Date(user.grantedAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => setRemoveEmail(user.email)}
+                      className="text-[#52525B] hover:text-[#EC4899] hover:bg-[#EC4899]/10 h-7 w-7 rounded-md inline-flex items-center justify-center transition-colors"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* API Key */}
+        <div className="v4-card">
+          <div className="mb-4 flex items-center gap-2">
+            <Key className="h-5 w-5 text-[#BF56FF]" />
+            <h2 className="text-lg font-semibold text-white">API Access</h2>
+          </div>
+
+          <p className="mb-4 text-sm text-[#A1A1AA]">
+            Use an API key to access this chatbot programmatically.
+          </p>
+
+          {apiKey ? (
+            <div className="space-y-3">
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <div className="relative flex-1">
+                  <input
+                    type={showApiKey ? 'text' : 'password'}
+                    value={apiKey}
+                    readOnly
+                    className="w-full px-3 py-2 rounded-lg bg-white/[0.04] border border-white/[0.08] text-white placeholder-[#52525B] focus:outline-none focus:border-white/[0.16] text-sm transition-colors flex-1 pr-10 font-mono"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowApiKey(!showApiKey)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#71717A] hover:text-white transition-colors"
+                  >
+                    {showApiKey ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => copyToClipboard(apiKey, 'apiKey')}
+                    className="inline-flex items-center justify-center rounded-lg px-3 py-2 text-sm font-medium border border-white/[0.10] text-[#A1A1AA] hover:text-white hover:border-white/[0.16] transition-colors"
+                  >
+                    {copied === 'apiKey' ? (
+                      <Check className="h-4 w-4 text-[#22C55E]" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
+                  </button>
+                  <button
+                    onClick={() => setShowRegenDialog(true)}
+                    className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium border border-[#F59E0B]/30 text-[#F59E0B] hover:bg-[#F59E0B]/10 transition-colors"
+                  >
+                    <RefreshCw className="h-4 w-4" />
+                    Regenerate
+                  </button>
                 </div>
               </div>
-
-              {whitelist.length === 0 ? (
-                <div className="rounded-lg border-2 border-dashed border-gray-300 p-8 text-center">
-                  <p className="text-gray-600">
-                    No whitelisted users yet. Add emails above.
-                  </p>
-                </div>
-              ) : (
-                <div className="space-y-2">
-                  {whitelist.map((user) => (
-                    <div
-                      key={user.email}
-                      className="flex items-center justify-between rounded-lg border border-gray-200 p-3"
-                    >
-                      <div className="flex items-center gap-2">
-                        <Mail className="h-4 w-4 text-gray-400" />
-                        <span className="text-sm text-gray-900">
-                          {user.email}
-                        </span>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleRemoveEmail(user.email)}
-                        className="text-red-600 hover:bg-red-50"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <p className="text-xs text-[#52525B]">
+                Keep your API key secure. Never share it publicly.
+              </p>
             </div>
+          ) : (
+            <button
+              onClick={() => setShowRegenDialog(true)}
+              className="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium bg-white text-[#08080A] hover:bg-white/90 transition-colors"
+            >
+              <Key className="h-4 w-4" />
+              Generate API Key
+            </button>
           )}
+        </div>
 
-          {/* Embed Code */}
-          <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-gray-900">
-                Embed Code
-              </h2>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => handleCopyToClipboard(embedCode)}
-              >
-                <Copy className="mr-2 h-4 w-4" />
-                Copy Code
-              </Button>
+        {/* Embed Code */}
+        <div className="v4-card">
+          <div className="mb-4 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Code className="h-5 w-5 text-[#BF56FF]" />
+              <h2 className="text-lg font-semibold text-white">Embed on Your Website</h2>
             </div>
-
-            <div className="rounded-lg bg-gray-900 p-4">
-              <pre className="overflow-x-auto text-sm text-gray-100">
-                <code>{embedCode}</code>
-              </pre>
-            </div>
-
-            <p className="mt-4 text-sm text-gray-600">
-              Add this code to your website to embed the chatbot widget.
-            </p>
+            <button
+              onClick={() => copyToClipboard(embedCode, 'embed')}
+              className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium border border-white/[0.10] text-[#A1A1AA] hover:text-white hover:border-white/[0.16] transition-colors"
+            >
+              {copied === 'embed' ? (
+                <>
+                  <Check className="h-4 w-4 text-[#22C55E]" />
+                  Copied
+                </>
+              ) : (
+                <>
+                  <Copy className="h-4 w-4" />
+                  Copy Code
+                </>
+              )}
+            </button>
           </div>
+
+          <div className="rounded-xl bg-white/[0.04] border border-white/[0.06] p-4 font-mono text-sm text-[#A1A1AA] overflow-x-auto">
+            <code>{embedCode}</code>
+          </div>
+
+          <p className="mt-3 text-sm text-[#A1A1AA]">
+            Add this snippet to your website to embed the chatbot widget.
+          </p>
         </div>
       </div>
+
+      {/* Regenerate API Key Dialog */}
+      {showRegenDialog && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => !regenLoading && setShowRegenDialog(false)}
+          />
+          <div className="relative w-full max-w-md rounded-2xl bg-[#0E0E10] border border-white/[0.08] shadow-2xl p-6">
+            <h3 className="text-lg font-semibold text-white mb-2">
+              {apiKey ? 'Regenerate' : 'Generate'} API Key
+            </h3>
+            <p className="text-sm text-[#A1A1AA] mb-6">
+              {apiKey
+                ? 'This will invalidate your current API key. Any integrations using the old key will stop working.'
+                : 'Generate an API key to access your chatbot programmatically. The key will only be shown once.'}
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setShowRegenDialog(false)}
+                disabled={regenLoading}
+                className="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium border border-white/[0.10] text-[#A1A1AA] hover:text-white hover:border-white/[0.16] transition-colors disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleRegenerateApiKey}
+                disabled={regenLoading}
+                className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50 ${
+                  apiKey
+                    ? 'bg-[#F59E0B] text-[#08080A] hover:bg-[#F59E0B]/90'
+                    : 'bg-white text-[#08080A] hover:bg-white/90'
+                }`}
+              >
+                {regenLoading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Generating...
+                  </>
+                ) : apiKey ? (
+                  'Regenerate'
+                ) : (
+                  'Generate'
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Remove Email Dialog */}
+      {removeEmail && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => !removeLoading && setRemoveEmail(null)}
+          />
+          <div className="relative w-full max-w-md rounded-2xl bg-[#0E0E10] border border-white/[0.08] shadow-2xl p-6">
+            <h3 className="text-lg font-semibold text-white mb-2">Remove from whitelist</h3>
+            <p className="text-sm text-[#A1A1AA] mb-6">
+              Remove <span className="font-bold text-white">{removeEmail}</span> from the
+              whitelist? They will no longer be able to access this chatbot.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setRemoveEmail(null)}
+                disabled={removeLoading}
+                className="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium border border-white/[0.10] text-[#A1A1AA] hover:text-white hover:border-white/[0.16] transition-colors disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleRemoveEmail}
+                disabled={removeLoading}
+                className="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium bg-[#EC4899] text-white hover:bg-[#EC4899]/90 transition-colors disabled:opacity-50"
+              >
+                {removeLoading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Removing...
+                  </>
+                ) : (
+                  'Remove'
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

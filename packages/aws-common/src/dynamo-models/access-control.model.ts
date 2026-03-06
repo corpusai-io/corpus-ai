@@ -11,13 +11,13 @@ import { env } from "../utils/env";
 // List users that has access, can add or remove user.
 
 export class AccessControlRecord extends Item {
-  chatbotId: string;
-  username: string;
-  name: string;
-  email: string;
-  picture: string;
-  grantedBy: string;
-  grantedTime: string;
+  chatbotId!: string;
+  username!: string;
+  name!: string;
+  email!: string;
+  picture!: string;
+  grantedBy!: string;
+  grantedTime!: string;
 }
 
 export const AccessControlSchema = new dynamoose.Schema({

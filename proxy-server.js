@@ -1,30 +1,26 @@
-// proxy-server.js
+// proxy-server.js - Unified entry point for all Corpus AI services
 const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const cors = require('cors');
 
 const app = express();
 
-// Enable CORS for all routes
 app.use(cors());
 
-// Environment-based configuration
 const isDev = process.env.NODE_ENV !== 'production';
-const PORT = process.env.PORT || process.env.PROXY_PORT || 9000;
+const PORT = process.env.PORT || process.env.PROXY_PORT || 3000;
 
-// Service URLs - adjust based on environment
+// Service URLs
 const services = {
   development: {
-    website: 'http://localhost:3000',
-    backend: 'http://localhost:8001', 
-    chat_service: 'http://localhost:8002',
+    website: 'http://localhost:3002',
+    backend: 'http://localhost:8001',
     dashboard: 'http://localhost:8080',
     docs: 'http://localhost:3001',
   },
   production: {
     website: 'http://localhost:3002',
     backend: 'http://localhost:8001',
-    chat_service: 'http://localhost:8002',
     dashboard: 'http://localhost:3004',
     docs: 'http://localhost:3003',
   }
@@ -32,98 +28,83 @@ const services = {
 
 const currentServices = services[isDev ? 'development' : 'production'];
 
-// Proxy middleware options
+// Track which services are ready (have responded successfully at least once)
+const serviceReady = {};
+
 const createProxy = (target, pathRewrite = {}) => createProxyMiddleware({
   target,
   changeOrigin: true,
   ws: true,
   pathRewrite,
   onError: (err, req, res) => {
-    console.error(`❌ Proxy error for ${req.url}:`, err.message);
-    if (res && res.status && !res.headersSent) {
-      res.status(502).json({ 
-        error: 'Service unavailable', 
-        service: target,
-        path: req.url 
-      });
+    if (err.code === 'ECONNREFUSED' && !serviceReady[target]) {
+      // Service not ready yet during startup - show a friendly waiting page
+      if (res && !res.headersSent) {
+        res.writeHead(503, { 'Content-Type': 'text/html', 'Retry-After': '3' });
+        res.end(`
+          <html><head>
+            <title>Starting up...</title>
+            <meta http-equiv="refresh" content="3">
+            <style>body{font-family:system-ui;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#f8f9fa;color:#333}
+            .box{text-align:center;padding:2rem}.spinner{width:40px;height:40px;border:4px solid #e0e0e0;border-top:4px solid #BF56FF;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 1rem}
+            @keyframes spin{to{transform:rotate(360deg)}}</style>
+          </head><body><div class="box"><div class="spinner"></div><h2>Starting up...</h2><p>Waiting for service at ${target}</p><p style="color:#888;font-size:0.9rem">This page will auto-refresh in 3 seconds</p></div></body></html>
+        `);
+      }
+    } else {
+      console.error(`Proxy error for ${req.url}:`, err.message);
+      if (res && res.status && !res.headersSent) {
+        res.status(502).json({
+          error: 'Service unavailable',
+          service: target,
+          path: req.url
+        });
+      }
+    }
+  },
+  onProxyRes: (proxyRes, req, res) => {
+    if (!serviceReady[target]) {
+      serviceReady[target] = true;
     }
   },
   onProxyReq: (proxyReq, req, res) => {
-    if (req.url && !req.url.includes('webpack-hmr')) {
-      console.log(`🔄 Proxying: ${req.method} ${req.url} → ${target}${req.url}`);
+    if (req.url && !req.url.includes('webpack-hmr') && !req.url.includes('_next')) {
+      console.log(`-> ${req.method} ${req.url} => ${target}`);
     }
   }
 });
 
-// API Routes - Backend
-app.use('/api', createProxy(currentServices.backend, {
-  '^/api': ''
-}));
+// API Routes -> Backend
+app.use('/api', createProxy(currentServices.backend));
 
-// Chat Service Routes
-app.use('/chat', createProxy(currentServices.chat_service, {
-  '^/chat': ''
-}));
+// Dashboard Routes -> Dashboard app (basePath: /dashboard handles asset namespacing)
+app.use('/dashboard', createProxy(currentServices.dashboard));
 
-// Dashboard Routes AND its assets
-app.use('/dashboard', createProxy(currentServices.dashboard, {
-  '^/dashboard': ''
-}));
-
-// Docs Routes AND its assets - MUST come before catch-all  
+// Docs Routes -> Docs app (basePath: /docs handles asset namespacing)
 app.use('/docs', createProxy(currentServices.docs));
 
-// Handle docs-specific Next.js assets when accessed via /docs
-app.use('/_next/static', (req, res, next) => {
-  // Check if this request came from /docs page
-  const referer = req.get('Referer');
-  if (referer && referer.includes('/docs')) {
-    return createProxy(currentServices.docs)(req, res, next);
-  }
-  // Otherwise, let it fall through to website
-  next();
-});
-
-// Handle website-assets that docs uses - route to docs with /docs prefix
-app.use('/website-assets', createProxy(currentServices.docs, {
-  '^/website-assets': '/docs/website-assets'
-}));
-
-// Health check endpoint
+// Health check
 app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'ok', 
+  res.json({
+    status: 'ok',
     environment: isDev ? 'development' : 'production',
     services: currentServices,
     timestamp: new Date().toISOString()
   });
 });
 
-// Catch-all for main website (must be last)
+// Catch-all -> Website (must be last)
 app.use('/', createProxy(currentServices.website));
 
-// Start server
 app.listen(PORT, '0.0.0.0', () => {
-  console.log('\n🚀 Corpus AI Proxy Server Started!');
-  console.log(`📍 Environment: ${isDev ? 'Development' : 'Production'}`);
-  console.log(`🌐 Proxy URL: http://0.0.0.0:${PORT}`);
-  console.log('\n📋 Available Routes:');
-  console.log(`  • http://localhost:${PORT}/          → Website (${currentServices.website})`);
-  console.log(`  • http://localhost:${PORT}/dashboard → Dashboard (${currentServices.dashboard})`);
-  console.log(`  • http://localhost:${PORT}/docs      → Documentation (${currentServices.docs})`);
-  console.log(`  • http://localhost:${PORT}/api       → Backend API (${currentServices.backend})`);
-  console.log(`  • http://localhost:${PORT}/chat      → Chat Service (${currentServices.chat_service})`);
-  console.log(`  • http://localhost:${PORT}/health    → Health Check`);
-  console.log('\n💡 Pro tip: Start your services with "pnpm dev" first!\n');
+  console.log('\n  Corpus AI Proxy Server');
+  console.log(`  ${isDev ? 'Development' : 'Production'} mode on http://localhost:${PORT}\n`);
+  console.log(`  /              -> Website   (${currentServices.website})`);
+  console.log(`  /dashboard     -> Dashboard (${currentServices.dashboard})`);
+  console.log(`  /docs          -> Docs      (${currentServices.docs})`);
+  console.log(`  /api           -> Backend   (${currentServices.backend})`);
+  console.log(`  /health        -> Health Check\n`);
 });
 
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('🛑 Proxy server shutting down...');
-  process.exit(0);
-});
-
-process.on('SIGINT', () => {
-  console.log('\n🛑 Proxy server shutting down...');
-  process.exit(0);
-});
+process.on('SIGTERM', () => process.exit(0));
+process.on('SIGINT', () => process.exit(0));

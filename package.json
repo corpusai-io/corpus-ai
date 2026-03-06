@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "turbo dev --concurrency 15",
-    "dev:frontend": "turbo dev --filter=website --filter=docs --filter=dashboard --filter=backend --filter=@corpusai/ui --concurrency 10",
-    "dev:with-proxy": "concurrently \"pnpm dev\" \"pnpm proxy:dev\"",
+    "dev": "concurrently \"turbo dev --concurrency 15\" \"cross-env NODE_ENV=development node proxy-server.js\"",
+    "dev:no-proxy": "turbo dev --concurrency 15",
+    "dev:frontend": "concurrently \"turbo dev --filter=website --filter=docs --filter=dashboard --filter=backend --filter=@corpusai/ui --concurrency 10\" \"cross-env NODE_ENV=development node proxy-server.js\"",
     "proxy:dev": "cross-env NODE_ENV=development node proxy-server.js",
     "proxy:prod": "NODE_ENV=production node proxy-server.js",
     "build": "turbo build",
@@ -21,7 +21,7 @@
     "docker:logs": "docker compose logs -f"
   },
 "devDependencies": {
-  "@types/node": "^20.0.0",
+  "@types/node": "20.17.0",
   "eslint": "^8.40.0",
   "eslint-config-prettier": "^8.8.0",
   "prettier": "^3.0.2",
@@ -41,5 +41,10 @@
     "pnpm": ">=9.0.0",
     "node": ">=18.0.0"
   },
-  "packageManager": "pnpm@9.1.4"
+  "packageManager": "pnpm@9.1.4",
+  "pnpm": {
+    "overrides": {
+      "@types/node": "20.17.0"
+    }
+  }
 }

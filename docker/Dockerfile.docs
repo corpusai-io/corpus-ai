@@ -9,7 +9,6 @@ COPY . .
 RUN turbo prune --scope=docs --docker
 
 FROM base AS builder
-ARG RAILWAY_ENVIRONMENT_NAME=production
 WORKDIR /app
 COPY .gitignore .gitignore
 COPY .npmrc ./
@@ -24,15 +23,7 @@ COPY turbo.json turbo.json
 ENV NEXT_TELEMETRY_DISABLED 1
 ENV NODE_ENV production
 
-RUN echo "RAILWAY_ENVIRONMENT_NAME: $RAILWAY_ENVIRONMENT_NAME"
-
-RUN if [ "$RAILWAY_ENVIRONMENT_NAME" = "staging" ]; then \
-  rm -f apps/docs/.env.production; \
-  cp apps/docs/.env.staging apps/docs/.env.production; \
-  NODE_OPTIONS="--max_old_space_size=4096" pnpm turbo run build --filter=docs...; \
-  else \
-  NODE_OPTIONS="--max_old_space_size=4096" pnpm turbo run build --filter=docs...; \
-  fi
+RUN NODE_OPTIONS="--max_old_space_size=4096" pnpm turbo run build --filter=docs...
 
 FROM base AS runner
 WORKDIR /app

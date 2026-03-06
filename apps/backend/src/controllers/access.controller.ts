@@ -1,6 +1,7 @@
 import { Response, Request } from 'express';
-import { AccessControlModel, ChatbotModel } from '@corpusai/aws-common';
+import { AccessControlModel, ChatbotModel, ApiKeyModel } from '@corpusai/aws-common';
 import { AuthRequest } from '../middleware/auth.middleware';
+import { sendAccessInvitationEmail } from '../services/email.service';
 import { nanoid } from 'nanoid';
 import crypto from 'crypto';
 
@@ -74,7 +75,14 @@ export async function grantAccess(req: AuthRequest, res: Response) {
 
     await record.save();
 
-    // TODO: Send invitation email to the user
+    // Fire-and-forget: send invitation email to the user
+    try {
+      const chatbot = await ChatbotModel.get(chatbotId);
+      const chatbotName = chatbot?.title || chatbotId;
+      sendAccessInvitationEmail(email, chatbotName, req.user.email);
+    } catch (lookupErr) {
+      console.warn('[ACCESS] Could not look up chatbot for invitation email:', lookupErr);
+    }
     // TODO: Support multi-language email templates
 
     res.status(201).json({
@@ -166,6 +174,7 @@ export async function setAccessMode(req: AuthRequest, res: Response) {
 export async function generateApiKey(req: AuthRequest, res: Response) {
   try {
     const { chatbotId } = req.params;
+    const { label } = req.body || {};
 
     if (!req.user?.email) {
       return res.status(401).json({ error: 'Authentication required' });
@@ -180,20 +189,37 @@ export async function generateApiKey(req: AuthRequest, res: Response) {
 
     // Generate new API key
     const apiKey = `corpus_${nanoid(32)}`;
+    const keyId = nanoid(12);
+    const keyPrefix = apiKey.substring(0, 12);
 
     // Hash the API key using PBKDF2
-    const salt = chatbot.apiKeyHashSalt || nanoid(16);
-    const iterations = chatbot.apiKeyHashIterations || 10000;
+    const salt = nanoid(16);
+    const iterations = 10000;
 
-    const hashedApiKey = crypto
+    const hashedKey = crypto
       .pbkdf2Sync(apiKey, salt, iterations, 64, 'sha512')
       .toString('hex');
 
-    // Update chatbot with new hashed key
+    // Store in ApiKey table
+    const record = new ApiKeyModel({
+      chatbotId,
+      keyId,
+      label: label || '',
+      keyPrefix,
+      hashedKey,
+      salt,
+      iterations,
+      createdAt: Date.now(),
+      lastUsed: 0,
+      createdBy: req.user.email,
+    });
+    await record.save();
+
+    // Also update chatbot's main key for backwards compatibility
     await ChatbotModel.update(
       { chatbotId },
       {
-        hashedApiKey,
+        hashedApiKey: hashedKey,
         apiKeyHashSalt: salt,
         apiKeyHashIterations: iterations,
       }
@@ -203,6 +229,10 @@ export async function generateApiKey(req: AuthRequest, res: Response) {
       success: true,
       message: 'API key generated successfully',
       apiKey, // Only returned once
+      keyId,
+      keyPrefix,
+      label: label || '',
+      createdAt: Date.now(),
       warning: 'Save this API key securely. It will not be shown again.',
     });
   } catch (error) {
@@ -215,8 +245,76 @@ export async function generateApiKey(req: AuthRequest, res: Response) {
 }
 
 /**
+ * List API keys for chatbot
+ * GET /api/access-control/:chatbotId/apikeys
+ */
+export async function listApiKeys(req: AuthRequest, res: Response) {
+  try {
+    const { chatbotId } = req.params;
+
+    if (!req.user?.email) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
+
+    const records = await ApiKeyModel.query('chatbotId')
+      .eq(chatbotId)
+      .exec();
+
+    const keys = records.map((r: any) => ({
+      keyId: r.keyId,
+      label: r.label,
+      keyPrefix: r.keyPrefix,
+      createdAt: r.createdAt,
+      lastUsed: r.lastUsed,
+      createdBy: r.createdBy,
+    }));
+
+    res.json({
+      success: true,
+      keys,
+    });
+  } catch (error) {
+    console.error('Error listing API keys:', error);
+    res.status(500).json({
+      error: 'Failed to list API keys',
+      message: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
+}
+
+/**
+ * Delete an API key
+ * DELETE /api/access-control/:chatbotId/apikeys/:keyId
+ */
+export async function deleteApiKey(req: AuthRequest, res: Response) {
+  try {
+    const { chatbotId, keyId } = req.params;
+
+    if (!req.user?.email) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
+
+    await ApiKeyModel.delete({ chatbotId, keyId });
+
+    res.json({
+      success: true,
+      message: 'API key deleted successfully',
+    });
+  } catch (error) {
+    console.error('Error deleting API key:', error);
+    res.status(500).json({
+      error: 'Failed to delete API key',
+      message: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
+}
+
+/**
  * Validate API key (PUBLIC endpoint)
  * POST /api/access-control/validate
+ *
+ * Checks ALL stored API keys for the chatbot (not just the most recent one),
+ * using timing-safe comparison to prevent timing attacks.
  */
 export async function validateApiKey(req: Request, res: Response) {
   try {
@@ -228,35 +326,53 @@ export async function validateApiKey(req: Request, res: Response) {
       });
     }
 
-    // Get chatbot
+    // Verify chatbot exists
     const chatbot = await ChatbotModel.get(chatbotId);
-
     if (!chatbot) {
       return res.status(404).json({ error: 'Chatbot not found' });
     }
 
-    // Hash the provided API key
-    const salt = chatbot.apiKeyHashSalt;
-    const iterations = chatbot.apiKeyHashIterations || 10000;
+    // Fetch all API keys for this chatbot and test each one
+    const keys = await ApiKeyModel.query('chatbotId').eq(chatbotId).exec();
 
-    const hashedApiKey = crypto
-      .pbkdf2Sync(apiKey, salt, iterations, 64, 'sha512')
-      .toString('hex');
-
-    // Compare hashes
-    const isValid = hashedApiKey === chatbot.hashedApiKey;
-
-    if (!isValid) {
-      return res.status(401).json({
-        valid: false,
-        error: 'Invalid API key',
-      });
+    if (!keys || keys.length === 0) {
+      return res.status(401).json({ valid: false, error: 'Invalid API key' });
     }
 
-    res.json({
-      valid: true,
-      chatbotId,
+    let matchedKey: any = null;
+
+    for (const keyRecord of keys) {
+      try {
+        const hashed = crypto
+          .pbkdf2Sync(apiKey, keyRecord.salt, keyRecord.iterations || 10000, 64, 'sha512')
+          .toString('hex');
+
+        const hashedBuf = Buffer.from(hashed, 'hex');
+        const storedBuf = Buffer.from(keyRecord.hashedKey, 'hex');
+
+        if (
+          hashedBuf.length === storedBuf.length &&
+          crypto.timingSafeEqual(hashedBuf, storedBuf)
+        ) {
+          matchedKey = keyRecord;
+          break;
+        }
+      } catch {
+        continue;
+      }
+    }
+
+    if (!matchedKey) {
+      return res.status(401).json({ valid: false, error: 'Invalid API key' });
+    }
+
+    // Fire-and-forget: update lastUsed
+    matchedKey.lastUsed = Date.now();
+    matchedKey.save().catch((err: any) => {
+      console.warn('[ACCESS] Failed to update lastUsed for API key:', err);
     });
+
+    res.json({ valid: true, chatbotId });
   } catch (error) {
     console.error('Error validating API key:', error);
     res.status(500).json({

@@ -46,6 +46,63 @@ html{
 html, body {
   overflow-x: hidden;
 }
+
+/* Glassmorphism utilities */
+.glass {
+  background: rgba(255, 255, 255, 0.55);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+.glass-strong {
+  background: rgba(255, 255, 255, 0.7);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+.glass-subtle {
+  background: rgba(255, 255, 255, 0.35);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* Mobile performance: reduce blur */
+@media (max-width: 768px) {
+  .glass { -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+  .glass-strong { -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+  .glass-subtle { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+}
+
+/* Mesh gradient overlay */
+.mesh-gradient-purple {
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(191, 86, 255, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(252, 89, 144, 0.06) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 80%, rgba(208, 168, 233, 0.07) 0%, transparent 50%);
+}
+
+/* Purple glow for buttons */
+.glow-purple {
+  box-shadow: 0 0 20px rgba(191, 86, 255, 0.35), 0 0 60px rgba(191, 86, 255, 0.1);
+}
+.glow-purple:hover {
+  box-shadow: 0 0 25px rgba(191, 86, 255, 0.5), 0 0 80px rgba(191, 86, 255, 0.15);
+}
+
+/* Enhanced float animation for hero blobs */
+@keyframes floatHero {
+  0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+  25% { transform: translate(15%, -8%) scale(1.06) rotate(2deg); }
+  50% { transform: translate(25%, 20%) scale(1.1) rotate(-1deg); }
+  75% { transform: translate(-8%, 25%) scale(0.96) rotate(1deg); }
+  100% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+}
+.blob-hero {
+  animation: floatHero 18s ease-in-out infinite;
+  transform-origin: center;
+  border-radius: 9999px;
+}
 .blob {
   animation: floatClockwise 12s ease-in-out infinite;
   transform-origin: center;
@@ -474,4 +531,200 @@ animation: path 1s linear infinite;
 
 .followLine3 {
   animation-delay: 0.4s;
+}
+
+/* ========== V3 Utilities ========== */
+
+.v3-card {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 16px;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.04),
+    0 8px 24px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
+}
+
+.v3-card:hover {
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.06),
+    0 16px 48px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.v3-mesh-band {
+  background:
+    radial-gradient(ellipse at 25% 50%, rgba(191, 86, 255, 0.04) 0%, transparent 70%),
+    radial-gradient(ellipse at 75% 30%, rgba(245, 158, 11, 0.03) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 80%, rgba(191, 86, 255, 0.02) 0%, transparent 50%);
+}
+
+@keyframes v3-slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes v3-typing {
+  0%,
+  60%,
+  100% {
+    opacity: 0.3;
+  }
+  30% {
+    opacity: 1;
+  }
+}
+
+.v3-typing-dot {
+  animation: v3-typing 1.4s ease-in-out infinite;
+}
+
+.v3-typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.v3-typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes v3-scrollLogos {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.v3-logo-scroll {
+  animation: v3-scrollLogos 30s linear infinite;
+}
+
+@keyframes v3-pulse-node {
+  0%,
+  100% {
+    opacity: 0.6;
+    r: 3;
+  }
+  50% {
+    opacity: 1;
+    r: 5;
+  }
+}
+
+/* ========== Brand Design Tokens ========== */
+:root {
+  --brand:        #7C3AED;
+  --brand-50:     #F5F3FF;
+  --brand-100:    #EDE9FE;
+  --brand-200:    #DDD6FE;
+  --brand-700:    #6D28D9;
+  --brand-900:    #4C1D95;
+  --gray-50:      #F9FAFB;
+  --gray-100:     #F3F4F6;
+  --gray-200:     #E5E7EB;
+  --gray-300:     #D1D5DB;
+  --gray-400:     #9CA3AF;
+  --gray-500:     #6B7280;
+  --gray-700:     #374151;
+  --gray-900:     #111827;
+}
+
+/* ========== V4 Utilities (Light SaaS theme) ========== */
+
+.v4-card {
+  background: #ffffff;
+  border: 1px solid #E5E7EB;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.03);
+  transition: all 0.25s ease;
+}
+
+.v4-card:hover {
+  border-color: #DDD6FE;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.06), 0 16px 48px rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
+}
+
+/* Dark code panels — keep dark inside light page */
+.v4-code-panel {
+  background: #0F0F14;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+}
+
+.v4-glow-purple {
+  box-shadow: 0 0 80px rgba(124, 58, 237, 0.12), 0 0 160px rgba(124, 58, 237, 0.04);
+}
+
+.v4-glow-hero {
+  background:
+    radial-gradient(ellipse 70% 50% at 50% -10%, rgba(124, 58, 237, 0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 20% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 80% 20%, rgba(109, 40, 217, 0.04) 0%, transparent 60%);
+}
+
+.v4-grid-bg {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+@keyframes v4-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes v4-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+@keyframes v4-orbit {
+  0% { transform: rotate(0deg) translateX(140px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(140px) rotate(-360deg); }
+}
+
+@keyframes v4-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.v4-shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(124,58,237,0.05) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: v4-shimmer 3s ease-in-out infinite;
+}
+
+@keyframes v4-typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes v4-blink-cursor {
+  0%, 100% { border-color: rgba(191, 86, 255, 0.8); }
+  50% { border-color: transparent; }
+}
+
+.v4-typing-line {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid rgba(191, 86, 255, 0.8);
+  animation: v4-blink-cursor 1s step-end infinite;
+}
+
+@keyframes v4-scrollLogos {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.v4-logo-scroll {
+  animation: v4-scrollLogos 35s linear infinite;
 }

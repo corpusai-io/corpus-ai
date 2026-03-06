@@ -2,185 +2,118 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Project Overview
+## Build & Development Commands
 
-Corpus AI is a monorepo-based web platform for AI app building and deployment. The project uses **pnpm workspaces** and **Turborepo** for managing multiple applications and shared packages.
-
-## Monorepo Structure
-
-The repository contains 5 independent applications under `apps/`:
-
-- **website** - Main marketing/user portal (Next.js on port 3000/3002)
-- **dashboard** - Main web application (Next.js on port 8080/3004)
-- **docs** - Documentation site (Next.js on port 3001/3003)
-- **backend** - Express API server (port 8001)
-- **chat_service** - Serverless Lambda functions for chat (port 8002)
-
-Port numbers differ between development and production modes (see proxy configuration below).
-
-## Development Commands
-
-### Starting Services
+**Package manager: pnpm (>=9.0.0), Node >=18**
 
 ```bash
-# Install all dependencies
-pnpm install
-
-# Start all services concurrently
-pnpm dev
-
-# Start all services with proxy server (recommended for integrated testing)
-pnpm dev:with-proxy
-
-# Start individual applications
-pnpm dev --filter=website
-pnpm dev --filter=dashboard
-pnpm dev --filter=docs
-pnpm dev --filter=backend
-pnpm dev --filter=chat_service
+pnpm dev              # Full development (all apps + proxy on port 3000)
+pnpm dev:frontend     # Frontend only (website + dashboard + docs + backend + proxy)
+pnpm build            # Build all packages
+pnpm lint && pnpm lint:fix && pnpm format:fix
+pnpm docker:up        # Start all services
+pnpm docker:rebuild   # Full rebuild from scratch
 ```
 
-### Building and Production
+### Per-app commands (run from app directory or use turbo filters)
 
+| App | Dev Port | Notes |
+|-----|----------|-------|
+| `apps/backend` | 8001 | `pnpm dev` (tsx watch) |
+| `apps/dashboard` | 8080 | `pnpm dev` (Next.js) |
+| `apps/website` | 3002 | `pnpm dev` (Next.js) |
+| `apps/docs` | 3001 | `pnpm dev` (Next.js + Turbopack) |
+
+### Backend tests
 ```bash
-# Build all apps
-pnpm build
-
-# Start production servers
-pnpm start
-
-# Build specific app
-turbo build --filter=website
-```
-
-### Code Quality
-
-```bash
-# Lint all code
-pnpm lint
-
-# Lint and auto-fix
-pnpm lint:fix
-
-# Format code (check only)
-pnpm format
-
-# Format and auto-fix
-pnpm format:fix
-```
-
-### Docker
-
-```bash
-# Start all services in Docker
-pnpm docker:up
-
-# Rebuild containers from scratch
-pnpm docker:rebuild
-
-# View container logs
-pnpm docker:logs
-```
-
-### Workspace Management
-
-```bash
-# Clean all node_modules
-pnpm clean
-
-# Clean all build artifacts
-pnpm clean:ws
+cd apps/backend
+pnpm test              # Debug tests
+pnpm test:all          # All suites
+pnpm test:watch        # Watch mode
+pnpm test:coverage     # Coverage report
 ```
 
 ## Architecture
 
-### Frontend Applications (Next.js 15.4)
+**Monorepo**: pnpm workspaces + Turborepo. 6 apps, 2 shared packages.
 
-All three frontend apps (**website**, **dashboard**, **docs**) use:
-- Next.js 15.4 with App Router
-- React 19.1
-- TypeScript 5.x
-- Tailwind CSS 4.x
-- Turbopack for fast development builds
+### Routing (Development Proxy on port 3000)
 
-The **website** app uses route groups:
-- `(auth)/` - Authentication pages (Sign-In)
-- `(main)/` - Main content pages (Platform features, Integrations, Legal, etc.)
+| Path | Target |
+|------|--------|
+| `/api/*` | Backend (8001) |
+| `/dashboard/*` | Dashboard (8080) |
+| `/docs/*` | Docs (3001) |
+| `/` | Website (3002) |
 
-The **docs** app has component-based documentation structure under `Components/chatbots-docs-pages/`.
+Production uses Nginx with the same routing (see `docker/default.conf.template`).
 
-### Backend Services
+### Shared Packages
 
-**backend** (Express + TypeScript):
-- Simple Express API server with CORS enabled
-- Uses `ts-node-dev` for hot reloading in development
-- MongoDB support via Mongoose
-- Health check endpoint at `/health`
+- **`@corpusai/aws-common`** — DynamoDB models (Dynamoose + ElectroDB), S3, SQS, Pinecone, RAG pipeline, Firecrawl. Consumed by backend and lambdas.
+- **`@corpusai/ui`** — shadcn/ui components (Radix UI + Tailwind CSS 4 + CVA). Consumed by dashboard and website. Switch component styles are enforced via CSS in `globals.css` (Tailwind v4 doesn't reliably scan `data-[state=...]` variants from external packages).
 
-**chat_service** (Serverless Framework):
-- AWS Lambda functions using Serverless Framework
-- Runs locally via `serverless-offline` plugin
-- Uses OpenAI API and WebSocket support
-- Configured for AWS Lambda deployment (Node.js 18.x runtime)
+### Authentication Flow
 
-### Proxy Server Architecture
+1. Website Sign-In page handles login/signup/verification/forgot-password via Cognito
+2. On success, redirects to Dashboard with tokens in URL hash: `#auth={idToken, accessToken, refreshToken, user}`
+3. Dashboard AuthContext extracts tokens from hash, stores in localStorage
+4. Google SSO: Backend → Cognito Hosted UI → Google → callback → dashboard with tokens
+5. Token refresh runs proactively every 60s
 
-The project includes a custom Express-based reverse proxy (`proxy-server.js`) that routes requests to different services:
+### Data Flow
 
-**Route mapping:**
-- `/` → website
-- `/dashboard` → dashboard app
-- `/docs` → docs app
-- `/api` → backend service
-- `/chat` → chat_service
-- `/health` → proxy health check
+- Backend (Express.js) → DynamoDB for CRUD, S3 for files, SQS for async jobs
+- SQS triggers `lambdaBuild` for RAG pipeline (chunking → OpenAI embeddings → Pinecone upsert)
+- `lambdaChat` handles chat queries, WebSocket, Slack/Telegram/WhatsApp integrations
+- Adaptive retrieval: simple → hybrid search + Cohere reranking; complex → multi-query + RRF fusion; vague → HyDE
 
-**Environment-based routing:**
-- Development: Uses localhost ports (3000, 8080, 3001, 8001, 8002)
-- Production: Uses localhost ports (3002, 3004, 3003, 8001, 8002)
+### Database Models
 
-The proxy handles path rewriting, WebSocket upgrades, and error handling. Start it with `pnpm dev:with-proxy` or manually with `node proxy-server.js`.
+**Dynamoose** (separate tables): UserModel, ChatbotModel, CustomizationModel, AccessControlModel, QueryLogModel, LeadGenerationModel, ApiKeyModel, DatabaseConnectionModel, ChatHistoryModel
 
-### Docker Deployment
+**ElectroDB** (single table `corpus-main`): DataStore, SlackIntegration, TelegramIntegration, WhatsAppIntegration, GoogleDriveIntegration, ZapierIntegration, LeadData, LeadFields
 
-The `docker-compose.yaml` defines containerized deployment for all 5 services plus the proxy. Each service has a dedicated Dockerfile in the `docker/` directory. The proxy container runs on port 80 and routes to internal service ports.
+### Key Patterns
 
-## Key Technical Details
+- **State management**: Zustand + Immer in dashboard stores
+- **API client**: Typed API layer with namespaces in `apps/dashboard/src/lib/api.ts` and `apps/website/src/lib/api.ts`
+- **Rate limiting**: auth (5/15min), api (100/15min), chat (20/min), passwordReset (3/hr)
+- **S3 structure**: `chatbots/{chatbotId}/{files|raw|processed|index}/`
+- **Pinecone**: One namespace per chatbot ID
+- **uniqueTimestamp format**: `YYYY-MM-DDTHH:mm:ss#<random>` sort key. Generate: `new Date().toISOString().slice(0, -5) + '#' + randomSuffix`. Parse back: append `'Z'` before `new Date()`.
 
-### Package Manager
+### Lead Capture System
 
-**MUST use pnpm** (>=9.0.0). The project explicitly blocks npm and yarn via engines field.
+Configurable triggers capture leads during chat with auto intent classification.
 
-### Turborepo Configuration
+**Triggers**: `gated` (before chat), `after_messages`, `high_intent` (pricing/purchase keywords), `cant_answer`, `exit_intent` (mouseleave/tab switch). Configured per chatbot via `leadFields.triggerConfig`.
 
-- Build outputs cached: `dist/`, `.next/`, `build/`
-- Global dependencies: `.env.*local` files
-- Build tasks have dependency graph (via `^build`)
-- Dev tasks run persistently without caching
+**Flow**: Widget evaluates trigger → shows form (popup/inline) → `POST /api/leads/:chatbotId` (public) → backend classifies intent (Hot/Warm/Cold via keyword regex on ChatHistoryModel) → saves lead → emails owner → fires Zapier webhook.
 
-### Testing
+**LeadData attributes**: `sessionId`, `intent` (hot/warm/cold), `status` (new/contacted/converted/archived), `triggerType`, `sourcePage`, `notes`
 
-The **chat_service** includes Jest configuration. Run tests with:
-```bash
-cd apps/chat_service
-pnpm test
-```
+**Dashboard** (`leads/page.tsx`): analytics (intent/status breakdowns, 30-day chart), table with intent/status badges + filters, lead detail dialog with transcript, trigger configuration UI.
+
+### Pricing Tiers
+
+Tier 0 (Free), 1 (Starter/$19), 2 (Standard/$99), 3 (Business/$399) — controls chat limits, chatbot count, storage, and page limits. Tier checked via `user.tier` field.
 
 ### Environment Variables
 
-Each app may have its own `.env` file. The monorepo root has `.env.local` for shared configuration.
+Key groups: AWS credentials + Cognito config, OpenAI API key, Stripe keys, Pinecone config, Cohere API key, Firecrawl API key, S3 bucket names, SQS queue URLs. See `.env.development` files in each app.
 
-## Development Workflow
+### Lambda Deployments
 
-1. **Initial setup**: Run `pnpm install` from root
-2. **Development**: Use `pnpm dev` to start all services, or filter specific apps
-3. **Testing integration**: Use `pnpm dev:with-proxy` to test services behind the proxy
-4. **Production testing**: Use `pnpm docker:up` to test containerized deployment
-5. **Code changes**: Turborepo automatically caches unchanged packages for faster rebuilds
+`apps/lambdaBuild` and `apps/lambdaChat` use Serverless Framework. Deploy with `pnpm deploy:dev` or `pnpm deploy:prod` from the app directory.
 
-## Important Notes
+### Embeddable Widget
 
-- All Next.js apps use `--no-lint` flag during build to skip linting (handle separately)
-- Dashboard and docs use Turbopack in development (`--turbopack` flag)
-- The chat_service requires `.env.development` file for local development
-- Backend and chat_service use `cross-env` for Windows compatibility in production scripts
+- `widget.js` served at `GET /api/widget.js` — standalone script that creates a chat bubble + iframe pointing to `/dashboard/widget/{chatbotId}?embed=true`
+- Widget page (`apps/dashboard/src/app/widget/[chatbotId]/page.tsx`) has two modes: `embed=true` (direct chat, no bubble) for iframe use, standalone (with bubble) for preview
+- Public endpoints for widget: `GET /api/chatbots/:id/public`, `GET /api/customize/:chatbotId/public`, `POST /api/chat`, `POST /api/leads/:chatbotId`
+- Deploy page (`chatbots/[id]/deploy`) provides embed snippet using `NEXT_PUBLIC_BASE_URL` (defaults to `http://localhost:3000`)
+
+## Future Improvements
+
+- **S3 presigned URL uploads**: Switch from backend-proxy to direct browser → S3. Requires S3 CORS config. Backend `generatePresignedUploadUrl()` and dashboard `chatbotApi.getUploadUrl()` already exist but are unused (S3 bucket lacks CORS).

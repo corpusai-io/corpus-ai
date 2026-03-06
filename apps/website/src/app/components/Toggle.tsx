@@ -34,4 +34,4 @@ const Toggle: React.FC<ToggleProps> = ({ value, onChange }) => {
   );
 };
 
-export default Toggle; 
+export default Toggle;

@@ -1,4 +1,7 @@
 {
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
   "permissions": {
     "allow": [
       "Bash(ls:*)",
@@ -20,7 +23,26 @@
       "Bash(git commit:*)",
       "Bash(git fetch:*)",
       "Bash(git checkout:*)",
-      "Bash(git stash:*)"
+      "Bash(git stash:*)",
+      "Bash(find:*)",
+      "Bash(for dir in apps/chat_service apps/lambdaWebSocket apps/lambdaSlack apps/lambdaIntegrations apps/lambdaBuild)",
+      "Bash(do echo \"=== $dir ===\")",
+      "Bash(if [ -f \"$dir/package.json\" ])",
+      "Bash(then cat \"$dir/package.json\")",
+      "Bash(else echo \"No package.json\")",
+      "Bash(fi)",
+      "Bash(for dir in apps/lambdaWebSocket apps/lambdaSlack apps/lambdaIntegrations apps/lambdaBuild)",
+      "Bash(if [ -f \"$dir/serverless.yml\" ])",
+      "Bash(then cat \"$dir/serverless.yml\")",
+      "Bash(else echo \"No serverless.yml\")",
+      "Bash(do echo \"=== $dir - Functions ===\")",
+      "Bash(then grep -A 5 \"^functions:\" \"$dir/serverless.yml\")",
+      "Bash(node -p:*)",
+      "Bash(npx next build)",
+      "Bash(npx tsc:*)"
     ]
+  },
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true
   }
 }

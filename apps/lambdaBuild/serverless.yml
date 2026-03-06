@@ -5,7 +5,7 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: nodejs20.x
-  region: ${env:AWS_REGION, 'us-west-2'}
+  region: ${env:AWS_REGION, 'eu-north-1'}
   stage: ${opt:stage, 'dev'}
   timeout: 900 # 15 minutes (max for Lambda)
   memorySize: 2048
@@ -80,7 +80,6 @@ functions:
               - BuildQueue
               - Arn
           batchSize: 1 # Process one at a time
-          maximumBatchingWindowInSeconds: 0
 
 resources:
   Resources:

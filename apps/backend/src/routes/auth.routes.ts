@@ -6,8 +6,16 @@ import {
   getCurrentUser,
   verifyToken,
   confirmUser,
+  confirmSignUp,
+  forgotPassword,
+  confirmForgotPassword,
+  refreshToken,
+  googleSSO,
+  googleSSOCallback,
 } from '../controllers/auth.controller';
 import { authenticateToken } from '../middleware/auth.middleware';
+import { sanitizeBody } from '../middleware/validation.middleware';
+import { rateLimits } from '../middleware/rateLimit.middleware';
 
 const router = Router();
 
@@ -16,10 +24,10 @@ const router = Router();
  */
 
 // Register a new user
-router.post('/register', register);
+router.post('/register', rateLimits.auth, sanitizeBody, register);
 
 // Login user
-router.post('/login', login);
+router.post('/login', rateLimits.auth, sanitizeBody, login);
 
 // Logout user (client-side token removal)
 router.post('/logout', logout);
@@ -31,6 +39,24 @@ router.get('/me', authenticateToken, getCurrentUser);
 router.get('/verify', verifyToken);
 
 // Admin: Confirm user email (for development)
-router.post('/confirm', confirmUser);
+router.post('/confirm', sanitizeBody, confirmUser);
+
+// User: Confirm signup with verification code
+router.post('/confirm-signup', sanitizeBody, confirmSignUp);
+
+// Forgot password - initiate reset
+router.post('/forgot-password', rateLimits.passwordReset, sanitizeBody, forgotPassword);
+
+// Confirm forgot password with code and new password
+router.post('/confirm-forgot-password', rateLimits.passwordReset, sanitizeBody, confirmForgotPassword);
+
+// Refresh access token (public - no auth middleware needed)
+router.post('/refresh', rateLimits.auth, sanitizeBody, refreshToken);
+
+// Google SSO - initiate OAuth flow via Cognito Hosted UI
+router.get('/google', googleSSO);
+
+// Google SSO - callback from Cognito after Google authentication
+router.get('/google/callback', googleSSOCallback);
 
 export default router;

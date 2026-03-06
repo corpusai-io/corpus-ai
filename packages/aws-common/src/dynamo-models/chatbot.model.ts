@@ -4,23 +4,23 @@ import { Item } from "dynamoose/dist/Item.js";
 import { env } from "../utils/env";
 
 export class ChatbotRecord extends Item {
-  chatbotId: string;
+  chatbotId!: string;
   title?: string;
   desc?: string;
-  createdAt: number;
-  updatedAt: number;
-  indexName: string;
-  origin: string;
-  username: string;
-  accessMode: string;
-  subdomain: string;
-  language: string;
-  apiKeyHashSalt: string;
-  apiKeyHashIterations: number;
-  hashedApiKey: string;
-  webCountUsage: number;
-  fileSizeUsage: number;
-  status: string; // ACTIVE, BUILDING, ERROR
+  createdAt!: number;
+  updatedAt!: number;
+  indexName!: string;
+  origin!: string;
+  username!: string;
+  accessMode!: string;
+  subdomain!: string;
+  language!: string;
+  apiKeyHashSalt!: string;
+  apiKeyHashIterations!: number;
+  hashedApiKey!: string;
+  webCountUsage!: number;
+  fileSizeUsage!: number;
+  status!: string; // ACTIVE, BUILDING, ERROR
   step?: number; // Current build step
   errorStep?: number; // Error step if any
   errorMessage?: string; // Error message if any

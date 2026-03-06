@@ -1,0 +1,40 @@
+{
+  "name": "@corpusai/lambda-chat",
+  "version": "0.0.1",
+  "private": true,
+  "main": "src/handlers/rest.ts",
+  "scripts": {
+    "build": "tsc",
+    "predev": "node -e \"require('fs').mkdirSync('.build',{recursive:true})\"",
+    "dev": "dotenv -e .env.development -- serverless offline",
+    "deploy": "serverless deploy",
+    "deploy:dev": "serverless deploy --stage dev",
+    "deploy:prod": "serverless deploy --stage prod",
+    "lint": "eslint src/**/*.ts",
+    "clean": "rm -rf .serverless dist node_modules"
+  },
+  "dependencies": {
+    "@aws-sdk/client-apigatewaymanagementapi": "^3.450.0",
+    "@aws-sdk/client-cognito-identity-provider": "^3.450.0",
+    "@aws-sdk/client-dynamodb": "^3.450.0",
+    "@aws-sdk/lib-dynamodb": "^3.450.0",
+    "@corpusai/aws-common": "workspace:*",
+    "@slack/bolt": "^3.17.0",
+    "@slack/web-api": "^6.11.0",
+    "axios": "^1.6.0",
+    "mongodb": "^6.0.0",
+    "mssql": "^10.0.0",
+    "mysql2": "^3.0.0",
+    "openai": "^4.0.0",
+    "pg": "^8.11.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.119",
+    "@types/node": "^20.0.0",
+    "dotenv-cli": "^7.4.4",
+    "serverless": "^3.38.0",
+    "serverless-offline": "^13.0.0",
+    "serverless-plugin-typescript": "^2.1.5",
+    "typescript": "^5.0.0"
+  }
+}

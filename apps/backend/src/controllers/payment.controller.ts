@@ -3,6 +3,12 @@ import Stripe from 'stripe';
 import { UserModel } from '@corpusai/aws-common';
 import { AuthRequest } from '../middleware/auth.middleware';
 import { PRICING_PLANS, getPlanByStripePriceId } from '../config/pricing';
+import { errorResponse, ErrorCodes } from '../utils/error-response';
+import {
+  sendPaymentConfirmationEmail,
+  sendPaymentFailedEmail,
+  sendSubscriptionCancelledEmail,
+} from '../services/email.service';
 
 // Initialize Stripe (only if API key is provided)
 const STRIPE_ENABLED = !!process.env.STRIPE_SECRET_KEY;
@@ -18,7 +24,7 @@ const stripe = STRIPE_ENABLED
  */
 export async function handleStripeWebhook(req: Request, res: Response) {
   if (!STRIPE_ENABLED || !stripe) {
-    return res.status(503).json({ error: 'Stripe is not configured' });
+    return errorResponse(res, 503, ErrorCodes.STRIPE_NOT_CONFIGURED, 'Stripe is not configured');
   }
 
   const sig = req.headers['stripe-signature'];
@@ -115,7 +121,8 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
 
   console.log(`User ${username} upgraded to ${plan.name} (tier ${plan.tier})`);
 
-  // TODO: Send confirmation email
+  // Fire-and-forget: send payment confirmation email
+  sendPaymentConfirmationEmail(username, plan.name, `$${plan.price}`);
 }
 
 /**
@@ -167,7 +174,8 @@ async function handlePaymentSucceeded(invoice: Stripe.Invoice) {
 
   console.log(`Usage reset for user ${user.username}`);
 
-  // TODO: Send payment confirmation email
+  // Fire-and-forget: send payment confirmation email
+  sendPaymentConfirmationEmail(user.username, plan.name, `$${plan.price}`);
 }
 
 /**
@@ -189,7 +197,8 @@ async function handlePaymentFailed(invoice: Stripe.Invoice) {
 
   console.log(`Payment failed for user ${user.username}`);
 
-  // TODO: Send payment failed email
+  // Fire-and-forget: send payment failed email
+  sendPaymentFailedEmail(user.username);
   // TODO: Optionally downgrade to free tier after grace period
 }
 
@@ -256,7 +265,8 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
 
   console.log(`User ${user.username} downgraded to free tier`);
 
-  // TODO: Send cancellation confirmation email
+  // Fire-and-forget: send subscription cancelled email
+  sendSubscriptionCancelledEmail(user.username);
 }
 
 /**
@@ -294,7 +304,7 @@ async function updateUserTier(
  */
 export async function createCheckoutSession(req: AuthRequest, res: Response) {
   if (!STRIPE_ENABLED || !stripe) {
-    return res.status(503).json({ error: 'Stripe is not configured' });
+    return errorResponse(res, 503, ErrorCodes.STRIPE_NOT_CONFIGURED, 'Stripe is not configured');
   }
 
   try {
@@ -358,7 +368,7 @@ export async function getPricingPlans(req: Request, res: Response) {
  */
 export async function createPortalSession(req: AuthRequest, res: Response) {
   if (!STRIPE_ENABLED || !stripe) {
-    return res.status(503).json({ error: 'Stripe is not configured' });
+    return errorResponse(res, 503, ErrorCodes.STRIPE_NOT_CONFIGURED, 'Stripe is not configured');
   }
 
   try {
@@ -409,7 +419,7 @@ export async function createPortalSession(req: AuthRequest, res: Response) {
  */
 export async function getSubscriptionDetails(req: AuthRequest, res: Response) {
   if (!STRIPE_ENABLED || !stripe) {
-    return res.status(503).json({ error: 'Stripe is not configured' });
+    return errorResponse(res, 503, ErrorCodes.STRIPE_NOT_CONFIGURED, 'Stripe is not configured');
   }
 
   try {
@@ -485,7 +495,7 @@ export async function getSubscriptionDetails(req: AuthRequest, res: Response) {
  */
 export async function cancelSubscription(req: AuthRequest, res: Response) {
   if (!STRIPE_ENABLED || !stripe) {
-    return res.status(503).json({ error: 'Stripe is not configured' });
+    return errorResponse(res, 503, ErrorCodes.STRIPE_NOT_CONFIGURED, 'Stripe is not configured');
   }
 
   try {

@@ -17,19 +17,32 @@
     "@aws-sdk/client-sqs": "^3.450.0",
     "@aws-sdk/lib-dynamodb": "^3.450.0",
     "@aws-sdk/s3-request-presigner": "^3.450.0",
+    "@mendable/firecrawl-js": "^1.0.0",
     "@pinecone-database/pinecone": "^2.0.0",
-    "openai": "^4.0.0",
-    "pdf-parse": "^1.1.1",
-    "cheerio": "^1.0.0-rc.12",
     "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12",
+    "cohere-ai": "^7.0.0",
     "dynamoose": "^4.0.0",
     "electrodb": "^2.14.0",
+    "mammoth": "^1.8.0",
     "nanoid": "^3.3.7",
-    "uuid": "^9.0.1"
+    "openai": "^4.0.0",
+    "pdf-parse": "^1.1.1",
+    "csv-parse": "^5.5.0",
+    "pdfjs-dist": "^4.0.0",
+    "uuid": "^13.0.0",
+    "xlsx": "^0.18.5"
+  },
+  "optionalDependencies": {
+    "canvas": "^2.11.0",
+    "pg": "*",
+    "mysql2": "*",
+    "mssql": "*",
+    "mongodb": "*"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
-    "@types/uuid": "^11.0.0",
+    "@types/pdf-parse": "^1.1.5",
     "typescript": "^5.0.0"
   }
 }

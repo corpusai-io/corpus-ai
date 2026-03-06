@@ -1,7 +1,5 @@
 FROM nginx:alpine
 
-ARG RAILWAY_ENVIRONMENT_NAME=production
-
 # Copy nginx configuration
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 COPY docker/default.conf.template /etc/nginx/templates/default.conf.template
@@ -9,8 +7,6 @@ COPY docker/default.conf.template /etc/nginx/templates/default.conf.template
 # Environment variables for upstream services
 ENV BACKEND_HOST=backend
 ENV BACKEND_PORT=8001
-ENV CHAT_SERVICE_HOST=chat_service
-ENV CHAT_SERVICE_PORT=8002
 ENV DASHBOARD_HOST=dashboard
 ENV DASHBOARD_PORT=8080
 ENV WEBSITE_HOST=website

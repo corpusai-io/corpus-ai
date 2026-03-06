@@ -9,7 +9,6 @@ COPY . .
 RUN turbo prune --scope=backend --docker
 
 FROM base AS builder
-ARG RAILWAY_ENVIRONMENT_NAME=production
 WORKDIR /app
 COPY .gitignore .gitignore
 COPY .npmrc ./
@@ -20,12 +19,6 @@ RUN pnpm install
 
 COPY --from=pruner /app/out/full/ .
 COPY turbo.json turbo.json
-
-RUN echo "RAILWAY_ENVIRONMENT_NAME: $RAILWAY_ENVIRONMENT_NAME"
-
-RUN if [ "$RAILWAY_ENVIRONMENT_NAME" = "staging" ]; then \
-  cp apps/backend/.env.staging apps/backend/.env.production; \
-  fi
 
 RUN NODE_OPTIONS="--max_old_space_size=4096" pnpm turbo run build --filter=backend...
 

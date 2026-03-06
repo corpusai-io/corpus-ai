@@ -40,7 +40,7 @@ const defaultConfig: PreviewConfig = {
   welcomeMessage: 'Hello! How can I help you today?',
   chatbotName: 'AI Assistant',
   systemPrompt: 'You are a helpful AI assistant.',
-  gptVersion: 'gpt-4-turbo-preview',
+  gptVersion: 'gpt-4o-mini',
   showCitations: true,
   avatar: '',
 };

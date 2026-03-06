@@ -64,16 +64,21 @@ export const authApi = {
 
     const data = await response.json();
 
+    console.log('🔍 Login response:', data); // DEBUG
+
     if (!response.ok) {
       throw new Error(data.error || 'Login failed');
     }
 
     // Store tokens in localStorage
     if (typeof window !== 'undefined' && data.IdToken) {
+      console.log('✅ Storing tokens...'); // DEBUG
       localStorage.setItem('idToken', data.IdToken);
       localStorage.setItem('accessToken', data.AccessToken);
       localStorage.setItem('refreshToken', data.RefreshToken);
       localStorage.setItem('user', JSON.stringify(data.user));
+    } else {
+      console.error('❌ No IdToken found in response!', { IdToken: data.IdToken }); // DEBUG
     }
 
     return data;
@@ -105,5 +110,75 @@ export const authApi = {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('user');
+  },
+
+  /**
+   * Confirm signup with verification code
+   */
+  async confirmSignup(email: string, code: string) {
+    const response = await fetch(`${API_URL}/api/auth/confirm-signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, code }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Confirmation failed');
+    }
+
+    return data;
+  },
+
+  /**
+   * Initiate forgot password flow
+   */
+  async forgotPassword(email: string) {
+    const response = await fetch(`${API_URL}/api/auth/forgot-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Failed to send reset code');
+    }
+
+    return data;
+  },
+
+  /**
+   * Initiate Google SSO - redirects to backend which redirects to Cognito/Google
+   */
+  googleLogin() {
+    window.location.href = `${API_URL}/api/auth/google`;
+  },
+
+  /**
+   * Confirm forgot password with code and new password
+   */
+  async confirmForgotPassword(email: string, code: string, newPassword: string) {
+    const response = await fetch(`${API_URL}/api/auth/confirm-forgot-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, code, newPassword }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Failed to reset password');
+    }
+
+    return data;
   },
 };

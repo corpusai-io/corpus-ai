@@ -1,10 +1,64 @@
 import { Response } from 'express';
-import { QueryLogModel, getQueryLogRecords, ChatbotModel } from '@corpusai/aws-common';
+import { QueryLogModel, ChatbotModel } from '@corpusai/aws-common';
 import { AuthRequest } from '../middleware/auth.middleware';
+import { errorResponse, ErrorCodes } from '../utils/error-response';
+
+/**
+ * Parse uniqueTimestamp ("2024-01-15T10:30:00#randomId") into epoch ms.
+ * Returns NaN on invalid input.
+ */
+function parseUniqueTimestamp(raw: string): number {
+  if (!raw) return NaN;
+  const isoStr = raw.split('#')[0];
+  // The stored ISO string is UTC but lacks a trailing "Z" — append it
+  // so Date parses it as UTC, not local time.
+  return new Date(isoStr + 'Z').getTime();
+}
+
+/**
+ * Convert a date query param (epoch-ms OR ISO string) to an ISO prefix
+ * suitable for DynamoDB string range-key comparison against uniqueTimestamp.
+ */
+function epochToISO(value: string | number): string {
+  const num = Number(value);
+  // If it's a valid number treat as epoch-ms, otherwise parse as ISO/date string
+  const date = !isNaN(num) && isFinite(num) ? new Date(num) : new Date(value as string);
+  return date.toISOString().split('.')[0]; // "2024-01-15T10:30:00"
+}
+
+/**
+ * Map numeric thumb (1 / -1) to string for the dashboard.
+ */
+function thumbToString(thumb: number | undefined | null): string | null {
+  if (thumb === 1) return 'up';
+  if (thumb === -1) return 'down';
+  return null;
+}
+
+/**
+ * Transform a raw DynamoDB log record into the API shape the dashboard expects.
+ */
+function transformLog(log: any) {
+  const rawTs = log.uniqueTimestamp || '';
+  const parsedTime = parseUniqueTimestamp(rawTs);
+
+  return {
+    logId: log.uniqueTimestamp,
+    query: log.query,
+    answer: log.answer,
+    thumb: thumbToString(log.thumb),
+    sessionId: log.sessionId,
+    timestamp: isNaN(parsedTime) ? Date.now() : parsedTime,
+    duration: log.duration || null,
+    leadContactName: log.leadContactName,
+    leadContactEmail: log.leadContactEmail,
+    leadContactPhone: log.leadContactPhone,
+  };
+}
 
 /**
  * Get query logs with filters
- * GET /api/query-log/:chatbotId
+ * GET /api/query-log/:chatbotId?startDate=&endDate=&order=&limit=&cursor=&thumb=
  */
 export async function getQueryLogs(req: AuthRequest, res: Response) {
   try {
@@ -15,63 +69,52 @@ export async function getQueryLogs(req: AuthRequest, res: Response) {
       order = 'descending',
       limit = 50,
       cursor,
+      thumb,
     } = req.query;
 
     if (!req.user?.email) {
-      return res.status(401).json({ error: 'Authentication required' });
+      return errorResponse(res, 401, ErrorCodes.AUTH_REQUIRED, 'Authentication required');
     }
 
-    // Get chatbot to get the passageIndex
+    const parsedLimit = Math.min(Math.max(1, Number(limit) || 50), 200);
+    const validOrder = order === 'ascending' ? 'ascending' : 'descending';
+
+    // Verify chatbot exists
     const chatbot = await ChatbotModel.get(chatbotId);
-
     if (!chatbot) {
-      return res.status(404).json({ error: 'Chatbot not found' });
+      return errorResponse(res, 404, ErrorCodes.NOT_FOUND, 'Chatbot not found');
     }
 
-    const passageIndex = chatbot.indexName;
+    // Use chatbotId as passageIndex (each chatbot has its own partition)
+    let query = QueryLogModel.query('passageIndex').eq(chatbotId);
 
-    // Build query
-    let query = QueryLogModel.query('passageIndex').eq(passageIndex);
-
-    // Add date range filter if provided
+    // Date range on the sort key (uniqueTimestamp)
     if (startDate && endDate) {
-      query = query
-        .filter('uniqueTimestamp')
-        .between(startDate as string, `${endDate}T23:59:59`);
+      const startISO = epochToISO(startDate as string);
+      const endISO = epochToISO(endDate as string) + '~'; // ~ sorts after all normal chars
+      query = query.where('uniqueTimestamp').between(startISO, endISO);
     }
 
-    // Execute query with pagination
-    const result = await query
-      .sort(order as 'ascending' | 'descending')
-      .startAt(cursor as any)
-      .limit(Number(limit))
-      .exec();
+    // Thumb filter (post-query)
+    if (thumb !== undefined) {
+      query = query.filter('thumb').eq(Number(thumb));
+    }
 
-    // Transform results
-    const logs = result.map((log: any) => ({
-      logId: log.uniqueTimestamp,
-      query: log.query,
-      answer: log.answer,
-      thumb: log.thumb,
-      sessionId: log.sessionId,
-      timestamp: log.uniqueTimestamp,
-      leadContactName: log.leadContactName,
-      leadContactEmail: log.leadContactEmail,
-      leadContactPhone: log.leadContactPhone,
-    }));
+    const result = await query
+      .sort(validOrder)
+      .startAt(cursor as any)
+      .limit(parsedLimit)
+      .exec();
 
     res.json({
       success: true,
-      logs,
+      logs: result.map(transformLog),
       cursor: result.lastKey,
-      count: logs.length,
+      count: result.length,
     });
   } catch (error) {
     console.error('Error getting query logs:', error);
-    res.status(500).json({
-      error: 'Failed to get query logs',
-      message: error instanceof Error ? error.message : 'Unknown error',
-    });
+    errorResponse(res, 500, ErrorCodes.INTERNAL_ERROR, 'Failed to get query logs');
   }
 }
 
@@ -82,28 +125,30 @@ export async function getQueryLogs(req: AuthRequest, res: Response) {
 export async function searchQueryLogs(req: AuthRequest, res: Response) {
   try {
     const { chatbotId } = req.params;
-    const { searchTerm } = req.body;
+    const { searchTerm, limit = 50, offset = 0 } = req.body;
 
     if (!req.user?.email) {
-      return res.status(401).json({ error: 'Authentication required' });
+      return errorResponse(res, 401, ErrorCodes.AUTH_REQUIRED, 'Authentication required');
     }
 
-    if (!searchTerm) {
-      return res.status(400).json({ error: 'searchTerm is required' });
+    if (!searchTerm || typeof searchTerm !== 'string') {
+      return errorResponse(res, 400, ErrorCodes.VALIDATION_ERROR, 'searchTerm is required and must be a string');
     }
 
-    // Get chatbot to get the passageIndex
+    if (searchTerm.length > 500) {
+      return errorResponse(res, 400, ErrorCodes.VALIDATION_ERROR, 'searchTerm must be under 500 characters');
+    }
+
+    const parsedLimit = Math.min(Math.max(1, Number(limit) || 50), 200);
+    const parsedOffset = Math.max(0, Number(offset) || 0);
+
     const chatbot = await ChatbotModel.get(chatbotId);
-
     if (!chatbot) {
-      return res.status(404).json({ error: 'Chatbot not found' });
+      return errorResponse(res, 404, ErrorCodes.NOT_FOUND, 'Chatbot not found');
     }
 
-    const passageIndex = chatbot.indexName;
-
-    // Query all logs and filter in memory (DynamoDB doesn't support full-text search)
     const result = await QueryLogModel.query('passageIndex')
-      .eq(passageIndex)
+      .eq(chatbotId)
       .exec();
 
     const searchLower = searchTerm.toLowerCase();
@@ -113,26 +158,18 @@ export async function searchQueryLogs(req: AuthRequest, res: Response) {
         log.answer?.toLowerCase().includes(searchLower)
     );
 
-    const logs = filteredLogs.map((log: any) => ({
-      logId: log.uniqueTimestamp,
-      query: log.query,
-      answer: log.answer,
-      thumb: log.thumb,
-      sessionId: log.sessionId,
-      timestamp: log.uniqueTimestamp,
-    }));
+    const paginated = filteredLogs.slice(parsedOffset, parsedOffset + parsedLimit);
 
     res.json({
       success: true,
-      logs,
-      count: logs.length,
+      logs: paginated.map(transformLog),
+      count: paginated.length,
+      total: filteredLogs.length,
+      offset: parsedOffset,
     });
   } catch (error) {
     console.error('Error searching query logs:', error);
-    res.status(500).json({
-      error: 'Failed to search query logs',
-      message: error instanceof Error ? error.message : 'Unknown error',
-    });
+    errorResponse(res, 500, ErrorCodes.INTERNAL_ERROR, 'Failed to search query logs');
   }
 }
 
@@ -146,27 +183,20 @@ export async function recordFeedback(req: AuthRequest, res: Response) {
     const { logId, thumb } = req.body;
 
     if (!req.user?.email) {
-      return res.status(401).json({ error: 'Authentication required' });
+      return errorResponse(res, 401, ErrorCodes.AUTH_REQUIRED, 'Authentication required');
     }
 
     if (!logId || (thumb !== 1 && thumb !== -1)) {
-      return res.status(400).json({
-        error: 'logId and thumb (1 or -1) are required',
-      });
+      return errorResponse(res, 400, ErrorCodes.VALIDATION_ERROR, 'logId and thumb (1 or -1) are required');
     }
 
-    // Get chatbot to get the passageIndex
     const chatbot = await ChatbotModel.get(chatbotId);
-
     if (!chatbot) {
-      return res.status(404).json({ error: 'Chatbot not found' });
+      return errorResponse(res, 404, ErrorCodes.NOT_FOUND, 'Chatbot not found');
     }
 
-    const passageIndex = chatbot.indexName;
-
-    // Update the log record
     await QueryLogModel.update(
-      { passageIndex, uniqueTimestamp: logId },
+      { passageIndex: chatbotId, uniqueTimestamp: logId },
       { thumb }
     );
 
@@ -176,16 +206,13 @@ export async function recordFeedback(req: AuthRequest, res: Response) {
     });
   } catch (error) {
     console.error('Error recording feedback:', error);
-    res.status(500).json({
-      error: 'Failed to record feedback',
-      message: error instanceof Error ? error.message : 'Unknown error',
-    });
+    errorResponse(res, 500, ErrorCodes.INTERNAL_ERROR, 'Failed to record feedback');
   }
 }
 
 /**
  * Export query logs as CSV
- * GET /api/query-log/:chatbotId/export
+ * GET /api/query-log/:chatbotId/export?startDate=&endDate=
  */
 export async function exportQueryLogs(req: AuthRequest, res: Response) {
   try {
@@ -193,54 +220,49 @@ export async function exportQueryLogs(req: AuthRequest, res: Response) {
     const { startDate, endDate } = req.query;
 
     if (!req.user?.email) {
-      return res.status(401).json({ error: 'Authentication required' });
+      return errorResponse(res, 401, ErrorCodes.AUTH_REQUIRED, 'Authentication required');
     }
 
-    // Get chatbot to get the passageIndex
     const chatbot = await ChatbotModel.get(chatbotId);
-
     if (!chatbot) {
-      return res.status(404).json({ error: 'Chatbot not found' });
+      return errorResponse(res, 404, ErrorCodes.NOT_FOUND, 'Chatbot not found');
     }
 
-    const passageIndex = chatbot.indexName;
+    // Fetch all logs for this chatbot
+    const allResults = await QueryLogModel.query('passageIndex')
+      .eq(chatbotId)
+      .exec();
 
-    // Get all logs (with date filter if provided)
-    let records: any[];
-
+    // Optionally filter by date range
+    let records = [...allResults];
     if (startDate && endDate) {
-      records = await getQueryLogRecords(
-        passageIndex,
-        startDate as string,
-        endDate as string,
-        'descending'
-      );
-    } else {
-      const result = await QueryLogModel.query('passageIndex')
-        .eq(passageIndex)
-        .exec();
-      records = result.map((log: any) => [
-        log.query,
-        log.answer,
-        log.uniqueTimestamp,
-      ]);
+      const startMs = Number(startDate);
+      const endMs = Number(endDate);
+      records = records.filter((log: any) => {
+        const logMs = parseUniqueTimestamp(log.uniqueTimestamp);
+        return !isNaN(logMs) && logMs >= startMs && logMs <= endMs;
+      });
     }
 
     if (records.length === 0) {
-      return res.status(404).json({
-        error: 'No query logs found',
-      });
+      return errorResponse(res, 404, ErrorCodes.NOT_FOUND, 'No query logs found');
     }
 
-    // Convert to CSV
-    const headers = ['Query', 'Answer', 'Timestamp'];
+    const headers = ['Query', 'Answer', 'Timestamp', 'Feedback', 'Duration (ms)', 'Session ID'];
     const csvRows = [headers.join(',')];
 
-    records.forEach((record) => {
-      const row = record.map((value: any) => {
-        // Escape commas and quotes in CSV
-        return `"${String(value).replace(/"/g, '""')}"`;
-      });
+    records.forEach((log: any) => {
+      const rawTs = log.uniqueTimestamp || '';
+      const isoStr = rawTs.split('#')[0];
+      const feedback = log.thumb === 1 ? 'Positive' : log.thumb === -1 ? 'Negative' : '';
+      const row = [
+        log.query || '',
+        log.answer || '',
+        isoStr,
+        feedback,
+        log.duration != null ? String(log.duration) : '',
+        log.sessionId || '',
+      ].map((value: string) => `"${value.replace(/"/g, '""')}"`);
       csvRows.push(row.join(','));
     });
 
@@ -254,16 +276,13 @@ export async function exportQueryLogs(req: AuthRequest, res: Response) {
     res.send(csv);
   } catch (error) {
     console.error('Error exporting query logs:', error);
-    res.status(500).json({
-      error: 'Failed to export query logs',
-      message: error instanceof Error ? error.message : 'Unknown error',
-    });
+    errorResponse(res, 500, ErrorCodes.INTERNAL_ERROR, 'Failed to export query logs');
   }
 }
 
 /**
  * Get analytics stats
- * GET /api/query-log/:chatbotId/analytics
+ * GET /api/query-log/:chatbotId/analytics?startDate=&endDate=
  */
 export async function getAnalytics(req: AuthRequest, res: Response) {
   try {
@@ -271,46 +290,67 @@ export async function getAnalytics(req: AuthRequest, res: Response) {
     const { startDate, endDate } = req.query;
 
     if (!req.user?.email) {
-      return res.status(401).json({ error: 'Authentication required' });
+      return errorResponse(res, 401, ErrorCodes.AUTH_REQUIRED, 'Authentication required');
     }
 
-    // Get chatbot to get the passageIndex
     const chatbot = await ChatbotModel.get(chatbotId);
-
     if (!chatbot) {
-      return res.status(404).json({ error: 'Chatbot not found' });
+      return errorResponse(res, 404, ErrorCodes.NOT_FOUND, 'Chatbot not found');
     }
 
-    const passageIndex = chatbot.indexName;
-
-    // Query logs
-    let query = QueryLogModel.query('passageIndex').eq(passageIndex);
+    let query = QueryLogModel.query('passageIndex').eq(chatbotId);
 
     if (startDate && endDate) {
-      query = query
-        .filter('uniqueTimestamp')
-        .between(startDate as string, `${endDate}T23:59:59`);
+      const startISO = epochToISO(startDate as string);
+      const endISO = epochToISO(endDate as string) + '~';
+      query = query.where('uniqueTimestamp').between(startISO, endISO);
     }
 
     const result = await query.exec();
 
-    // Calculate analytics
+    // --- Basic counts ---
     const totalQueries = result.length;
     const thumbsUp = result.filter((log: any) => log.thumb === 1).length;
     const thumbsDown = result.filter((log: any) => log.thumb === -1).length;
 
-    // Count top queries
+    // --- Unique sessions ---
+    const sessionSet = new Set<string>();
+    result.forEach((log: any) => {
+      if (log.sessionId) sessionSet.add(log.sessionId);
+    });
+
+    // --- Average response time ---
+    const durations = result
+      .filter((log: any) => log.duration)
+      .map((log: any) => log.duration as number);
+    const avgResponseTime = durations.length > 0
+      ? Math.round(durations.reduce((sum, d) => sum + d, 0) / durations.length)
+      : null;
+
+    // --- Daily volume ---
+    const dailyBuckets: Record<string, number> = {};
+    result.forEach((log: any) => {
+      const rawTs = log.uniqueTimestamp || '';
+      const dateStr = rawTs.split('T')[0]; // "2024-01-15"
+      if (dateStr) {
+        dailyBuckets[dateStr] = (dailyBuckets[dateStr] || 0) + 1;
+      }
+    });
+    const dailyVolume = Object.entries(dailyBuckets)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([date, count]) => ({ date, count }));
+
+    // --- Top queries ---
     const queryCount: Record<string, number> = {};
     result.forEach((log: any) => {
       if (log.query) {
         queryCount[log.query] = (queryCount[log.query] || 0) + 1;
       }
     });
-
     const topQueries = Object.entries(queryCount)
       .sort(([, a], [, b]) => b - a)
       .slice(0, 10)
-      .map(([query, count]) => ({ query, count }));
+      .map(([q, count]) => ({ query: q, count }));
 
     res.json({
       success: true,
@@ -318,22 +358,16 @@ export async function getAnalytics(req: AuthRequest, res: Response) {
         totalQueries,
         thumbsUp,
         thumbsDown,
-        thumbsUpPercentage:
-          totalQueries > 0
-            ? Math.round((thumbsUp / totalQueries) * 100)
-            : 0,
-        thumbsDownPercentage:
-          totalQueries > 0
-            ? Math.round((thumbsDown / totalQueries) * 100)
-            : 0,
+        thumbsUpPercentage: totalQueries > 0 ? Math.round((thumbsUp / totalQueries) * 100) : 0,
+        thumbsDownPercentage: totalQueries > 0 ? Math.round((thumbsDown / totalQueries) * 100) : 0,
+        uniqueSessions: sessionSet.size,
+        avgResponseTime,
+        dailyVolume,
         topQueries,
       },
     });
   } catch (error) {
     console.error('Error getting analytics:', error);
-    res.status(500).json({
-      error: 'Failed to get analytics',
-      message: error instanceof Error ? error.message : 'Unknown error',
-    });
+    errorResponse(res, 500, ErrorCodes.INTERNAL_ERROR, 'Failed to get analytics');
   }
 }

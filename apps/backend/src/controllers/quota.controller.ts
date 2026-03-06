@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { UserModel, ChatbotModel } from '@corpusai/aws-common';
 import { AuthRequest } from '../middleware/auth.middleware';
+import { errorResponse, ErrorCodes } from '../utils/error-response';
 
 // Quota configuration by tier
 const TIER_QUOTAS = {
@@ -43,14 +44,14 @@ export async function getUserQuota(req: AuthRequest, res: Response) {
     const username = req.user?.email;
 
     if (!username) {
-      return res.status(401).json({ error: 'Authentication required' });
+      return errorResponse(res, 401, ErrorCodes.AUTH_REQUIRED, 'Authentication required');
     }
 
     // Get user
     const users = await UserModel.query('username').eq(username).exec();
 
     if (users.length === 0) {
-      return res.status(404).json({ error: 'User not found' });
+      return errorResponse(res, 404, ErrorCodes.NOT_FOUND, 'User not found');
     }
 
     const user = users[0];
