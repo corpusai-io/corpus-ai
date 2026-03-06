@@ -40,13 +40,14 @@ export default function TestimonialV4() {
   const t = testimonials[index];
 
   return (
-    <section className="py-32 px-6 bg-[#F5F3FF]">
+    <section className="py-32 px-6 v4-section-gradient-purple relative overflow-hidden">
+      <div className="absolute top-20 left-10 w-[250px] h-[250px] opacity-[0.04] pointer-events-none" style={{ background: 'radial-gradient(circle, #7C3AED 0%, transparent 70%)', filter: 'blur(60px)' }} />
       <div className="max-w-4xl mx-auto text-center">
         <p className="text-sm font-semibold text-[#7C3AED] uppercase tracking-widest mb-12">
-          What teams are saying
+          Trusted by 500+ teams
         </p>
 
-        <div className="text-7xl text-[#7C3AED]/15 font-serif leading-none mb-2">&ldquo;</div>
+        <div className="text-7xl v4-gradient-text-warm font-serif leading-none mb-2 opacity-20">&ldquo;</div>
 
         <AnimatePresence mode="wait">
           <motion.div
@@ -61,7 +62,7 @@ export default function TestimonialV4() {
             </blockquote>
 
             <div className="mt-10">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#7C3AED] to-[#6D28D9] mx-auto mb-4 flex items-center justify-center text-white text-sm font-bold shadow-md shadow-[#7C3AED]/20">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#7C3AED] via-[#6D28D9] to-[#4F46E5] mx-auto mb-4 flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-[#7C3AED]/25">
                 {t.initials}
               </div>
               <div className="text-base font-semibold text-[#111827]">{t.name}</div>

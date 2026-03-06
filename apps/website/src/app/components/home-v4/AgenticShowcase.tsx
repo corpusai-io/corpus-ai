@@ -77,7 +77,8 @@ const actionBadges = [
 
 export default function AgenticShowcase() {
   return (
-    <section className="py-32 px-6 bg-[#F9FAFB]">
+    <section className="py-32 px-6 v4-section-gradient-light relative overflow-hidden">
+      <div className="absolute -bottom-20 -left-20 w-[400px] h-[400px] opacity-[0.04] pointer-events-none" style={{ background: 'radial-gradient(circle, #7C3AED 0%, transparent 70%)', filter: 'blur(60px)' }} />
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-20">
@@ -86,11 +87,11 @@ export default function AgenticShowcase() {
           </p>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#111827] tracking-tight">
             Your chatbot answers questions.<br className="hidden md:block" />
-            <span className="text-[#7C3AED]">Corpus AI closes them.</span>
+            <span className="v4-gradient-text">Your AI agent resolves them.</span>
           </h2>
           <p className="text-lg text-[#6B7280] mt-6 max-w-2xl mx-auto">
-            Scripts break. Keywords miss intent. Corpus AI agents reason through complexity,
-            pull live data, and take real action — within guardrails you control.
+            Chatbots follow scripts. Corpus AI agents reason through complexity,
+            query live data, and take real action — all within guardrails you define.
           </p>
         </div>
 
@@ -101,7 +102,7 @@ export default function AgenticShowcase() {
             return (
               <motion.div
                 key={card.title}
-                className="v4-card p-8 relative overflow-hidden group"
+                className="v4-card-glow p-8 relative overflow-hidden group"
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.15, duration: 0.5 }}

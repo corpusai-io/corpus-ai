@@ -21,7 +21,9 @@ const after = [
 
 export default function ProblemBand() {
   return (
-    <section className="py-24 px-6 bg-white">
+    <section className="py-28 px-6 bg-white relative overflow-hidden">
+      {/* Subtle background accent */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] opacity-[0.03] pointer-events-none" style={{ background: 'radial-gradient(circle, #7C3AED 0%, transparent 70%)' }} />
       <div className="max-w-6xl mx-auto">
 
         {/* Section label */}
@@ -36,10 +38,10 @@ export default function ProblemBand() {
             The transformation
           </p>
           <h2 className="text-3xl md:text-4xl font-bold text-[#111827] tracking-tight">
-            Support before. Support after.
+            From chaos to clarity.
           </h2>
           <p className="text-[#6B7280] mt-3 max-w-xl mx-auto">
-            Every team reaches a breaking point. Corpus AI is what comes after it.
+            See the difference an AI agent makes when it handles what used to slow you down.
           </p>
         </motion.div>
 
@@ -47,7 +49,7 @@ export default function ProblemBand() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Before column */}
           <motion.div
-            className="rounded-2xl border border-[#F3F4F6] bg-[#FAFAFA] p-8"
+            className="rounded-2xl border border-[#FEE2E2]/60 bg-gradient-to-b from-[#FAFAFA] to-[#FEF2F2]/30 p-8"
             initial={{ opacity: 0, x: -24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -83,7 +85,7 @@ export default function ProblemBand() {
 
           {/* After column */}
           <motion.div
-            className="rounded-2xl border border-[#DDD6FE] bg-[#F5F3FF] p-8"
+            className="rounded-2xl border border-[#DDD6FE] bg-gradient-to-b from-[#F5F3FF] to-[#EDE9FE]/50 p-8 shadow-sm shadow-[#7C3AED]/5"
             initial={{ opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}

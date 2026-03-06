@@ -49,14 +49,14 @@ const useCases = [
 
 export default function UseCaseCards() {
   return (
-    <section className="py-32 px-6">
+    <section className="py-32 px-6 relative">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <p className="text-sm font-semibold text-[#7C3AED] uppercase tracking-widest mb-4">
             Solutions
           </p>
           <h2 className="text-4xl md:text-5xl font-bold text-[#111827] tracking-tight">
-            Purpose-built for your industry
+            Purpose-built for <span className="v4-gradient-text">your industry</span>
           </h2>
           <p className="text-lg text-[#6B7280] mt-4">
             AI agents trained on industry-specific knowledge and compliance requirements.
@@ -72,7 +72,7 @@ export default function UseCaseCards() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
             >
-              <Link href={useCase.href} className="v4-card p-8 group block h-full">
+              <Link href={useCase.href} className="v4-card-glow p-8 group block h-full">
                 <div
                   className="w-10 h-10 rounded-xl flex items-center justify-center mb-5"
                   style={{ backgroundColor: useCase.bg }}

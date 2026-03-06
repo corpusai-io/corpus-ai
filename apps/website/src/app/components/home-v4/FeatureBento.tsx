@@ -14,13 +14,13 @@ const cardVariants = {
 
 export default function FeatureBento() {
   return (
-    <section className="py-32 px-6 max-w-7xl mx-auto">
+    <section className="py-32 px-6 max-w-7xl mx-auto relative">
       <div className="text-center mb-16">
         <p className="text-sm font-semibold text-[#7C3AED] uppercase tracking-widest mb-4">
           Platform
         </p>
         <h2 className="text-4xl md:text-5xl font-bold text-[#111827] tracking-tight">
-          Everything you need. Nothing you don&apos;t.
+          Everything you need.{' '}<span className="v4-gradient-text">Nothing you don&apos;t.</span>
         </h2>
         <p className="text-lg text-[#6B7280] mt-4">
           A complete platform for building, training, and deploying AI agents.
@@ -30,7 +30,7 @@ export default function FeatureBento() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Card 1: RAG Pipeline — spans 2 cols */}
         <motion.div
-          className="v4-card p-8 relative overflow-hidden lg:col-span-2"
+          className="v4-card-glow p-8 relative overflow-hidden lg:col-span-2"
           variants={cardVariants}
           custom={0}
           initial="hidden"
@@ -60,7 +60,7 @@ export default function FeatureBento() {
 
         {/* Card 2: Lead Capture */}
         <motion.div
-          className="v4-card p-8"
+          className="v4-card-glow p-8"
           variants={cardVariants}
           custom={1}
           initial="hidden"
@@ -83,7 +83,7 @@ export default function FeatureBento() {
 
         {/* Card 3: Custom Branding */}
         <motion.div
-          className="v4-card p-8"
+          className="v4-card-glow p-8"
           variants={cardVariants}
           custom={2}
           initial="hidden"
@@ -105,7 +105,7 @@ export default function FeatureBento() {
 
         {/* Card 4: Analytics */}
         <motion.div
-          className="v4-card p-8"
+          className="v4-card-glow p-8"
           variants={cardVariants}
           custom={3}
           initial="hidden"
@@ -127,7 +127,7 @@ export default function FeatureBento() {
 
         {/* Card 5: Security — spans 2 cols */}
         <motion.div
-          className="v4-card p-8 relative overflow-hidden lg:col-span-2"
+          className="v4-card-glow p-8 relative overflow-hidden lg:col-span-2"
           variants={cardVariants}
           custom={4}
           initial="hidden"
@@ -157,7 +157,7 @@ export default function FeatureBento() {
 
         {/* Card 6: Multi-Language */}
         <motion.div
-          className="v4-card p-8"
+          className="v4-card-glow p-8"
           variants={cardVariants}
           custom={5}
           initial="hidden"

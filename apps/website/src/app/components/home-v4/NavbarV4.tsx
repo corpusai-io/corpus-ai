@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -228,9 +228,16 @@ function MobileAccordion({ item }: { item: NavItem }) {
 
 export default function NavbarV4() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   return (
-    <nav className="fixed top-0 w-full z-40 bg-white/90 backdrop-blur-xl border-b border-[#E5E7EB]">
+    <nav className={`fixed top-0 w-full z-40 backdrop-blur-xl transition-all duration-300 ${scrolled ? 'bg-white/95 v4-nav-scrolled border-b border-[#E5E7EB]/50' : 'bg-white/80 border-b border-transparent'}`}>
       <div className="max-w-6xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -253,7 +260,7 @@ export default function NavbarV4() {
             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
               <Link
                 href="/Sign-In"
-                className="text-sm font-medium bg-[#7C3AED] hover:bg-[#6D28D9] text-white rounded-lg px-4 py-2 transition-colors inline-block"
+                className="text-sm font-medium bg-[#7C3AED] hover:bg-[#6D28D9] text-white rounded-xl px-5 py-2.5 transition-all inline-block shadow-md shadow-[#7C3AED]/20 hover:shadow-lg hover:shadow-[#7C3AED]/30"
               >
                 Start Free
               </Link>

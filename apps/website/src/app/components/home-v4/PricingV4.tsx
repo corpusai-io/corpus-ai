@@ -61,7 +61,7 @@ export default function PricingV4() {
           Pricing
         </p>
         <h2 className="text-4xl md:text-5xl font-bold text-[#111827] tracking-tight">
-          Start free. Scale infinitely.
+          Start free.{' '}<span className="v4-gradient-text">Scale infinitely.</span>
         </h2>
         <p className="text-lg text-[#6B7280] mt-4">
           No hidden fees. No surprises. Cancel anytime.
@@ -78,12 +78,12 @@ export default function PricingV4() {
             transition={{ duration: 0.5, delay: i * 0.1 }}
             className={`relative rounded-2xl p-8 border transition-all ${
               tier.highlighted
-                ? 'bg-[#F5F3FF] border-[#7C3AED]/30 shadow-lg shadow-[#7C3AED]/10'
-                : 'bg-white border-[#E5E7EB] shadow-sm hover:border-[#DDD6FE]'
+                ? 'bg-[#F5F3FF] border-[#7C3AED]/30 v4-pricing-highlight'
+                : 'bg-white border-[#E5E7EB] shadow-sm hover:border-[#DDD6FE] hover:shadow-md'
             }`}
           >
             {tier.highlighted && (
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#7C3AED] text-white text-xs font-bold px-4 py-1 rounded-full shadow-sm">
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#7C3AED] to-[#6D28D9] text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg shadow-[#7C3AED]/25">
                 Most Popular
               </span>
             )}
@@ -116,7 +116,7 @@ export default function PricingV4() {
               href="/Sign-In"
               className={`block w-full mt-8 text-center py-3 rounded-lg text-sm font-semibold transition-colors ${
                 tier.highlighted
-                  ? 'bg-[#7C3AED] text-white hover:bg-[#6D28D9]'
+                  ? 'bg-[#7C3AED] text-white hover:bg-[#6D28D9] shadow-md shadow-[#7C3AED]/20 hover:shadow-lg hover:shadow-[#7C3AED]/30'
                   : 'border border-[#D1D5DB] text-[#374151] hover:bg-[#F3F4F6]'
               }`}
             >

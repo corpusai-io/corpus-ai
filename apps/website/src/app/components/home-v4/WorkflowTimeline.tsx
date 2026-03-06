@@ -35,14 +35,15 @@ const steps = [
 
 export default function WorkflowTimeline() {
   return (
-    <section className="py-32 px-6 bg-[#F5F3FF]">
+    <section className="py-32 px-6 v4-section-gradient-purple relative overflow-hidden">
+      <div className="absolute top-1/2 right-0 w-[300px] h-[300px] -translate-y-1/2 opacity-[0.04] pointer-events-none" style={{ background: 'radial-gradient(circle, #7C3AED 0%, transparent 70%)', filter: 'blur(60px)' }} />
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-20">
           <p className="text-sm font-semibold text-[#7C3AED] uppercase tracking-widest mb-4">
             How It Works
           </p>
           <h2 className="text-4xl md:text-5xl font-bold text-[#111827] tracking-tight">
-            Live in four steps
+            Live in four simple steps
           </h2>
           <p className="text-lg text-[#6B7280] mt-4">
             From zero to deployed AI agent. No ML expertise required.
@@ -65,7 +66,7 @@ export default function WorkflowTimeline() {
               {/* Step dot */}
               <div
                 className={`absolute left-6 md:left-8 -translate-x-1/2 w-4 h-4 rounded-full border-2 border-[#7C3AED] z-10 ${
-                  i === 0 ? 'bg-[#7C3AED]' : 'bg-white'
+                  i === 0 ? 'bg-[#7C3AED] shadow-md shadow-[#7C3AED]/30' : 'bg-white'
                 }`}
               />
 
@@ -87,7 +88,7 @@ export default function WorkflowTimeline() {
                     {step.badges.map((badge) => (
                       <span
                         key={badge}
-                        className="text-xs px-2 py-1 rounded bg-white text-[#6B7280] border border-[#E5E7EB] font-medium"
+                        className="text-xs px-3 py-1.5 rounded-lg bg-white text-[#6B7280] border border-[#E5E7EB] font-medium shadow-sm"
                       >
                         {badge}
                       </span>

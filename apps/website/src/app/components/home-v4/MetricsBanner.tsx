@@ -61,8 +61,8 @@ function AnimatedNumber({ metric }: { metric: Metric }) {
   }, [metric]);
 
   return (
-    <div ref={ref} className="bg-white p-8 text-center">
-      <div className="text-4xl lg:text-5xl font-bold text-[#111827]">
+    <div ref={ref} className="bg-white/90 backdrop-blur-sm p-8 text-center v4-metric-glow">
+      <div className="text-4xl lg:text-5xl font-bold v4-gradient-text">
         {metric.prefix ?? ''}
         {display}
         {metric.suffix}
@@ -74,9 +74,9 @@ function AnimatedNumber({ metric }: { metric: Metric }) {
 
 export default function MetricsBanner() {
   return (
-    <section className="py-24 px-6 bg-[#F9FAFB]">
+    <section className="py-28 px-6 v4-animated-gradient relative">
       <div className="max-w-5xl mx-auto">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-[#E5E7EB] rounded-2xl overflow-hidden shadow-sm">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-[#DDD6FE]/40 rounded-2xl overflow-hidden shadow-lg shadow-[#7C3AED]/5">
           {metrics.map((metric) => (
             <AnimatedNumber key={metric.label} metric={metric} />
           ))}

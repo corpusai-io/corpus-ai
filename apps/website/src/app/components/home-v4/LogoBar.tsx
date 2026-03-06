@@ -13,9 +13,9 @@ export default function LogoBar() {
   ];
 
   return (
-    <section className="py-14 px-6 bg-[#F9FAFB]">
+    <section className="py-16 px-6 bg-gradient-to-b from-[#F9FAFB] to-white">
       <p className="text-center text-xs font-semibold text-[#9CA3AF] uppercase tracking-[0.2em] mb-8">
-        Trusted by teams building the future
+        Powering AI agents at forward-thinking teams
       </p>
       <div
         className="overflow-hidden"
@@ -30,7 +30,7 @@ export default function LogoBar() {
           {[...companies, ...companies].map((name, i) => (
             <span
               key={i}
-              className="text-xl font-semibold text-[#D1D5DB] mx-10 whitespace-nowrap select-none"
+              className="text-xl font-semibold text-[#D1D5DB] hover:text-[#9CA3AF] transition-colors duration-500 mx-10 whitespace-nowrap select-none"
             >
               {name}
             </span>
