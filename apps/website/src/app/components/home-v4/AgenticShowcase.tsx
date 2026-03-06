@@ -82,14 +82,15 @@ export default function AgenticShowcase() {
         {/* Header */}
         <div className="text-center mb-20">
           <p className="text-sm font-semibold text-[#7C3AED] uppercase tracking-widest mb-4">
-            Beyond chatbots
+            Agents, not chatbots
           </p>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#111827] tracking-tight">
-            Not a chatbot. An autonomous agent.
+            Your chatbot answers questions.<br className="hidden md:block" />
+            <span className="text-[#7C3AED]">Corpus AI closes them.</span>
           </h2>
           <p className="text-lg text-[#6B7280] mt-6 max-w-2xl mx-auto">
-            Traditional chatbots follow scripts. Corpus AI agents reason, plan,
-            and execute multi-step tasks using your data and tools.
+            Scripts break. Keywords miss intent. Corpus AI agents reason through complexity,
+            pull live data, and take real action — within guardrails you control.
           </p>
         </div>
 

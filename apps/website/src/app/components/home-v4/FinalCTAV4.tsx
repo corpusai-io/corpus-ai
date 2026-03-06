@@ -23,16 +23,17 @@ export default function FinalCTAV4() {
         />
 
         <p className="text-sm font-semibold text-[#7C3AED] uppercase tracking-widest mb-6">
-          Get started today
+          Your first agent is free
         </p>
 
         <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#111827] tracking-tight">
-          Build your first agent in five minutes
+          Stop triaging tickets.<br className="hidden md:block" />
+          Deploy an agent today.
         </h2>
 
         <p className="text-lg text-[#6B7280] mt-6 max-w-xl mx-auto">
-          Join 500+ teams using Corpus AI to automate support, capture leads,
-          and unlock their data.
+          Upload your data, customize, and go live in under five minutes.
+          No engineers required. Join 500+ teams already running on Corpus AI.
         </p>
 
         <div className="flex items-center justify-center gap-4 mt-10 flex-wrap">
@@ -40,7 +41,7 @@ export default function FinalCTAV4() {
             href="/Sign-In"
             className="bg-[#7C3AED] text-white hover:bg-[#6D28D9] rounded-lg px-7 py-3.5 text-sm font-semibold transition-colors shadow-md shadow-[#7C3AED]/20"
           >
-            Start Building Free
+            Deploy My First Agent →
           </Link>
           <Link
             href="/Sign-In"

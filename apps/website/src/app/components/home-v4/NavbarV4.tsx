@@ -250,12 +250,14 @@ export default function NavbarV4() {
             <Link href="/Sign-In" className="text-sm text-[#6B7280] hover:text-[#111827] transition-colors">
               Sign In
             </Link>
-            <Link
-              href="/Sign-In"
-              className="text-sm font-medium bg-[#7C3AED] hover:bg-[#6D28D9] text-white rounded-lg px-4 py-2 transition-colors"
-            >
-              Start Free
-            </Link>
+            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+              <Link
+                href="/Sign-In"
+                className="text-sm font-medium bg-[#7C3AED] hover:bg-[#6D28D9] text-white rounded-lg px-4 py-2 transition-colors inline-block"
+              >
+                Start Free
+              </Link>
+            </motion.div>
           </div>
 
           {/* Mobile Hamburger */}

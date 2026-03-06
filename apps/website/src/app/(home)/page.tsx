@@ -3,6 +3,7 @@
 import NavbarV4 from "@/app/components/home-v4/NavbarV4";
 import HeroV4 from "@/app/components/home-v4/HeroV4";
 import LogoBar from "@/app/components/home-v4/LogoBar";
+import ProblemBand from "@/app/components/home-v4/ProblemBand";
 import AgenticShowcase from "@/app/components/home-v4/AgenticShowcase";
 import DatabaseSection from "@/app/components/home-v4/DatabaseSection";
 import FeatureBento from "@/app/components/home-v4/FeatureBento";
@@ -29,6 +30,10 @@ export default function Home() {
       <LogoBar />
 
       <div className="h-px w-full bg-gradient-to-r from-transparent via-[#E5E7EB] to-transparent" />
+
+      <ProblemBand />
+
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-[#DDD6FE] to-transparent" />
 
       <AgenticShowcase />
 

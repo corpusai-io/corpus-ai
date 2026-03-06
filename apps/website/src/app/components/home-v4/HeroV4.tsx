@@ -3,8 +3,17 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Database, Search, CreditCard, CheckCircle, ArrowRight, MessageSquare } from 'lucide-react';
+import { Database, Search, CreditCard, CheckCircle, ArrowRight, MessageSquare, Zap } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+
+// ─── Rotating Personas ────────────────────────────────────────────────────────
+
+const personas = [
+  { label: 'E-commerce', text: 'Handle returns, refunds, and order tracking — without a support ticket.' },
+  { label: 'SaaS Support', text: 'Resolve 80% of tickets before a human reads them.' },
+  { label: 'Healthcare', text: 'Automate patient intake, scheduling, and triage 24/7.' },
+  { label: 'Internal Teams', text: 'Query any database in plain English — no SQL required.' },
+];
 
 // ─── Scenario Types ───────────────────────────────────────────────────────────
 
@@ -29,8 +38,6 @@ interface Scenario {
   steps: ChatStep[];
 }
 
-// ─── 3 Scenarios ─────────────────────────────────────────────────────────────
-
 const scenarios: Scenario[] = [
   {
     id: 'rag',
@@ -49,7 +56,7 @@ const scenarios: Scenario[] = [
       },
       {
         type: 'bot',
-        text: 'Our return policy allows returns within 30 days of purchase. Items must be unused and in original packaging. Free return shipping is included for all orders over $50. Refunds are processed within 3–5 business days after we receive the item.',
+        text: 'Our return policy allows returns within 30 days. Items must be unused. Free return shipping on orders over $50. Refunds process in 3–5 business days.',
         delay: 2800,
       },
     ],
@@ -72,7 +79,7 @@ const scenarios: Scenario[] = [
       },
       {
         type: 'bot',
-        text: 'Last week we processed 2,847 orders — a 23% increase from the prior week. The top category was Electronics at 42% ($128K revenue), followed by Home & Garden at 28% ($81K). Would you like a breakdown by day or by region?',
+        text: 'Last week: 2,847 orders (+23% vs prior week). Top category: Electronics at 42% ($128K). Want a breakdown by day or region?',
         delay: 3200,
       },
     ],
@@ -95,7 +102,7 @@ const scenarios: Scenario[] = [
       },
       {
         type: 'bot',
-        text: "Done! I've refunded $49.99 to the Visa ending in 4242. The customer will see it in 3–5 business days. I also sent a confirmation email and flagged the item for quality review. Anything else?",
+        text: "Done. Refunded $49.99 to the Visa ending in 4242. Customer will see it in 3–5 business days. Confirmation sent, item flagged for quality review.",
         delay: 3400,
       },
     ],
@@ -114,8 +121,6 @@ function TypingDots() {
   );
 }
 
-// ─── Workflow Steps ───────────────────────────────────────────────────────────
-
 function WorkflowSteps({ steps }: { steps: WorkflowStep[] }) {
   return (
     <div className="space-y-2 py-1">
@@ -133,9 +138,7 @@ function WorkflowSteps({ steps }: { steps: WorkflowStep[] }) {
               <Icon className={`w-3.5 h-3.5 ${step.color}`} />
             </div>
             <span className="text-xs text-[#6B7280]">{step.label}</span>
-            {i < steps.length - 1 && (
-              <ArrowRight className="w-3 h-3 text-[#D1D5DB] ml-auto flex-shrink-0" />
-            )}
+            {i < steps.length - 1 && <ArrowRight className="w-3 h-3 text-[#D1D5DB] ml-auto flex-shrink-0" />}
           </motion.div>
         );
       })}
@@ -166,27 +169,20 @@ function ChatWidget() {
       clearAllTimeouts();
       setIsTransitioning(true);
       setVisibleSteps(0);
-
       const startTimeout = setTimeout(() => {
         setIsTransitioning(false);
         const scenario = scenarios[scenarioIndex];
-
         scenario.steps.forEach((step, i) => {
-          const t = setTimeout(() => {
-            setVisibleSteps(i + 1);
-          }, step.delay);
+          const t = setTimeout(() => setVisibleSteps(i + 1), step.delay);
           timeoutsRef.current.push(t);
         });
-
         const lastStep = scenario.steps[scenario.steps.length - 1];
         const autoT = setTimeout(() => {
-          const next = (scenarioIndex + 1) % scenarios.length;
-          setActiveScenario(next);
+          setActiveScenario((scenarioIndex + 1) % scenarios.length);
         }, lastStep.delay + 4000);
         autoAdvanceRef.current = autoT;
         timeoutsRef.current.push(autoT);
       }, 300);
-
       timeoutsRef.current.push(startTimeout);
     },
     [clearAllTimeouts]
@@ -197,33 +193,24 @@ function ChatWidget() {
     return clearAllTimeouts;
   }, [activeScenario, runScenario, clearAllTimeouts]);
 
-  const handleTabClick = (i: number) => {
-    if (i === activeScenario) return;
-    setActiveScenario(i);
-  };
-
   const scenario = scenarios[activeScenario];
   const currentSteps = scenario.steps.slice(0, visibleSteps);
 
   return (
-    <div className="v4-card rounded-2xl overflow-hidden">
+    <div className="v4-card rounded-2xl overflow-hidden shadow-lg shadow-[#7C3AED]/5">
       {/* Scenario Tabs */}
       <div className="flex border-b border-[#E5E7EB] bg-[#F9FAFB]">
         {scenarios.map((s, i) => (
           <button
             key={s.id}
-            onClick={() => handleTabClick(i)}
-            className={`flex-1 px-4 py-3 text-xs font-medium transition-colors relative ${
+            onClick={() => { if (i !== activeScenario) setActiveScenario(i); }}
+            className={`flex-1 px-3 py-3 text-xs font-medium transition-colors relative ${
               i === activeScenario ? 'text-[#111827] bg-white' : 'text-[#9CA3AF] hover:text-[#6B7280]'
             }`}
           >
             <span className={i === activeScenario ? s.labelColor : ''}>{s.label}</span>
             {i === activeScenario && (
-              <motion.div
-                layoutId="activeTab"
-                className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#7C3AED]"
-                transition={{ duration: 0.2 }}
-              />
+              <motion.div layoutId="heroTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#7C3AED]" transition={{ duration: 0.2 }} />
             )}
           </button>
         ))}
@@ -233,101 +220,63 @@ function ChatWidget() {
       <div className="px-5 py-3.5 border-b border-[#E5E7EB] flex items-center gap-3 bg-white">
         <img src="/logo_primary_circ.png" alt="Corpus AI" className="w-8 h-8 rounded-full object-contain" />
         <div>
-          <div className="text-sm font-medium text-[#111827]">Corpus AI Agent</div>
+          <div className="text-sm font-semibold text-[#111827]">Corpus AI Agent</div>
           <div className="flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#16A34A]" />
-            <span className="text-[10px] text-[#9CA3AF]">Online</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#16A34A] animate-pulse" />
+            <span className="text-[10px] text-[#9CA3AF]">Online · Responding instantly</span>
           </div>
         </div>
         <div className="ml-auto">
-          <MessageSquare className="w-4 h-4 text-[#D1D5DB]" />
+          <div className="flex items-center gap-1 text-[10px] text-[#9CA3AF]">
+            <Zap className="w-3 h-3 text-[#7C3AED]" />
+            <span>Autonomous</span>
+          </div>
         </div>
       </div>
 
       {/* Chat Body */}
-      <div className="px-5 py-5 min-h-[320px] flex flex-col justify-end bg-[#FAFAFA]">
+      <div className="px-5 py-5 min-h-[300px] flex flex-col justify-end bg-[#FAFAFA]">
         <AnimatePresence mode="wait">
           {!isTransitioning && (
-            <motion.div
-              key={scenario.id}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              className="space-y-4"
-            >
+            <motion.div key={scenario.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }} className="space-y-4">
               {currentSteps.map((step, i) => {
                 if (step.type === 'user') {
                   return (
-                    <motion.div
-                      key={`user-${i}`}
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.25 }}
-                      className="flex justify-end"
-                    >
-                      <div className="bg-[#7C3AED] text-white rounded-2xl rounded-br-md px-4 py-2.5 max-w-[85%] text-sm leading-relaxed">
-                        {step.text}
-                      </div>
+                    <motion.div key={`u${i}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }} className="flex justify-end">
+                      <div className="bg-[#7C3AED] text-white rounded-2xl rounded-br-md px-4 py-2.5 max-w-[85%] text-sm leading-relaxed">{step.text}</div>
                     </motion.div>
                   );
                 }
-
                 if (step.type === 'typing') {
-                  const nextStepVisible = currentSteps.length > i + 1;
-                  if (nextStepVisible) return null;
+                  if (currentSteps.length > i + 1) return null;
                   return (
-                    <motion.div
-                      key={`typing-${i}`}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="flex items-start gap-2.5"
-                    >
-                      <img src="/logo_primary_circ.png" alt="Corpus AI" className="w-7 h-7 rounded-full object-contain flex-shrink-0" />
-                      <div className="bg-white border border-[#E5E7EB] rounded-2xl rounded-bl-md shadow-sm">
-                        <TypingDots />
-                      </div>
+                    <motion.div key={`t${i}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-start gap-2.5">
+                      <img src="/logo_primary_circ.png" alt="" className="w-7 h-7 rounded-full object-contain flex-shrink-0" />
+                      <div className="bg-white border border-[#E5E7EB] rounded-2xl rounded-bl-md shadow-sm"><TypingDots /></div>
                     </motion.div>
                   );
                 }
-
                 if (step.type === 'workflow' && step.steps) {
                   return (
-                    <motion.div
-                      key={`workflow-${i}`}
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.25 }}
-                      className="flex items-start gap-2.5"
-                    >
-                      <img src="/logo_primary_circ.png" alt="Corpus AI" className="w-7 h-7 rounded-full object-contain flex-shrink-0" />
+                    <motion.div key={`w${i}`} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }} className="flex items-start gap-2.5">
+                      <img src="/logo_primary_circ.png" alt="" className="w-7 h-7 rounded-full object-contain flex-shrink-0" />
                       <div className="bg-white border border-[#E5E7EB] rounded-2xl rounded-bl-md px-4 py-3 max-w-[85%] shadow-sm">
-                        <div className="text-[10px] font-semibold text-[#9CA3AF] uppercase tracking-wider mb-2">
-                          Agent Workflow
-                        </div>
+                        <div className="text-[10px] font-semibold text-[#9CA3AF] uppercase tracking-wider mb-2">Agent Workflow</div>
                         <WorkflowSteps steps={step.steps} />
                       </div>
                     </motion.div>
                   );
                 }
-
                 if (step.type === 'bot') {
                   return (
-                    <motion.div
-                      key={`bot-${i}`}
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="flex items-start gap-2.5"
-                    >
-                      <img src="/logo_primary_circ.png" alt="Corpus AI" className="w-7 h-7 rounded-full object-contain flex-shrink-0" />
+                    <motion.div key={`b${i}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="flex items-start gap-2.5">
+                      <img src="/logo_primary_circ.png" alt="" className="w-7 h-7 rounded-full object-contain flex-shrink-0" />
                       <div className="bg-white border border-[#E5E7EB] rounded-2xl rounded-bl-md px-4 py-3 max-w-[85%] shadow-sm">
                         <p className="text-sm text-[#374151] leading-relaxed">{step.text}</p>
                       </div>
                     </motion.div>
                   );
                 }
-
                 return null;
               })}
             </motion.div>
@@ -335,11 +284,11 @@ function ChatWidget() {
         </AnimatePresence>
       </div>
 
-      {/* Chat Input (decorative) */}
+      {/* Input Bar */}
       <div className="px-5 pb-4 bg-white border-t border-[#E5E7EB]">
         <div className="flex items-center gap-2 bg-[#F3F4F6] border border-[#E5E7EB] rounded-xl px-4 py-3 mt-3">
           <span className="text-sm text-[#9CA3AF] flex-1">Ask your agent anything...</span>
-          <div className="w-7 h-7 rounded-lg bg-[#7C3AED] flex items-center justify-center">
+          <div className="w-7 h-7 rounded-lg bg-[#7C3AED] flex items-center justify-center flex-shrink-0">
             <ArrowRight className="w-3.5 h-3.5 text-white" />
           </div>
         </div>
@@ -348,25 +297,32 @@ function ChatWidget() {
   );
 }
 
-// ─── Hero Section ─────────────────────────────────────────────────────────────
+// ─── Hero ─────────────────────────────────────────────────────────────────────
 
 const containerVariants = {
   hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.1 },
-  },
+  visible: { transition: { staggerChildren: 0.1 } },
 };
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0, 0, 0.2, 1] as const } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0, 0, 0.2, 1] as const } },
 };
 
 export default function HeroV4() {
+  const [personaIndex, setPersonaIndex] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setPersonaIndex(i => (i + 1) % personas.length), 3500);
+    return () => clearInterval(t);
+  }, []);
+
   return (
-    <section className="relative pt-40 pb-24 px-6 text-center">
-      {/* Background glow */}
+    <section className="relative pt-36 pb-20 px-6 text-center overflow-hidden">
+      {/* Subtle background glow */}
       <div className="v4-glow-hero absolute inset-0 pointer-events-none" />
+      {/* Subtle grid pattern */}
+      <div className="absolute inset-0 v4-grid-bg opacity-40 pointer-events-none" />
 
       <motion.div
         className="relative max-w-4xl mx-auto"
@@ -374,59 +330,87 @@ export default function HeroV4() {
         initial="hidden"
         animate="visible"
       >
-        {/* Badge */}
+        {/* Category badge */}
         <motion.div variants={itemVariants} className="flex justify-center mb-8">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#DDD6FE] bg-[#EDE9FE] text-[#7C3AED] text-sm font-medium">
-            <span className="w-2 h-2 rounded-full bg-[#7C3AED] animate-pulse" />
-            Introducing Agentic AI
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#DDD6FE] bg-[#EDE9FE] text-[#7C3AED] text-xs font-semibold tracking-wide uppercase">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#7C3AED] animate-pulse" />
+            Agentic AI Platform
           </div>
         </motion.div>
 
-        {/* Headline */}
+        {/* Headline — narrative, before → after arc */}
         <motion.h1
           variants={itemVariants}
-          className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.08] text-[#111827]"
+          className="text-5xl md:text-6xl lg:text-[72px] font-bold tracking-[-0.03em] leading-[1.06] text-[#111827]"
         >
-          AI that doesn&apos;t just chat.
+          Stop triaging tickets.
           <br />
-          It{' '}
           <span className="bg-gradient-to-r from-[#7C3AED] via-[#6D28D9] to-[#4F46E5] bg-clip-text text-transparent">
-            acts
+            Start deploying agents.
           </span>
-          .
         </motion.h1>
 
-        {/* Subtitle */}
-        <motion.p
-          variants={itemVariants}
-          className="text-lg md:text-xl text-[#6B7280] mt-6 max-w-2xl mx-auto leading-relaxed"
-        >
-          Build AI agents that query your databases, execute workflows, and resolve customer issues — all autonomously.
-          Trained on your data. Deployed in minutes.
-        </motion.p>
-
-        {/* CTAs */}
-        <motion.div variants={itemVariants} className="flex items-center justify-center gap-4 mt-10">
-          <Link
-            href="/Sign-In"
-            className="bg-[#7C3AED] text-white hover:bg-[#6D28D9] rounded-lg px-6 py-3 text-sm font-medium transition-colors shadow-sm shadow-[#7C3AED]/20"
-          >
-            Build Your First Agent
-          </Link>
-          <Link
-            href="/demo"
-            className="border border-[#D1D5DB] text-[#374151] hover:bg-[#F3F4F6] rounded-lg px-6 py-3 text-sm font-medium transition-colors"
-          >
-            Watch Demo
-          </Link>
+        {/* Rotating persona subtitle */}
+        <motion.div variants={itemVariants} className="mt-6 h-12 flex items-center justify-center">
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={personaIndex}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+              className="text-lg md:text-xl text-[#6B7280] max-w-2xl mx-auto leading-relaxed"
+            >
+              <span className="text-[#7C3AED] font-semibold">{personas[personaIndex].label}: </span>
+              {personas[personaIndex].text}
+            </motion.p>
+          </AnimatePresence>
         </motion.div>
 
-        {/* Trust line */}
-        <motion.p variants={itemVariants} className="text-sm text-[#9CA3AF] mt-4">
-          Free forever plan · No credit card required · Live in 4 minutes
+        {/* Supporting line */}
+        <motion.p variants={itemVariants} className="text-base text-[#9CA3AF] mt-4 max-w-xl mx-auto">
+          Train on your data. Connect to your database. Deploy in 4 minutes. No ML expertise needed.
         </motion.p>
 
-        {/* Chat Widget Demo */}
+        {/* CTAs with micro-animation */}
+        <motion.div variants={itemVariants} className="flex items-center justify-center gap-4 mt-10 flex-wrap">
+          <motion.a
+            href="/Sign-In"
+            className="inline-flex items-center gap-2 bg-[#7C3AED] text-white rounded-lg px-6 py-3.5 text-sm font-semibold cursor-pointer"
+            whileHover={{ scale: 1.03, boxShadow: '0 8px 30px rgba(124,58,237,0.35)' }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+          >
+            Deploy My First Agent
+            <ArrowRight className="w-4 h-4" />
+          </motion.a>
+          <motion.a
+            href="/demo"
+            className="inline-flex items-center gap-2 border border-[#D1D5DB] text-[#374151] hover:border-[#DDD6FE] hover:text-[#7C3AED] rounded-lg px-6 py-3.5 text-sm font-semibold transition-colors cursor-pointer"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+          >
+            Watch 3-Minute Demo
+          </motion.a>
+        </motion.div>
+
+        {/* Trust signals */}
+        <motion.div variants={itemVariants} className="flex items-center justify-center gap-6 mt-6 flex-wrap">
+          {[
+            { icon: '✓', text: '500+ teams' },
+            { icon: '✓', text: 'SOC 2 compliant' },
+            { icon: '✓', text: 'No credit card' },
+            { icon: '✓', text: 'Free forever plan' },
+          ].map((item) => (
+            <span key={item.text} className="flex items-center gap-1.5 text-xs text-[#9CA3AF]">
+              <span className="text-[#7C3AED] font-semibold">{item.icon}</span>
+              {item.text}
+            </span>
+          ))}
+        </motion.div>
+
+        {/* Product Preview */}
         <motion.div variants={itemVariants} className="mt-16 max-w-2xl mx-auto">
           <ChatWidget />
         </motion.div>
