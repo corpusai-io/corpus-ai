@@ -326,46 +326,44 @@ export default function HeroV4() {
       <div className="absolute inset-0 v4-dot-grid pointer-events-none opacity-60" />
 
       <motion.div
-        className="relative max-w-4xl mx-auto"
+        className="relative max-w-5xl mx-auto"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
-        {/* Category badge with shimmer */}
-        <motion.div variants={itemVariants} className="flex justify-center mb-8">
-          <div className="v4-badge-shimmer inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#E9D5FF] text-[#C084F5] text-xs font-semibold tracking-wide uppercase">
+        {/* Category badge */}
+        <motion.div variants={itemVariants} className="flex justify-center mb-6">
+          <div className="v4-badge-shimmer inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-[#E9D5FF] text-[#C084F5] text-[11px] font-semibold tracking-wide uppercase">
             <Sparkles className="w-3 h-3" />
             Agentic AI Platform
           </div>
         </motion.div>
 
-        {/* Headline — bold with shiny gradient on key words */}
+        {/* Headline — 2 lines max on desktop */}
         <motion.h1
           variants={itemVariants}
-          className="text-4xl md:text-5xl lg:text-[64px] font-bold tracking-[-0.03em] leading-[1.1] text-[#111827]"
+          className="text-3xl md:text-[44px] lg:text-[54px] font-bold tracking-[-0.025em] leading-[1.15] text-[#111827]"
         >
-          Build <span className="v4-gradient-text-shine">AI Agents</span> That
-          <br className="hidden md:block" />
-          {' '}Answer, Query, and{' '}
-          <span className="v4-gradient-text-shine">Take Action</span>
+          Build <span className="v4-gradient-text-shine">AI Agents</span> That Don&apos;t Just
+          Answer — They <span className="v4-gradient-text-shine">Act</span>
         </motion.h1>
 
-        {/* Static sub-headline */}
-        <motion.p variants={itemVariants} className="text-lg md:text-xl text-[#6B7280] mt-6 max-w-2xl mx-auto leading-relaxed">
-          Train on your docs, connect your database, and deploy an autonomous agent
-          across every channel — in under 5 minutes. No code required.
+        {/* Sub-headline */}
+        <motion.p variants={itemVariants} className="text-base md:text-lg text-[#6B7280] mt-5 max-w-2xl mx-auto leading-relaxed">
+          Train on your data, connect your database, and deploy an autonomous agent
+          across every channel — in minutes, not months.
         </motion.p>
 
-        {/* Rotating persona subtitle */}
-        <motion.div variants={itemVariants} className="mt-7 h-12 flex items-center justify-center">
+        {/* Rotating persona */}
+        <motion.div variants={itemVariants} className="mt-5 h-10 flex items-center justify-center">
           <AnimatePresence mode="wait">
             <motion.p
               key={personaIndex}
-              initial={{ opacity: 0, y: 12, filter: 'blur(4px)' }}
+              initial={{ opacity: 0, y: 10, filter: 'blur(4px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, y: -12, filter: 'blur(4px)' }}
-              transition={{ duration: 0.45, ease: 'easeOut' }}
-              className="text-lg md:text-xl text-[#6B7280] max-w-2xl mx-auto leading-relaxed"
+              exit={{ opacity: 0, y: -10, filter: 'blur(4px)' }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+              className="text-sm md:text-base text-[#9CA3AF] max-w-xl mx-auto"
             >
               <span className="text-[#C084F5] font-semibold">{personas[personaIndex].label}: </span>
               {personas[personaIndex].text}
@@ -374,7 +372,7 @@ export default function HeroV4() {
         </motion.div>
 
         {/* CTAs */}
-        <motion.div variants={itemVariants} className="flex items-center justify-center gap-4 mt-10 flex-wrap">
+        <motion.div variants={itemVariants} className="flex items-center justify-center gap-3 mt-8 flex-wrap">
           <motion.a
             href="/Sign-In"
             className="v4-btn-glow inline-flex items-center gap-2 bg-[#C084F5] text-white rounded-xl px-7 py-3.5 text-sm font-semibold cursor-pointer shadow-lg shadow-[#C084F5]/20"
