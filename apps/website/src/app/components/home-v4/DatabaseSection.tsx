@@ -30,7 +30,7 @@ interface AgentExample {
 // ─── Code syntax colors (inside dark code panels) ─────────────────────────────
 
 function Kw({ children }: { children: React.ReactNode }) {
-  return <span className="text-[#A78BFA]">{children}</span>;
+  return <span className="text-[#D8B4FE]">{children}</span>;
 }
 function Val({ children }: { children: React.ReactNode }) {
   return <span className="text-[#818CF8]">{children}</span>;
@@ -371,7 +371,7 @@ function TabWidget({ tabs, autoRotate }: { tabs: TabContent[]; autoRotate: boole
             {i === activeTab && (
               <motion.div
                 layoutId="dbTab"
-                className="absolute bottom-0 left-0 right-0 h-px bg-[#7C3AED]"
+                className="absolute bottom-0 left-0 right-0 h-px bg-[#C084F5]"
                 transition={{ duration: 0.2 }}
               />
             )}
@@ -381,7 +381,7 @@ function TabWidget({ tabs, autoRotate }: { tabs: TabContent[]; autoRotate: boole
           <div className="ml-auto flex items-center pr-4">
             <div className="w-16 h-1 bg-white/[0.04] rounded-full overflow-hidden">
               <motion.div
-                className="h-full bg-[#7C3AED]/50 rounded-full"
+                className="h-full bg-[#C084F5]/50 rounded-full"
                 key={`${activeTab}-progress`}
                 initial={{ width: '0%' }}
                 animate={{ width: '100%' }}
@@ -429,7 +429,7 @@ export default function DatabaseSection() {
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <p className="text-sm font-semibold text-[#7C3AED] uppercase tracking-widest mb-4">
+          <p className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest mb-4">
             Agent Capabilities
           </p>
           <h2 className="text-4xl md:text-5xl font-bold text-[#111827] tracking-tight">
@@ -450,7 +450,7 @@ export default function DatabaseSection() {
                 onClick={() => setActiveExample(i)}
                 className={`flex items-center gap-2.5 px-5 py-3 rounded-xl text-sm font-medium transition-all cursor-pointer ${
                   i === activeExample
-                    ? 'bg-[#EDE9FE] border border-[#DDD6FE] text-[#7C3AED]'
+                    ? 'bg-[#F3E8FF] border border-[#E9D5FF] text-[#C084F5]'
                     : 'border border-[#E5E7EB] text-[#9CA3AF] hover:text-[#6B7280] hover:border-[#D1D5DB] bg-white'
                 }`}
               >
@@ -492,7 +492,7 @@ export default function DatabaseSection() {
               <div className="space-y-3 mt-8">
                 {example.features.map((feature) => (
                   <div key={feature} className="flex items-start gap-3">
-                    <Check className="w-4 h-4 text-[#7C3AED] mt-0.5 flex-shrink-0" />
+                    <Check className="w-4 h-4 text-[#C084F5] mt-0.5 flex-shrink-0" />
                     <span className="text-sm text-[#6B7280]">{feature}</span>
                   </div>
                 ))}
@@ -501,7 +501,7 @@ export default function DatabaseSection() {
               <div className="mt-8">
                 <Link
                   href="/Sign-In"
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-[#7C3AED] hover:text-[#6D28D9] transition-colors"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-[#C084F5] hover:text-[#A855F7] transition-colors"
                 >
                   {example.cta}
                   <ChevronRight className="w-4 h-4" />
@@ -522,7 +522,7 @@ export default function DatabaseSection() {
               onClick={() => setActiveExample(i)}
               className={`h-2 rounded-full transition-all cursor-pointer ${
                 i === activeExample
-                  ? 'bg-[#7C3AED] w-6'
+                  ? 'bg-[#C084F5] w-6'
                   : 'bg-[#D1D5DB] hover:bg-[#9CA3AF] w-2'
               }`}
             />

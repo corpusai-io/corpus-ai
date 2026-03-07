@@ -101,8 +101,8 @@ const navItems: NavItem[] = [
 function DropdownItem({ item, hasDesc }: { item: NavDropdownItem; hasDesc: boolean }) {
   const Icon = item.icon;
   return (
-    <Link href={item.href} className="flex items-start gap-3 p-3 rounded-lg hover:bg-[#F5F3FF] transition-colors">
-      <div className="w-9 h-9 rounded-lg bg-[#EDE9FE] flex items-center justify-center text-[#7C3AED] shrink-0">
+    <Link href={item.href} className="flex items-start gap-3 p-3 rounded-lg hover:bg-[#FAF5FF] transition-colors">
+      <div className="w-9 h-9 rounded-lg bg-[#F3E8FF] flex items-center justify-center text-[#C084F5] shrink-0">
         <Icon size={16} />
       </div>
       <div>
@@ -161,7 +161,7 @@ function DesktopNavItem({ item }: { item: NavItem }) {
             </div>
             {item.footer && (
               <div className="border-t border-[#E5E7EB] mt-3 pt-3">
-                <Link href={item.footer.href} className="text-xs text-[#7C3AED] hover:underline">
+                <Link href={item.footer.href} className="text-xs text-[#C084F5] hover:underline">
                   {item.footer.text}
                 </Link>
               </div>
@@ -211,9 +211,9 @@ function MobileAccordion({ item }: { item: NavItem }) {
                   <Link
                     key={sub.href}
                     href={sub.href}
-                    className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#F5F3FF] transition-colors"
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#FAF5FF] transition-colors"
                   >
-                    <Icon size={16} className="text-[#7C3AED]" />
+                    <Icon size={16} className="text-[#C084F5]" />
                     <span className="text-sm text-[#6B7280]">{sub.label}</span>
                   </Link>
                 );
@@ -260,7 +260,7 @@ export default function NavbarV4() {
             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
               <Link
                 href="/Sign-In"
-                className="text-sm font-medium bg-[#7C3AED] hover:bg-[#6D28D9] text-white rounded-xl px-5 py-2.5 transition-all inline-block shadow-md shadow-[#7C3AED]/20 hover:shadow-lg hover:shadow-[#7C3AED]/30"
+                className="text-sm font-medium bg-[#C084F5] hover:bg-[#A855F7] text-white rounded-xl px-5 py-2.5 transition-all inline-block shadow-md shadow-[#C084F5]/20 hover:shadow-lg hover:shadow-[#C084F5]/30"
               >
                 Start Free
               </Link>
@@ -309,7 +309,7 @@ export default function NavbarV4() {
               </Link>
               <Link
                 href="/Sign-In"
-                className="block text-center text-sm font-medium bg-[#7C3AED] hover:bg-[#6D28D9] text-white rounded-lg px-4 py-3 transition-colors"
+                className="block text-center text-sm font-medium bg-[#C084F5] hover:bg-[#A855F7] text-white rounded-lg px-4 py-3 transition-colors"
                 onClick={() => setMobileOpen(false)}
               >
                 Start Free

@@ -57,7 +57,7 @@ export default function PricingV4() {
   return (
     <section className="py-32 px-6 max-w-6xl mx-auto">
       <div className="text-center mb-16">
-        <p className="text-sm font-semibold text-[#7C3AED] uppercase tracking-widest mb-4">
+        <p className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest mb-4">
           Pricing
         </p>
         <h2 className="text-4xl md:text-5xl font-bold text-[#111827] tracking-tight">
@@ -78,12 +78,12 @@ export default function PricingV4() {
             transition={{ duration: 0.5, delay: i * 0.1 }}
             className={`relative rounded-2xl p-8 border transition-all ${
               tier.highlighted
-                ? 'bg-[#F5F3FF] border-[#7C3AED]/30 v4-pricing-highlight'
-                : 'bg-white border-[#E5E7EB] shadow-sm hover:border-[#DDD6FE] hover:shadow-md'
+                ? 'bg-[#FAF5FF] border-[#C084F5]/30 v4-pricing-highlight'
+                : 'bg-white border-[#E5E7EB] shadow-sm hover:border-[#E9D5FF] hover:shadow-md'
             }`}
           >
             {tier.highlighted && (
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#7C3AED] to-[#6D28D9] text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg shadow-[#7C3AED]/25">
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#C084F5] to-[#A855F7] text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg shadow-[#C084F5]/25">
                 Most Popular
               </span>
             )}
@@ -104,7 +104,7 @@ export default function PricingV4() {
                 <li key={feature} className="flex items-center gap-2.5 text-sm text-[#6B7280] py-1.5">
                   <Check
                     className={`w-4 h-4 flex-shrink-0 ${
-                      tier.highlighted ? 'text-[#7C3AED]' : 'text-[#9CA3AF]'
+                      tier.highlighted ? 'text-[#C084F5]' : 'text-[#9CA3AF]'
                     }`}
                   />
                   {feature}
@@ -116,7 +116,7 @@ export default function PricingV4() {
               href="/Sign-In"
               className={`block w-full mt-8 text-center py-3 rounded-lg text-sm font-semibold transition-colors ${
                 tier.highlighted
-                  ? 'bg-[#7C3AED] text-white hover:bg-[#6D28D9] shadow-md shadow-[#7C3AED]/20 hover:shadow-lg hover:shadow-[#7C3AED]/30'
+                  ? 'bg-[#C084F5] text-white hover:bg-[#A855F7] shadow-md shadow-[#C084F5]/20 hover:shadow-lg hover:shadow-[#C084F5]/30'
                   : 'border border-[#D1D5DB] text-[#374151] hover:bg-[#F3F4F6]'
               }`}
             >
@@ -129,7 +129,7 @@ export default function PricingV4() {
       <div className="text-center mt-8">
         <Link
           href="/Pricing"
-          className="text-sm text-[#6B7280] hover:text-[#7C3AED] transition-colors"
+          className="text-sm text-[#6B7280] hover:text-[#C084F5] transition-colors"
         >
           Compare all plans &rarr;
         </Link>

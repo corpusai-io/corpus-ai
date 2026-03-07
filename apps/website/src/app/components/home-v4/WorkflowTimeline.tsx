@@ -35,11 +35,10 @@ const steps = [
 
 export default function WorkflowTimeline() {
   return (
-    <section className="py-32 px-6 v4-section-gradient-purple relative overflow-hidden">
-      <div className="absolute top-1/2 right-0 w-[300px] h-[300px] -translate-y-1/2 opacity-[0.04] pointer-events-none" style={{ background: 'radial-gradient(circle, #7C3AED 0%, transparent 70%)', filter: 'blur(60px)' }} />
+    <section className="py-32 px-6 bg-[#FAF5FF] relative overflow-hidden">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-20">
-          <p className="text-sm font-semibold text-[#7C3AED] uppercase tracking-widest mb-4">
+          <p className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest mb-4">
             How It Works
           </p>
           <h2 className="text-4xl md:text-5xl font-bold text-[#111827] tracking-tight">
@@ -52,7 +51,7 @@ export default function WorkflowTimeline() {
 
         <div className="relative">
           {/* Vertical line */}
-          <div className="absolute left-6 md:left-8 top-0 bottom-0 w-px bg-gradient-to-b from-[#7C3AED]/50 via-[#DDD6FE] to-transparent" />
+          <div className="absolute left-6 md:left-8 top-0 bottom-0 w-px bg-gradient-to-b from-[#C084F5]/50 via-[#E9D5FF] to-transparent" />
 
           {steps.map((step, i) => (
             <motion.div
@@ -65,14 +64,14 @@ export default function WorkflowTimeline() {
             >
               {/* Step dot */}
               <div
-                className={`absolute left-6 md:left-8 -translate-x-1/2 w-4 h-4 rounded-full border-2 border-[#7C3AED] z-10 ${
-                  i === 0 ? 'bg-[#7C3AED] shadow-md shadow-[#7C3AED]/30' : 'bg-white'
+                className={`absolute left-6 md:left-8 -translate-x-1/2 w-4 h-4 rounded-full border-2 border-[#C084F5] z-10 ${
+                  i === 0 ? 'bg-[#C084F5] shadow-md shadow-[#C084F5]/30' : 'bg-white'
                 }`}
               />
 
               {/* Content */}
               <div className="ml-16 md:ml-20">
-                <p className="text-xs font-mono text-[#7C3AED] font-semibold mb-2">
+                <p className="text-xs font-mono text-[#C084F5] font-semibold mb-2">
                   {step.number}
                 </p>
                 <h3 className="text-xl font-semibold text-[#111827] mb-2">

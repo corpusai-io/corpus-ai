@@ -40,10 +40,9 @@ export default function TestimonialV4() {
   const t = testimonials[index];
 
   return (
-    <section className="py-32 px-6 v4-section-gradient-purple relative overflow-hidden">
-      <div className="absolute top-20 left-10 w-[250px] h-[250px] opacity-[0.04] pointer-events-none" style={{ background: 'radial-gradient(circle, #7C3AED 0%, transparent 70%)', filter: 'blur(60px)' }} />
+    <section className="py-32 px-6 bg-[#FAF5FF]">
       <div className="max-w-4xl mx-auto text-center">
-        <p className="text-sm font-semibold text-[#7C3AED] uppercase tracking-widest mb-12">
+        <p className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest mb-12">
           Trusted by 500+ teams
         </p>
 
@@ -62,7 +61,7 @@ export default function TestimonialV4() {
             </blockquote>
 
             <div className="mt-10">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#7C3AED] via-[#6D28D9] to-[#4F46E5] mx-auto mb-4 flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-[#7C3AED]/25">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#C084F5] via-[#A855F7] to-[#4F46E5] mx-auto mb-4 flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-[#C084F5]/25">
                 {t.initials}
               </div>
               <div className="text-base font-semibold text-[#111827]">{t.name}</div>
@@ -78,7 +77,7 @@ export default function TestimonialV4() {
               key={i}
               onClick={() => setIndex(i)}
               className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === index ? 'w-6 bg-[#7C3AED]' : 'w-1.5 bg-[#DDD6FE]'
+                i === index ? 'w-6 bg-[#C084F5]' : 'w-1.5 bg-[#E9D5FF]'
               }`}
             />
           ))}

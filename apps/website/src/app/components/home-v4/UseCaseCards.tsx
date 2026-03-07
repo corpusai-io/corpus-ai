@@ -9,8 +9,8 @@ const useCases = [
     title: 'Education',
     href: '/Solution/Education',
     icon: GraduationCap,
-    color: '#7C3AED',
-    bg: '#EDE9FE',
+    color: '#C084F5',
+    bg: '#F3E8FF',
     body: 'AI tutors that adapt to each student. Instant answers from course materials, 24/7 campus support, and 60% less admin overhead.',
   },
   {
@@ -52,7 +52,7 @@ export default function UseCaseCards() {
     <section className="py-32 px-6 relative">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <p className="text-sm font-semibold text-[#7C3AED] uppercase tracking-widest mb-4">
+          <p className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest mb-4">
             Solutions
           </p>
           <h2 className="text-4xl md:text-5xl font-bold text-[#111827] tracking-tight">
@@ -83,12 +83,12 @@ export default function UseCaseCards() {
                   className="text-lg font-semibold text-[#111827] mb-3 transition-colors"
                   style={{ color: undefined }}
                 >
-                  <span className="group-hover:text-[#7C3AED] transition-colors">{useCase.title}</span>
+                  <span className="group-hover:text-[#C084F5] transition-colors">{useCase.title}</span>
                 </h3>
                 <p className="text-sm text-[#6B7280] leading-relaxed">
                   {useCase.body}
                 </p>
-                <p className="text-xs text-[#9CA3AF] group-hover:text-[#7C3AED] transition-colors mt-4 font-medium">
+                <p className="text-xs text-[#9CA3AF] group-hover:text-[#C084F5] transition-colors mt-4 font-medium">
                   Explore {useCase.title} &rarr;
                 </p>
               </Link>

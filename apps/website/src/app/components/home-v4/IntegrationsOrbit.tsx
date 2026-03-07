@@ -89,8 +89,8 @@ function BeamCard({ card, lit, wasLit }: { card: BeamCard; lit: boolean; wasLit:
       <motion.div
         className={`flex items-center gap-3 px-4 py-3 rounded-xl border cursor-pointer transition-colors duration-700 ${
           lit
-            ? 'border-[#7C3AED]/30 bg-[#EDE9FE] shadow-sm shadow-[#7C3AED]/10'
-            : 'border-[#E5E7EB] bg-white hover:border-[#DDD6FE] hover:bg-[#F9FAFB]'
+            ? 'border-[#C084F5]/30 bg-[#F3E8FF] shadow-sm shadow-[#C084F5]/10'
+            : 'border-[#E5E7EB] bg-white hover:border-[#E9D5FF] hover:bg-[#F9FAFB]'
         }`}
         initial={{ opacity: 0, x: card.side === 'left' ? -16 : 16 }}
         whileInView={{ opacity: 1, x: 0 }}
@@ -101,7 +101,7 @@ function BeamCard({ card, lit, wasLit }: { card: BeamCard; lit: boolean; wasLit:
         <motion.div
           className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
           animate={{
-            backgroundColor: lit ? 'rgba(124,58,237,0.12)' : 'rgba(243,244,246,1)',
+            backgroundColor: lit ? 'rgba(192,132,245,0.12)' : 'rgba(243,244,246,1)',
           }}
           transition={{ duration: 0.6 }}
         >
@@ -129,7 +129,7 @@ function BeamCard({ card, lit, wasLit }: { card: BeamCard; lit: boolean; wasLit:
           {lit && (
             <motion.span
               key="dot"
-              className="w-2 h-2 rounded-full bg-[#7C3AED] flex-shrink-0"
+              className="w-2 h-2 rounded-full bg-[#C084F5] flex-shrink-0"
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
@@ -194,20 +194,20 @@ function BeamLines({
       <style>{BEAM_CSS}</style>
       <defs>
         <linearGradient id="glLeft" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%"   stopColor="#7C3AED" stopOpacity="0.05" />
-          <stop offset="100%" stopColor="#7C3AED" stopOpacity="0.35" />
+          <stop offset="0%"   stopColor="#C084F5" stopOpacity="0.05" />
+          <stop offset="100%" stopColor="#C084F5" stopOpacity="0.35" />
         </linearGradient>
         <linearGradient id="glLeftLit" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%"   stopColor="#7C3AED" stopOpacity="0.15" />
-          <stop offset="100%" stopColor="#7C3AED" stopOpacity="0.85" />
+          <stop offset="0%"   stopColor="#C084F5" stopOpacity="0.15" />
+          <stop offset="100%" stopColor="#C084F5" stopOpacity="0.85" />
         </linearGradient>
         <linearGradient id="glRight" x1="100%" y1="0%" x2="0%" y2="0%">
-          <stop offset="0%"   stopColor="#7C3AED" stopOpacity="0.05" />
-          <stop offset="100%" stopColor="#7C3AED" stopOpacity="0.35" />
+          <stop offset="0%"   stopColor="#C084F5" stopOpacity="0.05" />
+          <stop offset="100%" stopColor="#C084F5" stopOpacity="0.35" />
         </linearGradient>
         <linearGradient id="glRightLit" x1="100%" y1="0%" x2="0%" y2="0%">
-          <stop offset="0%"   stopColor="#7C3AED" stopOpacity="0.15" />
-          <stop offset="100%" stopColor="#7C3AED" stopOpacity="0.85" />
+          <stop offset="0%"   stopColor="#C084F5" stopOpacity="0.15" />
+          <stop offset="100%" stopColor="#C084F5" stopOpacity="0.85" />
         </linearGradient>
         <filter id="particleGlow" x="-100%" y="-100%" width="300%" height="300%">
           <feGaussianBlur stdDeviation="2" result="blur" />
@@ -266,8 +266,8 @@ function BeamLines({
           : 1;
         return (
           <g key={p.id} filter="url(#particleGlow)">
-            <circle cx={pos.x} cy={pos.y} r={5} fill="#7C3AED" opacity={opacity * 0.2} />
-            <circle cx={pos.x} cy={pos.y} r={2.5} fill="#7C3AED" opacity={opacity * 0.9} />
+            <circle cx={pos.x} cy={pos.y} r={5} fill="#C084F5" opacity={opacity * 0.2} />
+            <circle cx={pos.x} cy={pos.y} r={2.5} fill="#C084F5" opacity={opacity * 0.9} />
             <circle cx={pos.x} cy={pos.y} r={1} fill="#ffffff" opacity={opacity * 0.6} />
           </g>
         );
@@ -283,7 +283,7 @@ function Hub({ pulse }: { pulse: boolean }) {
     <div className="flex flex-col items-center gap-4">
       <div className="relative flex items-center justify-center">
         <motion.div
-          className="absolute rounded-full border border-[#7C3AED]/15"
+          className="absolute rounded-full border border-[#C084F5]/15"
           animate={pulse
             ? { width: [88, 108, 88], height: [88, 108, 88], opacity: [0.4, 0, 0.4] }
             : { width: 88, height: 88, opacity: 0.2 }
@@ -291,7 +291,7 @@ function Hub({ pulse }: { pulse: boolean }) {
           transition={{ duration: 1.6, ease: 'easeOut', repeat: pulse ? 1 : 0 }}
         />
         <motion.div
-          className="absolute rounded-full border border-[#7C3AED]/25"
+          className="absolute rounded-full border border-[#C084F5]/25"
           animate={pulse
             ? { width: [72, 96, 72], height: [72, 96, 72], opacity: [0.5, 0, 0.5] }
             : { width: 72, height: 72, opacity: 0.3 }
@@ -301,7 +301,7 @@ function Hub({ pulse }: { pulse: boolean }) {
         <motion.div
           className="absolute rounded-full"
           animate={pulse
-            ? { boxShadow: ['0 0 0 0 rgba(124,58,237,0)', '0 0 0 12px rgba(124,58,237,0.12)', '0 0 0 0 rgba(124,58,237,0)'] }
+            ? { boxShadow: ['0 0 0 0 rgba(192,132,245,0)', '0 0 0 12px rgba(192,132,245,0.12)', '0 0 0 0 rgba(192,132,245,0)'] }
             : {}}
           transition={{ duration: 1.4, ease: 'easeOut' }}
           style={{ width: 68, height: 68, borderRadius: '50%' }}
@@ -315,7 +315,7 @@ function Hub({ pulse }: { pulse: boolean }) {
           transition={{ duration: pulse ? 1.4 : 3, ease: 'easeInOut', repeat: Infinity }}
           style={{
             width: 80, height: 80, borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(124,58,237,0.35) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(192,132,245,0.35) 0%, transparent 70%)',
             filter: 'blur(12px)',
           }}
         />
@@ -400,7 +400,7 @@ export default function IntegrationsOrbit() {
       {/* Section header */}
       <div className="text-center mb-16">
         <motion.p
-          className="text-sm font-semibold text-[#7C3AED] uppercase tracking-widest mb-4"
+          className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest mb-4"
           initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -458,7 +458,7 @@ export default function IntegrationsOrbit() {
           viewport={{ once: true }}
           transition={{ delay: 0.6 }}
         >
-          <span className="text-[#7C3AED]">●</span> Violet glow = active connection
+          <span className="text-[#C084F5]">●</span> Violet glow = active connection
           &nbsp;·&nbsp; Particles travel to hub every 2s
         </motion.p>
       </div>
@@ -472,14 +472,14 @@ export default function IntegrationsOrbit() {
               animate={{ opacity: [0.2, 0.4, 0.2], scale: [1, 1.15, 1] }}
               transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
               style={{
-                background: 'radial-gradient(circle, rgba(124,58,237,0.4) 0%, transparent 70%)',
+                background: 'radial-gradient(circle, rgba(192,132,245,0.4) 0%, transparent 70%)',
                 filter: 'blur(10px)',
               }}
             />
             <img src="/logo_primary_circ.png" alt="Corpus AI" className="relative w-14 h-14 rounded-full object-contain" />
           </div>
         </div>
-        <div className="h-8 w-px bg-gradient-to-b from-[#7C3AED]/30 to-transparent mx-auto" />
+        <div className="h-8 w-px bg-gradient-to-b from-[#C084F5]/30 to-transparent mx-auto" />
         {cards.map(card => (
           <BeamCard key={card.id} card={card} lit={litIds.has(card.id)} wasLit={prevLitIds.has(card.id)} />
         ))}
@@ -504,7 +504,7 @@ export default function IntegrationsOrbit() {
           >
             <Link
               href={item.href}
-              className="px-4 py-2 rounded-lg border border-[#E5E7EB] hover:border-[#DDD6FE] hover:text-[#7C3AED] transition-colors text-sm text-[#6B7280] bg-white"
+              className="px-4 py-2 rounded-lg border border-[#E5E7EB] hover:border-[#E9D5FF] hover:text-[#C084F5] transition-colors text-sm text-[#6B7280] bg-white"
             >
               {item.name}
             </Link>

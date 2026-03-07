@@ -16,7 +16,7 @@ export default function FeatureBento() {
   return (
     <section className="py-32 px-6 max-w-7xl mx-auto relative">
       <div className="text-center mb-16">
-        <p className="text-sm font-semibold text-[#7C3AED] uppercase tracking-widest mb-4">
+        <p className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest mb-4">
           Platform
         </p>
         <h2 className="text-4xl md:text-5xl font-bold text-[#111827] tracking-tight">
@@ -37,7 +37,7 @@ export default function FeatureBento() {
           whileInView="visible"
           viewport={{ once: true, margin: '-40px' }}
         >
-          <p className="text-xs font-semibold text-[#7C3AED] uppercase tracking-widest mb-3">[01] RETRIEVAL</p>
+          <p className="text-xs font-semibold text-[#C084F5] uppercase tracking-widest mb-3">[01] RETRIEVAL</p>
           <h3 className="text-xl font-semibold text-[#111827] mb-2">
             Intelligent RAG Pipeline
           </h3>
@@ -50,7 +50,7 @@ export default function FeatureBento() {
             {['Chunk', 'Embed', 'Index'].map((step, i) => (
               <div key={step} className="flex items-center gap-2">
                 {i > 0 && <span className="text-[#D1D5DB]">&rarr;</span>}
-                <span className="inline-flex px-3 py-1.5 rounded-lg bg-[#EDE9FE] text-[#7C3AED] text-xs font-medium">
+                <span className="inline-flex px-3 py-1.5 rounded-lg bg-[#F3E8FF] text-[#C084F5] text-xs font-medium">
                   {step}
                 </span>
               </div>
@@ -67,7 +67,7 @@ export default function FeatureBento() {
           whileInView="visible"
           viewport={{ once: true, margin: '-40px' }}
         >
-          <p className="text-xs font-semibold text-[#7C3AED] uppercase tracking-widest mb-3">[02] GROWTH</p>
+          <p className="text-xs font-semibold text-[#C084F5] uppercase tracking-widest mb-3">[02] GROWTH</p>
           <div className="w-10 h-10 rounded-lg bg-[#FCE7F3] flex items-center justify-center mb-4">
             <UserPlus className="w-5 h-5 text-[#DB2777]" />
           </div>
@@ -90,7 +90,7 @@ export default function FeatureBento() {
           whileInView="visible"
           viewport={{ once: true, margin: '-40px' }}
         >
-          <p className="text-xs font-semibold text-[#7C3AED] uppercase tracking-widest mb-3">[03] BRANDING</p>
+          <p className="text-xs font-semibold text-[#C084F5] uppercase tracking-widest mb-3">[03] BRANDING</p>
           <div className="w-10 h-10 rounded-lg bg-[#FEF3C7] flex items-center justify-center mb-4">
             <Palette className="w-5 h-5 text-[#D97706]" />
           </div>
@@ -112,7 +112,7 @@ export default function FeatureBento() {
           whileInView="visible"
           viewport={{ once: true, margin: '-40px' }}
         >
-          <p className="text-xs font-semibold text-[#7C3AED] uppercase tracking-widest mb-3">[04] INSIGHTS</p>
+          <p className="text-xs font-semibold text-[#C084F5] uppercase tracking-widest mb-3">[04] INSIGHTS</p>
           <div className="w-10 h-10 rounded-lg bg-[#EEF2FF] flex items-center justify-center mb-4">
             <BarChart3 className="w-5 h-5 text-[#4F46E5]" />
           </div>
@@ -134,7 +134,7 @@ export default function FeatureBento() {
           whileInView="visible"
           viewport={{ once: true, margin: '-40px' }}
         >
-          <p className="text-xs font-semibold text-[#7C3AED] uppercase tracking-widest mb-3">[05] SECURITY</p>
+          <p className="text-xs font-semibold text-[#C084F5] uppercase tracking-widest mb-3">[05] SECURITY</p>
           <h3 className="text-xl font-semibold text-[#111827] mb-2">
             Enterprise-Grade Security
           </h3>
@@ -164,7 +164,7 @@ export default function FeatureBento() {
           whileInView="visible"
           viewport={{ once: true, margin: '-40px' }}
         >
-          <p className="text-xs font-semibold text-[#7C3AED] uppercase tracking-widest mb-3">[06] GLOBAL</p>
+          <p className="text-xs font-semibold text-[#C084F5] uppercase tracking-widest mb-3">[06] GLOBAL</p>
           <div className="w-10 h-10 rounded-lg bg-[#DCFCE7] flex items-center justify-center mb-4">
             <Languages className="w-5 h-5 text-[#16A34A]" />
           </div>

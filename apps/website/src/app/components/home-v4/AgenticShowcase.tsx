@@ -22,7 +22,7 @@ function ThoughtChain() {
             </motion.span>
           )}
           <motion.span
-            className="text-xs px-2 py-1 bg-[#EDE9FE] text-[#7C3AED] rounded font-medium"
+            className="text-xs px-2 py-1 bg-[#F3E8FF] text-[#C084F5] rounded font-medium"
             initial={{ opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.3 }}
@@ -39,8 +39,8 @@ function ThoughtChain() {
 const cards = [
   {
     icon: Brain,
-    iconColor: 'text-[#7C3AED]',
-    iconBg: 'bg-[#EDE9FE]',
+    iconColor: 'text-[#C084F5]',
+    iconBg: 'bg-[#F3E8FF]',
     title: 'Multi-Step Reasoning',
     body: 'Your agent breaks complex queries into sub-tasks, reasons through each step, and synthesizes a coherent answer — no hallucinations, just grounded logic.',
     visual: 'thought-chain',
@@ -77,12 +77,11 @@ const actionBadges = [
 
 export default function AgenticShowcase() {
   return (
-    <section className="py-32 px-6 v4-section-gradient-light relative overflow-hidden">
-      <div className="absolute -bottom-20 -left-20 w-[400px] h-[400px] opacity-[0.04] pointer-events-none" style={{ background: 'radial-gradient(circle, #7C3AED 0%, transparent 70%)', filter: 'blur(60px)' }} />
+    <section className="py-32 px-6 bg-[#F9FAFB] relative overflow-hidden">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-20">
-          <p className="text-sm font-semibold text-[#7C3AED] uppercase tracking-widest mb-4">
+          <p className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest mb-4">
             Agents, not chatbots
           </p>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#111827] tracking-tight">

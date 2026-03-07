@@ -25,7 +25,7 @@ export default function Home() {
       <HeroV4 />
 
       {/* Gradient divider */}
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-[#DDD6FE]/60 to-transparent" />
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-[#E9D5FF]/60 to-transparent" />
 
       <LogoBar />
 
@@ -33,11 +33,11 @@ export default function Home() {
 
       <ProblemBand />
 
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-[#DDD6FE]/50 to-transparent" />
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-[#E9D5FF]/50 to-transparent" />
 
       <AgenticShowcase />
 
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-[#DDD6FE]/50 to-transparent" />
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-[#E9D5FF]/50 to-transparent" />
 
       <DatabaseSection />
 
@@ -47,7 +47,7 @@ export default function Home() {
 
       <WorkflowTimeline />
 
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-[#DDD6FE]/50 to-transparent" />
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-[#E9D5FF]/50 to-transparent" />
 
       <IntegrationsOrbit />
 
@@ -57,7 +57,7 @@ export default function Home() {
 
       <TestimonialV4 />
 
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-[#DDD6FE]/40 to-transparent" />
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-[#E9D5FF]/40 to-transparent" />
 
       <PricingV4 />
 

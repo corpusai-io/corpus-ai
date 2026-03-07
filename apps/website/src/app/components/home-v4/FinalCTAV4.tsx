@@ -5,9 +5,7 @@ import { motion } from 'framer-motion';
 
 export default function FinalCTAV4() {
   return (
-    <section className="py-32 px-6 v4-animated-gradient relative overflow-hidden">
-      <div className="absolute -top-20 -right-20 w-[400px] h-[400px] opacity-[0.05] pointer-events-none" style={{ background: 'radial-gradient(circle, #7C3AED 0%, transparent 70%)', filter: 'blur(60px)' }} />
-      <div className="absolute -bottom-20 -left-20 w-[300px] h-[300px] opacity-[0.04] pointer-events-none" style={{ background: 'radial-gradient(circle, #4F46E5 0%, transparent 70%)', filter: 'blur(60px)' }} />
+    <section className="py-32 px-6 bg-[#FAF5FF] relative">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -20,11 +18,11 @@ export default function FinalCTAV4() {
           className="absolute inset-0 -z-10 pointer-events-none"
           style={{
             background:
-              'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(124, 58, 237, 0.07) 0%, transparent 70%)',
+              'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(192, 132, 245, 0.07) 0%, transparent 70%)',
           }}
         />
 
-        <p className="text-sm font-semibold text-[#7C3AED] uppercase tracking-widest mb-6">
+        <p className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest mb-6">
           Your first agent is free
         </p>
 
@@ -41,13 +39,13 @@ export default function FinalCTAV4() {
         <div className="flex items-center justify-center gap-4 mt-10 flex-wrap">
           <Link
             href="/Sign-In"
-            className="v4-btn-glow bg-[#7C3AED] text-white hover:bg-[#6D28D9] rounded-xl px-8 py-4 text-sm font-semibold transition-all shadow-lg shadow-[#7C3AED]/25 hover:shadow-xl hover:shadow-[#7C3AED]/30"
+            className="v4-btn-glow bg-[#C084F5] text-white hover:bg-[#A855F7] rounded-xl px-8 py-4 text-sm font-semibold transition-all shadow-lg shadow-[#C084F5]/25 hover:shadow-xl hover:shadow-[#C084F5]/30"
           >
             Build Your First Agent — Free
           </Link>
           <Link
             href="/Sign-In"
-            className="border border-[#D1D5DB] text-[#374151] hover:bg-white hover:border-[#DDD6FE] hover:text-[#7C3AED] rounded-xl px-8 py-4 text-sm font-semibold transition-all bg-white/80 backdrop-blur-sm"
+            className="border border-[#D1D5DB] text-[#374151] hover:bg-white hover:border-[#E9D5FF] hover:text-[#C084F5] rounded-xl px-8 py-4 text-sm font-semibold transition-all bg-white/80 backdrop-blur-sm"
           >
             Talk to Sales
           </Link>

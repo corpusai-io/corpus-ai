@@ -620,11 +620,11 @@ animation: path 1s linear infinite;
 
 /* ========== Brand Design Tokens ========== */
 :root {
-  --brand:        #7C3AED;
-  --brand-50:     #F5F3FF;
-  --brand-100:    #EDE9FE;
-  --brand-200:    #DDD6FE;
-  --brand-700:    #6D28D9;
+  --brand:        #C084F5;
+  --brand-50:     #FAF5FF;
+  --brand-100:    #F3E8FF;
+  --brand-200:    #E9D5FF;
+  --brand-700:    #A855F7;
   --brand-900:    #4C1D95;
   --gray-50:      #F9FAFB;
   --gray-100:     #F3F4F6;
@@ -647,8 +647,8 @@ animation: path 1s linear infinite;
 }
 
 .v4-card:hover {
-  border-color: #DDD6FE;
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.06), 0 16px 48px rgba(0, 0, 0, 0.05);
+  border-color: #E9D5FF;
+  box-shadow: 0 4px 12px rgba(192, 132, 245, 0.06), 0 16px 48px rgba(0, 0, 0, 0.05);
   transform: translateY(-1px);
 }
 
@@ -660,12 +660,12 @@ animation: path 1s linear infinite;
 }
 
 .v4-glow-purple {
-  box-shadow: 0 0 80px rgba(124, 58, 237, 0.12), 0 0 160px rgba(124, 58, 237, 0.04);
+  box-shadow: 0 0 80px rgba(192, 132, 245, 0.12), 0 0 160px rgba(192, 132, 245, 0.04);
 }
 
 .v4-glow-hero {
   background:
-    radial-gradient(ellipse 70% 50% at 50% -10%, rgba(124, 58, 237, 0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 50% at 50% -10%, rgba(192, 132, 245, 0.07) 0%, transparent 70%),
     radial-gradient(ellipse 40% 30% at 20% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 60%),
     radial-gradient(ellipse 40% 30% at 80% 20%, rgba(109, 40, 217, 0.04) 0%, transparent 60%);
 }
@@ -698,7 +698,7 @@ animation: path 1s linear infinite;
 }
 
 .v4-shimmer {
-  background: linear-gradient(90deg, transparent 0%, rgba(124,58,237,0.05) 50%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, rgba(192,132,245,0.05) 50%, transparent 100%);
   background-size: 200% 100%;
   animation: v4-shimmer 3s ease-in-out infinite;
 }
@@ -731,14 +731,32 @@ animation: path 1s linear infinite;
 
 /* ========== V4 Enhanced — 2026 Design Revamp ========== */
 
-/* Animated gradient mesh for hero background */
-.v4-hero-mesh {
+/* Moving gradient for hero — smooth slow drift */
+@keyframes v4-hero-drift {
+  0% {
+    background-position: 0% 0%;
+  }
+  25% {
+    background-position: 100% 20%;
+  }
+  50% {
+    background-position: 60% 100%;
+  }
+  75% {
+    background-position: 10% 60%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+.v4-hero-moving {
   background:
-    radial-gradient(ellipse 100% 80% at 50% 0%, rgba(139, 92, 246, 0.14) 0%, transparent 55%),
-    radial-gradient(ellipse 70% 60% at 25% 35%, rgba(167, 139, 250, 0.12) 0%, transparent 50%),
-    radial-gradient(ellipse 70% 60% at 75% 30%, rgba(124, 58, 237, 0.10) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 50% at 50% 80%, rgba(244, 114, 182, 0.07) 0%, transparent 50%),
-    radial-gradient(ellipse 50% 40% at 80% 65%, rgba(251, 146, 60, 0.05) 0%, transparent 50%);
+    radial-gradient(ellipse 50% 45% at 30% 25%, rgba(192, 132, 245, 0.13) 0%, transparent 70%),
+    radial-gradient(ellipse 45% 40% at 70% 60%, rgba(168, 85, 247, 0.08) 0%, transparent 65%),
+    radial-gradient(ellipse 35% 30% at 50% 80%, rgba(216, 180, 254, 0.06) 0%, transparent 60%);
+  background-size: 200% 200%;
+  animation: v4-hero-drift 18s ease-in-out infinite;
 }
 
 /* Subtle animated grain texture */
@@ -791,7 +809,7 @@ animation: path 1s linear infinite;
   transform: translateX(-50%);
   width: 60%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(192, 132, 245, 0.2), transparent);
 }
 
 /* Enhanced card with gradient border on hover */
@@ -810,7 +828,7 @@ animation: path 1s linear infinite;
   inset: -1px;
   border-radius: 17px;
   padding: 1px;
-  background: linear-gradient(135deg, transparent 40%, rgba(124, 58, 237, 0.3), rgba(167, 139, 250, 0.2), transparent 80%);
+  background: linear-gradient(135deg, transparent 40%, rgba(192, 132, 245, 0.3), rgba(167, 139, 250, 0.2), transparent 80%);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -825,13 +843,13 @@ animation: path 1s linear infinite;
 
 .v4-card-glow:hover {
   border-color: transparent;
-  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.08), 0 12px 40px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 20px rgba(192, 132, 245, 0.08), 0 12px 40px rgba(0, 0, 0, 0.06);
   transform: translateY(-2px);
 }
 
 /* Gradient text utility */
 .v4-gradient-text {
-  background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 30%, #6D28D9 60%, #4F46E5 100%);
+  background: linear-gradient(135deg, #C084F5 0%, #C084F5 30%, #A855F7 60%, #4F46E5 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -839,12 +857,12 @@ animation: path 1s linear infinite;
 
 /* Shiny luminous gradient — for hero headline emphasis */
 .v4-gradient-text-shine {
-  background: linear-gradient(135deg, #8B5CF6 0%, #A78BFA 25%, #7C3AED 50%, #8B5CF6 75%, #C4B5FD 100%);
-  background-size: 200% auto;
+  background: linear-gradient(120deg, #A855F7 0%, #C084F5 20%, #D8B4FE 40%, #C084F5 60%, #9333EA 80%, #C084F5 100%);
+  background-size: 250% auto;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: v4-text-shine 4s ease-in-out infinite;
+  animation: v4-text-shine 5s ease-in-out infinite;
 }
 
 @keyframes v4-text-shine {
@@ -854,7 +872,7 @@ animation: path 1s linear infinite;
 }
 
 .v4-gradient-text-warm {
-  background: linear-gradient(135deg, #7C3AED 0%, #A78BFA 50%, #C084FC 100%);
+  background: linear-gradient(135deg, #C084F5 0%, #D8B4FE 50%, #C084FC 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -871,7 +889,7 @@ animation: path 1s linear infinite;
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  box-shadow: 0 0 24px rgba(124, 58, 237, 0.4);
+  box-shadow: 0 0 24px rgba(192, 132, 245, 0.4);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -888,7 +906,7 @@ animation: path 1s linear infinite;
 }
 
 .v4-animated-gradient {
-  background: linear-gradient(-45deg, #F5F3FF, #EDE9FE, #E0E7FF, #F5F3FF);
+  background: linear-gradient(-45deg, #FAF5FF, #F3E8FF, #E0E7FF, #FAF5FF);
   background-size: 300% 300%;
   animation: v4-gradient-shift 8s ease infinite;
 }
@@ -916,7 +934,7 @@ animation: path 1s linear infinite;
   width: 40px;
   height: 3px;
   border-radius: 2px;
-  background: linear-gradient(90deg, #7C3AED, #A78BFA);
+  background: linear-gradient(90deg, #C084F5, #D8B4FE);
   opacity: 0;
   transition: opacity 0.5s ease, width 0.5s ease;
 }
@@ -932,7 +950,7 @@ animation: path 1s linear infinite;
 }
 
 .v4-section-gradient-purple {
-  background: linear-gradient(180deg, #F5F3FF 0%, #EDE9FE 50%, #F5F3FF 100%);
+  background: linear-gradient(180deg, #FAF5FF 0%, #F3E8FF 50%, #FAF5FF 100%);
 }
 
 /* Interactive dot grid for hero */
@@ -942,7 +960,7 @@ animation: path 1s linear infinite;
 }
 
 .v4-dot-grid {
-  background-image: radial-gradient(circle, rgba(124, 58, 237, 0.12) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(192, 132, 245, 0.12) 1px, transparent 1px);
   background-size: 32px 32px;
   animation: v4-dot-pulse 4s ease-in-out infinite;
 }
@@ -950,14 +968,14 @@ animation: path 1s linear infinite;
 /* Pricing card highlight ring */
 .v4-pricing-highlight {
   box-shadow:
-    0 0 0 1px rgba(124, 58, 237, 0.2),
-    0 0 40px rgba(124, 58, 237, 0.08),
-    0 20px 60px rgba(124, 58, 237, 0.06);
+    0 0 0 1px rgba(192, 132, 245, 0.2),
+    0 0 40px rgba(192, 132, 245, 0.08),
+    0 20px 60px rgba(192, 132, 245, 0.06);
 }
 
 /* Nav scroll state */
 .v4-nav-scrolled {
-  border-bottom-color: rgba(124, 58, 237, 0.08) !important;
+  border-bottom-color: rgba(192, 132, 245, 0.08) !important;
   box-shadow: 0 1px 12px rgba(0, 0, 0, 0.04);
 }
 
@@ -982,7 +1000,7 @@ animation: path 1s linear infinite;
 }
 
 .v4-badge-shimmer {
-  background: linear-gradient(90deg, #EDE9FE 0%, #F5F3FF 20%, #DDD6FE 40%, #EDE9FE 60%);
+  background: linear-gradient(90deg, #F3E8FF 0%, #FAF5FF 20%, #E9D5FF 40%, #F3E8FF 60%);
   background-size: 200% 100%;
   animation: v4-badge-shimmer 3s ease-in-out infinite;
 }

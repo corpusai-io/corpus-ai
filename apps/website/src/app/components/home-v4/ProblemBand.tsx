@@ -21,9 +21,7 @@ const after = [
 
 export default function ProblemBand() {
   return (
-    <section className="py-28 px-6 bg-white relative overflow-hidden">
-      {/* Subtle background accent */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] opacity-[0.03] pointer-events-none" style={{ background: 'radial-gradient(circle, #7C3AED 0%, transparent 70%)' }} />
+    <section className="py-28 px-6 bg-white">
       <div className="max-w-6xl mx-auto">
 
         {/* Section label */}
@@ -34,7 +32,7 @@ export default function ProblemBand() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <p className="text-sm font-semibold text-[#7C3AED] uppercase tracking-widest mb-3">
+          <p className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest mb-3">
             The transformation
           </p>
           <h2 className="text-3xl md:text-4xl font-bold text-[#111827] tracking-tight">
@@ -85,17 +83,17 @@ export default function ProblemBand() {
 
           {/* After column */}
           <motion.div
-            className="rounded-2xl border border-[#DDD6FE] bg-gradient-to-b from-[#F5F3FF] to-[#EDE9FE]/50 p-8 shadow-sm shadow-[#7C3AED]/5"
+            className="rounded-2xl border border-[#E9D5FF] bg-gradient-to-b from-[#FAF5FF] to-[#F3E8FF]/50 p-8 shadow-sm shadow-[#C084F5]/5"
             initial={{ opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.55, ease: [0, 0, 0.2, 1] }}
           >
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-8 rounded-full bg-[#EDE9FE] flex items-center justify-center">
-                <Check className="w-4 h-4 text-[#7C3AED]" />
+              <div className="w-8 h-8 rounded-full bg-[#F3E8FF] flex items-center justify-center">
+                <Check className="w-4 h-4 text-[#C084F5]" />
               </div>
-              <span className="text-sm font-semibold text-[#7C3AED] uppercase tracking-widest">
+              <span className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest">
                 With Corpus AI
               </span>
             </div>
@@ -110,8 +108,8 @@ export default function ProblemBand() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.08, duration: 0.4 }}
                 >
-                  <div className="w-5 h-5 rounded-full bg-[#EDE9FE] flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Check className="w-2.5 h-2.5 text-[#7C3AED]" />
+                  <div className="w-5 h-5 rounded-full bg-[#F3E8FF] flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Check className="w-2.5 h-2.5 text-[#C084F5]" />
                   </div>
                   <p className="text-sm text-[#374151] font-medium leading-relaxed">{item}</p>
                 </motion.div>

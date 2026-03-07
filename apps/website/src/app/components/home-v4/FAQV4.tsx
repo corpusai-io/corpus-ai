@@ -48,7 +48,7 @@ export default function FAQV4() {
   return (
     <section className="py-32 px-6 max-w-3xl mx-auto">
       <div className="text-center mb-16">
-        <p className="text-sm font-semibold text-[#7C3AED] uppercase tracking-widest mb-4">
+        <p className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest mb-4">
           FAQ
         </p>
         <h2 className="text-4xl font-bold text-[#111827] tracking-tight">
@@ -71,7 +71,7 @@ export default function FAQV4() {
               </span>
               <ChevronDown
                 className={`w-5 h-5 text-[#9CA3AF] flex-shrink-0 transition-transform duration-200 ${
-                  openIndex === i ? 'rotate-180 text-[#7C3AED]' : ''
+                  openIndex === i ? 'rotate-180 text-[#C084F5]' : ''
                 }`}
               />
             </button>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Database, Search, CreditCard, CheckCircle, ArrowRight, MessageSquare, Zap, Sparkles } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -49,7 +49,7 @@ const scenarios: Scenario[] = [
       {
         type: 'workflow',
         steps: [
-          { icon: Search, label: 'Searching knowledge base', color: 'text-[#7C3AED]', bgColor: 'bg-[#EDE9FE]' },
+          { icon: Search, label: 'Searching knowledge base', color: 'text-[#C084F5]', bgColor: 'bg-[#F3E8FF]' },
           { icon: CheckCircle, label: '3 relevant documents found', color: 'text-[#16A34A]', bgColor: 'bg-[#DCFCE7]' },
         ],
         delay: 1600,
@@ -197,7 +197,7 @@ function ChatWidget() {
   const currentSteps = scenario.steps.slice(0, visibleSteps);
 
   return (
-    <div className="v4-card rounded-2xl overflow-hidden shadow-lg shadow-[#7C3AED]/5">
+    <div className="v4-card rounded-2xl overflow-hidden shadow-lg shadow-[#C084F5]/5">
       {/* Scenario Tabs */}
       <div className="flex border-b border-[#E5E7EB] bg-[#F9FAFB]">
         {scenarios.map((s, i) => (
@@ -210,7 +210,7 @@ function ChatWidget() {
           >
             <span className={i === activeScenario ? s.labelColor : ''}>{s.label}</span>
             {i === activeScenario && (
-              <motion.div layoutId="heroTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#7C3AED]" transition={{ duration: 0.2 }} />
+              <motion.div layoutId="heroTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#C084F5]" transition={{ duration: 0.2 }} />
             )}
           </button>
         ))}
@@ -228,7 +228,7 @@ function ChatWidget() {
         </div>
         <div className="ml-auto">
           <div className="flex items-center gap-1 text-[10px] text-[#9CA3AF]">
-            <Zap className="w-3 h-3 text-[#7C3AED]" />
+            <Zap className="w-3 h-3 text-[#C084F5]" />
             <span>Autonomous</span>
           </div>
         </div>
@@ -243,7 +243,7 @@ function ChatWidget() {
                 if (step.type === 'user') {
                   return (
                     <motion.div key={`u${i}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }} className="flex justify-end">
-                      <div className="bg-[#7C3AED] text-white rounded-2xl rounded-br-md px-4 py-2.5 max-w-[85%] text-sm leading-relaxed">{step.text}</div>
+                      <div className="bg-[#C084F5] text-white rounded-2xl rounded-br-md px-4 py-2.5 max-w-[85%] text-sm leading-relaxed">{step.text}</div>
                     </motion.div>
                   );
                 }
@@ -288,7 +288,7 @@ function ChatWidget() {
       <div className="px-5 pb-4 bg-white border-t border-[#E5E7EB]">
         <div className="flex items-center gap-2 bg-[#F3F4F6] border border-[#E5E7EB] rounded-xl px-4 py-3 mt-3">
           <span className="text-sm text-[#9CA3AF] flex-1">Ask your agent anything...</span>
-          <div className="w-7 h-7 rounded-lg bg-[#7C3AED] flex items-center justify-center flex-shrink-0">
+          <div className="w-7 h-7 rounded-lg bg-[#C084F5] flex items-center justify-center flex-shrink-0">
             <ArrowRight className="w-3.5 h-3.5 text-white" />
           </div>
         </div>
@@ -311,13 +311,6 @@ const itemVariants = {
 
 export default function HeroV4() {
   const [personaIndex, setPersonaIndex] = useState(0);
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start start', 'end start'],
-  });
-  const orbY = useTransform(scrollYProgress, [0, 1], [0, 80]);
-  const orbScale = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
 
   useEffect(() => {
     const t = setInterval(() => setPersonaIndex(i => (i + 1) % personas.length), 3500);
@@ -325,33 +318,12 @@ export default function HeroV4() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative pt-36 pb-24 px-6 text-center overflow-hidden">
-      {/* Animated mesh gradient background */}
-      <div className="v4-hero-mesh absolute inset-0 pointer-events-none" />
+    <section className="relative pt-36 pb-24 px-6 text-center overflow-hidden">
+      {/* Moving gradient background — soft, contained to hero */}
+      <div className="v4-hero-moving absolute inset-0 pointer-events-none" />
 
-      {/* Dot grid pattern — subtle */}
-      <div className="absolute inset-0 v4-dot-grid pointer-events-none" />
-
-      {/* Floating gradient orbs — visible warm wash like reference */}
-      <motion.div
-        className="v4-orb absolute -top-32 -left-16 w-[600px] h-[600px] opacity-[0.12]"
-        style={{ background: 'radial-gradient(circle, #8B5CF6 0%, rgba(167,139,250,0.4) 40%, transparent 70%)', y: orbY, scale: orbScale }}
-      />
-      <motion.div
-        className="v4-orb v4-orb-fast absolute -top-20 -right-24 w-[500px] h-[500px] opacity-[0.10]"
-        style={{ background: 'radial-gradient(circle, #A78BFA 0%, rgba(139,92,246,0.3) 40%, transparent 70%)', y: orbY }}
-      />
-      <motion.div
-        className="v4-orb absolute bottom-10 left-1/4 w-[400px] h-[400px] opacity-[0.06]"
-        style={{ background: 'radial-gradient(circle, #F472B6 0%, rgba(244,114,182,0.3) 40%, transparent 70%)' }}
-      />
-      <motion.div
-        className="v4-orb absolute -bottom-20 right-1/4 w-[350px] h-[350px] opacity-[0.04]"
-        style={{ background: 'radial-gradient(circle, #FB923C 0%, rgba(251,146,60,0.3) 40%, transparent 70%)' }}
-      />
-
-      {/* Noise texture overlay */}
-      <div className="v4-noise absolute inset-0 pointer-events-none opacity-50" />
+      {/* Subtle dot grid */}
+      <div className="absolute inset-0 v4-dot-grid pointer-events-none opacity-60" />
 
       <motion.div
         className="relative max-w-4xl mx-auto"
@@ -361,22 +333,28 @@ export default function HeroV4() {
       >
         {/* Category badge with shimmer */}
         <motion.div variants={itemVariants} className="flex justify-center mb-8">
-          <div className="v4-badge-shimmer inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#DDD6FE] text-[#7C3AED] text-xs font-semibold tracking-wide uppercase">
+          <div className="v4-badge-shimmer inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#E9D5FF] text-[#C084F5] text-xs font-semibold tracking-wide uppercase">
             <Sparkles className="w-3 h-3" />
             Agentic AI Platform
           </div>
         </motion.div>
 
-        {/* Headline — bold words with luminous gradient like reference */}
+        {/* Headline — bold with shiny gradient on key words */}
         <motion.h1
           variants={itemVariants}
-          className="text-5xl md:text-6xl lg:text-[72px] font-bold tracking-[-0.03em] leading-[1.08] text-[#111827]"
+          className="text-4xl md:text-5xl lg:text-[64px] font-bold tracking-[-0.03em] leading-[1.1] text-[#111827]"
         >
-          Your customers{' '}
-          <span className="v4-gradient-text-shine">ask.</span>
-          <br />
-          Your <span className="v4-gradient-text-shine">AI agent</span> acts.
+          Build <span className="v4-gradient-text-shine">AI Agents</span> That
+          <br className="hidden md:block" />
+          {' '}Answer, Query, and{' '}
+          <span className="v4-gradient-text-shine">Take Action</span>
         </motion.h1>
+
+        {/* Static sub-headline */}
+        <motion.p variants={itemVariants} className="text-lg md:text-xl text-[#6B7280] mt-6 max-w-2xl mx-auto leading-relaxed">
+          Train on your docs, connect your database, and deploy an autonomous agent
+          across every channel — in under 5 minutes. No code required.
+        </motion.p>
 
         {/* Rotating persona subtitle */}
         <motion.div variants={itemVariants} className="mt-7 h-12 flex items-center justify-center">
@@ -389,23 +367,18 @@ export default function HeroV4() {
               transition={{ duration: 0.45, ease: 'easeOut' }}
               className="text-lg md:text-xl text-[#6B7280] max-w-2xl mx-auto leading-relaxed"
             >
-              <span className="text-[#7C3AED] font-semibold">{personas[personaIndex].label}: </span>
+              <span className="text-[#C084F5] font-semibold">{personas[personaIndex].label}: </span>
               {personas[personaIndex].text}
             </motion.p>
           </AnimatePresence>
         </motion.div>
 
-        {/* Supporting line */}
-        <motion.p variants={itemVariants} className="text-base text-[#9CA3AF] mt-4 max-w-xl mx-auto">
-          Train on your data. Connect to your database. Deploy in 4 minutes. No ML expertise needed.
-        </motion.p>
-
-        {/* CTAs with enhanced hover effects */}
+        {/* CTAs */}
         <motion.div variants={itemVariants} className="flex items-center justify-center gap-4 mt-10 flex-wrap">
           <motion.a
             href="/Sign-In"
-            className="v4-btn-glow inline-flex items-center gap-2 bg-[#7C3AED] text-white rounded-xl px-7 py-3.5 text-sm font-semibold cursor-pointer shadow-lg shadow-[#7C3AED]/20"
-            whileHover={{ scale: 1.04, boxShadow: '0 12px 40px rgba(124,58,237,0.35)' }}
+            className="v4-btn-glow inline-flex items-center gap-2 bg-[#C084F5] text-white rounded-xl px-7 py-3.5 text-sm font-semibold cursor-pointer shadow-lg shadow-[#C084F5]/20"
+            whileHover={{ scale: 1.04, boxShadow: '0 12px 40px rgba(192,132,245,0.35)' }}
             whileTap={{ scale: 0.97 }}
             transition={{ type: 'spring', stiffness: 400, damping: 20 }}
           >
@@ -414,7 +387,7 @@ export default function HeroV4() {
           </motion.a>
           <motion.a
             href="/demo"
-            className="inline-flex items-center gap-2 border border-[#D1D5DB] text-[#374151] hover:border-[#DDD6FE] hover:text-[#7C3AED] rounded-xl px-7 py-3.5 text-sm font-semibold transition-colors cursor-pointer bg-white/80 backdrop-blur-sm"
+            className="inline-flex items-center gap-2 border border-[#D1D5DB] text-[#374151] hover:border-[#E9D5FF] hover:text-[#C084F5] rounded-xl px-7 py-3.5 text-sm font-semibold transition-colors cursor-pointer bg-white/80 backdrop-blur-sm"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: 'spring', stiffness: 400, damping: 20 }}
@@ -432,7 +405,7 @@ export default function HeroV4() {
             { icon: '✓', text: 'Free forever plan' },
           ].map((item) => (
             <span key={item.text} className="flex items-center gap-1.5 text-xs text-[#9CA3AF]">
-              <span className="text-[#7C3AED] font-semibold">{item.icon}</span>
+              <span className="text-[#C084F5] font-semibold">{item.icon}</span>
               {item.text}
             </span>
           ))}
@@ -445,7 +418,7 @@ export default function HeroV4() {
             <div
               className="absolute -inset-4 rounded-3xl pointer-events-none"
               style={{
-                background: 'radial-gradient(ellipse at 50% 50%, rgba(124, 58, 237, 0.08) 0%, transparent 70%)',
+                background: 'radial-gradient(ellipse at 50% 50%, rgba(192, 132, 245, 0.08) 0%, transparent 70%)',
               }}
             />
             <ChatWidget />
