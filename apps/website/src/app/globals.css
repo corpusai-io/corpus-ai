@@ -734,10 +734,11 @@ animation: path 1s linear infinite;
 /* Animated gradient mesh for hero background */
 .v4-hero-mesh {
   background:
-    radial-gradient(ellipse 80% 60% at 50% -20%, rgba(124, 58, 237, 0.10) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 40% at 15% 30%, rgba(99, 102, 241, 0.07) 0%, transparent 65%),
-    radial-gradient(ellipse 50% 40% at 85% 25%, rgba(167, 139, 250, 0.06) 0%, transparent 60%),
-    radial-gradient(ellipse 30% 30% at 70% 60%, rgba(219, 39, 119, 0.04) 0%, transparent 50%);
+    radial-gradient(ellipse 100% 80% at 50% 0%, rgba(139, 92, 246, 0.14) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 60% at 25% 35%, rgba(167, 139, 250, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse 70% 60% at 75% 30%, rgba(124, 58, 237, 0.10) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 50% 80%, rgba(244, 114, 182, 0.07) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 40% at 80% 65%, rgba(251, 146, 60, 0.05) 0%, transparent 50%);
 }
 
 /* Subtle animated grain texture */
@@ -830,10 +831,26 @@ animation: path 1s linear infinite;
 
 /* Gradient text utility */
 .v4-gradient-text {
-  background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 40%, #4F46E5 100%);
+  background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 30%, #6D28D9 60%, #4F46E5 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/* Shiny luminous gradient — for hero headline emphasis */
+.v4-gradient-text-shine {
+  background: linear-gradient(135deg, #8B5CF6 0%, #A78BFA 25%, #7C3AED 50%, #8B5CF6 75%, #C4B5FD 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: v4-text-shine 4s ease-in-out infinite;
+}
+
+@keyframes v4-text-shine {
+  0% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+  100% { background-position: 0% center; }
 }
 
 .v4-gradient-text-warm {

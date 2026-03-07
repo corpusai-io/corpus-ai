@@ -332,18 +332,22 @@ export default function HeroV4() {
       {/* Dot grid pattern — subtle */}
       <div className="absolute inset-0 v4-dot-grid pointer-events-none" />
 
-      {/* Floating gradient orbs with parallax */}
+      {/* Floating gradient orbs — visible warm wash like reference */}
       <motion.div
-        className="v4-orb absolute -top-20 -left-20 w-[500px] h-[500px] opacity-[0.06]"
-        style={{ background: 'radial-gradient(circle, #7C3AED 0%, transparent 70%)', y: orbY, scale: orbScale }}
+        className="v4-orb absolute -top-32 -left-16 w-[600px] h-[600px] opacity-[0.12]"
+        style={{ background: 'radial-gradient(circle, #8B5CF6 0%, rgba(167,139,250,0.4) 40%, transparent 70%)', y: orbY, scale: orbScale }}
       />
       <motion.div
-        className="v4-orb v4-orb-fast absolute -top-10 -right-32 w-[400px] h-[400px] opacity-[0.05]"
-        style={{ background: 'radial-gradient(circle, #4F46E5 0%, transparent 70%)', y: orbY }}
+        className="v4-orb v4-orb-fast absolute -top-20 -right-24 w-[500px] h-[500px] opacity-[0.10]"
+        style={{ background: 'radial-gradient(circle, #A78BFA 0%, rgba(139,92,246,0.3) 40%, transparent 70%)', y: orbY }}
       />
       <motion.div
-        className="v4-orb absolute bottom-0 left-1/3 w-[350px] h-[350px] opacity-[0.04]"
-        style={{ background: 'radial-gradient(circle, #DB2777 0%, transparent 70%)' }}
+        className="v4-orb absolute bottom-10 left-1/4 w-[400px] h-[400px] opacity-[0.06]"
+        style={{ background: 'radial-gradient(circle, #F472B6 0%, rgba(244,114,182,0.3) 40%, transparent 70%)' }}
+      />
+      <motion.div
+        className="v4-orb absolute -bottom-20 right-1/4 w-[350px] h-[350px] opacity-[0.04]"
+        style={{ background: 'radial-gradient(circle, #FB923C 0%, rgba(251,146,60,0.3) 40%, transparent 70%)' }}
       />
 
       {/* Noise texture overlay */}
@@ -363,16 +367,15 @@ export default function HeroV4() {
           </div>
         </motion.div>
 
-        {/* Headline — stronger narrative arc with gradient */}
+        {/* Headline — bold words with luminous gradient like reference */}
         <motion.h1
           variants={itemVariants}
-          className="text-5xl md:text-6xl lg:text-[72px] font-bold tracking-[-0.03em] leading-[1.06] text-[#111827]"
+          className="text-5xl md:text-6xl lg:text-[72px] font-bold tracking-[-0.03em] leading-[1.08] text-[#111827]"
         >
-          Your customers ask.
+          Your customers{' '}
+          <span className="v4-gradient-text-shine">ask.</span>
           <br />
-          <span className="v4-gradient-text">
-            Your AI agent acts.
-          </span>
+          Your <span className="v4-gradient-text-shine">AI agent</span> acts.
         </motion.h1>
 
         {/* Rotating persona subtitle */}
