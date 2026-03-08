@@ -14,7 +14,7 @@ const cardVariants = {
 
 export default function FeatureBento() {
   return (
-    <section className="py-32 px-6 max-w-7xl mx-auto relative">
+    <section className="py-20 px-6 max-w-7xl mx-auto relative">
       <div className="text-center mb-16">
         <p className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest mb-4">
           Platform

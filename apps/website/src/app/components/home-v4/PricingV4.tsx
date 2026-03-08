@@ -55,7 +55,7 @@ const tiers = [
 
 export default function PricingV4() {
   return (
-    <section className="py-32 px-6 max-w-6xl mx-auto">
+    <section className="py-20 px-6 max-w-6xl mx-auto">
       <div className="text-center mb-16">
         <p className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest mb-4">
           Pricing

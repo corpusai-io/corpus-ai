@@ -35,9 +35,9 @@ const steps = [
 
 export default function WorkflowTimeline() {
   return (
-    <section className="py-32 px-6 bg-[#FAF5FF] relative overflow-hidden">
+    <section className="py-20 px-6 bg-[#FAF5FF] relative overflow-hidden">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-20">
+        <div className="text-center mb-14">
           <p className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest mb-4">
             How It Works
           </p>

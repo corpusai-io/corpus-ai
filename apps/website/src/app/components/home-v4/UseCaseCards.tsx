@@ -49,7 +49,7 @@ const useCases = [
 
 export default function UseCaseCards() {
   return (
-    <section className="py-32 px-6 relative">
+    <section className="py-20 px-6 relative">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <p className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest mb-4">

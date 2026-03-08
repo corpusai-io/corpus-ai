@@ -77,10 +77,10 @@ const actionBadges = [
 
 export default function AgenticShowcase() {
   return (
-    <section className="py-32 px-6 bg-[#F9FAFB] relative overflow-hidden">
+    <section className="py-20 px-6 bg-[#F9FAFB] relative overflow-hidden">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-20">
+        <div className="text-center mb-14">
           <p className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest mb-4">
             Agents, not chatbots
           </p>

@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 export default function FinalCTAV4() {
   return (
-    <section className="py-32 px-6 bg-[#FAF5FF] relative">
+    <section className="py-20 px-6 bg-[#FAF5FF] relative">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}

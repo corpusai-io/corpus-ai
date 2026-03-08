@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -9,7 +9,7 @@ import { Eye, EyeOff, AlertCircle, CheckCircle2, Mail, Lock, User } from 'lucide
 import { authApi } from '@/lib/api';
 import NavbarV4 from '@/app/components/home-v4/NavbarV4';
 
-export default function AuthPage() {
+function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
@@ -567,5 +567,13 @@ export default function AuthPage() {
         </AnimatePresence>
       </div>
     </main>
+  );
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense>
+      <AuthPage />
+    </Suspense>
   );
 }

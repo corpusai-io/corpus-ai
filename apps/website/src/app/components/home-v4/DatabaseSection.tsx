@@ -425,7 +425,7 @@ export default function DatabaseSection() {
   }, []);
 
   return (
-    <section className="py-32 px-6 bg-[#F9FAFB]">
+    <section className="py-20 px-6 bg-[#F9FAFB]">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-16">

@@ -46,7 +46,7 @@ export default function FAQV4() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="py-32 px-6 max-w-3xl mx-auto">
+    <section className="py-20 px-6 max-w-3xl mx-auto">
       <div className="text-center mb-16">
         <p className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest mb-4">
           FAQ

@@ -40,7 +40,7 @@ export default function TestimonialV4() {
   const t = testimonials[index];
 
   return (
-    <section className="py-32 px-6 bg-[#FAF5FF]">
+    <section className="py-20 px-6 bg-[#FAF5FF]">
       <div className="max-w-4xl mx-auto text-center">
         <p className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest mb-12">
           Trusted by 500+ teams

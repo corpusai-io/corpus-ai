@@ -39,7 +39,9 @@
       "Bash(then grep -A 5 \"^functions:\" \"$dir/serverless.yml\")",
       "Bash(node -p:*)",
       "Bash(npx next build)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(sed:*)",
+      "Bash(grep:*)"
     ]
   },
   "enabledPlugins": {

@@ -752,11 +752,9 @@ animation: path 1s linear infinite;
 
 .v4-hero-moving {
   background:
-    radial-gradient(ellipse 50% 45% at 30% 25%, rgba(192, 132, 245, 0.13) 0%, transparent 70%),
-    radial-gradient(ellipse 45% 40% at 70% 60%, rgba(168, 85, 247, 0.08) 0%, transparent 65%),
-    radial-gradient(ellipse 35% 30% at 50% 80%, rgba(216, 180, 254, 0.06) 0%, transparent 60%);
-  background-size: 200% 200%;
-  animation: v4-hero-drift 18s ease-in-out infinite;
+    radial-gradient(ellipse 50% 45% at 30% 25%, rgba(192, 132, 245, 0.10) 0%, transparent 70%),
+    radial-gradient(ellipse 45% 40% at 70% 60%, rgba(168, 85, 247, 0.06) 0%, transparent 65%),
+    radial-gradient(ellipse 35% 30% at 50% 80%, rgba(216, 180, 254, 0.04) 0%, transparent 60%);
 }
 
 /* Subtle animated grain texture */
@@ -857,12 +855,10 @@ animation: path 1s linear infinite;
 
 /* Shiny luminous gradient — for hero headline emphasis */
 .v4-gradient-text-shine {
-  background: linear-gradient(120deg, #A855F7 0%, #C084F5 20%, #D8B4FE 40%, #C084F5 60%, #9333EA 80%, #C084F5 100%);
-  background-size: 250% auto;
+  background: linear-gradient(120deg, #A855F7 0%, #C084F5 40%, #9333EA 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: v4-text-shine 5s ease-in-out infinite;
 }
 
 @keyframes v4-text-shine {
@@ -960,9 +956,8 @@ animation: path 1s linear infinite;
 }
 
 .v4-dot-grid {
-  background-image: radial-gradient(circle, rgba(192, 132, 245, 0.12) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(192, 132, 245, 0.10) 1px, transparent 1px);
   background-size: 32px 32px;
-  animation: v4-dot-pulse 4s ease-in-out infinite;
 }
 
 /* Pricing card highlight ring */
@@ -1000,7 +995,5 @@ animation: path 1s linear infinite;
 }
 
 .v4-badge-shimmer {
-  background: linear-gradient(90deg, #F3E8FF 0%, #FAF5FF 20%, #E9D5FF 40%, #F3E8FF 60%);
-  background-size: 200% 100%;
-  animation: v4-badge-shimmer 3s ease-in-out infinite;
+  background: #FAF5FF;
 }

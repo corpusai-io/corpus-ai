@@ -74,7 +74,7 @@ function AnimatedNumber({ metric }: { metric: Metric }) {
 
 export default function MetricsBanner() {
   return (
-    <section className="py-28 px-6 bg-[#F9FAFB]">
+    <section className="py-20 px-6 bg-[#F9FAFB]">
       <div className="max-w-5xl mx-auto">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-[#E9D5FF]/40 rounded-2xl overflow-hidden shadow-lg shadow-[#C084F5]/5">
           {metrics.map((metric) => (
