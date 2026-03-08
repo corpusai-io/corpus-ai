@@ -61,22 +61,22 @@ function AnimatedNumber({ metric }: { metric: Metric }) {
   }, [metric]);
 
   return (
-    <div ref={ref} className="bg-white/90 backdrop-blur-sm p-8 text-center v4-metric-glow">
-      <div className="text-4xl lg:text-5xl font-bold v4-gradient-text">
+    <div ref={ref} className="bg-white p-8 text-center">
+      <div className="text-4xl lg:text-5xl font-medium text-[#171717]">
         {metric.prefix ?? ''}
         {display}
         {metric.suffix}
       </div>
-      <div className="text-sm text-[#6B7280] mt-2">{metric.label}</div>
+      <div className="text-sm text-[#737373] mt-2">{metric.label}</div>
     </div>
   );
 }
 
 export default function MetricsBanner() {
   return (
-    <section className="py-20 px-6 bg-[#F9FAFB]">
+    <section className="py-28 px-6 bg-[#F7F7F7]">
       <div className="max-w-5xl mx-auto">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-[#E9D5FF]/40 rounded-2xl overflow-hidden shadow-lg shadow-[#C084F5]/5">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-[#E8E8E8] rounded-2xl overflow-hidden">
           {metrics.map((metric) => (
             <AnimatedNumber key={metric.label} metric={metric} />
           ))}

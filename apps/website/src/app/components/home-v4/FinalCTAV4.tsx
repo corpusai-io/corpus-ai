@@ -5,33 +5,33 @@ import { motion } from 'framer-motion';
 
 export default function FinalCTAV4() {
   return (
-    <section className="py-20 px-6 bg-[#FAF5FF] relative">
+    <section className="py-28 px-6 bg-[#171717] relative overflow-hidden">
+      {/* Subtle gradient overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            'radial-gradient(ellipse 80% 60% at 50% 100%, rgba(255,255,255,0.03) 0%, transparent 70%)',
+        }}
+      />
+
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.6 }}
-        className="max-w-4xl mx-auto text-center relative"
+        className="max-w-4xl mx-auto text-center relative z-10"
       >
-        {/* Subtle glow */}
-        <div
-          className="absolute inset-0 -z-10 pointer-events-none"
-          style={{
-            background:
-              'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(192, 132, 245, 0.07) 0%, transparent 70%)',
-          }}
-        />
-
-        <p className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest mb-6">
+        <span className="inline-block border border-white/20 rounded-full px-4 py-1.5 text-sm text-white/60 mb-6">
           Your first agent is free
-        </p>
+        </span>
 
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#111827] tracking-tight">
+        <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium text-white tracking-tight">
           Stop triaging tickets.<br className="hidden md:block" />
-          <span className="v4-gradient-text">Deploy an agent today.</span>
+          Deploy an agent today.
         </h2>
 
-        <p className="text-lg text-[#6B7280] mt-6 max-w-xl mx-auto">
+        <p className="text-lg text-white/60 mt-6 max-w-xl mx-auto">
           Upload your data, customize, and go live in under five minutes.
           No engineers required. Join 500+ teams already running on Corpus AI.
         </p>
@@ -39,21 +39,55 @@ export default function FinalCTAV4() {
         <div className="flex items-center justify-center gap-4 mt-10 flex-wrap">
           <Link
             href="/Sign-In"
-            className="v4-btn-glow bg-[#C084F5] text-white hover:bg-[#A855F7] rounded-xl px-8 py-4 text-sm font-semibold transition-all shadow-lg shadow-[#C084F5]/25 hover:shadow-xl hover:shadow-[#C084F5]/30"
+            className="border border-white text-white hover:bg-white hover:text-[#171717] rounded-md px-8 py-4 text-sm font-medium transition-all"
           >
             Build Your First Agent — Free
           </Link>
           <Link
             href="/Sign-In"
-            className="border border-[#D1D5DB] text-[#374151] hover:bg-white hover:border-[#E9D5FF] hover:text-[#C084F5] rounded-xl px-8 py-4 text-sm font-semibold transition-all bg-white/80 backdrop-blur-sm"
+            className="bg-[#2a2a2a] text-white/80 hover:bg-[#333333] hover:text-white rounded-md px-8 py-4 text-sm font-medium transition-all"
           >
             Talk to Sales
           </Link>
         </div>
 
-        <p className="text-sm text-[#9CA3AF] mt-6">
+        <p className="text-sm text-white/40 mt-6">
           Free forever plan · No credit card · Setup in under 5 minutes
         </p>
+      </motion.div>
+
+      {/* Dashboard preview overlay */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 0.7, delay: 0.2 }}
+        className="max-w-5xl mx-auto mt-16 relative z-10"
+      >
+        <div className="bg-[#2a2a2a] rounded-2xl border border-white/10 p-1">
+          <div className="bg-[#1e1e1e] rounded-xl overflow-hidden">
+            {/* Mock browser bar */}
+            <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+              <div className="flex gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+                <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+                <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+              </div>
+              <div className="flex-1 mx-8">
+                <div className="bg-white/5 rounded-md h-6 max-w-xs mx-auto" />
+              </div>
+            </div>
+            {/* Mock dashboard content */}
+            <div className="p-6 space-y-4">
+              <div className="grid grid-cols-3 gap-4">
+                <div className="bg-white/5 rounded-lg h-20" />
+                <div className="bg-white/5 rounded-lg h-20" />
+                <div className="bg-white/5 rounded-lg h-20" />
+              </div>
+              <div className="bg-white/5 rounded-lg h-32" />
+            </div>
+          </div>
+        </div>
       </motion.div>
     </section>
   );

@@ -55,84 +55,82 @@ const tiers = [
 
 export default function PricingV4() {
   return (
-    <section className="py-20 px-6 max-w-6xl mx-auto">
-      <div className="text-center mb-16">
-        <p className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest mb-4">
-          Pricing
-        </p>
-        <h2 className="text-4xl md:text-5xl font-bold text-[#111827] tracking-tight">
-          Start free.{' '}<span className="v4-gradient-text">Scale infinitely.</span>
-        </h2>
-        <p className="text-lg text-[#6B7280] mt-4">
-          No hidden fees. No surprises. Cancel anytime.
-        </p>
-      </div>
+    <section className="py-28 px-6 bg-[#F7F7F7]">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-16">
+          <span className="inline-block bg-white border border-[#E8E8E8] rounded-full px-4 py-1.5 text-sm text-[#737373] mb-6">
+            Pricing
+          </span>
+          <h2 className="text-3xl md:text-4xl font-medium text-[#171717] tracking-tight">
+            Start free. Scale infinitely.
+          </h2>
+          <p className="text-base text-[#737373] mt-4">
+            No hidden fees. No surprises. Cancel anytime.
+          </p>
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {tiers.map((tier, i) => (
-          <motion.div
-            key={tier.name}
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.5, delay: i * 0.1 }}
-            className={`relative rounded-2xl p-8 border transition-all ${
-              tier.highlighted
-                ? 'bg-[#FAF5FF] border-[#C084F5]/30 v4-pricing-highlight'
-                : 'bg-white border-[#E5E7EB] shadow-sm hover:border-[#E9D5FF] hover:shadow-md'
-            }`}
-          >
-            {tier.highlighted && (
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#C084F5] to-[#A855F7] text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg shadow-[#C084F5]/25">
-                Most Popular
-              </span>
-            )}
-
-            <p className="text-lg font-semibold text-[#111827]">{tier.name}</p>
-
-            <div className="mt-4">
-              <span className="text-4xl font-bold text-[#111827]">{tier.price}</span>
-              <span className="text-base font-normal text-[#9CA3AF]">/mo</span>
-            </div>
-
-            <p className="text-sm text-[#6B7280] mt-3">{tier.description}</p>
-
-            <div className="border-t border-[#E5E7EB] my-6" />
-
-            <ul className="space-y-0">
-              {tier.features.map((feature) => (
-                <li key={feature} className="flex items-center gap-2.5 text-sm text-[#6B7280] py-1.5">
-                  <Check
-                    className={`w-4 h-4 flex-shrink-0 ${
-                      tier.highlighted ? 'text-[#C084F5]' : 'text-[#9CA3AF]'
-                    }`}
-                  />
-                  {feature}
-                </li>
-              ))}
-            </ul>
-
-            <Link
-              href="/Sign-In"
-              className={`block w-full mt-8 text-center py-3 rounded-lg text-sm font-semibold transition-colors ${
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {tiers.map((tier, i) => (
+            <motion.div
+              key={tier.name}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              className={`relative bg-white rounded-2xl p-8 ${
                 tier.highlighted
-                  ? 'bg-[#C084F5] text-white hover:bg-[#A855F7] shadow-md shadow-[#C084F5]/20 hover:shadow-lg hover:shadow-[#C084F5]/30'
-                  : 'border border-[#D1D5DB] text-[#374151] hover:bg-[#F3F4F6]'
+                  ? 'border-2 border-[#171717]'
+                  : ''
               }`}
             >
-              {tier.cta}
-            </Link>
-          </motion.div>
-        ))}
-      </div>
+              {tier.highlighted && (
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#171717] text-white text-xs font-medium px-4 py-1.5 rounded-full">
+                  Most Popular
+                </span>
+              )}
 
-      <div className="text-center mt-8">
-        <Link
-          href="/Pricing"
-          className="text-sm text-[#6B7280] hover:text-[#C084F5] transition-colors"
-        >
-          Compare all plans &rarr;
-        </Link>
+              <p className="text-lg font-medium text-[#171717]">{tier.name}</p>
+
+              <div className="mt-4">
+                <span className="text-4xl font-medium text-[#171717]">{tier.price}</span>
+                <span className="text-base text-[#737373]">/mo</span>
+              </div>
+
+              <p className="text-sm text-[#737373] mt-3">{tier.description}</p>
+
+              <div className="border-t border-[#E8E8E8] my-6" />
+
+              <ul className="space-y-0">
+                {tier.features.map((feature) => (
+                  <li key={feature} className="flex items-center gap-2.5 text-sm text-[#737373] py-1.5">
+                    <Check className="w-4 h-4 flex-shrink-0 text-[#171717]" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+
+              <Link
+                href="/Sign-In"
+                className={`block w-full mt-8 text-center py-3 rounded-lg text-sm font-medium transition-colors ${
+                  tier.highlighted
+                    ? 'bg-[#171717] text-white hover:bg-[#2a2a2a]'
+                    : 'border border-[#E8E8E8] text-[#171717] hover:bg-[#F7F7F7]'
+                }`}
+              >
+                {tier.cta}
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="text-center mt-8">
+          <Link
+            href="/Pricing"
+            className="text-sm text-[#737373] hover:text-[#171717] transition-colors"
+          >
+            Compare all plans &rarr;
+          </Link>
+        </div>
       </div>
     </section>
   );

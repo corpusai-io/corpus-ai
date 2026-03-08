@@ -37,7 +37,7 @@ const companyLinks = [
 function FooterColumn({ title, links }: { title: string; links: { label: string; href: string }[] }) {
   return (
     <div>
-      <p className="text-xs font-semibold text-[#9CA3AF] uppercase tracking-widest mb-4">
+      <p className="text-sm font-medium text-white mb-4">
         {title}
       </p>
       <nav className="flex flex-col">
@@ -45,7 +45,7 @@ function FooterColumn({ title, links }: { title: string; links: { label: string;
           <Link
             key={link.href}
             href={link.href}
-            className="block text-sm text-[#6B7280] hover:text-[#111827] transition-colors mb-2.5"
+            className="block text-sm text-white/50 hover:text-white transition-colors mb-2.5"
           >
             {link.label}
           </Link>
@@ -61,7 +61,7 @@ function SocialIcon({ children, href }: { children: React.ReactNode; href: strin
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="w-8 h-8 rounded-lg bg-white border border-[#E5E7EB] flex items-center justify-center text-[#9CA3AF] hover:text-[#111827] hover:border-[#D1D5DB] transition-colors shadow-sm"
+      className="w-8 h-8 rounded-lg flex items-center justify-center text-white/50 hover:text-white transition-colors"
     >
       {children}
     </a>
@@ -70,7 +70,7 @@ function SocialIcon({ children, href }: { children: React.ReactNode; href: strin
 
 export default function FooterV4() {
   return (
-    <footer className="border-t border-[#E5E7EB] bg-[#F9FAFB]">
+    <footer className="bg-[#171717]">
       <div className="max-w-7xl mx-auto py-16 px-6">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
           {/* Brand */}
@@ -78,9 +78,9 @@ export default function FooterV4() {
             <img
               src="/logo.svg"
               alt="Corpus AI"
-              className="h-7 brightness-0 opacity-80"
+              className="h-7 brightness-0 invert opacity-80"
             />
-            <p className="text-sm text-[#6B7280] mt-3 max-w-[200px] leading-relaxed">
+            <p className="text-sm text-white/50 mt-3 max-w-[200px] leading-relaxed">
               AI agents that understand your business, query your data, and act
               on your behalf.
             </p>
@@ -109,11 +109,11 @@ export default function FooterV4() {
           <FooterColumn title="Company" links={companyLinks} />
         </div>
 
-        <div className="border-t border-[#E5E7EB] mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-[#9CA3AF]">
+        <div className="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-xs text-white/30">
             &copy; 2026 Corpus AI. All rights reserved.
           </p>
-          <p className="text-xs text-[#9CA3AF]">Built with AI, for AI.</p>
+          <p className="text-xs text-white/30">Built with AI, for AI.</p>
         </div>
       </div>
     </footer>

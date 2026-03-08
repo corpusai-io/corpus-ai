@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GeistSans } from "geist/font/sans";
 import { Inter } from "next/font/google";
 import "@/app/globals.css";
 
@@ -18,7 +19,7 @@ export default function HomeLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body
-        className={`${inter.className} ${inter.variable} font-sans antialiased bg-white text-[#111827]`}
+        className={`${GeistSans.className} ${GeistSans.variable} ${inter.variable} antialiased bg-[#F7F7F7] text-[#171717]`}
       >
         {children}
       </body>

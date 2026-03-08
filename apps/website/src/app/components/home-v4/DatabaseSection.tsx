@@ -15,11 +15,8 @@ interface TabContent {
 interface AgentExample {
   id: string;
   icon: typeof Database;
-  iconColor: string;
-  iconBg: string;
   label: string;
   badge: string;
-  badgeColor: string;
   heading: string;
   description: string;
   features: string[];
@@ -30,10 +27,10 @@ interface AgentExample {
 // ─── Code syntax colors (inside dark code panels) ─────────────────────────────
 
 function Kw({ children }: { children: React.ReactNode }) {
-  return <span className="text-[#D8B4FE]">{children}</span>;
+  return <span className="text-[#E2E8F0]">{children}</span>;
 }
 function Val({ children }: { children: React.ReactNode }) {
-  return <span className="text-[#818CF8]">{children}</span>;
+  return <span className="text-[#93C5FD]">{children}</span>;
 }
 function Col({ children }: { children: React.ReactNode }) {
   return <span className="text-[#94A3B8]">{children}</span>;
@@ -45,7 +42,7 @@ function Grn({ children }: { children: React.ReactNode }) {
   return <span className="text-[#34D399]">{children}</span>;
 }
 function Ref({ children }: { children: React.ReactNode }) {
-  return <span className="text-[#F472B6]">{children}</span>;
+  return <span className="text-[#CBD5E1]">{children}</span>;
 }
 
 // ─── 3 Agent Examples ─────────────────────────────────────────────────────────
@@ -54,11 +51,8 @@ const agentExamples: AgentExample[] = [
   {
     id: 'database',
     icon: Database,
-    iconColor: 'text-[#4F46E5]',
-    iconBg: 'bg-[#EEF2FF]',
     label: 'Database Agent',
     badge: 'SQL + Natural Language',
-    badgeColor: 'border-[#4F46E5]/20 text-[#4F46E5] bg-[#EEF2FF]',
     heading: 'Query any database with natural language',
     description:
       'Connect PostgreSQL, MySQL, MongoDB, or DynamoDB — your agent translates natural questions into precise queries, returns structured results, and explains the data in plain English.',
@@ -139,11 +133,8 @@ const agentExamples: AgentExample[] = [
   {
     id: 'ecommerce',
     icon: ShoppingCart,
-    iconColor: 'text-[#DB2777]',
-    iconBg: 'bg-[#FCE7F3]',
     label: 'E-Commerce Agent',
     badge: 'RAG + Actions',
-    badgeColor: 'border-[#DB2777]/20 text-[#DB2777] bg-[#FCE7F3]',
     heading: 'Your smartest sales associate, 24/7',
     description:
       'Combines deep product knowledge (RAG) with autonomous actions — track orders, process returns, recommend products, and upsell intelligently, all in a single conversation.',
@@ -227,11 +218,8 @@ const agentExamples: AgentExample[] = [
   {
     id: 'healthcare',
     icon: Stethoscope,
-    iconColor: 'text-[#16A34A]',
-    iconBg: 'bg-[#DCFCE7]',
     label: 'Healthcare Agent',
     badge: 'Appointments + Triage',
-    badgeColor: 'border-[#16A34A]/20 text-[#16A34A] bg-[#DCFCE7]',
     heading: 'Patient support that never sleeps',
     description:
       'HIPAA-aware AI that handles appointment scheduling, symptom pre-screening, insurance verification, and prescription refill requests — reducing front-desk workload by 60%.',
@@ -356,7 +344,7 @@ function TabWidget({ tabs, autoRotate }: { tabs: TabContent[]; autoRotate: boole
   }, [tabs]);
 
   return (
-    <div className="v4-code-panel rounded-2xl overflow-hidden">
+    <div className="bg-[#0F0F14] rounded-2xl overflow-hidden">
       {/* Tab bar */}
       <div className="flex border-b border-white/[0.08] bg-white/[0.02]">
         {tabs.map((tab, i) => (
@@ -371,7 +359,7 @@ function TabWidget({ tabs, autoRotate }: { tabs: TabContent[]; autoRotate: boole
             {i === activeTab && (
               <motion.div
                 layoutId="dbTab"
-                className="absolute bottom-0 left-0 right-0 h-px bg-[#C084F5]"
+                className="absolute bottom-0 left-0 right-0 h-px bg-white"
                 transition={{ duration: 0.2 }}
               />
             )}
@@ -381,7 +369,7 @@ function TabWidget({ tabs, autoRotate }: { tabs: TabContent[]; autoRotate: boole
           <div className="ml-auto flex items-center pr-4">
             <div className="w-16 h-1 bg-white/[0.04] rounded-full overflow-hidden">
               <motion.div
-                className="h-full bg-[#C084F5]/50 rounded-full"
+                className="h-full bg-white/30 rounded-full"
                 key={`${activeTab}-progress`}
                 initial={{ width: '0%' }}
                 animate={{ width: '100%' }}
@@ -425,17 +413,17 @@ export default function DatabaseSection() {
   }, []);
 
   return (
-    <section className="py-20 px-6 bg-[#F9FAFB]">
+    <section className="py-28 px-6 bg-[#F7F7F7]">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <p className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest mb-4">
+          <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-white border border-[#E8E8E8] text-sm text-[#737373] shadow-sm mb-6">
             Agent Capabilities
-          </p>
-          <h2 className="text-4xl md:text-5xl font-bold text-[#111827] tracking-tight">
+          </span>
+          <h2 className="text-4xl md:text-5xl font-medium text-[#171717] tracking-[-0.02em]">
             See what your agent can do
           </h2>
-          <p className="text-lg text-[#6B7280] mt-4 max-w-2xl mx-auto">
+          <p className="text-lg font-normal text-[#737373] mt-4 max-w-2xl mx-auto">
             From database queries to appointment booking — Corpus AI agents handle complex workflows across every industry.
           </p>
         </div>
@@ -450,11 +438,11 @@ export default function DatabaseSection() {
                 onClick={() => setActiveExample(i)}
                 className={`flex items-center gap-2.5 px-5 py-3 rounded-xl text-sm font-medium transition-all cursor-pointer ${
                   i === activeExample
-                    ? 'bg-[#F3E8FF] border border-[#E9D5FF] text-[#C084F5]'
-                    : 'border border-[#E5E7EB] text-[#9CA3AF] hover:text-[#6B7280] hover:border-[#D1D5DB] bg-white'
+                    ? 'bg-[#171717] text-white'
+                    : 'bg-white border border-[#E8E8E8] text-[#737373] hover:text-[#171717] hover:border-[#D1D5DB]'
                 }`}
               >
-                <ExIcon className={`w-4 h-4 ${i === activeExample ? ex.iconColor : ''}`} />
+                <ExIcon className="w-4 h-4" />
                 {ex.label}
               </button>
             );
@@ -474,26 +462,26 @@ export default function DatabaseSection() {
             {/* Left Side: Text Content */}
             <div>
               <div className="flex items-center gap-3 mb-6">
-                <div className={`w-10 h-10 rounded-xl ${example.iconBg} flex items-center justify-center`}>
-                  <Icon className={`w-5 h-5 ${example.iconColor}`} />
+                <div className="w-10 h-10 rounded-xl bg-[#F7F7F7] border border-[#E8E8E8] flex items-center justify-center">
+                  <Icon className="w-5 h-5 text-[#171717]" />
                 </div>
-                <span className={`text-xs font-semibold px-3 py-1 rounded-full border ${example.badgeColor}`}>
+                <span className="text-xs font-medium px-3 py-1 rounded-full bg-white border border-[#E8E8E8] text-[#737373] shadow-sm">
                   {example.badge}
                 </span>
               </div>
 
-              <h3 className="text-3xl md:text-4xl font-bold text-[#111827] tracking-tight leading-tight">
+              <h3 className="text-3xl md:text-4xl font-medium text-[#171717] tracking-[-0.02em] leading-tight">
                 {example.heading}
               </h3>
-              <p className="text-base text-[#6B7280] mt-4 leading-relaxed max-w-lg">
+              <p className="text-base font-normal text-[#737373] mt-4 leading-relaxed max-w-lg">
                 {example.description}
               </p>
 
               <div className="space-y-3 mt-8">
                 {example.features.map((feature) => (
                   <div key={feature} className="flex items-start gap-3">
-                    <Check className="w-4 h-4 text-[#C084F5] mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-[#6B7280]">{feature}</span>
+                    <Check className="w-4 h-4 text-[#171717] mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-[#737373]">{feature}</span>
                   </div>
                 ))}
               </div>
@@ -501,7 +489,7 @@ export default function DatabaseSection() {
               <div className="mt-8">
                 <Link
                   href="/Sign-In"
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-[#C084F5] hover:text-[#A855F7] transition-colors"
+                  className="inline-flex items-center gap-2 text-sm font-medium text-[#171717] hover:text-[#737373] transition-colors"
                 >
                   {example.cta}
                   <ChevronRight className="w-4 h-4" />
@@ -522,8 +510,8 @@ export default function DatabaseSection() {
               onClick={() => setActiveExample(i)}
               className={`h-2 rounded-full transition-all cursor-pointer ${
                 i === activeExample
-                  ? 'bg-[#C084F5] w-6'
-                  : 'bg-[#D1D5DB] hover:bg-[#9CA3AF] w-2'
+                  ? 'bg-[#171717] w-6'
+                  : 'bg-[#D1D5DB] hover:bg-[#737373] w-2'
               }`}
             />
           ))}

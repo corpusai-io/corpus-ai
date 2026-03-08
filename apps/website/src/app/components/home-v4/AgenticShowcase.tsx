@@ -12,7 +12,7 @@ function ThoughtChain() {
         <div key={step} className="flex items-center gap-2">
           {i > 0 && (
             <motion.span
-              className="text-[#D1D5DB] text-xs"
+              className="text-[#737373] text-xs"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ delay: i * 0.3 }}
@@ -22,7 +22,7 @@ function ThoughtChain() {
             </motion.span>
           )}
           <motion.span
-            className="text-xs px-2 py-1 bg-[#F3E8FF] text-[#C084F5] rounded font-medium"
+            className="text-xs px-2 py-1 bg-[#F7F7F7] text-[#171717] rounded font-medium"
             initial={{ opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.3 }}
@@ -39,24 +39,24 @@ function ThoughtChain() {
 const cards = [
   {
     icon: Brain,
-    iconColor: 'text-[#C084F5]',
-    iconBg: 'bg-[#F3E8FF]',
+    iconColor: 'text-[#171717]',
+    iconBg: 'bg-[#F7F7F7]',
     title: 'Multi-Step Reasoning',
     body: 'Your agent breaks complex queries into sub-tasks, reasons through each step, and synthesizes a coherent answer — no hallucinations, just grounded logic.',
     visual: 'thought-chain',
   },
   {
     icon: Plug,
-    iconColor: 'text-[#4F46E5]',
-    iconBg: 'bg-[#EEF2FF]',
+    iconColor: 'text-[#171717]',
+    iconBg: 'bg-[#F7F7F7]',
     title: 'Tool & API Execution',
     body: 'Your agent can call external APIs, trigger webhooks, send emails, update CRMs, and execute custom functions — all within a single conversation turn.',
     visual: 'tool-badges',
   },
   {
     icon: Zap,
-    iconColor: 'text-[#DB2777]',
-    iconBg: 'bg-[#FCE7F3]',
+    iconColor: 'text-[#171717]',
+    iconBg: 'bg-[#F7F7F7]',
     title: 'Autonomous Actions',
     body: 'Configure guardrails and let your agent act independently — schedule meetings, process refunds, escalate critical issues — all within the boundaries you define.',
     visual: 'action-badges',
@@ -70,25 +70,26 @@ const toolBadges = [
 ];
 
 const actionBadges = [
-  { color: 'bg-[#16A34A]', text: 'Refund processed — $49.99' },
-  { color: 'bg-[#D97706]', text: 'Escalated to support lead' },
-  { color: 'bg-[#2563EB]', text: 'Meeting scheduled — Thu 2pm' },
+  { color: 'bg-[#171717]', text: 'Refund processed — $49.99' },
+  { color: 'bg-[#737373]', text: 'Escalated to support lead' },
+  { color: 'bg-[#171717]', text: 'Meeting scheduled — Thu 2pm' },
 ];
 
 export default function AgenticShowcase() {
   return (
-    <section className="py-20 px-6 bg-[#F9FAFB] relative overflow-hidden">
+    <section className="py-28 px-6 bg-[#F7F7F7] relative overflow-hidden">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-14">
-          <p className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest mb-4">
+          <span className="inline-flex items-center gap-2 bg-white border border-[#E8E8E8] rounded-full px-4 py-1.5 text-sm text-[#737373] shadow-sm mb-5">
+            <Zap className="w-3.5 h-3.5 text-[#171717]" />
             Agents, not chatbots
-          </p>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#111827] tracking-tight">
+          </span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-[-0.02em] text-[#171717]">
             Your chatbot answers questions.<br className="hidden md:block" />
-            <span className="v4-gradient-text">Your AI agent resolves them.</span>
+            Your AI agent resolves them.
           </h2>
-          <p className="text-lg text-[#6B7280] mt-6 max-w-2xl mx-auto">
+          <p className="text-lg font-[family-name:var(--font-inter)] font-normal text-[#737373] mt-6 max-w-2xl mx-auto">
             Chatbots follow scripts. Corpus AI agents reason through complexity,
             query live data, and take real action — all within guardrails you define.
           </p>
@@ -101,7 +102,7 @@ export default function AgenticShowcase() {
             return (
               <motion.div
                 key={card.title}
-                className="v4-card-glow p-8 relative overflow-hidden group"
+                className="bg-white rounded-2xl p-8 relative overflow-hidden group hover:shadow-md transition-shadow duration-300"
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.15, duration: 0.5 }}
@@ -111,10 +112,10 @@ export default function AgenticShowcase() {
                   <div className={`w-12 h-12 rounded-xl ${card.iconBg} flex items-center justify-center mb-6`}>
                     <Icon className={card.iconColor} size={24} />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#111827] mb-3">
+                  <h3 className="text-xl font-medium tracking-[-0.02em] text-[#171717] mb-3">
                     {card.title}
                   </h3>
-                  <p className="text-sm text-[#6B7280] leading-relaxed">
+                  <p className="text-sm text-[#737373] leading-relaxed">
                     {card.body}
                   </p>
 
@@ -125,7 +126,7 @@ export default function AgenticShowcase() {
                       {toolBadges.map((badge) => (
                         <span
                           key={badge}
-                          className="text-xs px-3 py-1.5 rounded-lg border border-[#E5E7EB] bg-[#F9FAFB] text-[#6B7280] font-mono"
+                          className="text-xs px-3 py-1.5 rounded-lg bg-[#F7F7F7] text-[#737373] font-mono"
                         >
                           {badge}
                         </span>
@@ -138,7 +139,7 @@ export default function AgenticShowcase() {
                       {actionBadges.map((badge) => (
                         <div
                           key={badge.text}
-                          className="flex items-center gap-2 text-xs text-[#6B7280] py-1"
+                          className="flex items-center gap-2 text-xs text-[#737373] py-1"
                         >
                           <span className={`w-1.5 h-1.5 rounded-full ${badge.color} flex-shrink-0`} />
                           {badge.text}

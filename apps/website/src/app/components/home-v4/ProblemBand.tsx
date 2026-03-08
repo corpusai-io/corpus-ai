@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { X, Check } from 'lucide-react';
+import { X, Check, ArrowRightLeft } from 'lucide-react';
 
 const before = [
   'Customers wait hours for answers your team already knows',
@@ -21,7 +21,7 @@ const after = [
 
 export default function ProblemBand() {
   return (
-    <section className="py-20 px-6 bg-white">
+    <section className="py-28 px-6 bg-[#F7F7F7]">
       <div className="max-w-6xl mx-auto">
 
         {/* Section label */}
@@ -32,13 +32,14 @@ export default function ProblemBand() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <p className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest mb-3">
+          <span className="inline-flex items-center gap-2 bg-white border border-[#E8E8E8] rounded-full px-4 py-1.5 text-sm text-[#737373] shadow-sm mb-5">
+            <ArrowRightLeft className="w-3.5 h-3.5 text-[#171717]" />
             The transformation
-          </p>
-          <h2 className="text-3xl md:text-4xl font-bold text-[#111827] tracking-tight">
+          </span>
+          <h2 className="text-3xl md:text-4xl font-medium tracking-[-0.02em] text-[#171717]">
             From chaos to clarity.
           </h2>
-          <p className="text-[#6B7280] mt-3 max-w-xl mx-auto">
+          <p className="font-[family-name:var(--font-inter)] font-normal text-[#737373] mt-3 max-w-xl mx-auto">
             See the difference an AI agent makes when it handles what used to slow you down.
           </p>
         </motion.div>
@@ -47,7 +48,7 @@ export default function ProblemBand() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Before column */}
           <motion.div
-            className="rounded-2xl border border-[#FEE2E2]/60 bg-gradient-to-b from-[#FAFAFA] to-[#FEF2F2]/30 p-8"
+            className="bg-white rounded-2xl p-8"
             initial={{ opacity: 0, x: -24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -55,9 +56,9 @@ export default function ProblemBand() {
           >
             <div className="flex items-center gap-3 mb-6">
               <div className="w-8 h-8 rounded-full bg-[#FEF2F2] flex items-center justify-center">
-                <X className="w-4 h-4 text-[#EF4444]" />
+                <X className="w-4 h-4 text-[#DC2626]" />
               </div>
-              <span className="text-sm font-semibold text-[#9CA3AF] uppercase tracking-widest">
+              <span className="text-sm font-medium text-[#737373] uppercase tracking-widest">
                 Without Corpus AI
               </span>
             </div>
@@ -72,10 +73,10 @@ export default function ProblemBand() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.08, duration: 0.4 }}
                 >
-                  <div className="w-5 h-5 rounded-full bg-[#FEE2E2] flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <X className="w-2.5 h-2.5 text-[#EF4444]" />
+                  <div className="w-5 h-5 rounded-full bg-[#FEF2F2] flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <X className="w-2.5 h-2.5 text-[#DC2626]" />
                   </div>
-                  <p className="text-sm text-[#6B7280] leading-relaxed">{item}</p>
+                  <p className="text-sm text-[#737373] leading-relaxed">{item}</p>
                 </motion.div>
               ))}
             </div>
@@ -83,17 +84,17 @@ export default function ProblemBand() {
 
           {/* After column */}
           <motion.div
-            className="rounded-2xl border border-[#E9D5FF] bg-gradient-to-b from-[#FAF5FF] to-[#F3E8FF]/50 p-8 shadow-sm shadow-[#C084F5]/5"
+            className="bg-white rounded-2xl p-8"
             initial={{ opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.55, ease: [0, 0, 0.2, 1] }}
           >
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-8 rounded-full bg-[#F3E8FF] flex items-center justify-center">
-                <Check className="w-4 h-4 text-[#C084F5]" />
+              <div className="w-8 h-8 rounded-full bg-[#F0FDF4] flex items-center justify-center">
+                <Check className="w-4 h-4 text-[#16A34A]" />
               </div>
-              <span className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest">
+              <span className="text-sm font-medium text-[#171717] uppercase tracking-widest">
                 With Corpus AI
               </span>
             </div>
@@ -108,10 +109,10 @@ export default function ProblemBand() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.08, duration: 0.4 }}
                 >
-                  <div className="w-5 h-5 rounded-full bg-[#F3E8FF] flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Check className="w-2.5 h-2.5 text-[#C084F5]" />
+                  <div className="w-5 h-5 rounded-full bg-[#F0FDF4] flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Check className="w-2.5 h-2.5 text-[#16A34A]" />
                   </div>
-                  <p className="text-sm text-[#374151] font-medium leading-relaxed">{item}</p>
+                  <p className="text-sm text-[#171717] font-medium leading-relaxed">{item}</p>
                 </motion.div>
               ))}
             </div>

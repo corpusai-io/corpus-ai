@@ -1,85 +1,82 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const testimonials = [
   {
     quote:
       'We replaced three support agents and a $2,000-per-month help desk with one Corpus AI agent. It resolves 80% of inquiries autonomously — and customers actually prefer it.',
     name: 'Sarah Mitchell',
-    role: 'VP Customer Experience, TechFlow Solutions',
+    role: 'VP Customer Experience',
+    company: 'TechFlow Solutions',
     initials: 'SM',
   },
   {
     quote:
       'Our team was drowning in repetitive questions. Within a week of deploying Corpus AI, first-response time dropped from 4 hours to under 30 seconds. We haven\'t looked back.',
     name: 'James Okafor',
-    role: 'Head of Operations, Meridian Health',
+    role: 'Head of Operations',
+    company: 'Meridian Health',
     initials: 'JO',
   },
   {
     quote:
       'The database connectivity is what sold us. Our sales team now asks questions in plain English and gets live CRM data back — no SQL, no waiting for analysts.',
     name: 'Priya Nair',
-    role: 'Director of Revenue, Stackline Commerce',
+    role: 'Director of Revenue',
+    company: 'Stackline Commerce',
     initials: 'PN',
   },
 ];
 
 export default function TestimonialV4() {
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const id = setInterval(() => {
-      setIndex((i) => (i + 1) % testimonials.length);
-    }, 5000);
-    return () => clearInterval(id);
-  }, []);
-
-  const t = testimonials[index];
-
   return (
-    <section className="py-20 px-6 bg-[#FAF5FF]">
-      <div className="max-w-4xl mx-auto text-center">
-        <p className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest mb-12">
-          Trusted by 500+ teams
-        </p>
+    <section className="py-28 px-6 bg-[#F7F7F7]">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-16">
+          <span className="inline-block bg-white border border-[#E8E8E8] rounded-full px-4 py-1.5 text-sm text-[#737373] mb-6">
+            Trusted by 500+ teams
+          </span>
+          <h2 className="text-3xl md:text-4xl font-medium text-[#171717] tracking-tight">
+            What our customers say
+          </h2>
+        </div>
 
-        <div className="text-7xl v4-gradient-text-warm font-serif leading-none mb-2 opacity-20">&ldquo;</div>
-
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.45 }}
-          >
-            <blockquote className="text-2xl md:text-3xl font-medium text-[#111827] leading-relaxed tracking-tight">
-              {t.quote}
-            </blockquote>
-
-            <div className="mt-10">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#C084F5] via-[#A855F7] to-[#4F46E5] mx-auto mb-4 flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-[#C084F5]/25">
-                {t.initials}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {testimonials.map((t, i) => (
+            <motion.div
+              key={t.name}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              className="bg-white rounded-2xl p-8 flex flex-col justify-between"
+            >
+              {/* Decorative quote mark */}
+              <div>
+                <span className="text-5xl leading-none font-serif text-[#E8E8E8] select-none">
+                  &ldquo;
+                </span>
+                <blockquote className="text-base text-[#737373] leading-relaxed italic mt-2">
+                  {t.quote}
+                </blockquote>
               </div>
-              <div className="text-base font-semibold text-[#111827]">{t.name}</div>
-              <div className="text-sm text-[#6B7280] mt-1">{t.role}</div>
-            </div>
-          </motion.div>
-        </AnimatePresence>
 
-        {/* Dot nav */}
-        <div className="flex justify-center gap-2 mt-10">
-          {testimonials.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setIndex(i)}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === index ? 'w-6 bg-[#C084F5]' : 'w-1.5 bg-[#E9D5FF]'
-              }`}
-            />
+              <div className="flex items-center justify-between mt-8">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-[#171717] flex items-center justify-center text-white text-xs font-medium flex-shrink-0">
+                    {t.initials}
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-[#171717]">{t.name}</p>
+                    <p className="text-xs text-[#737373]">{t.role}</p>
+                  </div>
+                </div>
+                <span className="text-xs font-medium text-[#737373] ml-4 flex-shrink-0">
+                  {t.company}
+                </span>
+              </div>
+            </motion.div>
           ))}
         </div>
       </div>

@@ -101,13 +101,13 @@ const navItems: NavItem[] = [
 function DropdownItem({ item, hasDesc }: { item: NavDropdownItem; hasDesc: boolean }) {
   const Icon = item.icon;
   return (
-    <Link href={item.href} className="flex items-start gap-3 p-3 rounded-lg hover:bg-[#FAF5FF] transition-colors">
-      <div className="w-9 h-9 rounded-lg bg-[#F3E8FF] flex items-center justify-center text-[#C084F5] shrink-0">
+    <Link href={item.href} className="flex items-start gap-3 p-3 rounded-lg hover:bg-[#F7F7F7] transition-colors">
+      <div className="w-9 h-9 rounded-lg bg-[#F7F7F7] flex items-center justify-center text-[#171717] shrink-0">
         <Icon size={16} />
       </div>
       <div>
-        <div className="text-sm font-medium text-[#111827]">{item.label}</div>
-        {hasDesc && item.desc && <div className="text-xs text-[#6B7280] mt-0.5">{item.desc}</div>}
+        <div className="text-sm font-medium text-[#171717]">{item.label}</div>
+        {hasDesc && item.desc && <div className="text-xs text-[#737373] mt-0.5">{item.desc}</div>}
       </div>
     </Link>
   );
@@ -128,7 +128,10 @@ function DesktopNavItem({ item }: { item: NavItem }) {
 
   if (item.href) {
     return (
-      <Link href={item.href} className="px-3 py-2 text-sm text-[#6B7280] hover:text-[#111827] transition-colors rounded-lg">
+      <Link
+        href={item.href}
+        className="px-3 py-2 text-[14px] font-normal text-[#171717]/80 hover:text-[#171717] transition-colors rounded-lg tracking-[-0.2px] font-[family-name:var(--font-inter)]"
+      >
         {item.label}
       </Link>
     );
@@ -139,7 +142,7 @@ function DesktopNavItem({ item }: { item: NavItem }) {
 
   return (
     <div className="relative" onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
-      <button className="flex items-center gap-1 px-3 py-2 text-sm text-[#6B7280] hover:text-[#111827] transition-colors rounded-lg cursor-pointer">
+      <button className="flex items-center gap-1 px-3 py-2 text-[14px] font-normal text-[#171717]/80 hover:text-[#171717] transition-colors rounded-lg cursor-pointer tracking-[-0.2px] font-[family-name:var(--font-inter)]">
         {item.label}
         <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.15 }}>
           <ChevronDown size={12} />
@@ -152,7 +155,7 @@ function DesktopNavItem({ item }: { item: NavItem }) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 4, scale: 0.98 }}
             transition={{ duration: 0.15 }}
-            className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white border border-[#E5E7EB] rounded-xl p-4 shadow-xl shadow-black/[0.06] ${item.width}`}
+            className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white border border-[#E8E8E8] rounded-xl p-4 shadow-lg shadow-black/[0.06] ${item.width}`}
           >
             <div className={`grid ${gridCols} gap-1`}>
               {item.items?.map((sub) => (
@@ -160,8 +163,8 @@ function DesktopNavItem({ item }: { item: NavItem }) {
               ))}
             </div>
             {item.footer && (
-              <div className="border-t border-[#E5E7EB] mt-3 pt-3">
-                <Link href={item.footer.href} className="text-xs text-[#C084F5] hover:underline">
+              <div className="border-t border-[#E8E8E8] mt-3 pt-3">
+                <Link href={item.footer.href} className="text-xs text-[#737373] hover:text-[#171717] hover:underline transition-colors">
                   {item.footer.text}
                 </Link>
               </div>
@@ -178,7 +181,7 @@ function MobileAccordion({ item }: { item: NavItem }) {
 
   if (item.href) {
     return (
-      <Link href={item.href} className="block px-4 py-3 text-base text-[#6B7280] hover:text-[#111827] transition-colors">
+      <Link href={item.href} className="block px-4 py-3 text-base text-[#171717]/80 hover:text-[#171717] transition-colors font-[family-name:var(--font-inter)]">
         {item.label}
       </Link>
     );
@@ -188,7 +191,7 @@ function MobileAccordion({ item }: { item: NavItem }) {
     <div>
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center justify-between w-full px-4 py-3 text-base text-[#6B7280] hover:text-[#111827] transition-colors"
+        className="flex items-center justify-between w-full px-4 py-3 text-base text-[#171717]/80 hover:text-[#171717] transition-colors font-[family-name:var(--font-inter)]"
       >
         {item.label}
         <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.15 }}>
@@ -211,10 +214,10 @@ function MobileAccordion({ item }: { item: NavItem }) {
                   <Link
                     key={sub.href}
                     href={sub.href}
-                    className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#FAF5FF] transition-colors"
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#F7F7F7] transition-colors"
                   >
-                    <Icon size={16} className="text-[#C084F5]" />
-                    <span className="text-sm text-[#6B7280]">{sub.label}</span>
+                    <Icon size={16} className="text-[#171717]" />
+                    <span className="text-sm text-[#737373]">{sub.label}</span>
                   </Link>
                 );
               })}
@@ -237,7 +240,13 @@ export default function NavbarV4() {
   }, []);
 
   return (
-    <nav className={`fixed top-0 w-full z-40 backdrop-blur-xl transition-all duration-300 ${scrolled ? 'bg-white/95 v4-nav-scrolled border-b border-[#E5E7EB]/50' : 'bg-white/80 border-b border-transparent'}`}>
+    <nav
+      className={`fixed top-0 w-full z-40 transition-all duration-300 ${
+        scrolled
+          ? 'bg-white/80 backdrop-blur-xl border-b border-[#E8E8E8]'
+          : 'bg-transparent border-b border-transparent'
+      }`}
+    >
       <div className="max-w-6xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -254,21 +263,22 @@ export default function NavbarV4() {
 
           {/* Right: CTAs */}
           <div className="hidden lg:flex items-center gap-3">
-            <Link href="/Sign-In" className="text-sm text-[#6B7280] hover:text-[#111827] transition-colors">
-              Sign In
+            <Link
+              href="/Sign-In"
+              className="text-sm text-[#171717] border border-[#E8E8E8] shadow-[0_4px_4px_rgba(23,23,23,0.04)] rounded-[7px] px-4 py-2.5 hover:bg-[#F7F7F7] transition-colors"
+            >
+              Log In
             </Link>
-            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-              <Link
-                href="/Sign-In"
-                className="text-sm font-medium bg-[#C084F5] hover:bg-[#A855F7] text-white rounded-xl px-5 py-2.5 transition-all inline-block shadow-md shadow-[#C084F5]/20 hover:shadow-lg hover:shadow-[#C084F5]/30"
-              >
-                Start Free
-              </Link>
-            </motion.div>
+            <Link
+              href="/Sign-In"
+              className="text-sm font-medium bg-[#171717] hover:bg-[#171717]/90 text-white rounded-md px-4 py-2.5 transition-colors tracking-[-0.28px]"
+            >
+              Sign Up
+            </Link>
           </div>
 
           {/* Mobile Hamburger */}
-          <button className="lg:hidden text-[#374151]" onClick={() => setMobileOpen(true)}>
+          <button className="lg:hidden text-[#171717]" onClick={() => setMobileOpen(true)}>
             <Menu size={24} />
           </button>
         </div>
@@ -282,13 +292,13 @@ export default function NavbarV4() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-white/98 backdrop-blur-xl z-50 lg:hidden"
+            className="fixed inset-0 bg-white z-50 lg:hidden"
           >
-            <div className="flex items-center justify-between px-6 py-4 border-b border-[#E5E7EB]">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[#E8E8E8]">
               <Link href="/" className="flex items-center" onClick={() => setMobileOpen(false)}>
                 <img src="/logo.svg" alt="Corpus AI" className="h-8 brightness-0 opacity-90" />
               </Link>
-              <button className="text-[#374151]" onClick={() => setMobileOpen(false)}>
+              <button className="text-[#171717]" onClick={() => setMobileOpen(false)}>
                 <X size={24} />
               </button>
             </div>
@@ -299,20 +309,20 @@ export default function NavbarV4() {
               ))}
             </div>
 
-            <div className="absolute bottom-0 left-0 right-0 p-6 space-y-3 border-t border-[#E5E7EB] bg-white">
+            <div className="absolute bottom-0 left-0 right-0 p-6 space-y-3 border-t border-[#E8E8E8] bg-white">
               <Link
                 href="/Sign-In"
-                className="block text-center text-sm text-[#6B7280] hover:text-[#111827] transition-colors py-2"
+                className="block text-center text-sm text-[#171717] border border-[#E8E8E8] shadow-[0_4px_4px_rgba(23,23,23,0.04)] rounded-[7px] py-2.5 hover:bg-[#F7F7F7] transition-colors"
                 onClick={() => setMobileOpen(false)}
               >
-                Sign In
+                Log In
               </Link>
               <Link
                 href="/Sign-In"
-                className="block text-center text-sm font-medium bg-[#C084F5] hover:bg-[#A855F7] text-white rounded-lg px-4 py-3 transition-colors"
+                className="block text-center text-sm font-medium bg-[#171717] hover:bg-[#171717]/90 text-white rounded-md px-4 py-3 transition-colors tracking-[-0.28px]"
                 onClick={() => setMobileOpen(false)}
               >
-                Start Free
+                Sign Up
               </Link>
             </div>
           </motion.div>

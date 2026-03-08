@@ -46,53 +46,55 @@ export default function FAQV4() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="py-20 px-6 max-w-3xl mx-auto">
-      <div className="text-center mb-16">
-        <p className="text-sm font-semibold text-[#C084F5] uppercase tracking-widest mb-4">
-          FAQ
-        </p>
-        <h2 className="text-4xl font-bold text-[#111827] tracking-tight">
-          Questions &amp; answers
-        </h2>
-        <p className="text-lg text-[#6B7280] mt-4">
-          Everything you need to know before you build.
-        </p>
-      </div>
+    <section className="py-28 px-6 bg-[#F7F7F7]">
+      <div className="max-w-3xl mx-auto">
+        <div className="text-center mb-16">
+          <span className="inline-block bg-white border border-[#E8E8E8] rounded-full px-4 py-1.5 text-sm text-[#737373] mb-6">
+            FAQ
+          </span>
+          <h2 className="text-3xl md:text-4xl font-medium text-[#171717] tracking-tight">
+            Questions &amp; answers
+          </h2>
+          <p className="text-base text-[#737373] mt-4">
+            Everything you need to know before you build.
+          </p>
+        </div>
 
-      <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-sm overflow-hidden">
-        {faqs.map((faq, i) => (
-          <div key={i} className={`border-b border-[#E5E7EB] last:border-b-0`}>
-            <button
-              onClick={() => setOpenIndex(openIndex === i ? null : i)}
-              className="w-full px-6 py-5 flex justify-between items-center text-left hover:bg-[#FAFAFA] transition-colors"
-            >
-              <span className="text-base font-medium text-[#111827] pr-4">
-                {faq.question}
-              </span>
-              <ChevronDown
-                className={`w-5 h-5 text-[#9CA3AF] flex-shrink-0 transition-transform duration-200 ${
-                  openIndex === i ? 'rotate-180 text-[#C084F5]' : ''
-                }`}
-              />
-            </button>
+        <div>
+          {faqs.map((faq, i) => (
+            <div key={i} className="border-b border-[#E8E8E8]">
+              <button
+                onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                className="w-full py-5 flex justify-between items-center text-left transition-colors"
+              >
+                <span className="text-base font-medium text-[#171717] pr-4">
+                  {faq.question}
+                </span>
+                <ChevronDown
+                  className={`w-5 h-5 text-[#737373] flex-shrink-0 transition-transform duration-200 ${
+                    openIndex === i ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
 
-            <AnimatePresence initial={false}>
-              {openIndex === i && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="overflow-hidden"
-                >
-                  <p className="text-sm text-[#6B7280] leading-relaxed px-6 pb-5">
-                    {faq.answer}
-                  </p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        ))}
+              <AnimatePresence initial={false}>
+                {openIndex === i && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="overflow-hidden"
+                  >
+                    <p className="text-sm text-[#737373] leading-relaxed pb-5">
+                      {faq.answer}
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

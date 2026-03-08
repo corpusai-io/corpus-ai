@@ -1,47 +1,31 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, ArrowRight } from 'lucide-react';
-import DashboardPreview from '@/app/components/home-v4/DashboardPreview';
+import dynamic from 'next/dynamic';
+import { motion } from 'framer-motion';
+import { ArrowRight, BookOpen, Database, Zap } from 'lucide-react';
 
-// ─── Rotating Personas ────────────────────────────────────────────────────────
-
-const personas = [
-  { label: 'E-commerce', text: 'Handle returns, refunds, and order tracking without a support ticket.' },
-  { label: 'SaaS Support', text: 'Resolve 80% of tickets before a human reads them.' },
-  { label: 'Healthcare', text: 'Automate patient intake, scheduling, and triage 24/7.' },
-  { label: 'Internal Teams', text: 'Query any database in plain English. No SQL required.' },
-];
+const DashboardPreview = dynamic(
+  () => import('@/app/components/home-v4/DashboardPreview'),
+  { loading: () => <div className="h-[480px] w-full rounded-2xl bg-[#F7F7F7] border border-[#E8E8E8]" /> }
+);
 
 // ─── Animation Variants ───────────────────────────────────────────────────────
 
 const containerVariants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.12 } },
+  visible: { transition: { staggerChildren: 0.1 } },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 24, filter: 'blur(4px)' },
-  visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.65, ease: [0, 0, 0.2, 1] as const } },
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0, 0, 0.2, 1] as const } },
 };
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 
 export default function HeroV4() {
-  const [personaIndex, setPersonaIndex] = useState(0);
-
-  useEffect(() => {
-    const t = setInterval(() => setPersonaIndex(i => (i + 1) % personas.length), 3500);
-    return () => clearInterval(t);
-  }, []);
-
   return (
-    <section className="relative pt-36 pb-16 px-6 text-center overflow-hidden">
-      {/* Static soft gradient background */}
-      <div className="v4-glow-hero absolute inset-0 pointer-events-none" />
-
+    <section className="relative pt-40 pb-20 px-6 text-center overflow-hidden bg-white">
       <motion.div
         className="relative max-w-5xl mx-auto"
         variants={containerVariants}
@@ -50,8 +34,8 @@ export default function HeroV4() {
       >
         {/* Badge */}
         <motion.div variants={itemVariants} className="flex justify-center mb-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-[#E9D5FF] bg-[#FAF5FF] text-[#C084F5] text-[11px] font-semibold tracking-wide uppercase">
-            <Sparkles className="w-3 h-3" />
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#E8E8E8] bg-white text-[#171717] text-[11px] font-semibold tracking-wide uppercase shadow-sm">
+            <Zap className="w-3 h-3" />
             Agentic AI Platform
           </div>
         </motion.div>
@@ -59,69 +43,64 @@ export default function HeroV4() {
         {/* Headline */}
         <motion.h1
           variants={itemVariants}
-          className="text-3xl md:text-[44px] lg:text-[54px] font-bold tracking-[-0.025em] leading-[1.15] text-[#111827]"
+          className="text-5xl md:text-6xl lg:text-7xl font-normal tracking-[-0.02em] leading-none"
         >
-          Build <span className="v4-gradient-text">AI Agents</span> That Don&apos;t Just
-          Answer. They <span className="v4-gradient-text">Act.</span>
+          <span className="text-[#171717]">AI Agents that act,</span>
+          <br />
+          <span className="text-[#737373]">not just answer.</span>
         </motion.h1>
 
-        {/* Sub-headline */}
-        <motion.p variants={itemVariants} className="text-base md:text-lg text-[#6B7280] mt-5 max-w-2xl mx-auto leading-relaxed">
-          Train on your data, connect your database, and deploy an autonomous agent
-          across every channel — in minutes, not months.
-        </motion.p>
-
-        {/* Rotating persona */}
-        <motion.div variants={itemVariants} className="mt-5 h-10 flex items-center justify-center">
-          <AnimatePresence mode="wait">
-            <motion.p
-              key={personaIndex}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.35, ease: 'easeOut' }}
-              className="text-sm md:text-base text-[#9CA3AF] max-w-xl mx-auto"
-            >
-              <span className="text-[#C084F5] font-semibold">{personas[personaIndex].label}: </span>
-              {personas[personaIndex].text}
-            </motion.p>
-          </AnimatePresence>
+        {/* Subtitle with inline metric pills */}
+        <motion.div variants={itemVariants} className="mt-6 max-w-2xl mx-auto">
+          <p className="font-[family-name:var(--font-inter)] text-base font-normal text-[#737373] tracking-[-0.2px] leading-relaxed">
+            Train on your data, connect your tools, and deploy autonomous agents
+            that work with your{' '}
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-[#E8E8E8] bg-white text-sm text-[#171717] align-middle">
+              <BookOpen className="w-3 h-3" />
+              Knowledge Base
+            </span>
+            {', '}
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-[#E8E8E8] bg-white text-sm text-[#171717] align-middle">
+              <Database className="w-3 h-3" />
+              Database
+            </span>
+            {', and '}
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-[#E8E8E8] bg-white text-sm text-[#171717] align-middle">
+              <Zap className="w-3 h-3" />
+              Actions
+            </span>
+            {' '}— in minutes, not months.
+          </p>
         </motion.div>
 
         {/* CTAs */}
-        <motion.div variants={itemVariants} className="flex items-center justify-center gap-3 mt-8 flex-wrap">
+        <motion.div variants={itemVariants} className="flex items-center justify-center gap-3 mt-10 flex-wrap">
           <motion.a
             href="/Sign-In"
-            className="v4-btn-glow inline-flex items-center gap-2 bg-[#C084F5] text-white rounded-xl px-7 py-3.5 text-sm font-semibold cursor-pointer shadow-lg shadow-[#C084F5]/20"
-            whileHover={{ scale: 1.04, boxShadow: '0 12px 40px rgba(192,132,245,0.35)' }}
+            className="inline-flex items-center gap-2 bg-[#171717] text-white rounded-md px-6 py-3.5 text-sm font-medium cursor-pointer"
+            whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             transition={{ type: 'spring', stiffness: 400, damping: 20 }}
           >
-            Build Your First Agent — Free
+            Start Free Trial
             <ArrowRight className="w-4 h-4" />
           </motion.a>
           <motion.a
             href="/demo"
-            className="inline-flex items-center gap-2 border border-[#D1D5DB] text-[#374151] hover:border-[#E9D5FF] hover:text-[#C084F5] rounded-xl px-7 py-3.5 text-sm font-semibold transition-colors cursor-pointer bg-white/80 backdrop-blur-sm"
+            className="inline-flex items-center gap-2 border border-[#E8E8E8] text-[#171717] rounded-md px-6 py-3.5 text-sm font-medium transition-colors cursor-pointer bg-white shadow-sm hover:bg-[#F7F7F7]"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: 'spring', stiffness: 400, damping: 20 }}
           >
-            Watch 3-Min Demo
+            Talk to Sales
           </motion.a>
         </motion.div>
 
         {/* Trust signals */}
-        <motion.div variants={itemVariants} className="flex items-center justify-center gap-6 mt-6 flex-wrap">
-          {[
-            { text: '500+ teams' },
-            { text: 'SOC 2 compliant' },
-            { text: 'No credit card' },
-            { text: 'Free forever plan' },
-          ].map((item) => (
-            <span key={item.text} className="flex items-center gap-1.5 text-xs text-[#9CA3AF]">
-              <span className="text-[#C084F5] font-semibold">✓</span>
-              {item.text}
+        <motion.div variants={itemVariants} className="flex items-center justify-center gap-1 mt-6 flex-wrap">
+          {['500+ teams', 'SOC 2 compliant', 'No credit card', 'Free forever plan'].map((text, i, arr) => (
+            <span key={text} className="text-xs text-[#737373]">
+              {text}{i < arr.length - 1 && <span className="mx-2">&middot;</span>}
             </span>
           ))}
         </motion.div>
