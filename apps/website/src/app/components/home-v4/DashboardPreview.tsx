@@ -417,23 +417,6 @@ export default function DashboardPreview() {
         className="rounded-2xl overflow-hidden border border-[#E8E8E8]"
         style={{ boxShadow: '0 24px 80px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04)' }}
       >
-        {/* Browser chrome */}
-        <div className="bg-[#F8FAFC] border-b border-[#E8E8E8] px-4 py-2 flex items-center gap-3 flex-shrink-0">
-          <div className="flex gap-1.5">
-            <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]" />
-            <div className="w-2.5 h-2.5 rounded-full bg-[#FEBC2E]" />
-            <div className="w-2.5 h-2.5 rounded-full bg-[#28C840]" />
-          </div>
-          <div className="flex-1 max-w-xs mx-auto">
-            <div className="bg-white border border-[#E8E8E8] rounded-md px-3 py-1 text-[10px] text-[#94A3B8] flex items-center gap-1.5">
-              <svg className="w-2.5 h-2.5 text-[#CBD5E1] flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
-              app.corpus.ai/dashboard
-            </div>
-          </div>
-        </div>
-
         {/* Dashboard body */}
         <div className="flex h-[420px] sm:h-[480px]">
           {/* ── Sidebar matching real dashboard ── */}
@@ -450,7 +433,7 @@ export default function DashboardPreview() {
                   <Bot className="w-3 h-3 text-white" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-[10px] font-semibold text-[#0F172A] truncate">Website Bot</p>
+                  <p className="text-[10px] font-semibold text-[#0F172A] truncate">Assistant</p>
                   <div className="flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#16A34A] animate-pulse" />
                     <p className="text-[8px] text-[#16A34A] font-medium">Active</p>
@@ -535,7 +518,7 @@ export default function DashboardPreview() {
                 <div className="w-5 h-5 rounded-md bg-[#171717] flex items-center justify-center">
                   <Bot className="w-3 h-3 text-white" />
                 </div>
-                <span className="text-[11px] font-semibold text-[#0F172A]">Website Bot</span>
+                <span className="text-[11px] font-semibold text-[#0F172A]">Assistant</span>
                 <span className="text-[8px] font-medium text-[#171717] bg-[#F7F7F7] border border-[#E8E8E8] px-1.5 py-0.5 rounded">Preview</span>
               </div>
               <div className="flex items-center gap-2">

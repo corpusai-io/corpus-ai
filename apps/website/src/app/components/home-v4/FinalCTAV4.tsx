@@ -56,39 +56,6 @@ export default function FinalCTAV4() {
         </p>
       </motion.div>
 
-      {/* Dashboard preview overlay */}
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-60px' }}
-        transition={{ duration: 0.7, delay: 0.2 }}
-        className="max-w-5xl mx-auto mt-16 relative z-10"
-      >
-        <div className="bg-[#2a2a2a] rounded-2xl border border-white/10 p-1">
-          <div className="bg-[#1e1e1e] rounded-xl overflow-hidden">
-            {/* Mock browser bar */}
-            <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5">
-              <div className="flex gap-1.5">
-                <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
-                <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
-                <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
-              </div>
-              <div className="flex-1 mx-8">
-                <div className="bg-white/5 rounded-md h-6 max-w-xs mx-auto" />
-              </div>
-            </div>
-            {/* Mock dashboard content */}
-            <div className="p-6 space-y-4">
-              <div className="grid grid-cols-3 gap-4">
-                <div className="bg-white/5 rounded-lg h-20" />
-                <div className="bg-white/5 rounded-lg h-20" />
-                <div className="bg-white/5 rounded-lg h-20" />
-              </div>
-              <div className="bg-white/5 rounded-lg h-32" />
-            </div>
-          </div>
-        </div>
-      </motion.div>
     </section>
   );
 }
