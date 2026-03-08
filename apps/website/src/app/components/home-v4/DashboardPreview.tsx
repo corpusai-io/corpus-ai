@@ -412,7 +412,7 @@ function StatsPanel() {
 
 export default function DashboardPreview() {
   return (
-    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6">
+    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 relative">
       <div
         className="rounded-2xl overflow-hidden border border-[#E8E8E8]"
         style={{ boxShadow: '0 24px 80px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04)' }}
@@ -546,6 +546,11 @@ export default function DashboardPreview() {
           <StatsPanel />
         </div>
       </div>
+      {/* Bottom fade overlay */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-36 pointer-events-none rounded-b-2xl"
+        style={{ background: 'linear-gradient(to bottom, transparent 0%, white 90%)' }}
+      />
     </div>
   );
 }

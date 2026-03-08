@@ -118,7 +118,16 @@ const actionBadges = [
 export default function AgenticShowcase() {
   return (
     <section className="py-28 px-6 bg-[#F7F7F7] relative overflow-hidden">
-      <div className="max-w-7xl mx-auto">
+      {/* Subtle dot grid */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: 'radial-gradient(circle, #999999 1px, transparent 1px)',
+          backgroundSize: '24px 24px',
+          opacity: 0.35,
+        }}
+      />
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
         <div className="text-center mb-14">
           <span className="inline-flex items-center gap-2 bg-white border border-[#E8E8E8] rounded-full px-4 py-1.5 text-sm text-[#737373] shadow-sm mb-5">

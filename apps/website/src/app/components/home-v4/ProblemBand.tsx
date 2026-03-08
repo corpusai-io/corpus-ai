@@ -55,8 +55,8 @@ export default function ProblemBand() {
             transition={{ duration: 0.55, ease: [0, 0, 0.2, 1] }}
           >
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-8 rounded-full bg-[#FEF2F2] flex items-center justify-center">
-                <X className="w-4 h-4 text-[#DC2626]" />
+              <div className="w-8 h-8 rounded-full bg-[#F0F0F0] flex items-center justify-center">
+                <X className="w-4 h-4 text-[#737373]" />
               </div>
               <span className="text-sm font-medium text-[#737373] uppercase tracking-widest">
                 Without Corpus AI
@@ -73,8 +73,8 @@ export default function ProblemBand() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.08, duration: 0.4 }}
                 >
-                  <div className="w-5 h-5 rounded-full bg-[#FEF2F2] flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <X className="w-2.5 h-2.5 text-[#DC2626]" />
+                  <div className="w-5 h-5 rounded-full bg-[#F0F0F0] flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <X className="w-2.5 h-2.5 text-[#737373]" />
                   </div>
                   <p className="text-sm text-[#737373] leading-relaxed">{item}</p>
                 </motion.div>
@@ -91,8 +91,8 @@ export default function ProblemBand() {
             transition={{ duration: 0.55, ease: [0, 0, 0.2, 1] }}
           >
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-8 rounded-full bg-[#F0FDF4] flex items-center justify-center">
-                <Check className="w-4 h-4 text-[#16A34A]" />
+              <div className="w-8 h-8 rounded-full bg-[#F0F0F0] flex items-center justify-center">
+                <Check className="w-4 h-4 text-[#171717]" />
               </div>
               <span className="text-sm font-medium text-[#171717] uppercase tracking-widest">
                 With Corpus AI
@@ -109,8 +109,8 @@ export default function ProblemBand() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.08, duration: 0.4 }}
                 >
-                  <div className="w-5 h-5 rounded-full bg-[#F0FDF4] flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Check className="w-2.5 h-2.5 text-[#16A34A]" />
+                  <div className="w-5 h-5 rounded-full bg-[#F0F0F0] flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Check className="w-2.5 h-2.5 text-[#171717]" />
                   </div>
                   <p className="text-sm text-[#171717] font-medium leading-relaxed">{item}</p>
                 </motion.div>

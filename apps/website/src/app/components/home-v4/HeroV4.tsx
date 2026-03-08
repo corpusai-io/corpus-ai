@@ -1,13 +1,8 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 import { ArrowRight, BookOpen, Database, Zap } from 'lucide-react';
-
-const DashboardPreview = dynamic(
-  () => import('@/app/components/home-v4/DashboardPreview'),
-  { loading: () => <div className="h-[480px] w-full rounded-2xl bg-[#F7F7F7] border border-[#E8E8E8]" /> }
-);
+import DashboardPreview from '@/app/components/home-v4/DashboardPreview';
 
 // ─── Animation Variants ───────────────────────────────────────────────────────
 
@@ -106,7 +101,12 @@ export default function HeroV4() {
         </motion.div>
 
         {/* Dashboard Product Preview */}
-        <motion.div variants={itemVariants} className="mt-14 w-full">
+        <motion.div
+          className="mt-14 w-full"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3, ease: [0, 0, 0.2, 1] }}
+        >
           <DashboardPreview />
         </motion.div>
       </motion.div>
