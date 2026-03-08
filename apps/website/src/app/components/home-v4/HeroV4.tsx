@@ -17,8 +17,8 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0, 0, 0.2, 1] as const } },
+  hidden: { opacity: 0, y: 16, filter: 'blur(8px)' },
+  visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.7, ease: [0, 0, 0.2, 1] as const } },
 };
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
