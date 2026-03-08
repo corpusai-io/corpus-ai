@@ -1,7 +1,47 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
 import { Brain, Plug, Zap } from 'lucide-react';
+
+// ─── Scroll-scrubbed word component ─────────────────────────────────────────
+
+function ScrollWord({ progress, range, children }: { progress: MotionValue<number>; range: [number, number]; children: string }) {
+  const color = useTransform(progress, range, ['#D4D4D4', '#171717']);
+  return (
+    <motion.span style={{ color }} className="transition-none">
+      {children}{' '}
+    </motion.span>
+  );
+}
+
+function ScrollHeading() {
+  const ref = useRef<HTMLHeadingElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start 0.85', 'end 0.4'],
+  });
+
+  const words = ['Your', 'chatbot', 'answers', 'questions.', '\n', 'Your', 'AI', 'agent', 'resolves', 'them.'];
+
+  return (
+    <h2
+      ref={ref}
+      className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-[-0.02em] leading-tight"
+    >
+      {words.map((word, i) => {
+        if (word === '\n') return <br key={i} className="hidden md:block" />;
+        const start = i / words.length;
+        const end = (i + 1) / words.length;
+        return (
+          <ScrollWord key={i} progress={scrollYProgress} range={[start, end]}>
+            {word}
+          </ScrollWord>
+        );
+      })}
+    </h2>
+  );
+}
 
 function ThoughtChain() {
   const steps = ['Parse intent', 'Query data', 'Generate response'];
@@ -85,10 +125,7 @@ export default function AgenticShowcase() {
             <Zap className="w-3.5 h-3.5 text-[#171717]" />
             Agents, not chatbots
           </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-[-0.02em] text-[#171717]">
-            Your chatbot answers questions.<br className="hidden md:block" />
-            Your AI agent resolves them.
-          </h2>
+          <ScrollHeading />
           <p className="text-lg font-[family-name:var(--font-inter)] font-normal text-[#737373] mt-6 max-w-2xl mx-auto">
             Chatbots follow scripts. Corpus AI agents reason through complexity,
             query live data, and take real action — all within guardrails you define.
