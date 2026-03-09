@@ -1,30 +1,45 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { X, Check, ArrowRightLeft } from 'lucide-react';
+import { ArrowRightLeft, Clock, Search, Users, Target, Layers } from 'lucide-react';
 
-const before = [
-  'Customers wait hours for answers your team already knows',
-  'Support agents manually look up orders, one ticket at a time',
-  'Scaling support means hiring — and training — more people',
-  'Leads disappear when no one is available to respond',
-  'Data lives in silos your team can\'t access fast enough',
-];
-
-const after = [
-  'Customers get instant, accurate answers — 24/7, no hold time',
-  'Your agent queries the database and responds in seconds',
-  'Add another agent, not another headcount',
-  'Every visitor engaged, every lead captured automatically',
-  'All your data accessible through one natural conversation',
+const rows = [
+  {
+    pain: 'Customers wait hours for answers your team already knows',
+    solution: 'Instant, accurate answers — 24/7, no hold time',
+    icon: Clock,
+  },
+  {
+    pain: 'Support agents manually look up orders, one ticket at a time',
+    solution: 'Your agent queries the database and responds in seconds',
+    icon: Search,
+  },
+  {
+    pain: 'Scaling support means hiring — and training — more people',
+    solution: 'Add another agent, not another headcount',
+    icon: Users,
+  },
+  {
+    pain: 'Leads disappear when no one is available to respond',
+    solution: 'Every visitor engaged, every lead captured automatically',
+    icon: Target,
+  },
+  {
+    pain: "Data lives in silos your team can't access fast enough",
+    solution: 'All your data accessible through one natural conversation',
+    icon: Layers,
+  },
 ];
 
 export default function ProblemBand() {
+  const [hovered, setHovered] = useState<number | null>(null);
+
   return (
     <section className="py-28 px-6 bg-[#F7F7F7]">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-4xl mx-auto">
 
-        {/* Section label */}
+        {/* Section label — unchanged */}
         <motion.div
           className="text-center mb-14"
           initial={{ opacity: 0, y: 16 }}
@@ -44,79 +59,96 @@ export default function ProblemBand() {
           </p>
         </motion.div>
 
-        {/* Split layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Before column */}
-          <motion.div
-            className="bg-white rounded-2xl p-8"
-            initial={{ opacity: 0, x: -24 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.55, ease: [0, 0, 0.2, 1] }}
-          >
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-8 rounded-full bg-[#F0F0F0] flex items-center justify-center">
-                <X className="w-4 h-4 text-[#737373]" />
-              </div>
-              <span className="text-sm font-medium text-[#737373] uppercase tracking-widest">
-                Without Corpus AI
-              </span>
-            </div>
+        {/* Column headers */}
+        <motion.div
+          className="grid gap-0 mb-3"
+          style={{ gridTemplateColumns: '1fr 48px 1fr' }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+        >
+          <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[#C0C0C0] pl-4">Today</p>
+          <span />
+          <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[#999] pl-4">With Corpus AI</p>
+        </motion.div>
 
-            <div className="space-y-4">
-              {before.map((item, i) => (
-                <motion.div
-                  key={i}
-                  className="flex items-start gap-3"
-                  initial={{ opacity: 0, x: -12 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.08, duration: 0.4 }}
+        {/* Rows — rendered as a unified grid so arrows always align */}
+        <div className="flex flex-col gap-2">
+          {rows.map((row, i) => {
+            const Icon = row.icon;
+            const isHovered = hovered === i;
+
+            return (
+              <motion.div
+                key={i}
+                className="grid items-center gap-0"
+                style={{ gridTemplateColumns: '1fr 48px 1fr' }}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-20px' }}
+                transition={{ delay: i * 0.08, duration: 0.45, ease: [0, 0, 0.2, 1] }}
+                onMouseEnter={() => setHovered(i)}
+                onMouseLeave={() => setHovered(null)}
+              >
+                {/* Pain cell */}
+                <div
+                  className="px-4 py-[18px] rounded-xl transition-all duration-250"
+                  style={{
+                    background: isHovered ? '#EBEBEB' : 'transparent',
+                  }}
                 >
-                  <div className="w-5 h-5 rounded-full bg-[#F0F0F0] flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <X className="w-2.5 h-2.5 text-[#737373]" />
-                  </div>
-                  <p className="text-sm text-[#737373] leading-relaxed">{item}</p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+                  <p
+                    className="text-sm leading-relaxed transition-all duration-250"
+                    style={{
+                      color: isHovered ? '#888' : '#C4C4C4',
+                      textDecoration: isHovered ? 'line-through' : 'none',
+                      textDecorationColor: '#C4C4C4',
+                    }}
+                  >
+                    {row.pain}
+                  </p>
+                </div>
 
-          {/* After column */}
-          <motion.div
-            className="bg-white rounded-2xl p-8"
-            initial={{ opacity: 0, x: 24 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.55, ease: [0, 0, 0.2, 1] }}
-          >
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-8 rounded-full bg-[#F0F0F0] flex items-center justify-center">
-                <Check className="w-4 h-4 text-[#171717]" />
-              </div>
-              <span className="text-sm font-medium text-[#171717] uppercase tracking-widest">
-                With Corpus AI
-              </span>
-            </div>
+                {/* Arrow cell — perfectly centered in the same grid row */}
+                <div className="flex items-center justify-center">
+                  <svg width="18" height="12" viewBox="0 0 20 12" fill="none">
+                    <path
+                      d="M0 6h15M12 1l5 5-5 5"
+                      stroke={isHovered ? '#333' : '#DDD'}
+                      strokeWidth="1.3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      style={{ transition: 'stroke 0.25s ease' }}
+                    />
+                  </svg>
+                </div>
 
-            <div className="space-y-4">
-              {after.map((item, i) => (
-                <motion.div
-                  key={i}
-                  className="flex items-start gap-3"
-                  initial={{ opacity: 0, x: 12 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.08, duration: 0.4 }}
+                {/* Solution cell */}
+                <div
+                  className="px-4 py-[16px] rounded-xl flex items-center gap-3 transition-all duration-300"
+                  style={{
+                    background: isHovered ? '#171717' : '#fff',
+                    boxShadow: isHovered
+                      ? '0 4px 20px rgba(0,0,0,0.12)'
+                      : '0 1px 3px rgba(0,0,0,0.05)',
+                  }}
                 >
-                  <div className="w-5 h-5 rounded-full bg-[#F0F0F0] flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Check className="w-2.5 h-2.5 text-[#171717]" />
-                  </div>
-                  <p className="text-sm text-[#171717] font-medium leading-relaxed">{item}</p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+                  <Icon
+                    className="w-[18px] h-[18px] flex-shrink-0 transition-colors duration-300"
+                    style={{ color: isHovered ? '#fff' : '#C0C0C0' }}
+                    strokeWidth={1.5}
+                  />
+                  <p
+                    className="text-sm leading-relaxed font-medium transition-colors duration-300"
+                    style={{ color: isHovered ? '#fff' : '#333' }}
+                  >
+                    {row.solution}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
