@@ -11,29 +11,47 @@ provider:
   memorySize: 2048
   architecture: x86_64
 
+  # Stage-aware table suffix: staging → -staging, production → -prod, dev → -dev
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
     NODE_OPTIONS: '--enable-source-maps'
 
+    STAGE: ${self:provider.stage}
+
     # AWS Configuration
-    AWS_REGION: ${env:AWS_REGION}
-    S3_BUCKET_NAME: ${env:S3_BUCKET_NAME}
-    S3_REGION: ${env:S3_REGION}
+    AWS_REGION: ${env:AWS_REGION, 'eu-north-1'}
+    S3_BUCKET_NAME: ${env:S3_BUCKET_NAME, 'corpus-ai-files-dev'}
+    S3_REGION: ${env:S3_REGION, 'eu-north-1'}
     SQS_BUILD_QUEUE_URL: ${env:SQS_BUILD_QUEUE_URL}
 
-    # DynamoDB Tables
-    AWS_DYNAMO_CHATBOT_TABLE: ${env:AWS_DYNAMO_CHATBOT_TABLE}
-    AWS_DYNAMO_USER_TABLE: ${env:AWS_DYNAMO_USER_TABLE}
+    # DynamoDB Tables — env vars win; defaults auto-derive from stage
+    AWS_DYNAMO_CHATBOT_TABLE: ${env:AWS_DYNAMO_CHATBOT_TABLE, 'corpus-chatbots-${self:provider.stage}'}
+    AWS_DYNAMO_USER_TABLE: ${env:AWS_DYNAMO_USER_TABLE, 'corpus-users-${self:provider.stage}'}
+    AWS_DYNAMO_RESPONSE_CACHE_TABLE: ${env:AWS_DYNAMO_RESPONSE_CACHE_TABLE, 'corpus-response-cache-${self:provider.stage}'}
 
     # OpenAI
     OPENAI_API_KEY: ${env:OPENAI_API_KEY}
-    OPENAI_MODEL: ${env:OPENAI_MODEL}
-    OPENAI_EMBEDDING_MODEL: ${env:OPENAI_EMBEDDING_MODEL, 'text-embedding-3-small'}
+    OPENAI_MODEL: ${env:OPENAI_MODEL, 'gpt-4o-mini'}
+    OPENAI_EMBEDDING_MODEL: ${env:OPENAI_EMBEDDING_MODEL, 'text-embedding-3-large'}
 
     # Pinecone
     PINECONE_API_KEY: ${env:PINECONE_API_KEY}
     PINECONE_ENVIRONMENT: ${env:PINECONE_ENVIRONMENT, 'us-east-1'}
     PINECONE_REGION: ${env:PINECONE_REGION, 'us-east-1'}
+    PINECONE_INDEX: ${env:PINECONE_INDEX, 'corpus-dense'}
+    PINECONE_SPARSE_INDEX: ${env:PINECONE_SPARSE_INDEX, 'corpus-sparse'}
+
+    # Cohere
+    COHERE_API_KEY: ${env:COHERE_API_KEY, ''}
+
+    # Firecrawl
+    FIRECRAWL_API_KEY: ${env:FIRECRAWL_API_KEY, ''}
+
+    # Cognito
+    AWS_COGNITO_USER_POOL_ID: ${env:AWS_COGNITO_USER_POOL_ID, ''}
+
+    # Security
+    DATABASE_ENCRYPTION_KEY: ${env:DATABASE_ENCRYPTION_KEY, ''}
 
   iam:
     role:
@@ -45,8 +63,8 @@ provider:
             - s3:PutObject
             - s3:ListBucket
           Resource:
-            - arn:aws:s3:::${env:S3_BUCKET_NAME}
-            - arn:aws:s3:::${env:S3_BUCKET_NAME}/*
+            - arn:aws:s3:::${env:S3_BUCKET_NAME, 'corpus-ai-files-dev'}
+            - arn:aws:s3:::${env:S3_BUCKET_NAME, 'corpus-ai-files-dev'}/*
 
         # SQS permissions
         - Effect: Allow
@@ -55,7 +73,7 @@ provider:
             - sqs:DeleteMessage
             - sqs:GetQueueAttributes
           Resource:
-            - arn:aws:sqs:${env:SQS_REGION}:*:corpus-ai-queue
+            - arn:aws:sqs:${env:SQS_REGION, 'eu-north-1'}:*:corpus-ai-build-queue-${self:provider.stage}
 
         # DynamoDB permissions
         - Effect: Allow
@@ -66,13 +84,16 @@ provider:
             - dynamodb:Query
             - dynamodb:Scan
           Resource:
-            - arn:aws:dynamodb:${env:AWS_REGION}:*:table/${env:AWS_DYNAMO_CHATBOT_TABLE}
-            - arn:aws:dynamodb:${env:AWS_REGION}:*:table/${env:AWS_DYNAMO_USER_TABLE}
+            - arn:aws:dynamodb:${env:AWS_REGION, 'eu-north-1'}:*:table/corpus-chatbots-${self:provider.stage}
+            - arn:aws:dynamodb:${env:AWS_REGION, 'eu-north-1'}:*:table/corpus-users-${self:provider.stage}
+            - arn:aws:dynamodb:${env:AWS_REGION, 'eu-north-1'}:*:table/corpus-response-cache-${self:provider.stage}
+            - arn:aws:dynamodb:${env:AWS_REGION, 'eu-north-1'}:*:table/corpus-chatbots-${self:provider.stage}/index/*
+            - arn:aws:dynamodb:${env:AWS_REGION, 'eu-north-1'}:*:table/corpus-users-${self:provider.stage}/index/*
 
 functions:
   buildHandler:
     handler: src/index.handler
-    description: Process chatbot build jobs from SQS
+    description: Process chatbot build jobs from SQS (${self:provider.stage})
     events:
       - sqs:
           arn:

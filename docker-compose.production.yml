@@ -1,0 +1,51 @@
+# docker-compose.production.yml
+#
+# Production override — extends docker-compose.yaml.
+# Same as staging but uses the production secret.
+#
+# Usage:
+#   docker compose -f docker-compose.yaml -f docker-compose.production.yml up -d
+#
+# Required host environment variables:
+#   AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+#   AWS_SM_SECRET_NAME=corpus-ai/production
+
+version: "3.8"
+
+services:
+  dynamodb-local:
+    deploy:
+      replicas: 0
+
+  backend:
+    environment:
+      - NODE_ENV=production
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_SM_SECRET_NAME=${AWS_SM_SECRET_NAME:-corpus-ai/production}
+    depends_on: []
+
+  dashboard:
+    environment:
+      - NODE_ENV=production
+
+  website:
+    environment:
+      - NODE_ENV=production
+
+  docs:
+    environment:
+      - NODE_ENV=production
+
+  proxy:
+    environment:
+      - NODE_ENV=production
+      - BACKEND_HOST=backend
+      - BACKEND_PORT=8001
+      - DASHBOARD_HOST=dashboard
+      - DASHBOARD_PORT=8080
+      - WEBSITE_HOST=website
+      - WEBSITE_PORT=3000
+      - DOCS_HOST=docs
+      - DOCS_PORT=3001

@@ -18,7 +18,15 @@
     "lint:fix": "turbo lint --continue -- --fix",
     "docker:up": "docker compose up -d",
     "docker:rebuild": "docker compose down && docker compose build --no-cache && docker compose up -d",
-    "docker:logs": "docker compose logs -f"
+    "docker:logs": "docker compose logs -f",
+    "docker:staging": "docker compose -f docker-compose.yaml -f docker-compose.staging.yml up -d",
+    "docker:staging:build": "docker compose -f docker-compose.yaml -f docker-compose.staging.yml build --no-cache",
+    "docker:production": "docker compose -f docker-compose.yaml -f docker-compose.production.yml up -d",
+    "docker:production:build": "docker compose -f docker-compose.yaml -f docker-compose.production.yml build --no-cache",
+    "secrets:push:staging": "node scripts/push-secrets.js --env apps/backend/.env.development --secret corpus-ai/staging",
+    "secrets:push:production": "node scripts/push-secrets.js --env apps/backend/.env.production --secret corpus-ai/production",
+    "db:setup:staging": "node apps/backend/setup-aws-dynamodb.js",
+    "db:setup:local": "node apps/backend/setup-aws-dynamodb.js --local"
   },
 "devDependencies": {
   "@types/node": "20.17.0",

@@ -2,6 +2,9 @@
 export * from "./utils";
 export * from "./utils/env";
 
+// Secrets Manager loader (call loadSecretsManager() at app startup)
+export * from "./secrets";
+
 // DynamoDB Model exports
 export * from "./dynamo-models/chatbot.model";
 export * from "./dynamo-models/user.model";

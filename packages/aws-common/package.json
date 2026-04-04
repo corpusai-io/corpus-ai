@@ -14,6 +14,7 @@
     "@aws-sdk/client-cognito-identity-provider": "^3.450.0",
     "@aws-sdk/client-dynamodb": "^3.450.0",
     "@aws-sdk/client-s3": "^3.450.0",
+    "@aws-sdk/client-secrets-manager": "^3.1024.0",
     "@aws-sdk/client-sqs": "^3.450.0",
     "@aws-sdk/lib-dynamodb": "^3.450.0",
     "@aws-sdk/s3-request-presigner": "^3.450.0",
@@ -22,23 +23,23 @@
     "axios": "^1.6.0",
     "cheerio": "^1.0.0-rc.12",
     "cohere-ai": "^7.0.0",
+    "csv-parse": "^5.5.0",
     "dynamoose": "^4.0.0",
     "electrodb": "^2.14.0",
     "mammoth": "^1.8.0",
     "nanoid": "^3.3.7",
     "openai": "^4.0.0",
     "pdf-parse": "^1.1.1",
-    "csv-parse": "^5.5.0",
     "pdfjs-dist": "^4.0.0",
     "uuid": "^13.0.0",
     "xlsx": "^0.18.5"
   },
   "optionalDependencies": {
     "canvas": "^2.11.0",
-    "pg": "*",
-    "mysql2": "*",
+    "mongodb": "*",
     "mssql": "*",
-    "mongodb": "*"
+    "mysql2": "*",
+    "pg": "*"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

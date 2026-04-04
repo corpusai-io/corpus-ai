@@ -1,0 +1,63 @@
+# docker-compose.staging.yml
+#
+# Staging override — extends docker-compose.yaml.
+# Key differences from dev:
+#   • No dynamodb-local container — uses real AWS DynamoDB
+#   • All secrets loaded from AWS Secrets Manager at runtime
+#   • DYNAMODB_ENDPOINT is intentionally absent
+#   • Nginx listens on 443 (SSL terminated by load balancer / host)
+#
+# Usage:
+#   docker compose -f docker-compose.yaml -f docker-compose.staging.yml up -d
+#
+# Required host environment variables (inject via .env or CI/CD secrets):
+#   AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+#   AWS_SM_SECRET_NAME=corpus-ai/staging
+#   STAGING_DOMAIN=staging.yourdomain.com
+
+version: "3.8"
+
+services:
+  # ── Remove the local DynamoDB ──────────────────────────────────────────────
+  dynamodb-local:
+    deploy:
+      replicas: 0   # Disabled in staging
+
+  # ── Backend ───────────────────────────────────────────────────────────────
+  backend:
+    environment:
+      - NODE_ENV=staging
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_SM_SECRET_NAME=${AWS_SM_SECRET_NAME:-corpus-ai/staging}
+      # DYNAMODB_ENDPOINT intentionally omitted → uses real AWS DynamoDB
+    depends_on: []   # No longer depends on dynamodb-local
+
+  # ── Dashboard ─────────────────────────────────────────────────────────────
+  dashboard:
+    environment:
+      - NODE_ENV=staging
+
+  # ── Website ───────────────────────────────────────────────────────────────
+  website:
+    environment:
+      - NODE_ENV=staging
+
+  # ── Docs ──────────────────────────────────────────────────────────────────
+  docs:
+    environment:
+      - NODE_ENV=staging
+
+  # ── Proxy (Nginx) ─────────────────────────────────────────────────────────
+  proxy:
+    environment:
+      - NODE_ENV=staging
+      - BACKEND_HOST=backend
+      - BACKEND_PORT=8001
+      - DASHBOARD_HOST=dashboard
+      - DASHBOARD_PORT=8080
+      - WEBSITE_HOST=website
+      - WEBSITE_PORT=3000
+      - DOCS_HOST=docs
+      - DOCS_PORT=3001

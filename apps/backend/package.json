@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "cross-env DOTENV_CONFIG_PATH=.env.development tsx watch -r dotenv/config src/index.ts",
     "build": "tsc",
-    "start": "cross-env PORT=8001 node dist/index.js",
+    "start": "node dist/bootstrap.js",
+    "start:dev-local": "cross-env PORT=8001 node dist/index.js",
     "lint": "eslint src/**/*.ts",
     "test": "jest --testMatch='**/__tests__/debug.test.ts' --verbose --detectOpenHandles",
     "test:phase3": "jest --testMatch='**/__tests__/phase3.test.ts' --verbose --detectOpenHandles",
@@ -13,6 +14,8 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "setup:aws": "node setup-aws-dynamodb.js",
+    "setup:staging": "node setup-aws-dynamodb.js --stage staging",
+    "setup:production": "node setup-aws-dynamodb.js --stage production",
     "setup:local": "node setup-aws-dynamodb.js --local"
   },
   "dependencies": {

@@ -8,8 +8,9 @@
     "predev": "node -e \"require('fs').mkdirSync('.build',{recursive:true})\"",
     "dev": "dotenv -e .env.development -- serverless offline",
     "deploy": "serverless deploy",
-    "deploy:dev": "serverless deploy --stage dev",
-    "deploy:prod": "serverless deploy --stage prod",
+    "deploy:dev": "dotenv -e .env.development -- serverless deploy --stage dev",
+    "deploy:staging": "dotenv -e .env.staging -- serverless deploy --stage staging",
+    "deploy:prod": "dotenv -e .env.production -- serverless deploy --stage prod",
     "lint": "eslint src/**/*.ts",
     "clean": "rm -rf .serverless dist node_modules"
   },

@@ -9,7 +9,16 @@
  * Usage: node setup-aws-dynamodb.js
  */
 
-require('dotenv').config({ path: '.env.development' });
+// Support --stage flag: node setup-aws-dynamodb.js --stage staging
+const stageArg = (() => {
+  const i = process.argv.indexOf('--stage');
+  return i !== -1 ? process.argv[i + 1] : null;
+})();
+
+// Load env file: prefer .env.<stage>, fall back to .env.development
+const envFile = stageArg ? `.env.${stageArg}` : '.env.development';
+require('dotenv').config({ path: envFile });
+
 const {
   DynamoDBClient,
   ListTablesCommand,
@@ -21,6 +30,11 @@ const {
 // Check for --local flag to target DynamoDB Local
 const isLocal = process.argv.includes('--local');
 const localEndpoint = process.env.DYNAMODB_ENDPOINT || 'http://localhost:8000';
+
+// Derive table suffix from stage (staging → -staging, production → -prod, dev → -dev)
+const stageSuffix = stageArg === 'staging' ? 'staging'
+  : stageArg === 'production' ? 'prod'
+  : 'dev';
 
 if (!isLocal) {
   // Validate credentials for AWS
@@ -49,12 +63,18 @@ const clientConfig = isLocal
 
 const client = new DynamoDBClient(clientConfig);
 
+// Helper: resolve table name — env var takes priority, then auto-derive from suffix
+function tbl(envVar, baseName) {
+  return process.env[envVar] || `${baseName}-${stageSuffix}`;
+}
+
 console.log('\n🚀 Starting DynamoDB Setup...\n');
 if (isLocal) {
   console.log('📍 Target: DynamoDB Local at', localEndpoint);
 } else {
   console.log('📍 Target: AWS DynamoDB');
   console.log('📍 Region:', process.env.AWS_REGION || 'eu-north-1');
+  console.log('📍 Stage:', stageSuffix);
   console.log('🔑 Access Key:', process.env.AWS_ACCESS_KEY_ID?.substring(0, 10) + '...');
 }
 console.log('\n' + '='.repeat(60) + '\n');
@@ -62,9 +82,9 @@ console.log('\n' + '='.repeat(60) + '\n');
 // Define all tables with their schemas
 const tables = [
   {
-    name: process.env.AWS_DYNAMO_USER_TABLE || 'corpus-users-dev',
+    name: tbl('AWS_DYNAMO_USER_TABLE', 'corpus-users'),
     schema: {
-      TableName: process.env.AWS_DYNAMO_USER_TABLE || 'corpus-users-dev',
+      TableName: tbl('AWS_DYNAMO_USER_TABLE', 'corpus-users'),
       KeySchema: [
         { AttributeName: 'username', KeyType: 'HASH' } // Partition key
       ],
@@ -79,9 +99,9 @@ const tables = [
     }
   },
   {
-    name: process.env.AWS_DYNAMO_CHATBOT_TABLE || 'corpus-chatbots-dev',
+    name: tbl('AWS_DYNAMO_CHATBOT_TABLE', 'corpus-chatbots'),
     schema: {
-      TableName: process.env.AWS_DYNAMO_CHATBOT_TABLE || 'corpus-chatbots-dev',
+      TableName: tbl('AWS_DYNAMO_CHATBOT_TABLE', 'corpus-chatbots'),
       KeySchema: [
         { AttributeName: 'chatbotId', KeyType: 'HASH' }
       ],
@@ -106,9 +126,9 @@ const tables = [
     }
   },
   {
-    name: process.env.AWS_DYNAMO_CUSTOMIZATION_TABLE || 'corpus-customization-dev',
+    name: tbl('AWS_DYNAMO_CUSTOMIZATION_TABLE', 'corpus-customization'),
     schema: {
-      TableName: process.env.AWS_DYNAMO_CUSTOMIZATION_TABLE || 'corpus-customization-dev',
+      TableName: tbl('AWS_DYNAMO_CUSTOMIZATION_TABLE', 'corpus-customization'),
       KeySchema: [
         { AttributeName: 'chatbotId', KeyType: 'HASH' },
         { AttributeName: 'id', KeyType: 'RANGE' }
@@ -125,9 +145,9 @@ const tables = [
     }
   },
   {
-    name: process.env.AWS_DYNAMO_MAIN_TABLE || 'corpus-main-dev',
+    name: tbl('AWS_DYNAMO_MAIN_TABLE', 'corpus-main'),
     schema: {
-      TableName: process.env.AWS_DYNAMO_MAIN_TABLE || 'corpus-main-dev',
+      TableName: tbl('AWS_DYNAMO_MAIN_TABLE', 'corpus-main'),
       KeySchema: [
         { AttributeName: 'PK', KeyType: 'HASH' },  // ElectroDB composite partition key (uppercase)
         { AttributeName: 'SK', KeyType: 'RANGE' }  // ElectroDB composite sort key (uppercase)
@@ -156,9 +176,9 @@ const tables = [
     }
   },
   {
-    name: process.env.AWS_DYNAMO_ACCESS_CONTROL_TABLE || 'corpus-access-control-dev',
+    name: tbl('AWS_DYNAMO_ACCESS_CONTROL_TABLE', 'corpus-access-control'),
     schema: {
-      TableName: process.env.AWS_DYNAMO_ACCESS_CONTROL_TABLE || 'corpus-access-control-dev',
+      TableName: tbl('AWS_DYNAMO_ACCESS_CONTROL_TABLE', 'corpus-access-control'),
       KeySchema: [
         { AttributeName: 'chatbotId', KeyType: 'HASH' },
         { AttributeName: 'email', KeyType: 'RANGE' }
@@ -184,9 +204,9 @@ const tables = [
     }
   },
   {
-    name: process.env.AWS_DYNAMO_QUERY_LOG_TABLE || 'corpus-query-log-dev',
+    name: tbl('AWS_DYNAMO_QUERY_LOG_TABLE', 'corpus-query-log'),
     schema: {
-      TableName: process.env.AWS_DYNAMO_QUERY_LOG_TABLE || 'corpus-query-log-dev',
+      TableName: tbl('AWS_DYNAMO_QUERY_LOG_TABLE', 'corpus-query-log'),
       KeySchema: [
         { AttributeName: 'passageIndex', KeyType: 'HASH' },
         { AttributeName: 'uniqueTimestamp', KeyType: 'RANGE' }
@@ -214,9 +234,9 @@ const tables = [
     }
   },
   {
-    name: process.env.AWS_DYNAMO_LEAD_GENERATION_TABLE || 'corpus-lead-generation-dev',
+    name: tbl('AWS_DYNAMO_LEAD_GENERATION_TABLE', 'corpus-lead-generation'),
     schema: {
-      TableName: process.env.AWS_DYNAMO_LEAD_GENERATION_TABLE || 'corpus-lead-generation-dev',
+      TableName: tbl('AWS_DYNAMO_LEAD_GENERATION_TABLE', 'corpus-lead-generation'),
       KeySchema: [
         { AttributeName: 'chatbotId', KeyType: 'HASH' },
         { AttributeName: 'uniqueTimestamp', KeyType: 'RANGE' }
@@ -233,9 +253,9 @@ const tables = [
     }
   },
   {
-    name: process.env.AWS_DYNAMO_INTEGRATIONS_TABLE || 'corpus-integrations-dev',
+    name: tbl('AWS_DYNAMO_INTEGRATIONS_TABLE', 'corpus-integrations'),
     schema: {
-      TableName: process.env.AWS_DYNAMO_INTEGRATIONS_TABLE || 'corpus-integrations-dev',
+      TableName: tbl('AWS_DYNAMO_INTEGRATIONS_TABLE', 'corpus-integrations'),
       KeySchema: [
         { AttributeName: 'pk', KeyType: 'HASH' },
         { AttributeName: 'sk', KeyType: 'RANGE' }
@@ -274,9 +294,9 @@ const tables = [
     }
   },
   {
-    name: process.env.AWS_DYNAMO_CHAT_HISTORY_TABLE || 'corpus-chat-history-dev',
+    name: tbl('AWS_DYNAMO_CHAT_HISTORY_TABLE', 'corpus-chat-history'),
     schema: {
-      TableName: process.env.AWS_DYNAMO_CHAT_HISTORY_TABLE || 'corpus-chat-history-dev',
+      TableName: tbl('AWS_DYNAMO_CHAT_HISTORY_TABLE', 'corpus-chat-history'),
       KeySchema: [
         { AttributeName: 'chatbotId', KeyType: 'HASH' },
         { AttributeName: 'messageId', KeyType: 'RANGE' }
@@ -304,9 +324,9 @@ const tables = [
     }
   },
   {
-    name: process.env.AWS_DYNAMO_API_KEYS_TABLE || 'corpus-api-keys-dev',
+    name: tbl('AWS_DYNAMO_API_KEYS_TABLE', 'corpus-api-keys'),
     schema: {
-      TableName: process.env.AWS_DYNAMO_API_KEYS_TABLE || 'corpus-api-keys-dev',
+      TableName: tbl('AWS_DYNAMO_API_KEYS_TABLE', 'corpus-api-keys'),
       KeySchema: [
         { AttributeName: 'chatbotId', KeyType: 'HASH' },
         { AttributeName: 'keyId', KeyType: 'RANGE' }
@@ -323,9 +343,9 @@ const tables = [
     }
   },
   {
-    name: process.env.AWS_DYNAMO_DATABASE_CONNECTIONS_TABLE || 'corpus-database-connections-dev',
+    name: tbl('AWS_DYNAMO_DATABASE_CONNECTIONS_TABLE', 'corpus-database-connections'),
     schema: {
-      TableName: process.env.AWS_DYNAMO_DATABASE_CONNECTIONS_TABLE || 'corpus-database-connections-dev',
+      TableName: tbl('AWS_DYNAMO_DATABASE_CONNECTIONS_TABLE', 'corpus-database-connections'),
       KeySchema: [
         { AttributeName: 'id', KeyType: 'HASH' }
       ],
@@ -360,7 +380,7 @@ async function tableExists(tableName) {
     const response = await client.send(command);
     return response.Table.TableStatus;
   } catch (error) {
-    if (error.name === 'ResourceNotFoundException') {
+    if (error.name === 'ResourceNotFoundException' || error.message === 'ResourceNotFoundException') {
       return false;
     }
     throw error;

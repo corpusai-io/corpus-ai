@@ -14,11 +14,13 @@ provider:
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
     NODE_OPTIONS: '--enable-source-maps'
-    AWS_DYNAMO_CHATBOT_TABLE: ${env:AWS_DYNAMO_CHATBOT_TABLE, 'corpus-chatbots-dev'}
-    AWS_DYNAMO_USER_TABLE: ${env:AWS_DYNAMO_USER_TABLE, 'corpus-users-dev'}
-    AWS_DYNAMO_QUERY_LOG_TABLE: ${env:AWS_DYNAMO_QUERY_LOG_TABLE, 'corpus-query-log-dev'}
-    AWS_DYNAMO_INTEGRATIONS_TABLE: ${env:AWS_DYNAMO_INTEGRATIONS_TABLE, 'corpus-integrations-dev'}
-    AWS_DYNAMO_CUSTOMIZATION_TABLE: ${env:AWS_DYNAMO_CUSTOMIZATION_TABLE, 'corpus-customization-dev'}
+    STAGE: ${self:provider.stage}
+    AWS_DYNAMO_CHATBOT_TABLE: ${env:AWS_DYNAMO_CHATBOT_TABLE, 'corpus-chatbots-${self:provider.stage}'}
+    AWS_DYNAMO_USER_TABLE: ${env:AWS_DYNAMO_USER_TABLE, 'corpus-users-${self:provider.stage}'}
+    AWS_DYNAMO_QUERY_LOG_TABLE: ${env:AWS_DYNAMO_QUERY_LOG_TABLE, 'corpus-query-log-${self:provider.stage}'}
+    AWS_DYNAMO_INTEGRATIONS_TABLE: ${env:AWS_DYNAMO_INTEGRATIONS_TABLE, 'corpus-integrations-${self:provider.stage}'}
+    AWS_DYNAMO_CUSTOMIZATION_TABLE: ${env:AWS_DYNAMO_CUSTOMIZATION_TABLE, 'corpus-customization-${self:provider.stage}'}
+    AWS_DYNAMO_RESPONSE_CACHE_TABLE: ${env:AWS_DYNAMO_RESPONSE_CACHE_TABLE, 'corpus-response-cache-${self:provider.stage}'}
     OPENAI_API_KEY: ${env:OPENAI_API_KEY, ''}
     OPENAI_MODEL: ${env:OPENAI_MODEL, 'gpt-4o-mini'}
     OPENAI_EMBEDDING_MODEL: ${env:OPENAI_EMBEDDING_MODEL, 'text-embedding-3-small'}
