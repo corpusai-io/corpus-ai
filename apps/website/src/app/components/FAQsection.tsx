@@ -11,23 +11,23 @@ const FAQSection = () => {
     },
     {
       question: "How can the CorpusAI chatbot solution help my business?",
-      answer: ""
+      answer: "CorpusAI provides AI chatbot solutions for various industries, including legal, education, government, and healthcare. CorpusChat and Corpus Retriever leverage advanced natural language processing to enhance customer engagement, provide 24/7 support, and streamline operations, making them ideal for B2B businesses to improve customer experience and reduce operational costs."
     },
     {
       question: "Can the CorpusChat chatbot solution handle complex documents like PDFs or Word files?",
-      answer: ""
+      answer: "Yes, our chatbot solution can be integrated with PDFs, Word documents, and other types of content, allowing users to interact with documents directly. This feature is handy for B2B businesses that want to automate information retrieval and responses from large documents or manuals."
     },
     {
       question: "How do these chatbot solutions improve customer satisfaction?",
-      answer: ""
+      answer: "By integrating AI-powered chatbot solutions like CorpusChat and CorpusRetriever, businesses can offer faster, more personalized service. Chatbots provide instant responses to customer inquiries, reduce waiting times, and ensure 24/7 availability. This leads to higher customer satisfaction and a more streamlined experience."
     },
     {
       question: "Will these chatbot solutions save my business money?",
-      answer: ""
+      answer: "Yes, both CorpusChat and CorpusRetriever can significantly reduce operational costs. CorpusChat automates customer support and lead generation, reducing the need for human agents to handle repetitive inquiries. CorpusRetriever optimizes data retrieval processes, allowing B2B businesses to operate more efficiently without requiring additional resources."
     },
     {
       question: "How easy is it to integrate CorpusChat and CorpusRetriever into my current systems?",
-      answer: ""
+      answer: "Both chatbot software solutions are designed for seamless integration. CorpusChat can be easily added to websites, document management systems, and more, while CorpusRetriever can work with your existing databases and repositories. As a leading chatbot solution provider, Corpus provides full technical support to ensure a smooth and efficient implementation process."
     }
   ];
 

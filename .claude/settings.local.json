@@ -1,4 +1,7 @@
 {
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
   "permissions": {
     "allow": [
       "Bash(ls:*)",
@@ -12,7 +15,36 @@
       "Bash(TOKEN=\"eyJraWQiOiJVWnRqUm55Nko1SWU5WkRYOGo0eTlkMHBlTEJUR0VVWnNXVURLMWpIQzZrPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI5MDRjYzkwYy03MGMxLTcwMWYtZjdlNi0zNmE1YmI2MGQ2NzciLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuZXUtbm9ydGgtMS5hbWF6b25hd3MuY29tXC9ldS1ub3J0aC0xX1R1cnU5SmRJbCIsImNsaWVudF9pZCI6IjRiODY5Z25kZm8wYWg5MHRjOGRxc250YXAyIiwib3JpZ2luX2p0aSI6IjM4MzY4ZDZmLTIxMjEtNGY0Zi05NWMxLWY0MGQwZGQxOTBmYiIsImV2ZW50X2lkIjoiYTYzNDEwZDctZjdjMy00NWZmLWEzZDItOWNiMjQzMTYxMDgyIiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTc2OTk4ODY0NywiZXhwIjoxNzY5OTkyMjQ3LCJpYXQiOjE3Njk5ODg2NDgsImp0aSI6IjMzNzM5MzkxLTNhNTQtNGNlZS04OWQwLThjZjAzMDBjMTgxYSIsInVzZXJuYW1lIjoiOTA0Y2M5MGMtNzBjMS03MDFmLWY3ZTYtMzZhNWJiNjBkNjc3In0.mPpUz33VvE7O9VsBLyK7kug4mQHtZVuglGMoj_gEEkSWPevnzbGNg78Xw7LwV5P8k-ag5nQSVHF4LhgAJX68QAhpO66p5W_XDRn1fd2MeQT7m6sUQSfG6npnkeSG0qAVUchFv2q0gD39xk4N5QGprVXBLP8K66eG4sVEnsgyyP1cc0UmLT3zOofiPLPaSXVedFYHx2FT-5c_y6iH9lJhU6yY3RR3yaADOILWqctjOGIyJPFSBgDMvwoAS-35DQGOo-LbjHs4RI4-tpmPfFFeRgOWdsjQ2iDvtk29Rm_frDt6AzSfzX2r9tomzVPwJLGVEojgH9C5k1EJJ0A76qdcCQ\")",
       "Bash(done)",
       "Bash(tree:*)",
-      "Bash(pnpm:*)"
+      "Bash(pnpm:*)",
+      "Bash(test:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git fetch:*)",
+      "Bash(git checkout:*)",
+      "Bash(git stash:*)",
+      "Bash(find:*)",
+      "Bash(for dir in apps/chat_service apps/lambdaWebSocket apps/lambdaSlack apps/lambdaIntegrations apps/lambdaBuild)",
+      "Bash(do echo \"=== $dir ===\")",
+      "Bash(if [ -f \"$dir/package.json\" ])",
+      "Bash(then cat \"$dir/package.json\")",
+      "Bash(else echo \"No package.json\")",
+      "Bash(fi)",
+      "Bash(for dir in apps/lambdaWebSocket apps/lambdaSlack apps/lambdaIntegrations apps/lambdaBuild)",
+      "Bash(if [ -f \"$dir/serverless.yml\" ])",
+      "Bash(then cat \"$dir/serverless.yml\")",
+      "Bash(else echo \"No serverless.yml\")",
+      "Bash(do echo \"=== $dir - Functions ===\")",
+      "Bash(then grep -A 5 \"^functions:\" \"$dir/serverless.yml\")",
+      "Bash(node -p:*)",
+      "Bash(npx next build)",
+      "Bash(npx tsc:*)",
+      "Bash(sed:*)",
+      "Bash(grep:*)"
     ]
+  },
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true
   }
 }

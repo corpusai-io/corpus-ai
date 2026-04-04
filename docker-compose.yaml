@@ -13,47 +13,23 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.backend
-      args:
-        - RAILWAY_ENVIRONMENT_NAME=${RAILWAY_ENVIRONMENT_NAME:-production}
-    command: ["sh", "-c", "sleep infinity"]  # ✅ outside build!
     restart: always
     ports:
-      - "8001"
+      - "8001:8001"
     environment:
       - NODE_ENV=${NODE_ENV:-production}
-      - AWS_REGION=${AWS_REGION:-us-west-2}
+      - PORT=8001
+      - AWS_REGION=${AWS_REGION:-eu-north-1}
       - DYNAMODB_ENDPOINT=http://dynamodb-local:8000
     depends_on:
       - dynamodb-local
-
-
-
-  chat_service:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile.chat_service
-      args:
-        - RAILWAY_ENVIRONMENT_NAME=${RAILWAY_ENVIRONMENT_NAME:-production}
-    command: ["sh", "-c", "sleep infinity"]
-    restart: always
-    ports:
-      - "8002"
-    environment:
-      - NODE_ENV=${NODE_ENV:-production}
-      - AWS_REGION=${AWS_REGION:-us-west-2}
-      - DYNAMODB_ENDPOINT=http://dynamodb-local:8000
-    depends_on:
-      - dynamodb-local
-
 
   dashboard:
     build:
       context: .
       dockerfile: docker/Dockerfile.dashboard
-      args:
-        - RAILWAY_ENVIRONMENT_NAME=${RAILWAY_ENVIRONMENT_NAME:-production}
     ports:
-      - "8080"
+      - "8080:8080"
     restart: always
     environment:
       - NODE_ENV=${NODE_ENV:-production}
@@ -62,11 +38,9 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.website
-      args:
-        - RAILWAY_ENVIRONMENT_NAME=${RAILWAY_ENVIRONMENT_NAME:-production}
     restart: always
     ports:
-      - "3000"
+      - "3000:3000"
     environment:
       - NODE_ENV=${NODE_ENV:-production}
 
@@ -74,11 +48,9 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.docs
-      args:
-        - RAILWAY_ENVIRONMENT_NAME=${RAILWAY_ENVIRONMENT_NAME:-production}
     restart: always
     ports:
-      - "3001"
+      - "3001:3001"
     environment:
       - NODE_ENV=${NODE_ENV:-production}
 
@@ -86,27 +58,21 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.proxy
-      args:
-        - RAILWAY_ENVIRONMENT_NAME=${RAILWAY_ENVIRONMENT_NAME:-production}
     environment:
       - NODE_ENV=${NODE_ENV:-production}
       - BACKEND_HOST=backend
       - BACKEND_PORT=8001
-      - CHAT_SERVICE_HOST=chat_service
-      - CHAT_SERVICE_PORT=8002
       - DASHBOARD_HOST=dashboard
       - DASHBOARD_PORT=8080
       - WEBSITE_HOST=website
       - WEBSITE_PORT=3000
       - DOCS_HOST=docs
       - DOCS_PORT=3001
-      - STAGE=${RAILWAY_ENVIRONMENT_NAME:-production}
     restart: always
     ports:
       - "80:80"
     depends_on:
       - backend
-      - chat_service
       - dashboard
       - website
       - docs

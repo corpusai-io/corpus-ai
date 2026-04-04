@@ -63,8 +63,21 @@ export const dataStore = new Entity(
         type: "boolean",
         default: () => false,
       },
+      pageCount: {
+        type: "number",
+      },
+      crawledPages: {
+        type: "number",
+      },
+      s3Key: {
+        type: "string",
+      },
       cloudDriveId: {
         type: "string",
+      },
+      status: {
+        type: "string",
+        default: "active",
       },
     },
     indexes: {
@@ -100,9 +113,13 @@ export async function getDataStoreRecords(username: string, chatbotId: string) {
     dataSource: string;
     dataType?: string | undefined;
     dataSize?: number | undefined;
+    pageCount?: number | undefined;
+    crawledPages?: number | undefined;
+    s3Key?: string | undefined;
     dataCreatedAt: string;
     dataUpdatedAt: number;
     skipped?: boolean | undefined;
+    status?: string | undefined;
   }[] = [];
 
   let cursor = undefined;
@@ -114,9 +131,12 @@ export async function getDataStoreRecords(username: string, chatbotId: string) {
         dataSource: string;
         dataType?: string | undefined;
         dataSize?: number | undefined;
+        pageCount?: number | undefined;
+        crawledPages?: number | undefined;
         dataCreatedAt: string;
         dataUpdatedAt: number;
         skipped?: boolean | undefined;
+        status?: string | undefined;
       }[];
       cursor: string | null;
     } = await dataStore.query

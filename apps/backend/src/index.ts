@@ -1,18 +1,10 @@
+// dotenv/config is preloaded via -r flag in dev script (see package.json)
+// This ensures process.env is populated BEFORE any import executes.
 import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import dynamoose from 'dynamoose';
 import path from 'path';
+import cors from 'cors';
+import dynamoose from 'dynamoose';
 import multer from 'multer';
-
-// Load environment-specific .env file FIRST
-const envFile = process.env.NODE_ENV === 'production'
-  ? '.env.production'
-  : '.env.development';
-
-dotenv.config({ path: path.resolve(__dirname, '..', envFile) });
-
-// NOW import modules that need environment variables
 import { uploadFileToS3, getRawFilePath, sendBuildMessage, getQueueStats } from '@corpusai/aws-common';
 
 // Import routes
@@ -27,25 +19,37 @@ import integrationsRoutes from './routes/integrations.routes';
 import userRoutes from './routes/user.routes';
 import quotaRoutes from './routes/quota.routes';
 import paymentRoutes from './routes/payment.routes';
+import databaseRoutes from './routes/database.routes';
+import aiActionsRoutes from './routes/ai-actions.routes';
+import builtinIntegrationsRoutes from './routes/builtin-integrations.routes';
+
+// Import chat proxy controller (local dev)
+import { chatProxy, getChatHistory, clearChatHistory, updateChatFeedback } from './controllers/chat.controller';
 
 // Import middleware
 import { errorHandler } from './middleware/validation.middleware';
+import { AppError, errorResponse, ErrorCodes } from './utils/error-response';
+import { ensureLocalTables } from './utils/ensure-local-tables';
 
 // Configure DynamoDB connection
 if (process.env.DYNAMODB_ENDPOINT) {
   console.log(`Connecting to DynamoDB Local at ${process.env.DYNAMODB_ENDPOINT}`);
   dynamoose.aws.ddb.local(process.env.DYNAMODB_ENDPOINT);
 } else {
-  console.log(`Connecting to AWS DynamoDB in region ${process.env.AWS_REGION || 'us-west-2'}`);
+  console.log(`Connecting to AWS DynamoDB in region ${process.env.AWS_REGION || 'eu-north-1'}`);
 }
 
 const app = express();
 const port = process.env.PORT || 8001;
 
 // CORS configuration for credentials
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:3000,http://localhost:3001,http://localhost:3002,http://localhost:8080,http://localhost:9000')
+  .split(',')
+  .map(o => o.trim());
+
 app.use(cors({
-  origin: 'http://localhost:8080', // Allow dashboard origin
-  credentials: true, // Allow credentials (cookies, authorization headers)
+  origin: allowedOrigins,
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
@@ -64,6 +68,14 @@ const upload = multer({
   },
 });
 
+// Serve widget.js as a static file (public, no CORS restriction)
+app.get('/api/widget.js', (req, res) => {
+  res.setHeader('Content-Type', 'application/javascript');
+  res.setHeader('Cache-Control', 'public, max-age=3600');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.sendFile(path.join(__dirname, 'public', 'widget.js'));
+});
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/chatbots', chatbotRoutes);
@@ -76,13 +88,27 @@ app.use('/api/integrations', integrationsRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/quota', quotaRoutes);
 app.use('/api/payment', paymentRoutes);
+app.use('/api/databases', databaseRoutes);
+app.use('/api/ai-actions', aiActionsRoutes);
+app.use('/api/builtin-integrations', builtinIntegrationsRoutes);
+
+// Chat proxy (local dev - replaces Lambda chat_service)
+// authenticateChat validates API keys and Cognito JWTs; allows unauthenticated
+// requests through for public widget embeds (req.user will be undefined).
+app.post('/api/chat', authenticateChat, chatProxy);
+
+// Chat history routes (require auth)
+import { authenticateToken, authenticateChat } from './middleware/auth.middleware';
+app.get('/api/chat/history/:chatbotId', authenticateToken, getChatHistory);
+app.delete('/api/chat/history/:chatbotId', authenticateToken, clearChatHistory);
+app.put('/api/chat/history/:chatbotId/:messageId/feedback', authenticateToken, updateChatFeedback);
 
 // Health check routes
 app.get('/health', (req, res) => {
   res.json({
     status: 'ok',
     dynamodb: process.env.DYNAMODB_ENDPOINT ? 'local' : 'aws',
-    region: process.env.AWS_REGION || 'us-west-2'
+    region: process.env.AWS_REGION || 'eu-north-1'
   });
 });
 
@@ -149,11 +175,31 @@ app.post('/api/upload', upload.array('files', 10), async (req, res) => {
     const { chatbotId, username } = req.body;
 
     if (!files || files.length === 0) {
-      return res.status(400).json({ error: 'No files uploaded' });
+      return errorResponse(res, 400, ErrorCodes.VALIDATION_ERROR, 'No files uploaded');
     }
 
     if (!chatbotId || !username) {
-      return res.status(400).json({ error: 'Missing chatbotId or username' });
+      return errorResponse(res, 400, ErrorCodes.VALIDATION_ERROR, 'Missing chatbotId or username');
+    }
+
+    // Quota enforcement: check storage usage
+    const { UserModel, ChatbotModel: CBModel } = await import('@corpusai/aws-common');
+    const { PRICING_PLANS: plans } = await import('./config/pricing');
+    const users = await UserModel.query('username').eq(username).exec();
+    if (users.length > 0) {
+      const userTier = users[0].tier || 0;
+      const plan = plans.find((p: any) => p.tier === userTier) || plans[0];
+      const chatbots = await CBModel.query('username').eq(username).exec();
+      let totalStorage = 0;
+      chatbots.forEach((bot: any) => { totalStorage += bot.fileSizeUsage || 0; });
+      const uploadSize = files.reduce((sum, f) => sum + f.size, 0);
+
+      if (totalStorage + uploadSize > plan.features.storageQuota) {
+        return errorResponse(res, 403, ErrorCodes.QUOTA_EXCEEDED,
+          `Storage limit exceeded. Your ${plan.name} plan allows ${(plan.features.storageQuota / (1024 * 1024)).toFixed(0)}MB.`,
+          { current: totalStorage, uploadSize, limit: plan.features.storageQuota }
+        );
+      }
     }
 
     // Upload each file to S3
@@ -236,88 +282,19 @@ app.post('/api/chatbots/:chatbotId/build', async (req, res) => {
 // Error handling middleware (must be last)
 app.use(errorHandler);
 
-app.listen(port, () => {
-  console.log(`Backend server running on port ${port}`);
-  console.log(`DynamoDB configured: ${process.env.DYNAMODB_ENDPOINT || 'AWS'}`);
-  console.log('\n=== API Routes ===\n');
-  console.log('  AUTH:');
-  console.log('    POST   /api/auth/register    - Register new user');
-  console.log('    POST   /api/auth/login       - Login user');
-  console.log('    POST   /api/auth/logout      - Logout user');
-  console.log('    POST   /api/auth/confirm     - Confirm user email (dev only)');
-  console.log('    GET    /api/auth/me          - Get current user (protected)');
-  console.log('    GET    /api/auth/verify      - Verify JWT token');
-  console.log('\n  CHATBOTS:');
-  console.log('    POST   /api/chatbots         - Create chatbot (protected)');
-  console.log('    GET    /api/chatbots         - List chatbots (protected)');
-  console.log('    GET    /api/chatbots/:id     - Get chatbot (protected)');
-  console.log('    PUT    /api/chatbots/:id     - Update chatbot (protected)');
-  console.log('    DELETE /api/chatbots/:id     - Delete chatbot (protected)');
-  console.log('    POST   /api/chatbots/:id/rebuild - Rebuild chatbot (protected)');
-  console.log('    GET    /api/chatbots/:id/status  - Get build status (protected)');
-  console.log('\n  CUSTOMIZE:');
-  console.log('    GET    /api/customize/:chatbotId              - Get customization (protected)');
-  console.log('    PUT    /api/customize/:chatbotId              - Update customization (protected)');
-  console.log('    POST   /api/customize/:chatbotId/theme        - Update theme colors (protected)');
-  console.log('    POST   /api/customize/:chatbotId/prompt       - Update system prompt (protected)');
-  console.log('\n  DATA STORE:');
-  console.log('    GET    /api/data-store/:chatbotId             - List data records (protected)');
-  console.log('    POST   /api/data-store/:chatbotId             - Add data record (protected)');
-  console.log('    PUT    /api/data-store/:chatbotId/:dataId     - Update data record (protected)');
-  console.log('    DELETE /api/data-store/:chatbotId/:dataId     - Delete data record (protected)');
-  console.log('    POST   /api/data-store/:chatbotId/batch       - Batch add records (protected)');
-  console.log('    DELETE /api/data-store/:chatbotId/batch       - Batch delete records (protected)');
-  console.log('\n  LEADS:');
-  console.log('    GET    /api/leads/:chatbotId                  - List leads (protected)');
-  console.log('    POST   /api/leads/:chatbotId                  - Add lead (PUBLIC)');
-  console.log('    GET    /api/leads/:chatbotId/export           - Export leads CSV (protected)');
-  console.log('    PUT    /api/leads/:chatbotId/fields           - Update form fields (protected)');
-  console.log('    GET    /api/leads/:chatbotId/fields           - Get form fields (protected)');
-  console.log('\n  QUERY LOG:');
-  console.log('    GET    /api/query-log/:chatbotId              - Get query logs (protected)');
-  console.log('    POST   /api/query-log/:chatbotId/search       - Search logs (protected)');
-  console.log('    POST   /api/query-log/:chatbotId/feedback     - Record feedback (protected)');
-  console.log('    GET    /api/query-log/:chatbotId/export       - Export logs CSV (protected)');
-  console.log('    GET    /api/query-log/:chatbotId/analytics    - Get analytics (protected)');
-  console.log('\n  ACCESS CONTROL:');
-  console.log('    GET    /api/access-control/:chatbotId         - List access (protected)');
-  console.log('    POST   /api/access-control/:chatbotId         - Grant access (protected)');
-  console.log('    DELETE /api/access-control/:chatbotId/:email  - Revoke access (protected)');
-  console.log('    PUT    /api/access-control/:chatbotId/mode    - Set access mode (protected)');
-  console.log('    POST   /api/access-control/:chatbotId/apikey  - Generate API key (protected)');
-  console.log('    POST   /api/access-control/validate           - Validate API key (PUBLIC)');
-  console.log('\n  INTEGRATIONS:');
-  console.log('    GET    /api/integrations/:chatbotId           - List integrations (protected)');
-  console.log('    GET    /api/integrations/slack/oauth          - Slack OAuth (PUBLIC)');
-  console.log('    POST   /api/integrations/slack/:chatbotId     - Connect Slack (protected)');
-  console.log('    DELETE /api/integrations/slack/:chatbotId     - Disconnect Slack (protected)');
-  console.log('    POST   /api/integrations/zapier/subscribe     - Zapier subscribe (protected)');
-  console.log('    DELETE /api/integrations/zapier/unsubscribe   - Zapier unsubscribe (protected)');
-  console.log('    GET    /api/integrations/zapier/samples       - Zapier samples (PUBLIC)');
-  console.log('    GET    /api/integrations/google-drive/profiles - List Drive profiles (protected)');
-  console.log('    POST   /api/integrations/google-drive/:chatbotId - Connect Drive (protected)');
-  console.log('    DELETE /api/integrations/google-drive/:chatbotId - Disconnect Drive (protected)');
-  console.log('    POST   /api/integrations/telegram/:chatbotId  - Connect Telegram (protected)');
-  console.log('    DELETE /api/integrations/telegram/:chatbotId  - Disconnect Telegram (protected)');
-  console.log('    POST   /api/integrations/whatsapp/:chatbotId  - Connect WhatsApp (protected)');
-  console.log('    DELETE /api/integrations/whatsapp/:chatbotId  - Disconnect WhatsApp (protected)');
-  console.log('\n  USER PROFILE:');
-  console.log('    GET    /api/user/profile                      - Get profile (protected)');
-  console.log('    PUT    /api/user/profile                      - Update profile (protected)');
-  console.log('    PUT    /api/user/password                     - Change password (protected)');
-  console.log('    DELETE /api/user/account                      - Delete account (protected)');
-  console.log('    GET    /api/user/stats                        - Get user stats (protected)');
-  console.log('\n  QUOTA MANAGEMENT:');
-  console.log('    GET    /api/quota                             - Get quota (protected)');
-  console.log('    GET    /api/quota/:chatbotId                  - Check chatbot quota (protected)');
-  console.log('    GET    /api/quota/usage                       - Get usage stats (protected)');
-  console.log('    GET    /api/quota/tiers                       - Get available tiers (protected)');
-  console.log('\n  PAYMENT (STRIPE):');
-  console.log('    POST   /api/payment/webhook                   - Stripe webhook (PUBLIC)');
-  console.log('    GET    /api/payment/plans                     - Get pricing plans (PUBLIC)');
-  console.log('    POST   /api/payment/checkout                  - Create checkout session (protected)');
-  console.log('    POST   /api/payment/portal                    - Customer portal (protected)');
-  console.log('    GET    /api/payment/subscription              - Get subscription (protected)');
-  console.log('    POST   /api/payment/cancel                    - Cancel subscription (protected)');
-  console.log('\n==================\n');
-});
+// Ensure local DynamoDB tables exist before accepting requests
+ensureLocalTables()
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`Backend server running on port ${port}`);
+      console.log(`DynamoDB configured: ${process.env.DYNAMODB_ENDPOINT || 'AWS'}`);
+    });
+  })
+  .catch((err) => {
+    console.error('Failed to ensure local tables:', err);
+    // Start anyway — Dynamoose tables will still work
+    app.listen(port, () => {
+      console.log(`Backend server running on port ${port}`);
+      console.log(`DynamoDB configured: ${process.env.DYNAMODB_ENDPOINT || 'AWS'}`);
+    });
+  });

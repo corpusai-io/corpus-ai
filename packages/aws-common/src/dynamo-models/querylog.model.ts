@@ -5,16 +5,17 @@ import { uniqueTimestamp } from "../utils";
 import { env } from "../utils/env";
 
 export class QueryLogRecord extends Item {
-  passageIndex: string;
-  query: string;
-  answer: string;
-  thumb: -1 | 1;
-  uniqueTimestamp: string;
-  leadContactName: string;
-  leadContactEmail: string;
-  leadContactPhone: string;
-  sessionId: string;
-  ttl: number;
+  passageIndex!: string;
+  query!: string;
+  answer!: string;
+  thumb!: -1 | 1;
+  uniqueTimestamp!: string;
+  leadContactName!: string;
+  leadContactEmail!: string;
+  leadContactPhone!: string;
+  sessionId!: string;
+  duration?: number;
+  ttl!: number;
 }
 
 export const QueryLogSchema = new dynamoose.Schema({
@@ -30,6 +31,7 @@ export const QueryLogSchema = new dynamoose.Schema({
   query: String,
   answer: String,
   thumb: Number,
+  duration: Number,
   leadContactName: String,
   leadContactEmail: String,
   leadContactPhone: String,

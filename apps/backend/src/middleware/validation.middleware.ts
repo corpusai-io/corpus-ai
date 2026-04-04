@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { AppError } from '../utils/error-response';
 
 /**
  * Validate chatbot creation request
@@ -195,6 +196,56 @@ export function preventXss(req: Request, res: Response, next: NextFunction) {
 }
 
 /**
+ * Validate request body field lengths to prevent oversized payloads
+ */
+export function validateBodyLimits(limits: Record<string, number>) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    if (!req.body || typeof req.body !== 'object') {
+      return next();
+    }
+
+    for (const [field, maxLength] of Object.entries(limits)) {
+      const value = req.body[field];
+      if (typeof value === 'string' && value.length > maxLength) {
+        return res.status(400).json({
+          error: true,
+          code: 'VALIDATION_ERROR',
+          message: `${field} must be under ${maxLength} characters`,
+        });
+      }
+    }
+
+    next();
+  };
+}
+
+/**
+ * Validate that query params are safe (no excessively long values)
+ */
+export function validateQueryParams(req: Request, res: Response, next: NextFunction) {
+  const MAX_QUERY_PARAM_LENGTH = 500;
+
+  for (const [key, value] of Object.entries(req.query)) {
+    if (typeof value === 'string' && value.length > MAX_QUERY_PARAM_LENGTH) {
+      return res.status(400).json({
+        error: true,
+        code: 'VALIDATION_ERROR',
+        message: `Query parameter "${key}" is too long (max ${MAX_QUERY_PARAM_LENGTH} characters)`,
+      });
+    }
+  }
+
+  next();
+}
+
+/**
+ * Validate email format
+ */
+export function isValidEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+/**
  * Combined security validation middleware
  */
 export const securityValidation = [preventSqlInjection, preventXss, sanitizeBody];
@@ -205,8 +256,18 @@ export const securityValidation = [preventSqlInjection, preventXss, sanitizeBody
 export function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
   console.error('Error:', err);
 
+  if (err instanceof AppError) {
+    return res.status(err.statusCode).json({
+      error: true,
+      code: err.code,
+      message: err.message,
+      ...(err.details !== undefined && { details: err.details }),
+    });
+  }
+
   res.status(500).json({
-    error: 'Internal server error',
-    message: err.message || 'Unknown error occurred'
+    error: true,
+    code: 'INTERNAL_ERROR',
+    message: err.message || 'Unknown error occurred',
   });
 }

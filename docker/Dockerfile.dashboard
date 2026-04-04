@@ -9,7 +9,6 @@ COPY . .
 RUN turbo prune --scope=dashboard --docker
 
 FROM base AS builder
-ARG RAILWAY_ENVIRONMENT_NAME=production
 WORKDIR /app
 COPY .gitignore .gitignore
 COPY .npmrc ./
@@ -22,16 +21,9 @@ COPY --from=pruner /app/out/full/ .
 COPY turbo.json turbo.json
 
 ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV production
 
-RUN echo "RAILWAY_ENVIRONMENT_NAME: $RAILWAY_ENVIRONMENT_NAME"
-
-RUN if [ "$RAILWAY_ENVIRONMENT_NAME" = "staging" ]; then \
-  rm -f apps/dashboard/.env.production; \
-  cp apps/dashboard/.env.staging apps/dashboard/.env.production; \
-  NODE_OPTIONS="--max_old_space_size=4096" pnpm turbo run build --filter=dashboard...; \
-  else \
-  NODE_OPTIONS="--max_old_space_size=4096" pnpm turbo run build --filter=dashboard...; \
-  fi
+RUN NODE_OPTIONS="--max_old_space_size=4096" pnpm turbo run build --filter=dashboard...
 
 FROM base AS runner
 WORKDIR /app

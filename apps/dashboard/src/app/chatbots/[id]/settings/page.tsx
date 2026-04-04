@@ -2,28 +2,77 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { chatbotApi, customizeApi } from '@/lib/api';
-import { Button, Input, Label, Textarea, Switch } from '@corpusai/ui';
-import { ArrowLeft, Save, Trash2 } from 'lucide-react';
+import { chatbotApi } from '@/lib/api';
+import { createPortal } from 'react-dom';
+import {
+  Save,
+  Trash2,
+  AlertTriangle,
+  X,
+  ChevronDown,
+} from 'lucide-react';
 
+/* ------------------------------------------------------------------ */
+/*  Portal-based Modal (V4 dark)                                      */
+/* ------------------------------------------------------------------ */
+function SimpleModal({
+  open,
+  onClose,
+  children,
+}: {
+  open: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+}) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
+  if (!open || !mounted) return null;
+
+  const modal = (
+    <div
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+      <div
+        className="relative w-full max-w-md rounded-2xl bg-white dark:bg-[#0E0E10] border border-slate-200 dark:border-white/[0.08] shadow-2xl p-6"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute right-4 top-4 text-slate-500 dark:text-[#71717A] hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
+        >
+          <X className="h-4 w-4" />
+        </button>
+        {children}
+      </div>
+    </div>
+  );
+
+  return createPortal(modal, document.body);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Settings Page                                                     */
+/* ------------------------------------------------------------------ */
 export default function SettingsPage() {
   const params = useParams();
   const router = useRouter();
   const chatbotId = params.id as string;
-
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
+  const [savingBasic, setSavingBasic] = useState(false);
 
   // Basic settings
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
+  const [language, setLanguage] = useState('en');
 
-  // Customization
-  const [welcomeMessage, setWelcomeMessage] = useState('');
-  const [systemPrompt, setSystemPrompt] = useState('');
-  const [gptVersion, setGptVersion] = useState('gpt-3.5-turbo');
-  const [showCitations, setShowCitations] = useState(true);
-  const [primaryColor, setPrimaryColor] = useState('#BF56FF');
+  // Delete state
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [deleteConfirmName, setDeleteConfirmName] = useState('');
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     loadSettings();
@@ -32,20 +81,11 @@ export default function SettingsPage() {
   const loadSettings = async () => {
     try {
       setLoading(true);
-      const [chatbotData, customData] = await Promise.all([
-        chatbotApi.get(chatbotId),
-        customizeApi.get(chatbotId).catch(() => ({ customization: {} })),
-      ]);
-
-      setTitle(chatbotData.chatbot?.title || '');
-      setDesc(chatbotData.chatbot?.desc || '');
-
-      const custom = customData.customization || {};
-      setWelcomeMessage(custom.welcomeMessage || '');
-      setSystemPrompt(custom.systemPrompt || '');
-      setGptVersion(custom.gptVersion || 'gpt-3.5-turbo');
-      setShowCitations(custom.showCitations !== false);
-      setPrimaryColor(custom.colors?.primary || '#BF56FF');
+      const chatbotData = await chatbotApi.get(chatbotId);
+      const chatbot = (chatbotData as any).chatbot || chatbotData;
+      setTitle(chatbot.title || '');
+      setDesc(chatbot.desc || '');
+      setLanguage(chatbot.language || 'en');
     } catch (err: any) {
       alert('Failed to load settings: ' + err.message);
     } finally {
@@ -53,208 +93,204 @@ export default function SettingsPage() {
     }
   };
 
-  const handleSave = async () => {
+  const handleSaveBasic = async () => {
     try {
-      setSaving(true);
-
-      await Promise.all([
-        chatbotApi.update(chatbotId, { title, desc }),
-        customizeApi.update(chatbotId, {
-          welcomeMessage,
-          systemPrompt,
-          gptVersion,
-          showCitations,
-          colors: { primary: primaryColor },
-        }),
-      ]);
-
-      alert('Settings saved successfully!');
+      setSavingBasic(true);
+      await chatbotApi.update(chatbotId, { title, desc });
+      alert('Basic settings saved!');
     } catch (err: any) {
-      alert('Failed to save settings: ' + err.message);
+      alert('Failed to save: ' + err.message);
     } finally {
-      setSaving(false);
+      setSavingBasic(false);
     }
   };
 
   const handleDelete = async () => {
-    if (
-      !confirm(
-        'Are you sure you want to delete this chatbot? This action cannot be undone.'
-      )
-    )
-      return;
-
+    if (deleteConfirmName !== title) return;
     try {
+      setDeleting(true);
       await chatbotApi.delete(chatbotId);
       router.push('/chatbots');
     } catch (err: any) {
       alert('Failed to delete chatbot: ' + err.message);
+      setDeleting(false);
     }
   };
 
+  /* ---- Skeleton loading state ---- */
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-white p-8">
-        <div className="mx-auto max-w-4xl">
-          <div className="flex items-center justify-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#BF56FF] border-t-transparent"></div>
-          </div>
+      <div className="v4-animate-in mx-auto max-w-2xl space-y-5">
+        <div className="space-y-2">
+          <div className="v4-shimmer rounded-lg" style={{ height: '28px', width: '180px' }} />
+          <div className="v4-shimmer rounded-lg" style={{ height: '18px', width: '280px' }} />
         </div>
+        <div className="v4-shimmer rounded-2xl" style={{ height: '320px' }} />
+        <div className="v4-shimmer rounded-2xl" style={{ height: '120px' }} />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-white p-8">
-      <div className="mx-auto max-w-4xl">
-        {/* Header */}
-        <div className="mb-8">
-          <Button
-            variant="ghost"
-            onClick={() => router.push('/chatbots')}
-            className="mb-4"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Chatbots
-          </Button>
-          <h1 className="text-3xl font-bold text-gray-900">Chatbot Settings</h1>
-          <p className="mt-2 text-gray-600">
-            Configure your chatbot's behavior and appearance
-          </p>
-        </div>
+    <div className="v4-animate-in mx-auto max-w-2xl space-y-5">
+      {/* Header */}
+      <div>
+        <h1 className="text-xl font-semibold text-slate-900 dark:text-white">Settings</h1>
+        <p className="mt-1 text-sm text-slate-500 dark:text-[#A1A1AA]">
+          Configure your chatbot&apos;s behavior and appearance
+        </p>
+      </div>
 
-        <div className="space-y-6">
-          {/* Basic Information */}
-          <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-xl font-semibold text-gray-900">
-              Basic Information
-            </h2>
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="title">Chatbot Name</Label>
-                <Input
-                  id="title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  className="mt-2"
-                />
-              </div>
-              <div>
-                <Label htmlFor="desc">Description</Label>
-                <Textarea
-                  id="desc"
-                  value={desc}
-                  onChange={(e) => setDesc(e.target.value)}
-                  className="mt-2"
-                  rows={3}
-                />
-              </div>
+      {/* Basic Settings Card */}
+      <div className="bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.06] rounded-2xl p-5">
+        <label className="text-xs font-medium text-slate-500 dark:text-[#71717A] uppercase tracking-wider mb-2 block">
+          Basic Settings
+        </label>
+        <div className="space-y-4 mt-3">
+          {/* Chatbot Name */}
+          <div>
+            <label htmlFor="title" className="block text-sm font-medium text-slate-500 dark:text-[#A1A1AA] mb-1.5">
+              Chatbot Name
+            </label>
+            <input
+              id="title"
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="My Chatbot"
+              className="w-full px-3 py-2 rounded-lg bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.08] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#52525B] focus:outline-none focus:border-slate-300 dark:focus:border-white/[0.16] transition-colors text-sm"
+            />
+          </div>
+
+          {/* Description */}
+          <div>
+            <label htmlFor="desc" className="block text-sm font-medium text-slate-500 dark:text-[#A1A1AA] mb-1.5">
+              Description
+            </label>
+            <textarea
+              id="desc"
+              value={desc}
+              onChange={(e) => setDesc(e.target.value)}
+              rows={3}
+              placeholder="Describe what your chatbot does..."
+              className="w-full px-3 py-2 rounded-lg bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.08] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#52525B] focus:outline-none focus:border-slate-300 dark:focus:border-white/[0.16] transition-colors text-sm resize-none"
+            />
+          </div>
+
+          {/* Language */}
+          <div>
+            <label htmlFor="language" className="block text-sm font-medium text-slate-500 dark:text-[#A1A1AA] mb-1.5">
+              Language
+            </label>
+            <div className="relative">
+              <select
+                id="language"
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+                className="w-full px-3 py-2 rounded-lg bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.08] text-slate-900 dark:text-white focus:outline-none focus:border-slate-300 dark:focus:border-white/[0.16] transition-colors text-sm appearance-none cursor-pointer"
+              >
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+                <option value="de">German</option>
+                <option value="pt">Portuguese</option>
+                <option value="ar">Arabic</option>
+                <option value="zh">Chinese</option>
+                <option value="ja">Japanese</option>
+                <option value="ko">Korean</option>
+              </select>
+              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 dark:text-[#71717A] pointer-events-none" />
             </div>
           </div>
 
-          {/* Customization */}
-          <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-xl font-semibold text-gray-900">
-              Customization
-            </h2>
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="welcomeMessage">Welcome Message</Label>
-                <Textarea
-                  id="welcomeMessage"
-                  value={welcomeMessage}
-                  onChange={(e) => setWelcomeMessage(e.target.value)}
-                  placeholder="Hello! How can I help you today?"
-                  className="mt-2"
-                  rows={2}
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="systemPrompt">System Prompt</Label>
-                <Textarea
-                  id="systemPrompt"
-                  value={systemPrompt}
-                  onChange={(e) => setSystemPrompt(e.target.value)}
-                  placeholder="You are a helpful assistant..."
-                  className="mt-2"
-                  rows={4}
-                />
-                <p className="mt-1 text-sm text-gray-500">
-                  Customize how the AI behaves and responds
-                </p>
-              </div>
-
-              <div>
-                <Label htmlFor="gptVersion">GPT Version</Label>
-                <select
-                  id="gptVersion"
-                  value={gptVersion}
-                  onChange={(e) => setGptVersion(e.target.value)}
-                  className="mt-2 w-full rounded-md border border-gray-200 px-3 py-2 focus:border-[#BF56FF] focus:outline-none focus:ring-2 focus:ring-[#BF56FF]"
-                >
-                  <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
-                  <option value="gpt-4">GPT-4</option>
-                  <option value="gpt-4-turbo-preview">GPT-4 Turbo</option>
-                </select>
-              </div>
-
-              <div>
-                <Label htmlFor="primaryColor">Primary Color</Label>
-                <div className="mt-2 flex items-center gap-4">
-                  <input
-                    type="color"
-                    id="primaryColor"
-                    value={primaryColor}
-                    onChange={(e) => setPrimaryColor(e.target.value)}
-                    className="h-10 w-20 rounded border border-gray-200 cursor-pointer"
-                  />
-                  <Input
-                    value={primaryColor}
-                    onChange={(e) => setPrimaryColor(e.target.value)}
-                    className="flex-1"
-                    placeholder="#BF56FF"
-                  />
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div>
-                  <Label htmlFor="showCitations">Show Citations</Label>
-                  <p className="text-sm text-gray-500">
-                    Display source links in responses
-                  </p>
-                </div>
-                <Switch
-                  id="showCitations"
-                  checked={showCitations}
-                  onCheckedChange={setShowCitations}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Actions */}
-          <div className="flex items-center justify-between">
-            <Button
-              variant="outline"
-              onClick={handleDelete}
-              className="border-red-200 text-red-600 hover:bg-red-50"
+          {/* Save Button */}
+          <div className="flex justify-end pt-1">
+            <button
+              type="button"
+              onClick={handleSaveBasic}
+              disabled={savingBasic}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-slate-900 dark:bg-white text-white dark:text-[#08080A] hover:bg-slate-800 dark:hover:bg-white/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Trash2 className="mr-2 h-4 w-4" />
-              Delete Chatbot
-            </Button>
-            <Button
-              onClick={handleSave}
-              disabled={saving}
-              className="bg-gradient-to-r from-[#FC5990] to-[#AC5DE6] hover:opacity-90"
-            >
-              <Save className="mr-2 h-4 w-4" />
-              {saving ? 'Saving...' : 'Save Changes'}
-            </Button>
+              <Save className="h-4 w-4" />
+              {savingBasic ? 'Saving...' : 'Save Changes'}
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Danger Zone */}
+      <div className="rounded-2xl border border-[#EC4899]/20 bg-[#EC4899]/[0.03] p-5">
+        <h2 className="text-sm font-semibold text-[#EC4899]">Danger Zone</h2>
+        <p className="mt-1 text-sm text-slate-500 dark:text-[#71717A]">
+          Permanently delete this chatbot and all associated data. This action cannot be undone.
+        </p>
+        <div className="mt-4">
+          <button
+            type="button"
+            onClick={() => setShowDeleteDialog(true)}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border border-[#EC4899]/30 text-[#EC4899] hover:bg-[#EC4899]/10 transition-colors"
+          >
+            <Trash2 className="h-4 w-4" />
+            Delete Chatbot
+          </button>
+        </div>
+      </div>
+
+      {/* Delete Confirmation Modal */}
+      <SimpleModal
+        open={showDeleteDialog}
+        onClose={() => { setShowDeleteDialog(false); setDeleteConfirmName(''); }}
+      >
+        <div className="mb-4">
+          <h2 className="flex items-center gap-2 text-lg font-semibold text-[#EC4899]">
+            <AlertTriangle className="h-5 w-5" />
+            Delete Chatbot
+          </h2>
+          <p className="mt-2 text-sm text-slate-500 dark:text-[#A1A1AA]">
+            This will permanently delete{' '}
+            <span className="font-medium text-slate-900 dark:text-white">{title}</span> and
+            all its data, including query logs, leads, and data sources.
+          </p>
+          <p className="mt-2 text-sm font-medium text-[#EC4899]">
+            This action cannot be undone. All data will be permanently lost.
+          </p>
+        </div>
+
+        <div className="space-y-1.5 mb-6">
+          <label htmlFor="confirmName" className="block text-sm text-slate-500 dark:text-[#A1A1AA]">
+            Type <span className="font-semibold text-slate-900 dark:text-white">{title}</span> to confirm
+          </label>
+          <input
+            id="confirmName"
+            type="text"
+            value={deleteConfirmName}
+            onChange={(e) => setDeleteConfirmName(e.target.value)}
+            placeholder={title}
+            className="w-full px-3 py-2 rounded-lg bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.08] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#52525B] focus:outline-none focus:border-slate-300 dark:focus:border-white/[0.16] transition-colors text-sm"
+          />
+        </div>
+
+        <div className="flex justify-end gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              setShowDeleteDialog(false);
+              setDeleteConfirmName('');
+            }}
+            className="px-4 py-2 rounded-lg text-sm font-medium border border-slate-200 dark:border-white/[0.10] text-slate-500 dark:text-[#A1A1AA] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-white/[0.16] transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={handleDelete}
+            disabled={deleteConfirmName !== title || deleting}
+            className="px-4 py-2 rounded-lg text-sm font-medium bg-[#EC4899] text-white hover:bg-[#EC4899]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {deleting ? 'Deleting...' : 'Delete Permanently'}
+          </button>
+        </div>
+      </SimpleModal>
     </div>
   );
 }

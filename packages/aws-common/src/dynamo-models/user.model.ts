@@ -7,17 +7,17 @@ export const AWSMarketplaceToken = "x-amzn-marketplace-token";
 export const AWSMarketplaceCookieName = "aws-marketplace-customer-token";
 
 export class UserRecord extends Item {
-  username: string;
-  chat_usage: number;
-  customer: string;
-  email: string;
-  name: string;
-  picture: string;
-  since: number; // Payment account creation date
-  resetAt: number; // User metering reset date
-  expireAt: number; // Expire date. Before the date we can safely reset user metering
-  tier: number;
-  customer_type: CustomerType;
+  username!: string;
+  chat_usage!: number;
+  customer!: string;
+  email!: string;
+  name!: string;
+  picture!: string;
+  since!: number; // Payment account creation date
+  resetAt!: number; // User metering reset date
+  expireAt!: number; // Expire date. Before the date we can safely reset user metering
+  tier!: number;
+  customer_type!: CustomerType;
 }
 
 export const UserSchema = new dynamoose.Schema({

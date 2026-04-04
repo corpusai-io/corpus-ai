@@ -2,10 +2,6 @@ upstream backend {
     server ${BACKEND_HOST}:${BACKEND_PORT};
 }
 
-upstream chat_service {
-    server ${CHAT_SERVICE_HOST}:${CHAT_SERVICE_PORT};
-}
-
 upstream dashboard {
     server ${DASHBOARD_HOST}:${DASHBOARD_PORT};
 }
@@ -21,7 +17,7 @@ upstream docs {
 server {
     listen 80;
     server_name _;
-    
+
     # API routes
     location /api/ {
         proxy_pass http://backend;
@@ -34,23 +30,10 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_cache_bypass $http_upgrade;
     }
-    
-    # Chat service routes
-    location /chat/ {
-        proxy_pass http://chat_service;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_cache_bypass $http_upgrade;
-    }
-    
+
     # Dashboard routes
-    location /dashboard {
-        proxy_pass http://dashboard;
+    location /dashboard/ {
+        proxy_pass http://dashboard/;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -60,10 +43,10 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_cache_bypass $http_upgrade;
     }
-    
+
     # Docs routes
-    location /docs {
-        proxy_pass http://docs;
+    location /docs/ {
+        proxy_pass http://docs/;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -73,7 +56,7 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_cache_bypass $http_upgrade;
     }
-    
+
     # Main website (landing page) - catch all
     location / {
         proxy_pass http://website;

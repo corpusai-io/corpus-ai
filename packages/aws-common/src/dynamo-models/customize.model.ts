@@ -4,13 +4,16 @@ import { v4 } from "uuid";
 
 import { env } from "../utils/env";
 
+// TypeScript type for uuid v4
+type UUID = string;
+
 class CustomizeRecord extends Item {
-  id: string;
-  chatbotId: string;
-  username: string;
-  type: string;
-  value: string;
-  language: string;
+  id!: string;
+  chatbotId!: string;
+  username!: string;
+  type!: string;
+  value!: string;
+  language!: string;
 }
 
 export const CustomizationSchema = new dynamoose.Schema({

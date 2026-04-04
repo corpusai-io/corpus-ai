@@ -9,7 +9,7 @@ import {
 } from '@aws-sdk/client-cognito-identity-provider';
 
 const cognitoClient = new CognitoIdentityProviderClient({
-  region: process.env.AWS_REGION || 'us-west-2',
+  region: process.env.AWS_COGNITO_REGION || process.env.AWS_REGION || 'eu-north-1',
 });
 
 /**

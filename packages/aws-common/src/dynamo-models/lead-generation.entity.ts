@@ -21,7 +21,9 @@ const client = DynamoDBDocumentClient.from(baseClient, {
   },
 });
 
-const table = env("AWS_DYNAMO_LEAD_GENERATION_TABLE");
+// Use the main single-table (same as dataStore entity) to avoid key schema
+// conflicts with the Dynamoose LeadGenerationModel on corpus-lead-generation-dev.
+const table = env("AWS_DYNAMO_MAIN_TABLE");
 
 export const leadData = new Entity(
   {
@@ -42,6 +44,25 @@ export const leadData = new Entity(
       },
       data: {
         type: "any",
+      },
+      sessionId: {
+        type: "string",
+      },
+      intent: {
+        type: "string", // 'hot' | 'warm' | 'cold'
+      },
+      status: {
+        type: "string", // 'new' | 'contacted' | 'converted' | 'archived'
+        default: "new",
+      },
+      triggerType: {
+        type: "string", // 'gated' | 'after_messages' | 'high_intent' | 'cant_answer' | 'exit_intent'
+      },
+      sourcePage: {
+        type: "string",
+      },
+      notes: {
+        type: "string",
       },
       dataCreatedAt: {
         type: "string",
@@ -102,6 +123,15 @@ export const leadFields = new Entity(
             required: { type: "boolean" },
             key: { type: "string" },
           },
+        },
+      },
+      triggerConfig: {
+        type: "map",
+        properties: {
+          triggerType: { type: "string" }, // 'gated' | 'after_messages' | 'high_intent' | 'cant_answer' | 'exit_intent'
+          messageThreshold: { type: "number" },
+          formStyle: { type: "string" }, // 'popup' | 'inline'
+          enabled: { type: "boolean" },
         },
       },
     },

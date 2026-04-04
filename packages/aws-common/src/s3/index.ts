@@ -1,4 +1,4 @@
-import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand, HeadObjectCommand, ListObjectsV2Command } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { env } from '../utils/env';
 
@@ -9,6 +9,8 @@ const s3Client = new S3Client({
     accessKeyId: env('AWS_ACCESS_KEY_ID'),
     secretAccessKey: env('AWS_SECRET_ACCESS_KEY'),
   },
+  requestChecksumCalculation: 'WHEN_REQUIRED',
+  responseChecksumValidation: 'WHEN_REQUIRED',
 });
 
 const bucketName = env('S3_BUCKET_NAME');
@@ -160,6 +162,68 @@ export function getProcessedFilePath(chatbotId: string, filename: string): strin
  */
 export function getIndexPath(chatbotId: string): string {
   return `chatbots/${chatbotId}/index/`;
+}
+
+/**
+ * Generate a presigned URL for uploading a file to S3
+ */
+export async function generatePresignedUploadUrl(
+  key: string,
+  contentType: string,
+  _metadata?: Record<string, string>,
+  expiresIn: number = 3600
+): Promise<string> {
+  // NOTE: Do NOT include Metadata in the PutObjectCommand for presigned URLs.
+  // The signature covers x-amz-meta-* headers, so the browser upload must send
+  // identical headers or S3 returns 403 SignatureDoesNotMatch.
+  const command = new PutObjectCommand({
+    Bucket: bucketName,
+    Key: key,
+    ContentType: contentType,
+  });
+
+  return await getSignedUrl(s3Client, command, {
+    expiresIn,
+    // AWS SDK v3 3.700+ auto-adds x-amz-checksum-crc32 to PutObject
+    // signatures. Browsers can't send this header, causing 403
+    // SignatureDoesNotMatch. Exclude it from the signature.
+    unsignableHeaders: new Set(['x-amz-checksum-crc32']),
+  });
+}
+
+/**
+ * List all files in an S3 prefix
+ */
+export async function listFilesInS3(prefix: string): Promise<Array<{ key: string; size: number; lastModified?: Date }>> {
+  const files: Array<{ key: string; size: number; lastModified?: Date }> = [];
+
+  let continuationToken: string | undefined;
+
+  do {
+    const command = new ListObjectsV2Command({
+      Bucket: bucketName,
+      Prefix: prefix,
+      ContinuationToken: continuationToken,
+    });
+
+    const response = await s3Client.send(command);
+
+    if (response.Contents) {
+      for (const obj of response.Contents) {
+        if (obj.Key && obj.Size && obj.Size > 0) {
+          files.push({
+            key: obj.Key,
+            size: obj.Size,
+            lastModified: obj.LastModified,
+          });
+        }
+      }
+    }
+
+    continuationToken = response.NextContinuationToken;
+  } while (continuationToken);
+
+  return files;
 }
 
 export { s3Client, bucketName };

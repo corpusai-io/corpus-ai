@@ -8,6 +8,10 @@ import { env } from '../utils/env';
 
 let openaiClient: OpenAI | null = null;
 
+// text-embedding-3-large has 8192 token limit.
+// ~4 chars per token on average, use 28000 chars as safe limit.
+const MAX_EMBEDDING_CHARS = 28000;
+
 /**
  * Get OpenAI client
  */
@@ -23,16 +27,26 @@ function getOpenAIClient(): OpenAI {
 }
 
 /**
+ * Truncate text to stay within embedding model's token limit.
+ */
+function truncateForEmbedding(text: string): string {
+  if (text.length <= MAX_EMBEDDING_CHARS) return text;
+  // Truncate at the last space before the limit to avoid cutting mid-word
+  const truncated = text.slice(0, MAX_EMBEDDING_CHARS);
+  const lastSpace = truncated.lastIndexOf(' ');
+  return lastSpace > MAX_EMBEDDING_CHARS * 0.8 ? truncated.slice(0, lastSpace) : truncated;
+}
+
+/**
  * Generate embedding for a single text
  */
 export async function generateEmbedding(
   text: string,
-  model: string = 'text-embedding-3-small'
+  model: string = 'text-embedding-3-large'
 ): Promise<number[]> {
   const client = getOpenAIClient();
 
-  // Clean and truncate text if needed (max tokens for embedding model)
-  const cleanedText = text.replace(/\n/g, ' ').trim();
+  const cleanedText = truncateForEmbedding(text.replace(/\n/g, ' ').trim());
 
   try {
     const response = await client.embeddings.create({
@@ -52,12 +66,11 @@ export async function generateEmbedding(
  */
 export async function generateEmbeddings(
   texts: string[],
-  model: string = 'text-embedding-3-small'
+  model: string = 'text-embedding-3-large'
 ): Promise<number[][]> {
   const client = getOpenAIClient();
 
-  // Clean texts
-  const cleanedTexts = texts.map(text => text.replace(/\n/g, ' ').trim());
+  const cleanedTexts = texts.map(text => truncateForEmbedding(text.replace(/\n/g, ' ').trim()));
 
   // Process in batches of 100 (OpenAI limit)
   const batchSize = 100;
@@ -88,14 +101,14 @@ export async function generateEmbeddings(
 /**
  * Calculate embedding dimensions for a model
  */
-export function getEmbeddingDimension(model: string = 'text-embedding-3-small'): number {
+export function getEmbeddingDimension(model: string = 'text-embedding-3-large'): number {
   const dimensions: Record<string, number> = {
     'text-embedding-3-small': 1536,
     'text-embedding-3-large': 3072,
     'text-embedding-ada-002': 1536,
   };
 
-  return dimensions[model] || 1536;
+  return dimensions[model] || 3072;
 }
 
 /**
@@ -103,8 +116,8 @@ export function getEmbeddingDimension(model: string = 'text-embedding-3-small'):
  */
 export function isValidEmbeddingModel(model: string): boolean {
   const validModels = [
-    'text-embedding-3-small',
     'text-embedding-3-large',
+    'text-embedding-3-small',
     'text-embedding-ada-002',
   ];
   return validModels.includes(model);

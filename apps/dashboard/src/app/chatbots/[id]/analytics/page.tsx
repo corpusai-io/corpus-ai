@@ -1,16 +1,18 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState, useMemo } from 'react';
+import { useParams } from 'next/navigation';
 import { queryLogApi } from '@/lib/api';
-import { Button } from '@corpusai/ui';
 import {
-  ArrowLeft,
   Download,
-  MessageSquare,
+  BarChart3,
+  Clock,
   ThumbsUp,
   ThumbsDown,
-  Clock,
+  Users,
+  Search,
+  ChevronLeft,
+  ChevronRight,
   TrendingUp,
 } from 'lucide-react';
 
@@ -21,53 +23,197 @@ interface QueryLog {
   thumb?: 'up' | 'down';
   timestamp: number;
   sessionId?: string;
+  duration?: number;
 }
 
 interface Analytics {
   totalQueries: number;
   thumbsUp: number;
   thumbsDown: number;
+  thumbsUpPercentage?: number;
   avgResponseTime?: number;
-  topQueries: Array<{ query: string; count: number }>;
+  uniqueSessions?: number;
+  dailyVolume?: Array<{ date: string; count: number }>;
+  topQueries?: Array<{ query: string; count: number }>;
 }
 
+const ITEMS_PER_PAGE = 10;
+
+const DATE_OPTIONS = [
+  { value: '7d', label: 'Last 7 days' },
+  { value: '30d', label: 'Last 30 days' },
+  { value: '90d', label: 'Last 90 days' },
+] as const;
+
+/* ─── Skeleton ────────────────────────────────────────────── */
+function SkeletonPage() {
+  return (
+    <div className="space-y-6 v4-animate-in">
+      <div className="flex items-center justify-between">
+        <div className="space-y-1.5">
+          <div className="w-28 h-7 rounded-lg v4-shimmer" />
+          <div className="w-48 h-4 rounded-md v4-shimmer" />
+        </div>
+        <div className="flex gap-2">
+          <div className="w-28 h-9 rounded-lg v4-shimmer" />
+          <div className="w-28 h-9 rounded-lg v4-shimmer" />
+        </div>
+      </div>
+      <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
+        {[0,1,2,3].map(i => (
+          <div key={i} className="v4-card rounded-2xl p-5 space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="w-24 h-3.5 rounded v4-shimmer" />
+              <div className="w-9 h-9 rounded-lg v4-shimmer" />
+            </div>
+            <div className="w-16 h-8 rounded-md v4-shimmer" />
+          </div>
+        ))}
+      </div>
+      <div className="v4-card rounded-2xl p-6 space-y-3">
+        <div className="w-36 h-5 rounded-md v4-shimmer" />
+        <div className="h-40 rounded-xl v4-shimmer" />
+      </div>
+      <div className="v4-card rounded-2xl overflow-hidden">
+        <div className="p-5 border-b border-slate-100 dark:border-white/[0.05]">
+          <div className="w-28 h-5 rounded-md v4-shimmer" />
+        </div>
+        {[0,1,2,3,4].map(i => (
+          <div key={i} className="px-5 py-3.5 border-b border-slate-100 dark:border-white/[0.04] flex gap-4">
+            <div className="w-20 h-3.5 rounded v4-shimmer" />
+            <div className="flex-1 h-3.5 rounded v4-shimmer" />
+            <div className="w-32 h-3.5 rounded v4-shimmer" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ─── Stat card ───────────────────────────────────────────── */
+function StatCard({
+  label,
+  value,
+  icon: Icon,
+  color,
+  sub,
+}: {
+  label: string;
+  value: string | number;
+  icon: React.ComponentType<{ className?: string }>;
+  color: string;
+  sub?: string;
+}) {
+  return (
+    <div className="v4-card rounded-2xl p-5">
+      <div className="flex items-start justify-between mb-3">
+        <p className="text-xs font-medium text-slate-400 dark:text-[#71717A]">{label}</p>
+        <div className={`h-8 w-8 rounded-lg flex items-center justify-center ${color}`}>
+          <Icon className="h-4 w-4" />
+        </div>
+      </div>
+      <p className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">{value}</p>
+      {sub && <p className="text-xs text-slate-400 dark:text-[#3F3F46] mt-1">{sub}</p>}
+    </div>
+  );
+}
+
+/* ─── Bar chart ───────────────────────────────────────────── */
+function BarChart({ data, maxCount }: { data: Array<{ date: string; count: number }>; maxCount: number }) {
+  const showEveryN = data.length > 14 ? Math.ceil(data.length / 7) : 1;
+
+  return (
+    <div className="v4-card rounded-2xl p-6">
+      <div className="flex items-center justify-between mb-5">
+        <div>
+          <h2 className="text-sm font-semibold text-slate-900 dark:text-white">Query Volume</h2>
+          <p className="text-xs text-slate-400 dark:text-[#3F3F46] mt-0.5">Messages over time</p>
+        </div>
+        <TrendingUp className="h-4 w-4 text-slate-400 dark:text-[#3F3F46]" />
+      </div>
+
+      {/* Chart */}
+      <div className="relative">
+        {/* Horizontal guide lines */}
+        <div className="absolute inset-0 flex flex-col justify-between pointer-events-none pb-6">
+          {[0,1,2,3].map(i => (
+            <div key={i} className="w-full h-px bg-slate-100 dark:bg-white/[0.04]" />
+          ))}
+        </div>
+
+        {/* Bars */}
+        <div className="flex items-end gap-px h-40 pb-0">
+          {data.map((day) => {
+            const height = maxCount > 0 ? Math.max((day.count / maxCount) * 100, day.count > 0 ? 2 : 0) : 0;
+            return (
+              <div key={day.date} className="group relative flex-1 flex flex-col items-center justify-end h-full">
+                <div
+                  className="w-full rounded-t-sm bg-[#BF56FF]/40 group-hover:bg-[#BF56FF]/70 transition-colors duration-150"
+                  style={{ height: `${height}%`, minHeight: day.count > 0 ? '3px' : '0' }}
+                />
+                {/* Tooltip */}
+                <div className="pointer-events-none absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover:block z-10">
+                  <div className="whitespace-nowrap rounded-lg bg-white dark:bg-[#111113] border border-slate-200 dark:border-white/[0.10] px-3 py-1.5 text-xs shadow-xl">
+                    <p className="font-semibold text-slate-900 dark:text-white">{day.count} queries</p>
+                    <p className="text-slate-400 dark:text-[#71717A]">
+                      {new Date(day.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* X-axis labels */}
+        <div className="flex justify-between mt-2">
+          {data.map((day, i) => (
+            <div key={day.date} className="flex-1 text-center">
+              {i % showEveryN === 0 && (
+                <span className="text-[9px] text-slate-400 dark:text-[#3F3F46]">
+                  {new Date(day.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Page ────────────────────────────────────────────────── */
 export default function AnalyticsPage() {
   const params = useParams();
-  const router = useRouter();
   const chatbotId = params.id as string;
 
   const [logs, setLogs] = useState<QueryLog[]>([]);
   const [analytics, setAnalytics] = useState<Analytics | null>(null);
   const [loading, setLoading] = useState(true);
   const [dateRange, setDateRange] = useState<'7d' | '30d' | '90d'>('30d');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [expandedLog, setExpandedLog] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadData();
-  }, [dateRange]);
+  useEffect(() => { loadData(); }, [dateRange]);
+  useEffect(() => { setCurrentPage(1); }, [searchQuery]);
 
   const loadData = async () => {
     try {
       setLoading(true);
-
       const startDate = new Date();
       if (dateRange === '7d') startDate.setDate(startDate.getDate() - 7);
       if (dateRange === '30d') startDate.setDate(startDate.getDate() - 30);
       if (dateRange === '90d') startDate.setDate(startDate.getDate() - 90);
 
       const [logsData, analyticsData] = await Promise.all([
-        queryLogApi.list(chatbotId, {
-          startDate: startDate.getTime(),
-          endDate: Date.now(),
-          limit: 50,
-        }),
-        queryLogApi.analytics(chatbotId, {
-          startDate: startDate.getTime(),
-          endDate: Date.now(),
-        }),
+        queryLogApi.list(chatbotId, { startDate: startDate.getTime(), endDate: Date.now(), limit: 500 }),
+        queryLogApi.analytics(chatbotId, { startDate: startDate.getTime(), endDate: Date.now() }),
       ]);
 
-      setLogs(logsData.logs || []);
-      setAnalytics(analyticsData);
+      setLogs((logsData as any).logs || []);
+      const raw = analyticsData as any;
+      setAnalytics(raw.analytics ? raw.analytics : raw);
     } catch (err: any) {
       console.error('Failed to load analytics:', err);
     } finally {
@@ -77,7 +223,11 @@ export default function AnalyticsPage() {
 
   const handleExport = async () => {
     try {
-      const blob = await queryLogApi.export(chatbotId);
+      const startDate = new Date();
+      if (dateRange === '7d') startDate.setDate(startDate.getDate() - 7);
+      if (dateRange === '30d') startDate.setDate(startDate.getDate() - 30);
+      if (dateRange === '90d') startDate.setDate(startDate.getDate() - 90);
+      const blob = await queryLogApi.export(chatbotId, { startDate: startDate.getTime(), endDate: Date.now() });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -91,239 +241,234 @@ export default function AnalyticsPage() {
     }
   };
 
-  const getSatisfactionRate = () => {
+  const positiveRate = useMemo(() => {
     if (!analytics) return 0;
-    const total = analytics.thumbsUp + analytics.thumbsDown;
-    if (total === 0) return 0;
-    return Math.round((analytics.thumbsUp / total) * 100);
-  };
+    const total = (analytics.thumbsUp ?? 0) + (analytics.thumbsDown ?? 0);
+    return total === 0 ? 0 : Math.round(((analytics.thumbsUp ?? 0) / total) * 100);
+  }, [analytics]);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-white p-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="flex items-center justify-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#BF56FF] border-t-transparent"></div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const uniqueSessions = useMemo(() => {
+    if (analytics?.uniqueSessions != null) return analytics.uniqueSessions;
+    return new Set(logs.filter((l) => l.sessionId).map((l) => l.sessionId)).size;
+  }, [analytics, logs]);
+
+  const chartData = useMemo(() => {
+    if (analytics?.dailyVolume?.length) return analytics.dailyVolume;
+    const days = dateRange === '7d' ? 7 : dateRange === '30d' ? 30 : 90;
+    const buckets: Record<string, number> = {};
+    for (let i = days - 1; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      buckets[d.toISOString().split('T')[0]] = 0;
+    }
+    logs.forEach((log) => {
+      try {
+        const key = new Date(log.timestamp).toISOString().split('T')[0];
+        if (key in buckets) buckets[key]++;
+      } catch { /* skip */ }
+    });
+    return Object.entries(buckets).map(([date, count]) => ({ date, count }));
+  }, [analytics, logs, dateRange]);
+
+  const maxCount = useMemo(() => Math.max(1, ...chartData.map((d) => d.count)), [chartData]);
+
+  const filteredLogs = useMemo(() => {
+    if (!searchQuery.trim()) return logs;
+    const q = searchQuery.toLowerCase();
+    return logs.filter((log) => log.query.toLowerCase().includes(q) || log.answer.toLowerCase().includes(q));
+  }, [logs, searchQuery]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredLogs.length / ITEMS_PER_PAGE));
+  const paginatedLogs = filteredLogs.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+  if (loading) return <SkeletonPage />;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-white p-8">
-      <div className="mx-auto max-w-7xl">
-        {/* Header */}
-        <div className="mb-8">
-          <Button
-            variant="ghost"
-            onClick={() => router.push('/chatbots')}
-            className="mb-4"
+    <div className="space-y-5 v4-animate-in">
+
+      {/* Header */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Analytics</h1>
+          <p className="text-sm text-slate-400 dark:text-[#71717A] mt-0.5">Track performance and user engagement</p>
+        </div>
+        <div className="flex items-center gap-2">
+          {/* Date range */}
+          <div className="flex items-center gap-0.5 bg-slate-100 dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.08] rounded-lg p-1">
+            {DATE_OPTIONS.map((opt) => (
+              <button
+                key={opt.value}
+                onClick={() => setDateRange(opt.value)}
+                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
+                  dateRange === opt.value
+                    ? 'bg-white dark:bg-white/[0.08] text-slate-900 dark:text-white shadow-sm dark:shadow-none'
+                    : 'text-slate-400 dark:text-[#71717A] hover:text-slate-600 dark:hover:text-[#A1A1AA]'
+                }`}
+              >
+                {opt.label.replace('Last ', '')}
+              </button>
+            ))}
+          </div>
+          <button
+            onClick={handleExport}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-slate-200 dark:border-white/[0.10] text-xs font-medium text-slate-500 dark:text-[#A1A1AA] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-white/[0.18] hover:bg-slate-50 dark:hover:bg-white/[0.04] transition-all"
           >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Chatbots
-          </Button>
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Analytics</h1>
-              <p className="mt-2 text-gray-600">
-                Track chatbot performance and user engagement
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <select
-                value={dateRange}
-                onChange={(e) =>
-                  setDateRange(e.target.value as '7d' | '30d' | '90d')
-                }
-                className="rounded-md border border-gray-200 px-3 py-2 focus:border-[#BF56FF] focus:outline-none focus:ring-2 focus:ring-[#BF56FF]"
-              >
-                <option value="7d">Last 7 days</option>
-                <option value="30d">Last 30 days</option>
-                <option value="90d">Last 90 days</option>
-              </select>
-              <Button
-                onClick={handleExport}
-                className="bg-gradient-to-r from-[#FC5990] to-[#AC5DE6] hover:opacity-90"
-              >
-                <Download className="mr-2 h-4 w-4" />
-                Export Logs
-              </Button>
-            </div>
+            <Download className="h-3.5 w-3.5" />
+            Export
+          </button>
+        </div>
+      </div>
+
+      {/* Stat cards */}
+      <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
+        <StatCard
+          label="Total Queries"
+          value={(analytics?.totalQueries ?? 0).toLocaleString()}
+          icon={BarChart3}
+          color="bg-[#BF56FF]/10 border border-[#BF56FF]/20 text-[#BF56FF]"
+        />
+        <StatCard
+          label="Avg Response Time"
+          value={analytics?.avgResponseTime ? `${(analytics.avgResponseTime / 1000).toFixed(1)}s` : '—'}
+          icon={Clock}
+          color="bg-blue-500/10 border border-blue-500/20 text-blue-400"
+        />
+        <StatCard
+          label="Positive Feedback"
+          value={`${positiveRate}%`}
+          icon={ThumbsUp}
+          color="bg-[#22C55E]/10 border border-[#22C55E]/20 text-[#22C55E]"
+          sub={`${analytics?.thumbsUp ?? 0} up · ${analytics?.thumbsDown ?? 0} down`}
+        />
+        <StatCard
+          label="Unique Sessions"
+          value={uniqueSessions.toLocaleString()}
+          icon={Users}
+          color="bg-[#BF56FF]/10 border border-[#BF56FF]/20 text-[#BF56FF]"
+        />
+      </div>
+
+      {/* Bar chart */}
+      <BarChart data={chartData} maxCount={maxCount} />
+
+      {/* Query log table */}
+      <div className="v4-card rounded-2xl overflow-hidden">
+
+        {/* Table header */}
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between px-5 py-4 border-b border-slate-100 dark:border-white/[0.05]">
+          <div>
+            <h2 className="text-sm font-semibold text-slate-900 dark:text-white">Query Logs</h2>
+            <p className="text-xs text-slate-400 dark:text-[#3F3F46] mt-0.5">{filteredLogs.length.toLocaleString()} entries</p>
+          </div>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400 dark:text-[#3F3F46]" />
+            <input
+              type="text"
+              placeholder="Search queries…"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full sm:w-56 bg-white dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.08] rounded-lg pl-9 pr-4 py-2 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#3F3F46] focus:outline-none focus:border-[#BF56FF]/40 transition-all"
+            />
           </div>
         </div>
 
-        {/* Stats Grid */}
-        <div className="mb-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">
-                  Total Queries
-                </p>
-                <p className="mt-2 text-3xl font-bold text-gray-900">
-                  {analytics?.totalQueries || 0}
-                </p>
-              </div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-purple-50 to-white">
-                <MessageSquare className="h-6 w-6 text-[#BF56FF]" />
-              </div>
-            </div>
+        {paginatedLogs.length === 0 ? (
+          <div className="py-16 text-center">
+            <BarChart3 className="mx-auto h-10 w-10 text-slate-200 dark:text-[#2D2D30] mb-3" />
+            <p className="text-sm font-medium text-slate-400 dark:text-[#71717A]">
+              {searchQuery ? 'No matching queries' : 'No queries yet'}
+            </p>
+            <p className="text-xs text-slate-400 dark:text-[#3F3F46] mt-1">
+              {searchQuery ? 'Try a different search term' : 'Logs will appear when users interact with your chatbot'}
+            </p>
           </div>
-
-          <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Thumbs Up</p>
-                <p className="mt-2 text-3xl font-bold text-green-600">
-                  {analytics?.thumbsUp || 0}
-                </p>
-              </div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-50">
-                <ThumbsUp className="h-6 w-6 text-green-600" />
-              </div>
+        ) : (
+          <>
+            {/* Column headers */}
+            <div className="grid grid-cols-[120px_1fr_1fr_64px_72px] gap-4 px-5 py-2.5 border-b border-slate-100 dark:border-white/[0.04] bg-slate-50 dark:bg-white/[0.015]">
+              {['Date', 'Query', 'Answer', 'Feedback', 'Duration'].map((h) => (
+                <span key={h} className="text-[10px] font-semibold text-slate-400 dark:text-[#3F3F46] uppercase tracking-wider">{h}</span>
+              ))}
             </div>
-          </div>
 
-          <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Thumbs Down</p>
-                <p className="mt-2 text-3xl font-bold text-red-600">
-                  {analytics?.thumbsDown || 0}
-                </p>
-              </div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-50">
-                <ThumbsDown className="h-6 w-6 text-red-600" />
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">
-                  Satisfaction
-                </p>
-                <p className="mt-2 text-3xl font-bold text-gray-900">
-                  {getSatisfactionRate()}%
-                </p>
-              </div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-purple-50 to-white">
-                <TrendingUp className="h-6 w-6 text-[#BF56FF]" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Top Queries */}
-        {analytics?.topQueries && analytics.topQueries.length > 0 && (
-          <div className="mb-8 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-lg font-semibold text-gray-900">
-              Top Queries
-            </h2>
-            <div className="space-y-3">
-              {analytics.topQueries.slice(0, 5).map((item, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center justify-between rounded-lg border border-gray-100 p-3"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-purple-50 to-white text-sm font-bold text-[#BF56FF]">
-                      {idx + 1}
+            {/* Rows */}
+            <div className="divide-y divide-slate-100 dark:divide-white/[0.04]">
+              {paginatedLogs.map((log) => (
+                <div key={log.logId}>
+                  <button
+                    type="button"
+                    onClick={() => setExpandedLog(expandedLog === log.logId ? null : log.logId)}
+                    className="w-full grid grid-cols-[120px_1fr_1fr_64px_72px] gap-4 px-5 py-3.5 hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors text-left"
+                  >
+                    <span className="text-xs text-slate-400 dark:text-[#3F3F46] tabular-nums">
+                      {log.timestamp
+                        ? new Date(log.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                        : '—'}
                     </span>
-                    <p className="text-sm text-gray-900">{item.query}</p>
-                  </div>
-                  <span className="rounded-full bg-purple-100 px-3 py-1 text-xs font-medium text-purple-800">
-                    {item.count} times
-                  </span>
+                    <span className="text-xs text-slate-600 dark:text-[#A1A1AA] truncate">{log.query}</span>
+                    <span className="text-xs text-slate-400 dark:text-[#71717A] truncate">{log.answer}</span>
+                    <span className="flex items-center">
+                      {log.thumb === 'up' && (
+                        <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-[#22C55E]/10 border border-[#22C55E]/20">
+                          <ThumbsUp className="h-2.5 w-2.5 text-[#22C55E]" />
+                        </span>
+                      )}
+                      {log.thumb === 'down' && (
+                        <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-[#EC4899]/10 border border-[#EC4899]/20">
+                          <ThumbsDown className="h-2.5 w-2.5 text-[#EC4899]" />
+                        </span>
+                      )}
+                      {!log.thumb && <span className="text-xs text-slate-400 dark:text-[#2D2D30]">—</span>}
+                    </span>
+                    <span className="text-xs text-slate-400 dark:text-[#3F3F46] tabular-nums">
+                      {log.duration ? `${(log.duration / 1000).toFixed(1)}s` : '—'}
+                    </span>
+                  </button>
+
+                  {/* Expanded answer */}
+                  {expandedLog === log.logId && (
+                    <div className="px-5 pb-4 grid grid-cols-2 gap-4 bg-slate-50/50 dark:bg-white/[0.01]">
+                      <div>
+                        <p className="text-[10px] font-semibold text-slate-400 dark:text-[#3F3F46] uppercase tracking-wider mb-1.5">Query</p>
+                        <p className="text-xs text-slate-600 dark:text-[#A1A1AA] leading-relaxed">{log.query}</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-semibold text-slate-400 dark:text-[#3F3F46] uppercase tracking-wider mb-1.5">Answer</p>
+                        <p className="text-xs text-slate-400 dark:text-[#71717A] leading-relaxed line-clamp-6">{log.answer}</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
-          </div>
-        )}
 
-        {/* Query Logs Table */}
-        <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
-          <div className="border-b border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900">
-              Recent Queries
-            </h2>
-          </div>
-
-          {logs.length === 0 ? (
-            <div className="p-16 text-center">
-              <MessageSquare className="mx-auto h-16 w-16 text-gray-400 mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                No queries yet
-              </h3>
-              <p className="text-gray-600">
-                Query logs will appear here when users interact with your
-                chatbot
+            {/* Pagination */}
+            <div className="flex items-center justify-between px-5 py-3.5 border-t border-slate-100 dark:border-white/[0.05]">
+              <p className="text-xs text-slate-400 dark:text-[#3F3F46]">
+                {(currentPage - 1) * ITEMS_PER_PAGE + 1}–{Math.min(currentPage * ITEMS_PER_PAGE, filteredLogs.length)} of {filteredLogs.length}
               </p>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  className="p-1.5 rounded-lg text-slate-400 dark:text-[#3F3F46] hover:text-slate-700 dark:hover:text-[#A1A1AA] hover:bg-slate-100 dark:hover:bg-white/[0.05] transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </button>
+                <span className="px-2 text-xs text-slate-400 dark:text-[#71717A] tabular-nums">
+                  {currentPage} / {totalPages}
+                </span>
+                <button
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                  className="p-1.5 rounded-lg text-slate-400 dark:text-[#3F3F46] hover:text-slate-700 dark:hover:text-[#A1A1AA] hover:bg-slate-100 dark:hover:bg-white/[0.05] transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              </div>
             </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                      Query
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                      Answer Preview
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                      Feedback
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                      Date
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {logs.map((log) => (
-                    <tr
-                      key={log.logId}
-                      className="transition-colors hover:bg-gray-50"
-                    >
-                      <td className="px-6 py-4">
-                        <p className="max-w-xs truncate text-sm text-gray-900">
-                          {log.query}
-                        </p>
-                      </td>
-                      <td className="px-6 py-4">
-                        <p className="max-w-md truncate text-sm text-gray-600">
-                          {log.answer}
-                        </p>
-                      </td>
-                      <td className="px-6 py-4">
-                        {log.thumb === 'up' && (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800">
-                            <ThumbsUp className="h-3 w-3" />
-                            Positive
-                          </span>
-                        )}
-                        {log.thumb === 'down' && (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-800">
-                            <ThumbsDown className="h-3 w-3" />
-                            Negative
-                          </span>
-                        )}
-                        {!log.thumb && (
-                          <span className="text-sm text-gray-400">-</span>
-                        )}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-500">
-                        {new Date(log.timestamp).toLocaleString()}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
+          </>
+        )}
       </div>
     </div>
   );

@@ -1,0 +1,204 @@
+service: corpus-lambda-chat
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: ${env:AWS_REGION, 'eu-north-1'}
+  stage: ${opt:stage, 'dev'}
+  timeout: 30
+  memorySize: 1024
+  architecture: x86_64
+
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
+    NODE_OPTIONS: '--enable-source-maps'
+    AWS_DYNAMO_CHATBOT_TABLE: ${env:AWS_DYNAMO_CHATBOT_TABLE, 'corpus-chatbots-dev'}
+    AWS_DYNAMO_USER_TABLE: ${env:AWS_DYNAMO_USER_TABLE, 'corpus-users-dev'}
+    AWS_DYNAMO_QUERY_LOG_TABLE: ${env:AWS_DYNAMO_QUERY_LOG_TABLE, 'corpus-query-log-dev'}
+    AWS_DYNAMO_INTEGRATIONS_TABLE: ${env:AWS_DYNAMO_INTEGRATIONS_TABLE, 'corpus-integrations-dev'}
+    AWS_DYNAMO_CUSTOMIZATION_TABLE: ${env:AWS_DYNAMO_CUSTOMIZATION_TABLE, 'corpus-customization-dev'}
+    OPENAI_API_KEY: ${env:OPENAI_API_KEY, ''}
+    OPENAI_MODEL: ${env:OPENAI_MODEL, 'gpt-4o-mini'}
+    OPENAI_EMBEDDING_MODEL: ${env:OPENAI_EMBEDDING_MODEL, 'text-embedding-3-small'}
+    PINECONE_API_KEY: ${env:PINECONE_API_KEY, ''}
+    PINECONE_ENVIRONMENT: ${env:PINECONE_ENVIRONMENT, 'us-east-1'}
+    PINECONE_REGION: ${env:PINECONE_REGION, 'us-east-1'}
+    WEBSOCKET_CONNECTION_TABLE: corpus-ws-connections-${self:provider.stage}
+    AWS_COGNITO_REGION: ${env:AWS_COGNITO_REGION, 'eu-north-1'}
+    AWS_COGNITO_USER_POOL_ID: ${env:AWS_COGNITO_USER_POOL_ID, ''}
+    CHAT_QUOTA: ${env:CHAT_QUOTA, '[20, 1500, 7500, 15000]'}
+    SLACK_SIGNING_SECRET: ${env:SLACK_SIGNING_SECRET, ''}
+    SLACK_BOT_TOKEN: ${env:SLACK_BOT_TOKEN, ''}
+    SLACK_CLIENT_ID: ${env:SLACK_CLIENT_ID, ''}
+    SLACK_CLIENT_SECRET: ${env:SLACK_CLIENT_SECRET, ''}
+    WHATSAPP_VERIFY_TOKEN: ${env:WHATSAPP_VERIFY_TOKEN, 'corpus-ai-verify-token'}
+    WHATSAPP_ACCESS_TOKEN: ${env:WHATSAPP_ACCESS_TOKEN, ''}
+    TELEGRAM_BOT_TOKEN: ${env:TELEGRAM_BOT_TOKEN, ''}
+    DATABASE_ENCRYPTION_KEY: ${env:DATABASE_ENCRYPTION_KEY, ''}
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+            - dynamodb:Query
+            - dynamodb:Scan
+          Resource:
+            - arn:aws:dynamodb:*:*:table/${self:provider.environment.AWS_DYNAMO_CHATBOT_TABLE}
+            - arn:aws:dynamodb:*:*:table/${self:provider.environment.AWS_DYNAMO_USER_TABLE}
+            - arn:aws:dynamodb:*:*:table/${self:provider.environment.AWS_DYNAMO_QUERY_LOG_TABLE}
+            - arn:aws:dynamodb:*:*:table/${self:provider.environment.AWS_DYNAMO_INTEGRATIONS_TABLE}
+            - arn:aws:dynamodb:*:*:table/${self:provider.environment.AWS_DYNAMO_CUSTOMIZATION_TABLE}
+            - arn:aws:dynamodb:*:*:table/${self:provider.environment.WEBSOCKET_CONNECTION_TABLE}
+        - Effect: Allow
+          Action:
+            - execute-api:ManageConnections
+            - execute-api:Invoke
+          Resource:
+            - arn:aws:execute-api:*:*:*
+
+functions:
+  # ── REST Chat (replaces chat_service) ──────────────────
+  restChat:
+    handler: src/handlers/rest.handler
+    timeout: 30
+    memorySize: 1024
+    events:
+      - http:
+          path: chat
+          method: post
+          cors: true
+      - http:
+          path: chat/stream
+          method: post
+          cors: true
+      - http:
+          path: chat
+          method: options
+          cors: true
+      - http:
+          path: chat/stream
+          method: options
+          cors: true
+
+  # ── WebSocket (replaces lambdaWebSocket) ───────────────
+  wsConnect:
+    handler: src/handlers/ws-connect.handler
+    timeout: 10
+    memorySize: 512
+    events:
+      - websocket:
+          route: $connect
+
+  wsDisconnect:
+    handler: src/handlers/ws-disconnect.handler
+    timeout: 10
+    memorySize: 512
+    events:
+      - websocket:
+          route: $disconnect
+
+  wsMessage:
+    handler: src/handlers/ws-message.handler
+    timeout: 30
+    memorySize: 512
+    events:
+      - websocket:
+          route: $default
+
+  wsChat:
+    handler: src/handlers/ws-chat.handler
+    timeout: 300
+    memorySize: 1024
+    events:
+      - websocket:
+          route: chat
+
+  # ── Telegram (replaces lambdaIntegrations telegram) ────
+  telegramWebhook:
+    handler: src/handlers/telegram.handler
+    timeout: 60
+    memorySize: 512
+    events:
+      - http:
+          path: telegram/webhook
+          method: post
+          cors: true
+
+  # ── WhatsApp (replaces lambdaIntegrations whatsapp) ────
+  whatsappWebhook:
+    handler: src/handlers/whatsapp.handler
+    timeout: 60
+    memorySize: 512
+    events:
+      - http:
+          path: whatsapp/webhook
+          method: get
+          cors: true
+      - http:
+          path: whatsapp/webhook
+          method: post
+          cors: true
+
+  # ── Slack (replaces lambdaSlack) ───────────────────────
+  slackEvents:
+    handler: src/handlers/slack-events.handler
+    timeout: 300
+    memorySize: 1024
+    events:
+      - http:
+          path: slack/events
+          method: post
+          cors: true
+      - http:
+          path: slack/commands
+          method: post
+          cors: true
+      - http:
+          path: slack/interactions
+          method: post
+          cors: true
+
+  slackOAuth:
+    handler: src/handlers/slack-oauth.handler
+    timeout: 30
+    memorySize: 512
+    events:
+      - http:
+          path: slack/oauth
+          method: get
+          cors: true
+
+resources:
+  Resources:
+    WebSocketConnectionTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: corpus-ws-connections-${self:provider.stage}
+        AttributeDefinitions:
+          - AttributeName: connectionId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: connectionId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TimeToLiveSpecification:
+          AttributeName: ttl
+          Enabled: true
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 8002
+    websocketPort: 8008
+    lambdaPort: 8010
+    host: 0.0.0.0

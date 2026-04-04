@@ -3,24 +3,37 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "turbo dev --concurrency 15",
+    "dev": "concurrently \"turbo dev --concurrency 15\" \"cross-env NODE_ENV=development node proxy-server.js\"",
+    "dev:no-proxy": "turbo dev --concurrency 15",
+    "dev:frontend": "concurrently \"turbo dev --filter=website --filter=docs --filter=dashboard --filter=backend --filter=@corpusai/ui --concurrency 10\" \"cross-env NODE_ENV=development node proxy-server.js\"",
+    "proxy:dev": "cross-env NODE_ENV=development node proxy-server.js",
+    "proxy:prod": "NODE_ENV=production node proxy-server.js",
     "build": "turbo build",
     "clean": "git clean -xdf node_modules",
     "clean:ws": "turbo clean",
-    "start": "turbo start",
+    "start": "concurrently \"cross-env USE_PROXY=true turbo start\" \"cross-env NODE_ENV=production node proxy-server.js\"",
     "format": "turbo format --continue -- --cache --cache-location node_modules/.cache/.prettiercache",
     "format:fix": "turbo format --continue -- --write --cache --cache-location node_modules/.cache/.prettiercache",
     "lint": "turbo lint",
     "lint:fix": "turbo lint --continue -- --fix",
-    "docker:up": "docker compose up -d"
+    "docker:up": "docker compose up -d",
+    "docker:rebuild": "docker compose down && docker compose build --no-cache && docker compose up -d",
+    "docker:logs": "docker compose logs -f"
   },
-  "devDependencies": {
-    "@types/node": "^20.0.0",
-    "eslint": "^8.40.0",
-    "eslint-config-prettier": "^8.8.0",
-    "prettier": "^3.0.2",
-    "turbo": "^2.5.3",
-    "typescript": "^5.1.6"
+"devDependencies": {
+  "@types/node": "20.17.0",
+  "eslint": "^8.40.0",
+  "eslint-config-prettier": "^8.8.0",
+  "prettier": "^3.0.2",
+  "turbo": "^2.5.3",
+  "typescript": "^5.1.6",
+  "concurrently": "^8.2.2",
+  "cross-env": "^7.0.3"
+},
+  "dependencies": {
+    "express": "^4.18.2",
+    "http-proxy-middleware": "^2.0.6",
+    "cors": "^2.8.5"
   },
   "engines": {
     "npm": "please-use-pnpm",
@@ -28,5 +41,10 @@
     "pnpm": ">=9.0.0",
     "node": ">=18.0.0"
   },
-  "packageManager": "pnpm@9.1.4"
+  "packageManager": "pnpm@9.1.4",
+  "pnpm": {
+    "overrides": {
+      "@types/node": "20.17.0"
+    }
+  }
 }
