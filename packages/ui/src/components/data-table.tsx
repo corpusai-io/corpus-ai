@@ -55,14 +55,14 @@ function DataTable<T extends Record<string, any>>({
   return (
     <div className={cn('w-full overflow-auto', className)}>
       <table className="w-full caption-bottom text-sm">
-        <thead className="border-b border-gray-200">
-          <tr className="border-b transition-colors hover:bg-gray-50">
+        <thead className="border-b border-[#E8E8E8]">
+          <tr className="border-b transition-colors hover:bg-[#F7F7F7]">
             {columns.map((column) => (
               <th
                 key={column.key}
                 className={cn(
-                  'h-12 px-4 text-left align-middle font-medium text-gray-500',
-                  column.sortable && 'cursor-pointer select-none hover:text-gray-900',
+                  'h-12 px-4 text-left align-middle font-medium text-[#737373]',
+                  column.sortable && 'cursor-pointer select-none hover:text-[#171717]',
                   column.width && `w-[${column.width}]`
                 )}
                 onClick={() => handleSort(column.key, column.sortable)}
@@ -84,7 +84,7 @@ function DataTable<T extends Record<string, any>>({
             <tr>
               <td
                 colSpan={columns.length}
-                className="h-24 text-center text-gray-500"
+                className="h-24 text-center text-[#737373]"
               >
                 {emptyMessage}
               </td>
@@ -94,8 +94,8 @@ function DataTable<T extends Record<string, any>>({
               <tr
                 key={index}
                 className={cn(
-                  'border-b border-gray-100 transition-colors',
-                  onRowClick && 'cursor-pointer hover:bg-gray-50'
+                  'border-b border-[#E8E8E8]/50 transition-colors',
+                  onRowClick && 'cursor-pointer hover:bg-[#F7F7F7]'
                 )}
                 onClick={() => onRowClick?.(row)}
               >

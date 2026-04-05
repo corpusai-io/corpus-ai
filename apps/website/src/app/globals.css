@@ -202,16 +202,16 @@ html, body {
 }
 
  path.base-path {
-      stroke: #BF56FF;
+      stroke: #171717;
       stroke-dasharray: 6 6;
       fill: none;
     }
 
     /* Glow dots */
     .dot {
-      fill: #BF56FF;
+      fill: #171717;
       stroke-linecap: round;
-      filter: drop-shadow(0 0 8px #6c63ff);
+      filter: drop-shadow(0 0 8px rgba(23, 23, 23, 0.3));
       animation: moveMain 1s linear infinite;
       animation-delay: 1s;
     }

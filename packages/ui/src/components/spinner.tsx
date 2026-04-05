@@ -17,7 +17,7 @@ const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
       <div
         ref={ref}
         className={cn(
-          'inline-block animate-spin rounded-full border-solid border-[#BF56FF] border-r-transparent',
+          'inline-block animate-spin rounded-full border-solid border-[#171717] border-r-transparent',
           sizeClasses[size],
           className
         )}

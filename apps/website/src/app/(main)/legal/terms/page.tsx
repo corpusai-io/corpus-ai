@@ -14,7 +14,7 @@ export default function TermsPage() {
         </div>
 
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-inter text-gray-900 leading-tight mb-6">
-          Terms of <span className="bg-gradient-to-r from-[#BF56FF] via-[#D0A8E9] to-[#CD7BFF] bg-clip-text text-transparent">Service</span>
+          Terms of <span className="text-[#171717]">Service</span>
         </h1>
         
         <p className="mt-4 text-[#7F7A7A] max-w-2xl mx-auto text-base sm:text-lg mb-8">
@@ -110,8 +110,8 @@ export default function TermsPage() {
                 <p className="text-gray-700 leading-relaxed">
                   If you have any questions or concerns about these Terms of Service, please contact us at:
                 </p>
-                <div className="mt-4 p-4 bg-purple-50 rounded-lg border border-purple-200">
-                  <p className="text-[#BF56FF] font-medium">📧 support@corpusai.io</p>
+                <div className="mt-4 p-4 bg-[#F7F7F7] rounded-lg border border-[#E8E8E8]">
+                  <p className="text-[#171717] font-medium">support@corpusai.io</p>
                 </div>
               </div>
 
