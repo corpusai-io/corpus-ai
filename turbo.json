@@ -1,9 +1,19 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": ["**/.env.*local"],
+  "globalEnv": ["ENABLE_EXPERIMENTAL_COREPACK", "NODE_ENV", "VERCEL", "VERCEL_ENV", "VERCEL_URL"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
+      "env": [
+        "NEXT_PUBLIC_API_URL",
+        "NEXT_PUBLIC_DASHBOARD_URL",
+        "NEXT_PUBLIC_BASE_URL",
+        "NEXT_PUBLIC_COGNITO_USER_POOL_ID",
+        "NEXT_PUBLIC_COGNITO_CLIENT_ID",
+        "NEXT_PUBLIC_COGNITO_REGION",
+        "NEXT_PUBLIC_COGNITO_DOMAIN"
+      ],
       "outputs": ["dist/**", ".next/**", "build/**"]
     },
     "dev": {
