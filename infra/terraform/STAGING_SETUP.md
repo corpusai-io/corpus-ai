@@ -77,9 +77,11 @@ status in AWS Console → SES → Verified identities.
 
 ```env
 # AWS core — these are the only AWS creds Railway needs
+# Retrieve the actual values with: terraform output -raw runtime_access_key_id
+#                                   terraform output -raw runtime_secret_access_key
 AWS_REGION=eu-north-1
-AWS_ACCESS_KEY_ID=AKIA5TGDZKB4FCJEOX53
-AWS_SECRET_ACCESS_KEY=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
+AWS_ACCESS_KEY_ID=<from terraform output>
+AWS_SECRET_ACCESS_KEY=<from terraform output>
 
 # Secrets Manager pointer — backend loads everything else from here
 AWS_SM_SECRET_NAME=corpus-ai/staging
@@ -190,7 +192,8 @@ export AWS_REGION=eu-north-1
 ```
 
 (These are the `corpus-terraform-admin` creds, kept in `.secrets/aws-creds.txt`.
-Not to be confused with the runtime key `AKIA5TGDZKB4FCJEOX53` which Railway uses.)
+Not to be confused with the runtime key for `corpus-backend-staging` which Railway uses —
+that one is produced by Terraform and retrieved via `terraform output`.)
 
 ---
 

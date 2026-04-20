@@ -71,8 +71,11 @@ in their dashboards. Then add the corresponding CNAME in Spaceship DNS.
 
 ```env
 AWS_REGION=eu-north-1
-AWS_ACCESS_KEY_ID=AKIA5TGDZKB4EOL3WPUF
-AWS_SECRET_ACCESS_KEY=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
+# Retrieve the actual values with (prod workspace active):
+#   terraform output -raw runtime_access_key_id
+#   terraform output -raw runtime_secret_access_key
+AWS_ACCESS_KEY_ID=<from terraform output>
+AWS_SECRET_ACCESS_KEY=<from terraform output>
 
 AWS_SM_SECRET_NAME=corpus-ai/production
 
