@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "cross-env DOTENV_CONFIG_PATH=.env.development tsx watch -r dotenv/config src/index.ts",
+    "dev": "cross-env DOTENV_CONFIG_PATH=.env.local tsx watch -r dotenv/config src/bootstrap.ts",
     "build": "tsc",
     "start": "node dist/bootstrap.js",
     "start:dev-local": "cross-env PORT=8001 node dist/index.js",

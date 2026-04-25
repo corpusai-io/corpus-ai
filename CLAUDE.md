@@ -59,12 +59,13 @@ Prod routing: `docker/default.conf.template`.
 
 ### Database Models
 
-- **Dynamoose** (separate tables): `UserModel`, `ChatbotModel`, `CustomizationModel`, `AccessControlModel`, `QueryLogModel`, `LeadGenerationModel`, `ApiKeyModel`, `DatabaseConnectionModel`, `ChatHistoryModel`
-- **ElectroDB** (single table `corpus-main`): DataStore, Slack/Telegram/WhatsApp/GoogleDrive/Zapier integrations, LeadData, LeadFields
+- **Dynamoose** (separate tables): `UserModel`, `ChatbotModel`, `CustomizationModel`, `AccessControlModel`, `QueryLogModel`, `LeadGenerationModel`, `ApiKeyModel`, `DatabaseConnectionModel`, `ChatHistoryModel`, `AiActionsModel`, `BuiltinIntegrationModel`
+- **ElectroDB** (single table `corpus-main`): `DataStore`, `Integrations` (Slack/Telegram/WhatsApp/GoogleDrive/Zapier), `LeadGeneration`
+- **Note**: `corpus-ai-actions`, `corpus-builtin-integrations`, `corpus-response-cache` tables exist in `.env.example` and local setup but are **not yet in Terraform** — must be created manually for staging/prod until added to `dynamodb.tf`.
 
 ### Key Patterns
 
-- **State**: Zustand + Immer (dashboard)
+- **State**: Zustand (dashboard) — stores in `apps/dashboard/src/stores/`
 - **API client**: Typed namespaces in `apps/{dashboard,website}/src/lib/api.ts`
 - **Rate limits**: auth 5/15min, api 100/15min, chat 20/min, passwordReset 3/hr
 - **S3**: `chatbots/{chatbotId}/{files|raw|processed|index}/`
@@ -88,7 +89,7 @@ Flow: widget trigger → form → `POST /api/leads/:chatbotId` → intent classi
 - `GET /api/widget.js` — script creating bubble + iframe → `/dashboard/widget/{chatbotId}?embed=true`
 - Widget page has embed mode (iframe, no bubble) and standalone (preview)
 - Public endpoints: `GET /api/chatbots/:id/public`, `GET /api/customize/:chatbotId/public`, `POST /api/chat`, `POST /api/leads/:chatbotId`
-- Deploy page uses `NEXT_PUBLIC_BASE_URL`
+- Deploy page uses `NEXT_PUBLIC_APP_URL` (dashboard's own URL)
 
 ### Lambda Deployments
 
@@ -109,7 +110,17 @@ AWS infra for staging + prod lives in `infra/terraform/` (one config, `environme
 
 ### Environment Variables
 
-Loaded from Secrets Manager in deployed envs; local dev uses `.env.development` per app. Groups: AWS creds + Cognito, OpenAI, Stripe, Pinecone, Cohere, Firecrawl, S3 buckets, SQS URLs, `DATABASE_ENCRYPTION_KEY`, `NEXT_PUBLIC_BASE_URL`. Never commit real credentials.
+Loaded from Secrets Manager in deployed envs; local dev uses `.env.local` per app (copy from `.env.example`). Never commit real credentials.
+
+**Backend** (`apps/backend/.env.local`): AWS creds + region, `AWS_SM_SECRET_NAME` (blank for local, `corpus-ai/staging` or `corpus-ai/production` for deployed), `DYNAMODB_ENDPOINT` (local Docker), 14 `AWS_DYNAMO_*_TABLE` names, S3, SQS, Cognito, URLs (`GOOGLE_SSO_CALLBACK_URL`, `DASHBOARD_URL`, `WEBSITE_URL`, `ALLOWED_ORIGINS`), SES, OpenAI, Pinecone, Cohere, Firecrawl, Stripe, `DATABASE_ENCRYPTION_KEY`, quota arrays, Slack, WhatsApp, Telegram.
+
+**Dashboard** (`apps/dashboard/.env.local`): `NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_WEBSITE_URL`.
+
+**Website** (`apps/website/.env.local`): `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_DASHBOARD_URL`.
+
+**Deployed URLs** (set in Vercel / docker-compose override):
+- Staging: `api-staging.corpusai.io` / `app-staging.corpusai.io` / `staging.corpusai.io`
+- Production: `api.corpusai.io` / `app.corpusai.io` / `corpusai.io`
 
 ## Future Improvements
 
