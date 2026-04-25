@@ -18,7 +18,7 @@ import {
   accessInvitationText,
 } from './email-templates';
 
-const SES_FROM_EMAIL = process.env.SES_FROM_EMAIL || 'noreply@corpusai.com';
+const SES_FROM_EMAIL = process.env.SES_SENDER_EMAIL || process.env.SES_FROM_EMAIL || 'noreply@corpusai.io';
 const SES_REGION = process.env.SES_REGION || 'eu-north-1';
 
 let sesClient: SESClient | null = null;
