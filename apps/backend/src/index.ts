@@ -37,6 +37,8 @@ if (process.env.DYNAMODB_ENDPOINT) {
   dynamoose.aws.ddb.local(process.env.DYNAMODB_ENDPOINT);
 } else {
   console.log(`Connecting to AWS DynamoDB in region ${process.env.AWS_REGION || 'eu-north-1'}`);
+  // Tables are managed by Terraform in staging/prod — disable auto-create/update
+  dynamoose.Table.defaults.set({ create: false, update: false, waitForActive: false });
 }
 
 const app = express();

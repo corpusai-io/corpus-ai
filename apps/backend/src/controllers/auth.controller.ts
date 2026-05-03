@@ -708,7 +708,7 @@ export async function googleSSO(req: Request, res: Response) {
     cognitoAuthUrl.searchParams.set('response_type', 'code');
     cognitoAuthUrl.searchParams.set('client_id', CLIENT_ID);
     cognitoAuthUrl.searchParams.set('redirect_uri', GOOGLE_CALLBACK_URL);
-    cognitoAuthUrl.searchParams.set('scope', 'email openid profile aws.cognito.signin.user.admin');
+    cognitoAuthUrl.searchParams.set('scope', 'email openid profile');
 
     res.redirect(cognitoAuthUrl.toString());
   } catch (error: any) {
