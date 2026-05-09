@@ -55,7 +55,7 @@ export async function authenticateToken(req: AuthRequest, res: Response, next: N
 
       // Extract email from user attributes
       const emailAttr = cognitoUser.UserAttributes?.find(attr => attr.Name === 'email');
-      const email = emailAttr?.Value || cognitoUser.Username;
+      const email = emailAttr?.Value || cognitoUser.Username || '';
 
       // Get user tier from DynamoDB
       const users = await UserModel.query('username').eq(email).exec();
@@ -112,7 +112,7 @@ export async function optionalAuth(req: AuthRequest, res: Response, next: NextFu
 
       // Extract email from user attributes
       const emailAttr = cognitoUser.UserAttributes?.find(attr => attr.Name === 'email');
-      const email = emailAttr?.Value || cognitoUser.Username;
+      const email = emailAttr?.Value || cognitoUser.Username || '';
 
       // Get user tier from DynamoDB
       const users = await UserModel.query('username').eq(email).exec();

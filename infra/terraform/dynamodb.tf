@@ -331,3 +331,75 @@ resource "aws_dynamodb_table" "database_connections" {
     enabled = true
   }
 }
+
+# --- corpus-ai-actions ---
+resource "aws_dynamodb_table" "ai_actions" {
+  name         = "corpus-ai-actions-${local.suffix}"
+  billing_mode = local.dynamo_common.billing_mode
+  hash_key     = "chatbotId"
+  attribute {
+    name = "chatbotId"
+    type = "S"
+  }
+  point_in_time_recovery {
+    enabled = local.dynamo_common.point_in_time_recovery
+  }
+  deletion_protection_enabled = local.dynamo_common.deletion_protection_enabled
+  server_side_encryption {
+    enabled = true
+  }
+}
+
+# --- corpus-builtin-integrations ---
+resource "aws_dynamodb_table" "builtin_integrations" {
+  name         = "corpus-builtin-integrations-${local.suffix}"
+  billing_mode = local.dynamo_common.billing_mode
+  hash_key     = "chatbotId"
+  range_key    = "integrationKey"
+  attribute {
+    name = "chatbotId"
+    type = "S"
+  }
+  attribute {
+    name = "integrationKey"
+    type = "S"
+  }
+  point_in_time_recovery {
+    enabled = local.dynamo_common.point_in_time_recovery
+  }
+  deletion_protection_enabled = local.dynamo_common.deletion_protection_enabled
+  server_side_encryption {
+    enabled = true
+  }
+}
+
+# --- corpus-response-cache (TTL on `ttl`, GSI on chatbotId) ---
+resource "aws_dynamodb_table" "response_cache" {
+  name         = "corpus-response-cache-${local.suffix}"
+  billing_mode = local.dynamo_common.billing_mode
+  hash_key     = "cacheKey"
+  attribute {
+    name = "cacheKey"
+    type = "S"
+  }
+  attribute {
+    name = "chatbotId"
+    type = "S"
+  }
+  global_secondary_index {
+    name            = "chatbotId-index"
+    hash_key        = "chatbotId"
+    projection_type = "ALL"
+  }
+  ttl {
+    attribute_name = "ttl"
+    enabled        = true
+  }
+  point_in_time_recovery {
+    enabled = local.dynamo_common.point_in_time_recovery
+  }
+  deletion_protection_enabled = local.dynamo_common.deletion_protection_enabled
+  server_side_encryption {
+    enabled = true
+  }
+}

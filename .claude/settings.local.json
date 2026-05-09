@@ -41,7 +41,8 @@
       "Bash(npx next build)",
       "Bash(npx tsc:*)",
       "Bash(sed:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(npm run *)"
     ]
   },
   "enabledPlugins": {

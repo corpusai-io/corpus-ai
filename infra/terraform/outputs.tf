@@ -73,5 +73,8 @@ output "dynamo_tables" {
     api_keys             = aws_dynamodb_table.api_keys.name
     database_connections = aws_dynamodb_table.database_connections.name
     chat_history         = aws_dynamodb_table.chat_history.name
+    ai_actions           = aws_dynamodb_table.ai_actions.name
+    builtin_integrations = aws_dynamodb_table.builtin_integrations.name
+    response_cache       = aws_dynamodb_table.response_cache.name
   }
 }

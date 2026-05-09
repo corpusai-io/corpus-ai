@@ -5,7 +5,7 @@ import path from 'path';
 import cors from 'cors';
 import dynamoose from 'dynamoose';
 import multer from 'multer';
-import { uploadFileToS3, getRawFilePath, sendBuildMessage, getQueueStats } from '@corpusai/aws-common';
+import { uploadFileToS3, getRawFilePath, sendBuildMessage, getQueueStats, checkS3Connectivity, ChatbotModel } from '@corpusai/aws-common';
 
 // Import routes
 import authRoutes from './routes/auth.routes';
@@ -28,6 +28,7 @@ import { chatProxy, getChatHistory, clearChatHistory, updateChatFeedback } from 
 
 // Import middleware
 import { errorHandler } from './middleware/validation.middleware';
+import { authenticateToken, authenticateChat } from './middleware/auth.middleware';
 import { AppError, errorResponse, ErrorCodes } from './utils/error-response';
 import { ensureLocalTables } from './utils/ensure-local-tables';
 
@@ -43,6 +44,11 @@ if (process.env.DYNAMODB_ENDPOINT) {
 
 const app = express();
 const port = process.env.PORT || 8001;
+
+// Trust the upstream proxy (Railway / Nginx) so req.ip resolves to the
+// original client IP rather than the proxy's address. Required for
+// IP-based rate limiting and for accurate access logs.
+app.set('trust proxy', 1);
 
 // CORS configuration for credentials
 const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:3000,http://localhost:3001,http://localhost:3002,http://localhost:8080,http://localhost:9000')
@@ -100,7 +106,6 @@ app.use('/api/builtin-integrations', builtinIntegrationsRoutes);
 app.post('/api/chat', authenticateChat, chatProxy);
 
 // Chat history routes (require auth)
-import { authenticateToken, authenticateChat } from './middleware/auth.middleware';
 app.get('/api/chat/history/:chatbotId', authenticateToken, getChatHistory);
 app.delete('/api/chat/history/:chatbotId', authenticateToken, clearChatHistory);
 app.put('/api/chat/history/:chatbotId/:messageId/feedback', authenticateToken, updateChatFeedback);
@@ -114,40 +119,44 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Test endpoint to verify DynamoDB connection
+// Real DynamoDB connectivity check — issues a bounded query so we know
+// the runtime user can talk to DynamoDB and read the chatbots table.
 app.get('/health/db', async (req, res) => {
   try {
+    await ChatbotModel.query('chatbotId').eq('__healthcheck__').limit(1).exec();
     res.json({
       status: 'ok',
-      message: 'DynamoDB connection configured',
+      message: 'DynamoDB reachable',
       endpoint: process.env.DYNAMODB_ENDPOINT || 'AWS',
       tables: {
         chatbot: process.env.AWS_DYNAMO_CHATBOT_TABLE,
         user: process.env.AWS_DYNAMO_USER_TABLE,
         customization: process.env.AWS_DYNAMO_CUSTOMIZATION_TABLE,
-      }
+      },
     });
   } catch (error) {
-    res.status(500).json({
+    res.status(503).json({
       status: 'error',
-      message: error instanceof Error ? error.message : 'Unknown error'
+      message: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 });
 
-// Test endpoint for S3 connection
+// Real S3 connectivity check — HeadBucket against the configured bucket.
 app.get('/health/s3', async (req, res) => {
   try {
+    const { bucket } = await checkS3Connectivity();
     res.json({
       status: 'ok',
-      message: 'S3 connection configured',
-      bucket: process.env.S3_BUCKET_NAME,
+      message: 'S3 reachable',
+      bucket,
       region: process.env.S3_REGION,
     });
   } catch (error) {
-    res.status(500).json({
+    res.status(503).json({
       status: 'error',
-      message: error instanceof Error ? error.message : 'Unknown error'
+      message: error instanceof Error ? error.message : 'Unknown error',
+      bucket: process.env.S3_BUCKET_NAME,
     });
   }
 });
@@ -284,19 +293,23 @@ app.post('/api/chatbots/:chatbotId/build', async (req, res) => {
 // Error handling middleware (must be last)
 app.use(errorHandler);
 
-// Ensure local DynamoDB tables exist before accepting requests
-ensureLocalTables()
-  .then(() => {
-    app.listen(port, () => {
-      console.log(`Backend server running on port ${port}`);
-      console.log(`DynamoDB configured: ${process.env.DYNAMODB_ENDPOINT || 'AWS'}`);
-    });
-  })
-  .catch((err) => {
-    console.error('Failed to ensure local tables:', err);
-    // Start anyway — Dynamoose tables will still work
-    app.listen(port, () => {
-      console.log(`Backend server running on port ${port}`);
-      console.log(`DynamoDB configured: ${process.env.DYNAMODB_ENDPOINT || 'AWS'}`);
-    });
+function startServer() {
+  app.listen(port, () => {
+    console.log(`Backend server running on port ${port}`);
+    console.log(`DynamoDB configured: ${process.env.DYNAMODB_ENDPOINT || 'AWS'}`);
   });
+}
+
+// Local DynamoDB (Docker) needs its tables auto-created on first run.
+// In staging/prod, tables are managed by Terraform — skip the helper entirely
+// so the production code path is obvious and never touches a real AWS account.
+if (process.env.DYNAMODB_ENDPOINT) {
+  ensureLocalTables()
+    .then(startServer)
+    .catch((err) => {
+      console.error('Failed to ensure local tables:', err);
+      startServer();
+    });
+} else {
+  startServer();
+}

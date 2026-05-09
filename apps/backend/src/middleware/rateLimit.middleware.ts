@@ -1,121 +1,102 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request } from 'express';
+import rateLimit, { Options as RateLimitOptions, Store } from 'express-rate-limit';
+import { RedisStore } from 'rate-limit-redis';
+import Redis from 'ioredis';
 
-interface RateLimitStore {
-  [key: string]: {
-    count: number;
-    resetTime: number;
-  };
-}
-
-const store: RateLimitStore = {};
+import type { AuthRequest } from './auth.middleware';
 
 /**
- * Rate limiting middleware
- * Limits requests per IP address within a time window
+ * Rate limiting middleware.
+ *
+ * Backed by a Redis store (Upstash, Railway Redis, etc.) when REDIS_URL is set —
+ * required for correctness across multiple Railway replicas.
+ * Falls back to express-rate-limit's default in-memory store for local dev when
+ * REDIS_URL is missing (single-process only).
+ *
+ * Set REDIS_URL to your provider's standard Redis protocol URL, e.g. for Upstash:
+ *   rediss://default:<TOKEN>@<region>.upstash.io:6379
+ *
+ * Keys requests by authenticated user email when present, else by client IP.
+ * Express must be configured with `app.set('trust proxy', 1)` so req.ip resolves
+ * to the original client behind Railway's proxy.
  */
-export function rateLimitMiddleware(options: {
-  windowMs: number;
-  max: number;
-  message?: string;
-  skipSuccessfulRequests?: boolean;
-}) {
-  const {
-    windowMs = 15 * 60 * 1000, // 15 minutes
-    max = 100, // Max requests per window
-    message = 'Too many requests, please try again later.',
-    skipSuccessfulRequests = false,
-  } = options;
 
-  return (req: Request, res: Response, next: NextFunction) => {
-    // Get client IP
-    const ip =
-      (req.headers['x-forwarded-for'] as string)?.split(',')[0] ||
-      req.ip ||
-      'unknown';
+const REDIS_URL = process.env.REDIS_URL;
 
-    const key = `${ip}:${req.path}`;
-    const now = Date.now();
+const redisClient = REDIS_URL
+  ? new Redis(REDIS_URL, {
+      maxRetriesPerRequest: 3,
+      enableReadyCheck: false,
+      lazyConnect: false,
+    })
+  : null;
 
-    // Initialize or reset if window expired
-    if (!store[key] || now > store[key].resetTime) {
-      store[key] = {
-        count: 0,
-        resetTime: now + windowMs,
-      };
-    }
-
-    // Increment request count
-    store[key].count++;
-
-    // Set rate limit headers
-    res.setHeader('X-RateLimit-Limit', max);
-    res.setHeader('X-RateLimit-Remaining', Math.max(0, max - store[key].count));
-    res.setHeader('X-RateLimit-Reset', new Date(store[key].resetTime).toISOString());
-
-    // Check if limit exceeded
-    if (store[key].count > max) {
-      return res.status(429).json({
-        error: 'Rate limit exceeded',
-        message,
-        retryAfter: Math.ceil((store[key].resetTime - now) / 1000),
-      });
-    }
-
-    // If skipSuccessfulRequests, decrement on successful response
-    if (skipSuccessfulRequests) {
-      const originalSend = res.send;
-      res.send = function (data: any) {
-        if (res.statusCode < 400) {
-          store[key].count--;
-        }
-        return originalSend.call(this, data);
-      };
-    }
-
-    next();
-  };
-}
-
-/**
- * Cleanup old entries from store periodically
- */
-setInterval(() => {
-  const now = Date.now();
-  Object.keys(store).forEach((key) => {
-    if (now > store[key].resetTime) {
-      delete store[key];
-    }
+if (redisClient) {
+  redisClient.on('error', (err) => {
+    console.error('[rate-limit] Redis error:', err.message);
   });
-}, 60 * 1000); // Clean up every minute
+  redisClient.on('connect', () => {
+    console.log('[rate-limit] Redis connected — distributed rate limits active');
+  });
+} else {
+  console.warn('[rate-limit] REDIS_URL not set — using in-memory store (single replica only)');
+}
+
+function buildStore(prefix: string): Store | undefined {
+  if (!redisClient) return undefined;
+  return new RedisStore({
+    prefix: `rl:${prefix}:`,
+    // ioredis' .call(command, ...args) speaks the raw RESP protocol that
+    // rate-limit-redis expects. The `any` cast is needed because ioredis'
+    // generic return type is wider than rate-limit-redis' RedisReply.
+    sendCommand: (command: string, ...args: string[]) =>
+      redisClient.call(command, ...args) as any,
+  });
+}
+
+function keyByUserOrIp(req: Request): string {
+  const user = (req as AuthRequest).user;
+  if (user?.email) return `u:${user.email}`;
+  return `ip:${req.ip ?? 'unknown'}`;
+}
+
+function makeLimiter(prefix: string, opts: { windowMs: number; max: number; message?: string } & Partial<RateLimitOptions>) {
+  return rateLimit({
+    windowMs: opts.windowMs,
+    limit: opts.max,
+    standardHeaders: 'draft-7',
+    legacyHeaders: false,
+    message: { error: 'Rate limit exceeded', message: opts.message ?? 'Too many requests, please try again later.' },
+    keyGenerator: keyByUserOrIp,
+    store: buildStore(prefix),
+  });
+}
 
 /**
- * Preset rate limit configurations
+ * Preset rate limit configurations.
+ * Limits are conservative defaults suitable for staging; tune via env if needed.
  */
 export const rateLimits = {
-  // Strict limit for authentication endpoints
-  auth: rateLimitMiddleware({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 5, // 5 requests
+  auth: makeLimiter('auth', {
+    windowMs: 15 * 60 * 1000,
+    max: 5,
     message: 'Too many authentication attempts, please try again later.',
   }),
 
-  // Standard limit for API endpoints
-  api: rateLimitMiddleware({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // 100 requests
+  api: makeLimiter('api', {
+    windowMs: 15 * 60 * 1000,
+    max: 100,
   }),
 
-  // Generous limit for chat endpoints
-  chat: rateLimitMiddleware({
-    windowMs: 1 * 60 * 1000, // 1 minute
-    max: 20, // 20 messages per minute
+  chat: makeLimiter('chat', {
+    windowMs: 60 * 1000,
+    max: 20,
     message: 'Slow down! Too many messages.',
   }),
 
-  // Very strict for password reset
-  passwordReset: rateLimitMiddleware({
-    windowMs: 60 * 60 * 1000, // 1 hour
-    max: 3, // 3 requests
+  passwordReset: makeLimiter('pwreset', {
+    windowMs: 60 * 60 * 1000,
+    max: 3,
     message: 'Too many password reset attempts. Please try again later.',
   }),
 };

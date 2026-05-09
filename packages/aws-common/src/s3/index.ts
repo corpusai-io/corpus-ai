@@ -1,4 +1,4 @@
-import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand, HeadObjectCommand, ListObjectsV2Command } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand, HeadObjectCommand, GetBucketLocationCommand, ListObjectsV2Command } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { env } from '../utils/env';
 
@@ -224,6 +224,17 @@ export async function listFilesInS3(prefix: string): Promise<Array<{ key: string
   } while (continuationToken);
 
   return files;
+}
+
+/**
+ * Health-check helper — verifies that the configured bucket is reachable.
+ * Uses GetBucketLocation (mapped to s3:GetBucketLocation IAM action) which
+ * the runtime IAM user already has, so this works without elevating
+ * permissions. Throws on failure.
+ */
+export async function checkS3Connectivity(): Promise<{ bucket: string }> {
+  await s3Client.send(new GetBucketLocationCommand({ Bucket: bucketName }));
+  return { bucket: bucketName };
 }
 
 export { s3Client, bucketName };

@@ -10,11 +10,14 @@ import {
   sendSubscriptionCancelledEmail,
 } from '../services/email.service';
 
-// Initialize Stripe (only if API key is provided)
+// Initialize Stripe (only if API key is provided).
+// Cast apiVersion to bypass type narrowing — pinning the wire version while
+// the SDK's TS types target a newer release is a deliberate choice; the API
+// itself is stable across these versions for the endpoints we use.
 const STRIPE_ENABLED = !!process.env.STRIPE_SECRET_KEY;
 const stripe = STRIPE_ENABLED
   ? new Stripe(process.env.STRIPE_SECRET_KEY!, {
-      apiVersion: '2024-12-18.acacia',
+      apiVersion: '2024-12-18.acacia' as Stripe.LatestApiVersion,
     })
   : null;
 
@@ -100,7 +103,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   const username = client_reference_id;
 
   // Get subscription details
-  const sub = await stripe.subscriptions.retrieve(subscription as string);
+  const sub = await stripe!.subscriptions.retrieve(subscription as string);
   const priceId = sub.items.data[0]?.price.id;
 
   if (!priceId) {
@@ -131,14 +134,17 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
 async function handlePaymentSucceeded(invoice: Stripe.Invoice) {
   console.log('Payment succeeded:', invoice.id);
 
-  const { customer, subscription } = invoice;
+  // `subscription` was moved off Invoice in newer Stripe SDK types but is still
+  // present on the wire payload — read it through an any-cast.
+  const { customer } = invoice;
+  const subscription = (invoice as any).subscription as string | null | undefined;
 
   if (!subscription) {
     return;
   }
 
   // Get subscription
-  const sub = await stripe.subscriptions.retrieve(subscription as string);
+  const sub = await stripe!.subscriptions.retrieve(subscription as string);
   const priceId = sub.items.data[0]?.price.id;
 
   if (!priceId) {
@@ -470,7 +476,7 @@ export async function getSubscriptionDetails(req: AuthRequest, res: Response) {
       subscription: {
         id: sub.id,
         status: sub.status,
-        currentPeriodEnd: sub.current_period_end,
+        currentPeriodEnd: (sub as any).current_period_end,
         cancelAtPeriodEnd: sub.cancel_at_period_end,
         plan: plan ? {
           id: plan.id,
@@ -526,14 +532,14 @@ export async function cancelSubscription(req: AuthRequest, res: Response) {
     const sub = subscriptions.data[0];
 
     // Cancel at period end
-    await stripe.subscriptions.update(sub.id, {
+    await stripe!.subscriptions.update(sub.id, {
       cancel_at_period_end: true,
     });
 
     res.json({
       success: true,
       message: 'Subscription will be cancelled at period end',
-      cancelAt: sub.current_period_end,
+      cancelAt: (sub as any).current_period_end,
     });
   } catch (error) {
     console.error('Error cancelling subscription:', error);

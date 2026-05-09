@@ -43,6 +43,9 @@ locals {
     AWS_DYNAMO_API_KEYS_TABLE             = aws_dynamodb_table.api_keys.name
     AWS_DYNAMO_DATABASE_CONNECTIONS_TABLE = aws_dynamodb_table.database_connections.name
     AWS_DYNAMO_CHAT_HISTORY_TABLE         = aws_dynamodb_table.chat_history.name
+    AWS_DYNAMO_AI_ACTIONS_TABLE           = aws_dynamodb_table.ai_actions.name
+    AWS_DYNAMO_BUILTIN_INTEGRATIONS_TABLE = aws_dynamodb_table.builtin_integrations.name
+    AWS_DYNAMO_RESPONSE_CACHE_TABLE       = aws_dynamodb_table.response_cache.name
 
     # Security
     DATABASE_ENCRYPTION_KEY = var.database_encryption_key

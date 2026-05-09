@@ -143,12 +143,7 @@ export async function disconnectSlack(req: AuthRequest, res: Response) {
       return res.status(404).json({ error: 'Slack integration not found' });
     }
 
-    await slackIntegration
-      .delete({
-        chatbotId,
-        workspaceId: existing.data[0].workspaceId,
-      })
-      .go();
+    await slackIntegration.delete({ chatbotId }).go();
 
     res.json({
       success: true,
@@ -369,12 +364,7 @@ export async function disconnectGoogleDrive(req: AuthRequest, res: Response) {
       return res.status(404).json({ error: 'Google Drive integration not found' });
     }
 
-    await googleDriveIntegration
-      .delete({
-        chatbotId,
-        googleProfileId: existing.data[0].googleProfileId,
-      })
-      .go();
+    await googleDriveIntegration.delete({ chatbotId }).go();
 
     res.json({
       success: true,
@@ -450,12 +440,7 @@ export async function disconnectTelegram(req: AuthRequest, res: Response) {
       return res.status(404).json({ error: 'Telegram integration not found' });
     }
 
-    await telegramIntegration
-      .delete({
-        chatbotId,
-        botId: existing.data[0].botId,
-      })
-      .go();
+    await telegramIntegration.delete({ chatbotId }).go();
 
     res.json({
       success: true,

@@ -1,0 +1,133 @@
+{
+    "Statement": [
+        {
+            "Action": [
+                "dynamodb:UpdateItem",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:PutItem",
+                "dynamodb:GetItem",
+                "dynamodb:DescribeTable",
+                "dynamodb:DeleteItem",
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:BatchGetItem"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:dynamodb:eu-north-1:934565990520:table/corpus-users-staging/index/*",
+                "arn:aws:dynamodb:eu-north-1:934565990520:table/corpus-users-staging",
+                "arn:aws:dynamodb:eu-north-1:934565990520:table/corpus-query-log-staging/index/*",
+                "arn:aws:dynamodb:eu-north-1:934565990520:table/corpus-query-log-staging",
+                "arn:aws:dynamodb:eu-north-1:934565990520:table/corpus-main-staging/index/*",
+                "arn:aws:dynamodb:eu-north-1:934565990520:table/corpus-main-staging",
+                "arn:aws:dynamodb:eu-north-1:934565990520:table/corpus-lead-generation-staging/index/*",
+                "arn:aws:dynamodb:eu-north-1:934565990520:table/corpus-lead-generation-staging",
+                "arn:aws:dynamodb:eu-north-1:934565990520:table/corpus-integrations-staging/index/*",
+                "arn:aws:dynamodb:eu-north-1:934565990520:table/corpus-integrations-staging",
+                "arn:aws:dynamodb:eu-north-1:934565990520:table/corpus-database-connections-staging/index/*",
+                "arn:aws:dynamodb:eu-north-1:934565990520:table/corpus-database-connections-staging",
+                "arn:aws:dynamodb:eu-north-1:934565990520:table/corpus-customization-staging/index/*",
+                "arn:aws:dynamodb:eu-north-1:934565990520:table/corpus-customization-staging",
+                "arn:aws:dynamodb:eu-north-1:934565990520:table/corpus-chatbots-staging/index/*",
+                "arn:aws:dynamodb:eu-north-1:934565990520:table/corpus-chatbots-staging",
+                "arn:aws:dynamodb:eu-north-1:934565990520:table/corpus-chat-history-staging/index/*",
+                "arn:aws:dynamodb:eu-north-1:934565990520:table/corpus-chat-history-staging",
+                "arn:aws:dynamodb:eu-north-1:934565990520:table/corpus-api-keys-staging/index/*",
+                "arn:aws:dynamodb:eu-north-1:934565990520:table/corpus-api-keys-staging",
+                "arn:aws:dynamodb:eu-north-1:934565990520:table/corpus-access-control-staging/index/*",
+                "arn:aws:dynamodb:eu-north-1:934565990520:table/corpus-access-control-staging"
+            ],
+            "Sid": "DynamoDBAccess"
+        },
+        {
+            "Action": [
+                "s3:ListBucket",
+                "s3:GetBucketLocation"
+            ],
+            "Effect": "Allow",
+            "Resource": "arn:aws:s3:::corpus-ai-files-staging",
+            "Sid": "S3BucketAccess"
+        },
+        {
+            "Action": [
+                "s3:PutObject",
+                "s3:GetObjectAttributes",
+                "s3:GetObject",
+                "s3:DeleteObject"
+            ],
+            "Effect": "Allow",
+            "Resource": "arn:aws:s3:::corpus-ai-files-staging/*",
+            "Sid": "S3ObjectAccess"
+        },
+        {
+            "Action": [
+                "sqs:SendMessage",
+                "sqs:ReceiveMessage",
+                "sqs:GetQueueUrl",
+                "sqs:GetQueueAttributes",
+                "sqs:DeleteMessage",
+                "sqs:ChangeMessageVisibility"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:sqs:eu-north-1:934565990520:corpus-ai-queue-staging-dlq",
+                "arn:aws:sqs:eu-north-1:934565990520:corpus-ai-queue-staging"
+            ],
+            "Sid": "SQSAccess"
+        },
+        {
+            "Action": [
+                "cognito-idp:SignUp",
+                "cognito-idp:RespondToAuthChallenge",
+                "cognito-idp:ResendConfirmationCode",
+                "cognito-idp:ListUsers",
+                "cognito-idp:InitiateAuth",
+                "cognito-idp:GetUser",
+                "cognito-idp:ForgotPassword",
+                "cognito-idp:ConfirmSignUp",
+                "cognito-idp:ConfirmForgotPassword",
+                "cognito-idp:AdminUpdateUserAttributes",
+                "cognito-idp:AdminSetUserPassword",
+                "cognito-idp:AdminRespondToAuthChallenge",
+                "cognito-idp:AdminInitiateAuth",
+                "cognito-idp:AdminGetUser",
+                "cognito-idp:AdminDeleteUser",
+                "cognito-idp:AdminCreateUser",
+                "cognito-idp:AdminConfirmSignUp"
+            ],
+            "Effect": "Allow",
+            "Resource": "arn:aws:cognito-idp:eu-north-1:934565990520:userpool/eu-north-1_oh0D52g1o",
+            "Sid": "CognitoAccess"
+        },
+        {
+            "Action": [
+                "secretsmanager:GetSecretValue",
+                "secretsmanager:DescribeSecret"
+            ],
+            "Effect": "Allow",
+            "Resource": "arn:aws:secretsmanager:eu-north-1:934565990520:secret:corpus-ai/staging-5CbhFX",
+            "Sid": "SecretsManagerRead"
+        },
+        {
+            "Action": [
+                "ses:SendRawEmail",
+                "ses:SendEmail"
+            ],
+            "Effect": "Allow",
+            "Resource": "arn:aws:ses:eu-north-1:934565990520:identity/corpusai.io",
+            "Sid": "SESSend"
+        },
+        {
+            "Action": [
+                "logs:PutLogEvents",
+                "logs:CreateLogStream",
+                "logs:CreateLogGroup"
+            ],
+            "Effect": "Allow",
+            "Resource": "arn:aws:logs:eu-north-1:934565990520:*",
+            "Sid": "CloudWatchLogs"
+        }
+    ],
+    "Version": "2012-10-17"
+}

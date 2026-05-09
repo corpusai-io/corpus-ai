@@ -27,6 +27,9 @@ locals {
     aws_dynamodb_table.api_keys.arn,
     aws_dynamodb_table.database_connections.arn,
     aws_dynamodb_table.chat_history.arn,
+    aws_dynamodb_table.ai_actions.arn,
+    aws_dynamodb_table.builtin_integrations.arn,
+    aws_dynamodb_table.response_cache.arn,
   ]
 
   # Include GSI ARNs (DynamoDB requires explicit permissions on indexes)
