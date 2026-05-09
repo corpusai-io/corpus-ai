@@ -25,16 +25,19 @@ RUN NODE_OPTIONS="--max_old_space_size=4096" pnpm turbo run build --filter=backe
 FROM base AS runner
 WORKDIR /app
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nodeuser
-
-# 🔧 Fix: Create .local and give access
-RUN mkdir -p /app/.local/share/pnpm/.tools && \
-    chown -R 1001:1001 /app/.local
+# Create the runtime user with a real home directory at /home/nodeuser so
+# any tool that touches $HOME (pnpm, npm, AWS SDK config) has somewhere to write.
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 --home /home/nodeuser --shell /bin/sh nodeuser
 
 COPY --from=builder /app .
+RUN chown -R nodeuser:nodejs /app /home/nodeuser
 
 USER nodeuser
+ENV HOME=/home/nodeuser
+ENV NODE_ENV=production
 
 EXPOSE 8001
-CMD ["pnpm", "turbo", "run", "start", "--filter=backend"]
+# Run the compiled entry directly — no pnpm/turbo at runtime, so we don't
+# need a writable .local/share/pnpm cache for tooling.
+CMD ["node", "apps/backend/dist/bootstrap.js"]
