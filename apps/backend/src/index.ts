@@ -84,6 +84,20 @@ app.get('/api/widget.js', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'widget.js'));
 });
 
+// Request logger — every request shows method, path, status, duration, and user
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on('finish', () => {
+    const ms = Date.now() - start;
+    const user = (req as any).user?.email || 'anon';
+    const authHint = req.headers.authorization ? `token:${req.headers.authorization.substring(7, 17)}…` : 'no-token';
+    if (req.method !== 'OPTIONS') {
+      console.log(`[req] ${req.method} ${req.path} → ${res.statusCode} ${ms}ms [${user}] [${authHint}]`);
+    }
+  });
+  next();
+});
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/chatbots', chatbotRoutes);
@@ -297,6 +311,12 @@ function startServer() {
   app.listen(port, () => {
     console.log(`Backend server running on port ${port}`);
     console.log(`DynamoDB configured: ${process.env.DYNAMODB_ENDPOINT || 'AWS'}`);
+    console.log(`[config] DASHBOARD_URL: ${process.env.DASHBOARD_URL || '(default localhost)'}`);
+    console.log(`[config] WEBSITE_URL: ${process.env.WEBSITE_URL || '(default localhost)'}`);
+    console.log(`[config] GOOGLE_SSO_CALLBACK_URL: ${process.env.GOOGLE_SSO_CALLBACK_URL || '(default localhost)'}`);
+    console.log(`[config] COGNITO_DOMAIN: ${process.env.AWS_COGNITO_DOMAIN || '(not set)'}`);
+    console.log(`[config] COGNITO_CLIENT_ID prefix: ${(process.env.AWS_COGNITO_CLIENT_ID || 'NOT_SET').substring(0, 8)}...`);
+    console.log(`[config] ALLOWED_ORIGINS: ${process.env.ALLOWED_ORIGINS || '(default localhost)'}`);
   });
 }
 

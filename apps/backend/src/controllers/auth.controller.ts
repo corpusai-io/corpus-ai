@@ -774,6 +774,7 @@ export async function googleSSOCallback(req: Request, res: Response) {
 
     const tokenData = await tokenResponse.json();
     const { id_token, access_token, refresh_token } = tokenData;
+    console.log(`[sso] Token exchange OK — access_token prefix: ${access_token?.substring(0, 20)}... | is_jwt: ${access_token?.startsWith('eyJ')}`);
 
     // Decode the id_token JWT to extract user info (no verification needed —
     // we just received it directly from Cognito's token endpoint over HTTPS)
@@ -839,6 +840,7 @@ export async function googleSSOCallback(req: Request, res: Response) {
 
     // Redirect to dashboard with tokens in URL hash (same mechanism as regular login)
     const dashboardUrl = `${DASHBOARD_URL}/#auth=${encodeURIComponent(JSON.stringify(tokens))}`;
+    console.log(`[sso] ✅ Login complete — user: ${email} | redirecting to: ${DASHBOARD_URL}/#auth=...`);
     res.redirect(dashboardUrl);
   } catch (error: any) {
     console.error('Error in Google SSO callback:', error);

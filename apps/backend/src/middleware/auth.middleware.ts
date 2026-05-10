@@ -6,8 +6,11 @@ import {
 } from '@aws-sdk/client-cognito-identity-provider';
 import { UserModel, ApiKeyModel } from '@corpusai/aws-common';
 
+const COGNITO_REGION = process.env.AWS_COGNITO_REGION || 'eu-north-1';
+console.log(`[auth] Cognito client init — region: ${COGNITO_REGION} | client_id prefix: ${(process.env.AWS_COGNITO_CLIENT_ID || 'NOT_SET').substring(0, 8)}...`);
+
 const cognitoClient = new CognitoIdentityProviderClient({
-  region: process.env.AWS_COGNITO_REGION || 'eu-north-1',
+  region: COGNITO_REGION,
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
@@ -44,6 +47,8 @@ export async function authenticateToken(req: AuthRequest, res: Response, next: N
     }
 
     const accessToken = authHeader.substring(7); // Remove 'Bearer ' prefix
+    const tokenPrefix = accessToken.substring(0, 20);
+    console.log(`[auth] Validating token — path: ${req.method} ${req.path} | prefix: ${tokenPrefix}...`);
 
     try {
       // Verify token with AWS Cognito
@@ -61,6 +66,8 @@ export async function authenticateToken(req: AuthRequest, res: Response, next: N
       const users = await UserModel.query('username').eq(email).exec();
       const tier = users && users.length > 0 ? users[0].tier : 0;
 
+      console.log(`[auth] ✅ Token valid — user: ${email} | tier: ${tier}`);
+
       // Attach user info to request
       req.user = {
         username: cognitoUser.Username!,
@@ -75,6 +82,7 @@ export async function authenticateToken(req: AuthRequest, res: Response, next: N
         error.__type === 'NotAuthorizedException' ||
         error.message === 'NotAuthorizedException';
       if (isNotAuthorized) {
+        console.error(`[auth] ❌ Cognito rejected token — error.name: "${error.name}" | __type: "${error.__type}" | message: "${error.message}" | token-prefix: ${tokenPrefix}`);
         return res.status(401).json({
           error: 'Token expired or invalid',
           message: 'Your session has expired. Please login again.'
