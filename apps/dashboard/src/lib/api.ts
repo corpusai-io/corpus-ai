@@ -150,7 +150,9 @@ export const authApi = {
    */
   async verifyToken(token: string): Promise<boolean> {
     try {
-      const response = await fetch(`${API_URL}/api/auth/verify?token=${encodeURIComponent(token)}`);
+      const response = await fetch(`${API_URL}/api/auth/verify`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const data = await response.json();
       return data.valid === true;
     } catch (error) {

@@ -21,7 +21,7 @@ const cognitoClient = new CognitoIdentityProviderClient({
 // Decode a JWT payload without signature verification.
 // Used only to inspect the `scope` claim so we can choose the right
 // Cognito validation path — not for security decisions.
-function decodeJwtPayload(token: string): Record<string, any> | null {
+export function decodeJwtPayload(token: string): Record<string, any> | null {
   try {
     return JSON.parse(Buffer.from(token.split('.')[1], 'base64url').toString('utf-8'));
   } catch {
@@ -34,7 +34,7 @@ function decodeJwtPayload(token: string): Record<string, any> | null {
 // must be validated via /oauth2/userInfo — Cognito's GetUserCommand rejects
 // them.  Direct-auth tokens (InitiateAuth / SRP) use the admin.signin scope
 // and work with GetUserCommand.
-function isHostedUiToken(token: string): boolean {
+export function isHostedUiToken(token: string): boolean {
   const claims = decodeJwtPayload(token);
   return typeof claims?.scope === 'string' && claims.scope.includes('openid');
 }
@@ -43,7 +43,7 @@ function isHostedUiToken(token: string): boolean {
 // SSO (Google) tokens from the Hosted UI code-exchange flow are OAuth2
 // access tokens — Cognito's GetUserCommand rejects them; the userInfo
 // endpoint is the correct validation path for these tokens.
-async function validateViaUserInfo(accessToken: string): Promise<{ email: string; sub: string } | null> {
+export async function validateViaUserInfo(accessToken: string): Promise<{ email: string; sub: string } | null> {
   if (!COGNITO_DOMAIN) return null;
   try {
     const resp = await fetch(`https://${COGNITO_DOMAIN}/oauth2/userInfo`, {
@@ -148,42 +148,40 @@ export async function optionalAuth(req: AuthRequest, res: Response, next: NextFu
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      // No token provided, continue without user info
       return next();
     }
 
     const accessToken = authHeader.substring(7);
 
     try {
-      // Verify token with AWS Cognito
-      const getUserCommand = new GetUserCommand({
-        AccessToken: accessToken,
-      });
+      let email: string;
+      let username: string;
 
-      const cognitoUser = await cognitoClient.send(getUserCommand);
+      if (isHostedUiToken(accessToken)) {
+        const userInfo = await validateViaUserInfo(accessToken);
+        if (!userInfo) {
+          return next(); // invalid SSO token, proceed without user context
+        }
+        email = userInfo.email;
+        username = userInfo.sub || email;
+      } else {
+        const cognitoUser = await cognitoClient.send(new GetUserCommand({ AccessToken: accessToken }));
+        const emailAttr = cognitoUser.UserAttributes?.find(attr => attr.Name === 'email');
+        email = emailAttr?.Value || cognitoUser.Username || '';
+        username = cognitoUser.Username!;
+      }
 
-      // Extract email from user attributes
-      const emailAttr = cognitoUser.UserAttributes?.find(attr => attr.Name === 'email');
-      const email = emailAttr?.Value || cognitoUser.Username || '';
-
-      // Get user tier from DynamoDB
       const users = await UserModel.query('username').eq(email).exec();
       const tier = users && users.length > 0 ? users[0].tier : 0;
-
-      req.user = {
-        username: cognitoUser.Username!,
-        email,
-        tier,
-      };
+      req.user = { username, email, tier };
     } catch (error) {
-      // Invalid token, but don't fail the request
-      console.warn('Optional auth: Invalid token provided');
+      console.warn('[auth] Optional auth: invalid token, continuing without user context');
     }
 
     next();
   } catch (error) {
     console.error('Error in optional auth:', error);
-    next(); // Continue without auth on error
+    next();
   }
 }
 

@@ -38,8 +38,8 @@ router.get('/me', authenticateToken, getCurrentUser);
 // Verify JWT token
 router.get('/verify', verifyToken);
 
-// Admin: Confirm user email (for development)
-router.post('/confirm', sanitizeBody, confirmUser);
+// Admin: Confirm user email — requires ADMIN_CONFIRM_SECRET env var + x-admin-secret header
+router.post('/confirm', rateLimits.auth, sanitizeBody, confirmUser);
 
 // User: Confirm signup with verification code
 router.post('/confirm-signup', sanitizeBody, confirmSignUp);

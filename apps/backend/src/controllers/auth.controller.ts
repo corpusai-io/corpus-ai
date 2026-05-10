@@ -13,6 +13,7 @@ import {
 } from '@aws-sdk/client-cognito-identity-provider';
 import { UserModel } from '@corpusai/aws-common';
 import { sendWelcomeEmail } from '../services/email.service';
+import { isHostedUiToken, validateViaUserInfo } from '../middleware/auth.middleware';
 
 const cognitoClient = new CognitoIdentityProviderClient({
   region: process.env.AWS_COGNITO_REGION || 'eu-north-1',
@@ -44,12 +45,9 @@ interface AuthRequest extends Request {
  * POST /api/auth/register
  */
 export async function register(req: Request, res: Response) {
-  console.log('\n🔍 [AUTH] Register endpoint called');
-  console.log('Request body:', JSON.stringify(req.body, null, 2));
-
   try {
     const { email, password, name } = req.body;
-    console.log(`Registering user: ${email}`);
+    console.log(`\n🔍 [AUTH] Register request: ${email}`);
 
     // Validate required fields
     if (!email || !password) {
@@ -320,26 +318,20 @@ export async function logout(req: Request, res: Response) {
     if (authHeader && authHeader.startsWith('Bearer ')) {
       const accessToken = authHeader.substring(7);
 
-      // Global sign out from Cognito
-      const signOutCommand = new GlobalSignOutCommand({
-        AccessToken: accessToken,
-      });
-
-      await cognitoClient.send(signOutCommand);
+      // Hosted UI (SSO) tokens cannot be globally signed out via GetUser-based API —
+      // Cognito rejects them with NotAuthorizedException. The client clears localStorage
+      // so the session is effectively ended on the dashboard side.
+      if (!isHostedUiToken(accessToken)) {
+        const signOutCommand = new GlobalSignOutCommand({ AccessToken: accessToken });
+        await cognitoClient.send(signOutCommand);
+      }
     }
 
-    res.json({
-      success: true,
-      message: 'Logout successful'
-    });
+    res.json({ success: true, message: 'Logout successful' });
   } catch (error) {
     console.error('Error logging out:', error);
-    // Even if Cognito logout fails, we return success
-    // Client should remove tokens
-    res.json({
-      success: true,
-      message: 'Logout successful. Please remove tokens from client.'
-    });
+    // Return success regardless — client removes tokens
+    res.json({ success: true, message: 'Logout successful. Please remove tokens from client.' });
   }
 }
 
@@ -352,59 +344,58 @@ export async function verifyToken(req: Request, res: Response) {
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({
-        valid: false,
-        error: 'No token provided'
-      });
+      return res.status(401).json({ valid: false, error: 'No token provided' });
     }
 
     const accessToken = authHeader.substring(7);
 
-    // Verify token by getting user from Cognito
-    const getUserCommand = new GetUserCommand({
-      AccessToken: accessToken,
-    });
+    let email: string | undefined;
+    let username: string | undefined;
 
-    const cognitoUser = await cognitoClient.send(getUserCommand);
+    if (isHostedUiToken(accessToken)) {
+      const userInfo = await validateViaUserInfo(accessToken);
+      if (!userInfo) {
+        return res.status(401).json({ valid: false, error: 'Invalid or expired token' });
+      }
+      email = userInfo.email;
+      username = userInfo.sub || email;
+    } else {
+      const cognitoUser = await cognitoClient.send(new GetUserCommand({ AccessToken: accessToken }));
+      const emailAttr = cognitoUser.UserAttributes?.find(attr => attr.Name === 'email');
+      email = emailAttr?.Value || cognitoUser.Username;
+      username = cognitoUser.Username;
+    }
 
-    // Extract email from user attributes
-    const emailAttr = cognitoUser.UserAttributes?.find(attr => attr.Name === 'email');
-    const email = emailAttr?.Value || cognitoUser.Username;
-
-    // Get tier from DynamoDB
     const users = await UserModel.query('username').eq(email).exec();
     const tier = users && users.length > 0 ? users[0].tier : 0;
 
-    res.json({
-      valid: true,
-      user: {
-        username: cognitoUser.Username,
-        email,
-        tier,
-      },
-    });
+    res.json({ valid: true, user: { username, email, tier } });
   } catch (error: any) {
     console.error('Error verifying token:', error);
 
-    if (error.name === 'NotAuthorizedException') {
-      return res.status(401).json({
-        valid: false,
-        error: 'Invalid or expired token'
-      });
+    if (
+      error.name === 'NotAuthorizedException' ||
+      error.__type === 'NotAuthorizedException'
+    ) {
+      return res.status(401).json({ valid: false, error: 'Invalid or expired token' });
     }
 
-    res.status(401).json({
-      valid: false,
-      error: 'Failed to verify token'
-    });
+    res.status(401).json({ valid: false, error: 'Failed to verify token' });
   }
 }
 
 /**
- * Admin: Confirm user email (for development)
+ * Admin: Confirm user email — bypasses Cognito email verification.
+ * Requires ADMIN_CONFIRM_SECRET env var and matching x-admin-secret header.
+ * Never set ADMIN_CONFIRM_SECRET in staging/production.
  * POST /api/auth/confirm
  */
 export async function confirmUser(req: Request, res: Response) {
+  const adminSecret = process.env.ADMIN_CONFIRM_SECRET;
+  if (!adminSecret || req.headers['x-admin-secret'] !== adminSecret) {
+    return res.status(404).json({ error: 'Not found' });
+  }
+
   try {
     const { email } = req.body;
 
