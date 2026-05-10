@@ -163,7 +163,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const response = await authApi.login(email, password);
       setUser(response.user);
-      router.push('/dashboard');
+      router.push('/');
     } catch (error) {
       throw error;
     }

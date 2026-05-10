@@ -838,7 +838,7 @@ export async function googleSSOCallback(req: Request, res: Response) {
     };
 
     // Redirect to dashboard with tokens in URL hash (same mechanism as regular login)
-    const dashboardUrl = `${DASHBOARD_URL}/dashboard#auth=${encodeURIComponent(JSON.stringify(tokens))}`;
+    const dashboardUrl = `${DASHBOARD_URL}/#auth=${encodeURIComponent(JSON.stringify(tokens))}`;
     res.redirect(dashboardUrl);
   } catch (error: any) {
     console.error('Error in Google SSO callback:', error);

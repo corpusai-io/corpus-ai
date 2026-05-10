@@ -70,7 +70,11 @@ export async function authenticateToken(req: AuthRequest, res: Response, next: N
 
       next();
     } catch (error: any) {
-      if (error.name === 'NotAuthorizedException') {
+      const isNotAuthorized =
+        error.name === 'NotAuthorizedException' ||
+        error.__type === 'NotAuthorizedException' ||
+        error.message === 'NotAuthorizedException';
+      if (isNotAuthorized) {
         return res.status(401).json({
           error: 'Token expired or invalid',
           message: 'Your session has expired. Please login again.'
@@ -310,10 +314,11 @@ export async function authenticateChat(req: AuthRequest, res: Response, next: Ne
 
     return next();
   } catch (error: any) {
+    const code = error.name || error.__type || error.message || '';
     if (
-      error.name === 'NotAuthorizedException' ||
-      error.name === 'InvalidParameterException' ||
-      error.name === 'UserNotFoundException'
+      code === 'NotAuthorizedException' ||
+      code === 'InvalidParameterException' ||
+      code === 'UserNotFoundException'
     ) {
       return res.status(401).json({
         error: 'Invalid or expired token',
