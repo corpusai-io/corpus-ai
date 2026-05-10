@@ -352,9 +352,9 @@ export default function ChatPage() {
       const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
       const userStr = typeof window !== 'undefined' ? localStorage.getItem('user') : null;
       const user = userStr ? JSON.parse(userStr) : null;
-      const CHAT_SERVICE_URL = process.env.NEXT_PUBLIC_CHAT_SERVICE_URL || 'http://localhost:8001/api';
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001';
 
-      const response = await fetch(`${CHAT_SERVICE_URL}/chat`, {
+      const response = await fetch(`${API_URL}/api/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
