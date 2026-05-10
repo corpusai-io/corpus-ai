@@ -383,7 +383,10 @@ export default function DeployPage() {
             </button>
             <button
               onClick={() =>
-                window.open(`/dashboard/widget/${chatbotId}`, '_blank')
+                window.open(
+                  `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/widget/${chatbotId}`,
+                  '_blank'
+                )
               }
               className="flex items-center gap-2 rounded-lg border border-slate-200 dark:border-white/[0.10] px-4 py-2 text-sm font-medium text-slate-500 dark:text-[#A1A1AA] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-white/[0.16] transition-colors"
             >
