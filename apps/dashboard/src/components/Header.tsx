@@ -110,15 +110,15 @@ export default function Header({ onMenuClick }: HeaderProps) {
         )}
 
         {/* Docs — always visible */}
-        <Link
-          href="/docs"
+        <a
+          href={process.env.NEXT_PUBLIC_DOCS_URL || 'http://localhost:3001'}
           target="_blank"
           rel="noopener noreferrer"
           className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-500 dark:text-[#68686E] border border-slate-200 dark:border-[#26262B] hover:bg-slate-50 dark:hover:bg-[#1C1C20] hover:text-slate-700 dark:hover:text-[#C0C0CC] hover:border-slate-300 dark:hover:border-[#32323A] transition-all duration-150"
         >
           <FileText className="h-3.5 w-3.5" />
           Docs
-        </Link>
+        </a>
 
         {/* Theme toggle */}
         <button

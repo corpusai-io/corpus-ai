@@ -290,11 +290,24 @@ export async function deleteVectors(indexName: string, ids: string[], namespace?
 export async function deleteChatbotVectors(indexName: string, chatbotId: string) {
   const index = await getValidatedIndex(indexName);
   const ns = index.namespace(chatbotId);
-  await withRetry(
-    () => ns.deleteAll(),
-    `deleteChatbotVectors ${chatbotId}`
-  );
-  console.log(`Deleted all vectors for chatbot ${chatbotId} from namespace`);
+  try {
+    await withRetry(
+      () => ns.deleteAll(),
+      `deleteChatbotVectors ${chatbotId}`
+    );
+    console.log(`Deleted all vectors for chatbot ${chatbotId} from namespace`);
+  } catch (err: any) {
+    // 404 = namespace never existed (chatbot was created but never indexed) — nothing to delete
+    if (
+      err?.name === 'PineconeNotFoundError' ||
+      err?.status === 404 ||
+      err?.message?.includes('404')
+    ) {
+      console.log(`[Pinecone] Namespace ${chatbotId} not found — skipping (never indexed)`);
+      return;
+    }
+    throw err;
+  }
 }
 
 /**

@@ -381,7 +381,7 @@ export default function DashboardPage() {
               {/* Secondary links */}
               <div className="space-y-1 flex-1">
                 {[
-                  { icon: BookOpen,   label: 'Documentation', sub: 'Guides & API reference', href: '/docs' },
+                  { icon: BookOpen,   label: 'Documentation', sub: 'Guides & API reference', href: process.env.NEXT_PUBLIC_DOCS_URL || 'http://localhost:3001' },
                   { icon: CreditCard, label: 'Billing',       sub: 'Usage & subscription',   href: '/settings/billing' },
                 ].map(({ icon: Icon, label, sub, href }) => (
                   <Link
