@@ -4,16 +4,21 @@ import type { NextConfig } from "next";
 const shouldUseStandalone = () => {
   if (process.platform === 'win32') return false;
   if (process.env.DISABLE_STANDALONE === 'true') return false;
+  if (process.env.VERCEL) return false;
   if (process.env.NODE_ENV === 'production') return true;
   return false;
 };
 
+// On Vercel each app has its own subdomain so basePath is empty (default).
+// The docker/nginx setup routes by path prefix, so it sets NEXT_PUBLIC_BASE_PATH=/docs.
+const rawBasePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+const basePath = rawBasePath === '' ? undefined : rawBasePath;
+
 const nextConfig: NextConfig = {
-  // FORCE basePath for proxy routing
-  basePath: '/docs',
-  assetPrefix: '/docs', 
+  basePath,
+  assetPrefix: basePath,
   trailingSlash: true,
-  
+
   output: shouldUseStandalone() ? 'standalone' : undefined,
   eslint: {
     ignoreDuringBuilds: true,
