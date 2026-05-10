@@ -480,7 +480,7 @@ function WizardPanel({
       }
       if (def.connectType === 'oauth') return false;
       // For api_key: either test passed, or they're re-configuring an already connected integration
-      return testResult?.ok === true || (isConnected && def.credentialFields.every((f) => !credentials[f.key]?.trim()));
+      return testResult?.ok === true || (!!isConnected && def.credentialFields.every((f) => !credentials[f.key]?.trim()));
     }
     if (step === 'operations') {
       return operations.length > 0;

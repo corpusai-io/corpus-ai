@@ -317,7 +317,7 @@ export default function ChatPage() {
               citations: Array.isArray(m.citations)
                 ? m.citations.map((c: string | Citation) => (typeof c === 'string' ? { source: c } : c))
                 : undefined,
-              feedback: m.feedback === 1 ? 'up' : m.feedback === -1 ? 'down' : null,
+              feedback: (m.feedback === 1 ? 'up' : m.feedback === -1 ? 'down' : null) as 'up' | 'down' | null,
               persistedId: m.messageId,
             }))
             .sort((a, b) => a.timestamp - b.timestamp)
