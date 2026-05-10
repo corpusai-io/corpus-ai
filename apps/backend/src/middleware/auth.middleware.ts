@@ -7,7 +7,8 @@ import {
 import { UserModel, ApiKeyModel } from '@corpusai/aws-common';
 
 const COGNITO_REGION = process.env.AWS_COGNITO_REGION || 'eu-north-1';
-console.log(`[auth] Cognito client init — region: ${COGNITO_REGION} | client_id prefix: ${(process.env.AWS_COGNITO_CLIENT_ID || 'NOT_SET').substring(0, 8)}...`);
+const COGNITO_DOMAIN = (process.env.AWS_COGNITO_DOMAIN || '').replace(/^https?:\/\//, '').replace(/\/$/, '');
+console.log(`[auth] Cognito client init — region: ${COGNITO_REGION} | domain: ${COGNITO_DOMAIN} | client_id prefix: ${(process.env.AWS_COGNITO_CLIENT_ID || 'NOT_SET').substring(0, 8)}...`);
 
 const cognitoClient = new CognitoIdentityProviderClient({
   region: COGNITO_REGION,
@@ -16,6 +17,28 @@ const cognitoClient = new CognitoIdentityProviderClient({
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
   },
 });
+
+// Validates a token via the Cognito Hosted UI /oauth2/userInfo endpoint.
+// SSO (Google) tokens from the Hosted UI code-exchange flow are OAuth2
+// access tokens — Cognito's GetUserCommand rejects them; the userInfo
+// endpoint is the correct validation path for these tokens.
+async function validateViaUserInfo(accessToken: string): Promise<{ email: string; sub: string } | null> {
+  if (!COGNITO_DOMAIN) return null;
+  try {
+    const resp = await fetch(`https://${COGNITO_DOMAIN}/oauth2/userInfo`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    if (!resp.ok) {
+      console.error(`[auth] userInfo endpoint returned ${resp.status}`);
+      return null;
+    }
+    const info = await resp.json() as Record<string, string>;
+    return { email: info.email || info.sub, sub: info.sub };
+  } catch (err: any) {
+    console.error('[auth] userInfo fetch error:', err.message);
+    return null;
+  }
+}
 
 export interface AuthRequest extends Request {
   user?: {
@@ -82,7 +105,17 @@ export async function authenticateToken(req: AuthRequest, res: Response, next: N
         error.__type === 'NotAuthorizedException' ||
         error.message === 'NotAuthorizedException';
       if (isNotAuthorized) {
-        console.error(`[auth] ❌ Cognito rejected token — error.name: "${error.name}" | __type: "${error.__type}" | message: "${error.message}" | token-prefix: ${tokenPrefix}`);
+        console.warn(`[auth] GetUser rejected token (SSO path?) — trying userInfo fallback | prefix: ${tokenPrefix}`);
+        // SSO tokens from Cognito Hosted UI are OAuth2 tokens; validate via userInfo
+        const userInfo = await validateViaUserInfo(accessToken);
+        if (userInfo) {
+          const users = await UserModel.query('username').eq(userInfo.email).exec();
+          const tier = users && users.length > 0 ? users[0].tier : 0;
+          console.log(`[auth] ✅ Token valid via userInfo (SSO) — user: ${userInfo.email} | tier: ${tier}`);
+          req.user = { username: userInfo.sub || userInfo.email, email: userInfo.email, tier };
+          return next();
+        }
+        console.error(`[auth] ❌ Token rejected by both GetUser and userInfo | prefix: ${tokenPrefix}`);
         return res.status(401).json({
           error: 'Token expired or invalid',
           message: 'Your session has expired. Please login again.'
@@ -328,6 +361,14 @@ export async function authenticateChat(req: AuthRequest, res: Response, next: Ne
       code === 'InvalidParameterException' ||
       code === 'UserNotFoundException'
     ) {
+      // SSO fallback — try Hosted UI userInfo endpoint
+      const userInfo = await validateViaUserInfo(token);
+      if (userInfo) {
+        const users = await UserModel.query('username').eq(userInfo.email).exec();
+        const tier = users && users.length > 0 ? users[0].tier : 0;
+        req.user = { username: userInfo.sub || userInfo.email, email: userInfo.email, tier };
+        return next();
+      }
       return res.status(401).json({
         error: 'Invalid or expired token',
         message: 'Provide a valid Cognito access token or a corpus_ API key',
