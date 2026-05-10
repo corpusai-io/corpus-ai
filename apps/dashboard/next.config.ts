@@ -9,10 +9,10 @@ const shouldUseStandalone = () => {
   return false;
 };
 
-// In docker/local-proxy deploys, the dashboard is served under /dashboard so
-// nginx can route by path prefix. On Vercel/Railway each app has its own
-// subdomain, so basePath must be empty. NEXT_PUBLIC_BASE_PATH=""  on Vercel.
-const rawBasePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '/dashboard';
+// On Vercel/Railway each app has its own subdomain, so the dashboard serves
+// at root (no basePath) — this is the default. The docker/nginx single-origin
+// setup routes by path prefix, so it sets NEXT_PUBLIC_BASE_PATH=/dashboard.
+const rawBasePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 const basePath = rawBasePath === '' ? undefined : rawBasePath;
 
 const nextConfig: NextConfig = {
