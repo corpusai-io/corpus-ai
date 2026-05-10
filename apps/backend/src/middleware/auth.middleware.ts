@@ -18,6 +18,27 @@ const cognitoClient = new CognitoIdentityProviderClient({
   },
 });
 
+// Decode a JWT payload without signature verification.
+// Used only to inspect the `scope` claim so we can choose the right
+// Cognito validation path — not for security decisions.
+function decodeJwtPayload(token: string): Record<string, any> | null {
+  try {
+    return JSON.parse(Buffer.from(token.split('.')[1], 'base64url').toString('utf-8'));
+  } catch {
+    return null;
+  }
+}
+
+// Returns true when the token came from the Cognito Hosted UI OAuth2 code
+// flow (Google SSO etc).  These tokens carry "openid" in their scope and
+// must be validated via /oauth2/userInfo — Cognito's GetUserCommand rejects
+// them.  Direct-auth tokens (InitiateAuth / SRP) use the admin.signin scope
+// and work with GetUserCommand.
+function isHostedUiToken(token: string): boolean {
+  const claims = decodeJwtPayload(token);
+  return typeof claims?.scope === 'string' && claims.scope.includes('openid');
+}
+
 // Validates a token via the Cognito Hosted UI /oauth2/userInfo endpoint.
 // SSO (Google) tokens from the Hosted UI code-exchange flow are OAuth2
 // access tokens — Cognito's GetUserCommand rejects them; the userInfo
@@ -71,33 +92,33 @@ export async function authenticateToken(req: AuthRequest, res: Response, next: N
 
     const accessToken = authHeader.substring(7); // Remove 'Bearer ' prefix
     const tokenPrefix = accessToken.substring(0, 20);
-    console.log(`[auth] Validating token — path: ${req.method} ${req.path} | prefix: ${tokenPrefix}...`);
 
     try {
-      // Verify token with AWS Cognito
-      const getUserCommand = new GetUserCommand({
-        AccessToken: accessToken,
-      });
+      let email: string;
+      let username: string;
 
-      const cognitoUser = await cognitoClient.send(getUserCommand);
+      if (isHostedUiToken(accessToken)) {
+        // Hosted UI / SSO token — use userInfo endpoint directly
+        const userInfo = await validateViaUserInfo(accessToken);
+        if (!userInfo) {
+          console.error(`[auth] ❌ userInfo rejected SSO token | prefix: ${tokenPrefix}`);
+          return res.status(401).json({ error: 'Token expired or invalid', message: 'Your session has expired. Please login again.' });
+        }
+        email = userInfo.email;
+        username = userInfo.sub || email;
+      } else {
+        // Direct-auth token (email/password via InitiateAuth) — use GetUserCommand
+        const cognitoUser = await cognitoClient.send(new GetUserCommand({ AccessToken: accessToken }));
+        const emailAttr = cognitoUser.UserAttributes?.find(attr => attr.Name === 'email');
+        email = emailAttr?.Value || cognitoUser.Username || '';
+        username = cognitoUser.Username!;
+      }
 
-      // Extract email from user attributes
-      const emailAttr = cognitoUser.UserAttributes?.find(attr => attr.Name === 'email');
-      const email = emailAttr?.Value || cognitoUser.Username || '';
-
-      // Get user tier from DynamoDB
       const users = await UserModel.query('username').eq(email).exec();
       const tier = users && users.length > 0 ? users[0].tier : 0;
 
-      console.log(`[auth] ✅ Token valid — user: ${email} | tier: ${tier}`);
-
-      // Attach user info to request
-      req.user = {
-        username: cognitoUser.Username!,
-        email,
-        tier,
-      };
-
+      console.log(`[auth] ✅ ${isHostedUiToken(accessToken) ? 'SSO' : 'direct'} — user: ${email} | tier: ${tier}`);
+      req.user = { username, email, tier };
       next();
     } catch (error: any) {
       const isNotAuthorized =
@@ -105,23 +126,9 @@ export async function authenticateToken(req: AuthRequest, res: Response, next: N
         error.__type === 'NotAuthorizedException' ||
         error.message === 'NotAuthorizedException';
       if (isNotAuthorized) {
-        console.warn(`[auth] GetUser rejected token (SSO path?) — trying userInfo fallback | prefix: ${tokenPrefix}`);
-        // SSO tokens from Cognito Hosted UI are OAuth2 tokens; validate via userInfo
-        const userInfo = await validateViaUserInfo(accessToken);
-        if (userInfo) {
-          const users = await UserModel.query('username').eq(userInfo.email).exec();
-          const tier = users && users.length > 0 ? users[0].tier : 0;
-          console.log(`[auth] ✅ Token valid via userInfo (SSO) — user: ${userInfo.email} | tier: ${tier}`);
-          req.user = { username: userInfo.sub || userInfo.email, email: userInfo.email, tier };
-          return next();
-        }
-        console.error(`[auth] ❌ Token rejected by both GetUser and userInfo | prefix: ${tokenPrefix}`);
-        return res.status(401).json({
-          error: 'Token expired or invalid',
-          message: 'Your session has expired. Please login again.'
-        });
+        console.error(`[auth] ❌ Token rejected | prefix: ${tokenPrefix}`);
+        return res.status(401).json({ error: 'Token expired or invalid', message: 'Your session has expired. Please login again.' });
       }
-
       throw error;
     }
   } catch (error) {
@@ -338,21 +345,26 @@ export async function authenticateChat(req: AuthRequest, res: Response, next: Ne
 
   // ── Cognito JWT path ──────────────────────────────────────────────────────
   try {
-    const getUserCommand = new GetUserCommand({ AccessToken: token });
-    const cognitoUser = await cognitoClient.send(getUserCommand);
+    let email: string;
+    let username: string;
 
-    const emailAttr = cognitoUser.UserAttributes?.find(attr => attr.Name === 'email');
-    const email = emailAttr?.Value || cognitoUser.Username!;
+    if (isHostedUiToken(token)) {
+      const userInfo = await validateViaUserInfo(token);
+      if (!userInfo) {
+        return res.status(401).json({ error: 'Invalid or expired token', code: 'INVALID_TOKEN' });
+      }
+      email = userInfo.email;
+      username = userInfo.sub || email;
+    } else {
+      const cognitoUser = await cognitoClient.send(new GetUserCommand({ AccessToken: token }));
+      const emailAttr = cognitoUser.UserAttributes?.find(attr => attr.Name === 'email');
+      email = emailAttr?.Value || cognitoUser.Username!;
+      username = cognitoUser.Username!;
+    }
 
     const users = await UserModel.query('username').eq(email).exec();
     const tier = users && users.length > 0 ? users[0].tier : 0;
-
-    req.user = {
-      username: cognitoUser.Username!,
-      email,
-      tier,
-    };
-
+    req.user = { username, email, tier };
     return next();
   } catch (error: any) {
     const code = error.name || error.__type || error.message || '';
@@ -361,19 +373,7 @@ export async function authenticateChat(req: AuthRequest, res: Response, next: Ne
       code === 'InvalidParameterException' ||
       code === 'UserNotFoundException'
     ) {
-      // SSO fallback — try Hosted UI userInfo endpoint
-      const userInfo = await validateViaUserInfo(token);
-      if (userInfo) {
-        const users = await UserModel.query('username').eq(userInfo.email).exec();
-        const tier = users && users.length > 0 ? users[0].tier : 0;
-        req.user = { username: userInfo.sub || userInfo.email, email: userInfo.email, tier };
-        return next();
-      }
-      return res.status(401).json({
-        error: 'Invalid or expired token',
-        message: 'Provide a valid Cognito access token or a corpus_ API key',
-        code: 'INVALID_TOKEN',
-      });
+      return res.status(401).json({ error: 'Invalid or expired token', code: 'INVALID_TOKEN' });
     }
 
     console.error('[AUTH] Chat authentication error:', error);
