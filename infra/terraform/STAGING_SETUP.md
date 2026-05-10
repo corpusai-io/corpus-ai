@@ -18,7 +18,7 @@ resource IDs and is needed for any future `terraform apply`.
 
 ### Resources created
 
-| Service | Resource | Notes |
+| Service | Resource | Notes|
 |---|---|---|
 | DynamoDB | 11 tables with `-staging` suffix | PAY_PER_REQUEST, SSE enabled, deletion protection off |
 | S3 | `corpus-ai-files-staging` | block-public, CORS for widget, SSE-S3 |
