@@ -288,25 +288,31 @@ export async function deleteVectors(indexName: string, ids: string[], namespace?
  * Delete all vectors for a chatbot
  */
 export async function deleteChatbotVectors(indexName: string, chatbotId: string) {
-  const index = await getValidatedIndex(indexName);
-  const ns = index.namespace(chatbotId);
   try {
+    const index = await getValidatedIndex(indexName);
+    const ns = index.namespace(chatbotId);
     await withRetry(
       () => ns.deleteAll(),
       `deleteChatbotVectors ${chatbotId}`
     );
     console.log(`Deleted all vectors for chatbot ${chatbotId} from namespace`);
   } catch (err: any) {
-    // 404 = namespace never existed (chatbot was created but never indexed) — nothing to delete
-    if (
+    const status = err?.status ?? err?.statusCode ?? err?.response?.status;
+    const msg = err?.message || '';
+    const isNotFound =
       err?.name === 'PineconeNotFoundError' ||
-      err?.status === 404 ||
-      err?.message?.includes('404')
-    ) {
+      err?.constructor?.name === 'PineconeNotFoundError' ||
+      status === 404 ||
+      msg.includes('404') ||
+      msg.toLowerCase().includes('not found');
+    if (isNotFound) {
       console.log(`[Pinecone] Namespace ${chatbotId} not found — skipping (never indexed)`);
       return;
     }
-    throw err;
+    // Best-effort cleanup: never bubble. Log enough to diagnose if it ever matters.
+    console.error(
+      `[Pinecone] deleteChatbotVectors(${chatbotId}) failed — swallowing. name=${err?.name} status=${status} msg=${msg}`
+    );
   }
 }
 
