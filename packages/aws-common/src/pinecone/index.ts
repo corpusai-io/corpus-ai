@@ -6,6 +6,10 @@ import { env } from '../utils/env';
  * Manages vector storage and retrieval for RAG system
  */
 
+// Boot-time fingerprint so we can tell from logs which build of this module is actually running.
+const PINECONE_MODULE_BUILD_ID = 'pinecone-2026-05-14-swallow-v2';
+console.log(`[Pinecone] module loaded: ${PINECONE_MODULE_BUILD_ID}`);
+
 let pineconeClient: Pinecone | null = null;
 const indexCache = new Map<string, any>();
 
