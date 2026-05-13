@@ -1,5 +1,6 @@
 // dotenv/config is preloaded via -r flag in dev script (see package.json)
 // This ensures process.env is populated BEFORE any import executes.
+console.log('[backend] index.ts loaded — build 2026-05-14-001');
 import express from 'express';
 import path from 'path';
 import cors from 'cors';
