@@ -504,6 +504,8 @@ See `NEXT_STEPS_FOR_DEPLOYMENT.md` for the explicit remaining checklist.
 | `staging` | Deployed to staging (Vercel + Railway pick up from here) |
 | `production` | Deployed to prod |
 
+
+
 ---
 
 ## Key technical decisions (don't undo without a reason)
