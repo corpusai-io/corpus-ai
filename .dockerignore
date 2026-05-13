@@ -1,0 +1,49 @@
+# Don't ship local build artifacts into the Docker context — Railway must build fresh.
+# If these are copied in, turbo sees a cache hit and skips rebuilding workspace packages,
+# which means stale `dist/` from the developer's machine ends up running in production.
+
+# Dependencies — re-installed inside the image
+node_modules
+**/node_modules
+
+# Compiled output — re-emitted inside the image
+**/dist
+**/.next
+**/build
+**/.output
+**/.nitro
+
+# Turbo cache — must NOT be carried in; it tells turbo "already built" for stale source
+.turbo
+**/.turbo
+
+# TypeScript incremental
+**/*.tsbuildinfo
+
+# Local env files (secrets come from Railway env / Secrets Manager)
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Version control / editor metadata
+.git
+.gitignore
+.vscode
+.idea
+.DS_Store
+
+# Terraform — never needed in app images
+infra/terraform/.terraform
+infra/terraform/*.tfstate
+infra/terraform/*.tfstate.*
+infra/terraform/*.tfplan
+infra/terraform/*.tfvars
+infra/terraform/.secrets
+
+# Test / debug artifacts
+coverage
+*.log
+*.pem
+*.stackdump
+.playwright-mcp
