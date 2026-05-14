@@ -19,79 +19,96 @@ import {
   Paintbrush,
   Rocket,
   Wrench,
-  CircuitBoard,
   Key,
   ArrowUpRight,
   CreditCard,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { quotaApi } from '@/lib/api';
+import { useChatbotStore } from '@/stores/chatbot-store';
 
+/* ─── Nav row ─────────────────────────────────────────────── */
 interface NavItemProps {
   href: string;
-  icon: React.ReactNode;
+  icon: React.ElementType;
   label: string;
   active?: boolean;
-  onClick?: () => void;
+  badge?: string | number;
   indent?: boolean;
+  onClick?: () => void;
 }
 
-function NavItem({ href, icon, label, active, onClick, indent }: NavItemProps) {
+function NavItem({ href, icon: Icon, label, active, badge, indent, onClick }: NavItemProps) {
   return (
     <Link
       href={href}
       onClick={onClick}
-      className={`w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[13px] font-medium transition-all duration-150 ${
+      className={`w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[13px] font-medium transition-colors ${
         indent ? 'ml-3' : ''
       } ${
         active
-          ? 'bg-slate-100 dark:bg-[#1C1C20] text-slate-800 dark:text-[#E8E8F0] border border-slate-200 dark:border-[#2E2E36] shadow-sm'
-          : 'text-slate-500 dark:text-[#58585E] hover:text-slate-700 dark:hover:text-[#A8A8B0] hover:bg-slate-50 dark:hover:bg-[#17171A] border border-transparent'
+          ? 'bg-surface text-ink'
+          : 'text-muted hover:bg-surface hover:text-ink'
       }`}
     >
-      <span className={`shrink-0 transition-colors ${active ? 'text-slate-500 dark:text-[#A8A8B0]' : 'text-slate-400 dark:text-[#40404A]'}`}>
-        {icon}
-      </span>
-      {label}
+      <Icon className={`w-4 h-4 flex-shrink-0 ${active ? 'text-ink' : 'text-muted-soft'}`} />
+      <span className="flex-1 truncate">{label}</span>
+      {badge !== undefined && (
+        <span className="font-mono text-[10px] text-muted-soft">{badge}</span>
+      )}
     </Link>
   );
 }
 
-interface ExpandableNavProps {
-  icon: React.ReactNode;
+/* ─── Expandable group (for Configure) ───────────────────── */
+function ExpandableGroup({
+  icon: Icon,
+  label,
+  active,
+  defaultOpen,
+  children,
+}: {
+  icon: React.ElementType;
   label: string;
   active?: boolean;
   defaultOpen?: boolean;
   children: React.ReactNode;
-  onClick?: () => void;
-}
-
-function ExpandableNav({ icon, label, active, defaultOpen = false, children }: ExpandableNavProps) {
-  const [open, setOpen] = useState(defaultOpen);
-
-  useEffect(() => {
-    if (defaultOpen) setOpen(true);
-  }, [defaultOpen]);
+}) {
+  const [open, setOpen] = useState(!!defaultOpen);
+  useEffect(() => { if (defaultOpen) setOpen(true); }, [defaultOpen]);
 
   return (
     <div>
       <button
         onClick={() => setOpen(!open)}
-        className={`w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[13px] font-medium transition-all duration-150 border border-transparent ${
-          active ? 'text-slate-700 dark:text-[#D0D0D8]' : 'text-slate-500 dark:text-[#58585E] hover:text-slate-700 dark:hover:text-[#A8A8B0] hover:bg-slate-50 dark:hover:bg-[#17171A]'
+        className={`w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[13px] font-medium text-left transition-colors ${
+          active ? 'text-ink' : 'text-muted hover:bg-surface hover:text-ink'
         }`}
       >
-        <span className={`shrink-0 ${active ? 'text-slate-500 dark:text-[#A8A8B0]' : 'text-slate-400 dark:text-[#40404A]'}`}>{icon}</span>
-        <span className="flex-1 text-left">{label}</span>
+        <Icon className={`w-4 h-4 flex-shrink-0 ${active ? 'text-ink' : 'text-muted-soft'}`} />
+        <span className="flex-1">{label}</span>
         {open
-          ? <ChevronDown className="h-3.5 w-3.5 text-slate-400 dark:text-[#3A3A42]" />
-          : <ChevronRight className="h-3.5 w-3.5 text-slate-400 dark:text-[#3A3A42]" />}
+          ? <ChevronDown  className="w-3.5 h-3.5 text-muted-soft" />
+          : <ChevronRight className="w-3.5 h-3.5 text-muted-soft" />}
       </button>
-      {open && <div className="mt-0.5 space-y-0.5">{children}</div>}
+      {open && <div className="space-y-0.5 mt-0.5">{children}</div>}
     </div>
   );
 }
 
+/* ─── Section header ──────────────────────────────────────── */
+function GroupLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <p
+      className="font-mono uppercase text-[10px] font-semibold text-muted-soft mb-2 px-3 truncate"
+      style={{ letterSpacing: '0.14em' }}
+    >
+      {children}
+    </p>
+  );
+}
+
+/* ─── Quota types ─────────────────────────────────────────── */
 interface QuotaData {
   chatUsage: number;
   chatQuota: number;
@@ -101,185 +118,172 @@ interface QuotaData {
   storageQuota: number;
 }
 
-function formatStorageShort(bytes: number): string {
+function formatMB(bytes: number): string {
   if (bytes >= 1024 * 1024 * 1024) return `${(bytes / (1024 * 1024 * 1024)).toFixed(1)}GB`;
-  if (bytes >= 1024 * 1024)        return `${(bytes / (1024 * 1024)).toFixed(0)}MB`;
-  if (bytes >= 1024)               return `${(bytes / 1024).toFixed(0)}KB`;
+  if (bytes >= 1024 * 1024)        return `${Math.round(bytes / (1024 * 1024))}MB`;
+  if (bytes >= 1024)               return `${Math.round(bytes / 1024)}KB`;
   return `${bytes}B`;
 }
 
-function QuotaBar({ label, value, max, suffix = '' }: { label: string; value: number; max: number; suffix?: string }) {
-  const pct = max > 0 ? Math.min((value / max) * 100, 100) : 0;
-  const isHigh = pct >= 80;
+function QuotaRow({ label, used, total, pct }: { label: string; used: string; total: string; pct: number }) {
   return (
-    <div className="space-y-1.5 px-1">
-      <div className="flex items-center justify-between text-[11px] font-medium">
-        <span className="text-slate-500 dark:text-[#50505A]">{label}</span>
-        <span className="text-slate-600 dark:text-[#6A6A74]">{value}{suffix} / {max}{suffix}</span>
+    <div className="space-y-1">
+      <div className="flex items-baseline justify-between text-[10px]">
+        <span
+          className="font-mono uppercase text-muted-soft"
+          style={{ letterSpacing: '0.14em' }}
+        >
+          {label}
+        </span>
+        <span className="font-mono text-muted">{used} / {total}</span>
       </div>
-      <div className="h-1 w-full bg-slate-200 dark:bg-[#26262B] rounded-full overflow-hidden">
-        <div
-          className={`h-full rounded-full transition-all duration-500 ${isHigh ? 'bg-red-400 dark:bg-[#9E4A4A]' : 'bg-slate-500 dark:bg-[#4A4A5A]'}`}
-          style={{ width: `${pct}%` }}
-        />
+      <div className="h-[2px] w-full bg-surface rounded-full overflow-hidden">
+        <div className="h-full bg-ink rounded-full transition-all duration-500" style={{ width: `${Math.min(Math.max(pct, 0), 100)}%` }} />
       </div>
     </div>
   );
 }
 
+/* ─── Sidebar ─────────────────────────────────────────────── */
 export default function Sidebar({ onNavClick }: { onNavClick?: () => void } = {}) {
   const pathname = usePathname();
   const { user } = useAuth();
+  const chatbots = useChatbotStore((s) => s.chatbots);
   const [quota, setQuota] = useState<QuotaData | null>(null);
 
-  const chatbotMatch = pathname.match(/^\/chatbots\/([^/]+)/);
-  const chatbotId = chatbotMatch ? chatbotMatch[1] : null;
-  const isOnChatbotDetail = !!chatbotId && chatbotId !== 'create';
+  const chatbotMatch    = pathname?.match(/^\/chatbots\/([^/]+)/);
+  const rawChatbotId    = chatbotMatch ? chatbotMatch[1] : null;
+  const chatbotId       = rawChatbotId && rawChatbotId !== 'create' ? rawChatbotId : null;
+  const isOnChatbot     = !!chatbotId;
+  const currentBot      = isOnChatbot ? chatbots.find((c) => c.chatbotId === chatbotId) : null;
+  const isActive        = (path: string) => pathname === path;
+  const isActivePrefix  = (prefix: string) => pathname?.startsWith(prefix) ?? false;
 
   useEffect(() => {
     if (!user) return;
     quotaApi.get()
       .then((data: any) => {
-        const q = data.quota;
+        const q = data.quota || data;
         setQuota({
           chatUsage:    q?.chat?.usage    ?? data.chatUsage    ?? 0,
           chatQuota:    q?.chat?.quota    ?? data.chatQuota    ?? 20,
           chatbotCount: q?.chatbot?.usage ?? data.chatbotCount ?? 0,
           chatbotQuota: q?.chatbot?.quota ?? data.chatbotQuota ?? 1,
           storageUsed:  q?.storage?.usage ?? data.storageUsed  ?? 0,
-          storageQuota: q?.storage?.quota ?? data.storageQuota ?? 10 * 1024 * 1024,
+          storageQuota: q?.storage?.quota ?? data.storageQuota ?? 50 * 1024 * 1024,
         });
       })
       .catch(() => {});
-  }, [pathname, user]);
-
-  const isActive = (path: string) => pathname === path;
-  const isActivePrefix = (prefix: string) => pathname.startsWith(prefix);
+  }, [user, pathname]);
 
   return (
-    <aside className="w-[240px] h-screen bg-white dark:bg-[#0E0E10] border-r border-slate-200 dark:border-[#1E1E22] flex flex-col fixed left-0 top-0 z-40">
+    <aside className="w-[240px] h-screen bg-canvas border-r border-line flex flex-col fixed left-0 top-0 z-40">
 
-      {/* ── Logo ─────────────────────────────────────────────── */}
-      <div className="h-14 flex items-center px-5 border-b border-slate-200 dark:border-[#1E1E22] bg-slate-50 dark:bg-[#111113]">
-        <Link href="/" className="flex items-center">
-          <img src="/logo.svg" alt="Corpus AI" className="h-6 dark:brightness-0 dark:invert dark:opacity-75 opacity-90" />
+      {/* ── Wordmark ────────────────────────────────────────── */}
+      <div className="h-14 flex items-center px-5 border-b border-line">
+        <Link href="/" className="flex items-center" onClick={onNavClick}>
+          <span
+            className="font-display text-ink"
+            style={{ fontWeight: 600, fontSize: 20, letterSpacing: '-0.03em', lineHeight: 1 }}
+          >
+            CorpusAI<span style={{ color: 'var(--muted)' }}>.</span>
+          </span>
         </Link>
       </div>
 
-      {/* ── Navigation ───────────────────────────────────────── */}
+      {/* ── Nav ─────────────────────────────────────────────── */}
       <div className="flex-1 overflow-y-auto py-4 px-3 space-y-5">
 
-        {/* Workspace group */}
+        {/* Workspace */}
         <div>
-          <p className="text-[10px] font-semibold tracking-wider text-slate-500 dark:text-[#3A3A42] mb-2 px-3 uppercase">
-            Workspace
-          </p>
+          <GroupLabel>Workspace</GroupLabel>
           <nav className="space-y-0.5">
-            <NavItem
-              href="/"
-              icon={<LayoutDashboard size={16} />}
-              label="Dashboard"
-              active={isActive('/')}
-              onClick={onNavClick}
-            />
+            <NavItem href="/"          icon={LayoutDashboard} label="Dashboard" active={isActive('/')} onClick={onNavClick} />
             <NavItem
               href="/chatbots"
-              icon={<Bot size={16} />}
+              icon={Bot}
               label="Chatbots"
               active={isActive('/chatbots') || isActive('/chatbots/create')}
+              badge={quota?.chatbotCount ?? chatbots.length}
               onClick={onNavClick}
             />
-            <ExpandableNav
-              icon={<Settings size={16} />}
-              label="Settings"
-              active={isActivePrefix('/settings')}
-              defaultOpen={isActivePrefix('/settings')}
-            >
-              <NavItem
-                href="/settings/billing"
-                icon={<CreditCard size={16} />}
-                label="Billing"
-                active={isActive('/settings/billing')}
-                onClick={onNavClick}
-                indent
-              />
-            </ExpandableNav>
+            <NavItem href="/settings/billing" icon={CreditCard} label="Billing" active={isActivePrefix('/settings')} onClick={onNavClick} />
           </nav>
         </div>
 
-        {/* Chatbot group — only when on a chatbot detail page */}
-        {isOnChatbotDetail && (
+        {/* Per-chatbot contextual nav */}
+        {isOnChatbot && (
           <>
-            <div className="h-px bg-slate-200 dark:bg-[#1E1E22]" />
+            <div className="h-px bg-line" />
 
             <div>
-              <p className="text-[10px] font-semibold tracking-wider text-slate-500 dark:text-[#3A3A42] mb-2 px-3 uppercase">
-                Chatbot
-              </p>
+              <GroupLabel>{currentBot?.title || 'Chatbot'}</GroupLabel>
               <nav className="space-y-0.5">
-                <NavItem href={`/chatbots/${chatbotId}/chat`}       icon={<MessageSquare size={16} />} label="Chat"         active={isActive(`/chatbots/${chatbotId}/chat`)}       onClick={onNavClick} />
-                <NavItem href={`/chatbots/${chatbotId}/analytics`}  icon={<BarChart3 size={16} />}     label="Analytics"    active={isActive(`/chatbots/${chatbotId}/analytics`)}  onClick={onNavClick} />
-                <NavItem href={`/chatbots/${chatbotId}/datastores`} icon={<Database size={16} />}      label="Data Sources" active={isActive(`/chatbots/${chatbotId}/datastores`)} onClick={onNavClick} />
-                <NavItem href={`/chatbots/${chatbotId}/leads`}      icon={<Users size={16} />}         label="Leads"        active={isActive(`/chatbots/${chatbotId}/leads`)}      onClick={onNavClick} />
-                <NavItem href={`/chatbots/${chatbotId}/deploy`}     icon={<Rocket size={16} />}        label="Deploy"       active={isActive(`/chatbots/${chatbotId}/deploy`)}     onClick={onNavClick} />
+                <NavItem href={`/chatbots/${chatbotId}/chat`}       icon={MessageSquare} label="Chat"         active={isActive(`/chatbots/${chatbotId}/chat`)}       onClick={onNavClick} />
+                <NavItem href={`/chatbots/${chatbotId}/analytics`}  icon={BarChart3}     label="Analytics"    active={isActive(`/chatbots/${chatbotId}/analytics`)}  onClick={onNavClick} />
+                <NavItem href={`/chatbots/${chatbotId}/datastores`} icon={Database}      label="Data sources" active={isActive(`/chatbots/${chatbotId}/datastores`)} onClick={onNavClick} />
+                <NavItem href={`/chatbots/${chatbotId}/leads`}      icon={Users}         label="Leads"        active={isActive(`/chatbots/${chatbotId}/leads`)}      onClick={onNavClick} />
+                <NavItem href={`/chatbots/${chatbotId}/deploy`}     icon={Rocket}        label="Deploy"       active={isActive(`/chatbots/${chatbotId}/deploy`)}     onClick={onNavClick} />
               </nav>
             </div>
 
             <div>
-              <p className="text-[10px] font-semibold tracking-wider text-slate-500 dark:text-[#3A3A42] mb-2 px-3 uppercase">
-                Tools
-              </p>
+              <GroupLabel>Tools</GroupLabel>
               <nav className="space-y-0.5">
-                <ExpandableNav
-                  icon={<Wrench size={16} />}
-                  label="Tools"
-                  active={isActivePrefix(`/chatbots/${chatbotId}/tools`)}
-                  defaultOpen={isActivePrefix(`/chatbots/${chatbotId}/tools`)}
-                >
-                  <NavItem href={`/chatbots/${chatbotId}/tools/ai-actions`} icon={<Zap size={16} />}          label="AI Actions" active={isActive(`/chatbots/${chatbotId}/tools/ai-actions`)} onClick={onNavClick} indent />
-                  <NavItem href={`/chatbots/${chatbotId}/tools/databases`}  icon={<CircuitBoard size={16} />}  label="Databases"  active={isActive(`/chatbots/${chatbotId}/tools/databases`)}  onClick={onNavClick} indent />
-                </ExpandableNav>
+                <NavItem href={`/chatbots/${chatbotId}/tools/ai-actions`} icon={Zap}      label="AI actions" active={isActive(`/chatbots/${chatbotId}/tools/ai-actions`)} onClick={onNavClick} />
+                <NavItem href={`/chatbots/${chatbotId}/tools/databases`}  icon={Database} label="Databases"  active={isActive(`/chatbots/${chatbotId}/tools/databases`)}  onClick={onNavClick} />
 
-                <ExpandableNav
-                  icon={<Settings size={16} />}
-                  label="Settings"
+                <ExpandableGroup
+                  icon={Settings}
+                  label="Configure"
                   active={isActivePrefix(`/chatbots/${chatbotId}/settings`)}
                   defaultOpen={isActivePrefix(`/chatbots/${chatbotId}/settings`)}
                 >
-                  <NavItem href={`/chatbots/${chatbotId}/settings`}               icon={<Settings size={16} />}   label="General"       active={isActive(`/chatbots/${chatbotId}/settings`)}               onClick={onNavClick} indent />
-                  <NavItem href={`/chatbots/${chatbotId}/settings/customization`} icon={<Paintbrush size={16} />} label="Customization" active={isActive(`/chatbots/${chatbotId}/settings/customization`)} onClick={onNavClick} indent />
-                  <NavItem href={`/chatbots/${chatbotId}/settings/api-keys`}      icon={<Key size={16} />}        label="API Keys"      active={isActive(`/chatbots/${chatbotId}/settings/api-keys`)}      onClick={onNavClick} indent />
-                  <NavItem href={`/chatbots/${chatbotId}/settings/integrations`}  icon={<Link2 size={16} />}      label="Integrations"  active={isActive(`/chatbots/${chatbotId}/settings/integrations`)}  onClick={onNavClick} indent />
-                  <NavItem href={`/chatbots/${chatbotId}/settings/security`}      icon={<Shield size={16} />}     label="Security"      active={isActive(`/chatbots/${chatbotId}/settings/security`)}      onClick={onNavClick} indent />
-                </ExpandableNav>
+                  <NavItem href={`/chatbots/${chatbotId}/settings`}               icon={Settings}   label="General"       active={isActive(`/chatbots/${chatbotId}/settings`)}               indent onClick={onNavClick} />
+                  <NavItem href={`/chatbots/${chatbotId}/settings/customization`} icon={Paintbrush} label="Customization" active={isActive(`/chatbots/${chatbotId}/settings/customization`)} indent onClick={onNavClick} />
+                  <NavItem href={`/chatbots/${chatbotId}/settings/api-keys`}      icon={Key}        label="API keys"      active={isActive(`/chatbots/${chatbotId}/settings/api-keys`)}      indent onClick={onNavClick} />
+                  <NavItem href={`/chatbots/${chatbotId}/settings/integrations`}  icon={Link2}      label="Integrations"  active={isActive(`/chatbots/${chatbotId}/settings/integrations`)}  indent onClick={onNavClick} />
+                  <NavItem href={`/chatbots/${chatbotId}/settings/security`}      icon={Shield}     label="Security"      active={isActive(`/chatbots/${chatbotId}/settings/security`)}      indent onClick={onNavClick} />
+                </ExpandableGroup>
               </nav>
             </div>
           </>
         )}
       </div>
 
-      {/* ── Quota + Upgrade ───────────────────────────────────── */}
-      <div className="px-4 pb-4 pt-3 border-t border-slate-200 dark:border-[#1E1E22] bg-white dark:bg-[#0E0E10]">
+      {/* ── Footer · quota + upgrade ────────────────────────── */}
+      <div className="px-4 pb-4 pt-3 border-t border-line">
         {quota && (
-          <div className="space-y-3 mb-4">
-            <QuotaBar label="Queries"  value={quota.chatUsage}    max={quota.chatQuota} />
-            <QuotaBar label="Chatbots" value={quota.chatbotCount} max={quota.chatbotQuota} />
-            <QuotaBar
+          <div className="mb-3 space-y-2.5">
+            <QuotaRow
+              label="Messages"
+              used={quota.chatUsage.toLocaleString()}
+              total={quota.chatQuota.toLocaleString()}
+              pct={(quota.chatUsage / Math.max(quota.chatQuota, 1)) * 100}
+            />
+            <QuotaRow
+              label="Chatbots"
+              used={String(quota.chatbotCount)}
+              total={String(quota.chatbotQuota)}
+              pct={(quota.chatbotCount / Math.max(quota.chatbotQuota, 1)) * 100}
+            />
+            <QuotaRow
               label="Storage"
-              value={Math.round(quota.storageUsed / (1024 * 1024))}
-              max={Math.round(quota.storageQuota / (1024 * 1024))}
-              suffix="MB"
+              used={formatMB(quota.storageUsed)}
+              total={formatMB(quota.storageQuota)}
+              pct={(quota.storageUsed / Math.max(quota.storageQuota, 1)) * 100}
             />
           </div>
         )}
 
-        {user && user.tier < 3 && (
+        {user && (user.tier ?? 0) < 3 && (
           <Link
             href="/settings/billing"
-            className="flex items-center justify-center gap-2 w-full py-2 px-3 rounded-lg text-sm font-semibold bg-slate-900 dark:bg-[#F0F0F4] text-white dark:text-[#111113] hover:bg-slate-800 dark:hover:bg-white transition-all shadow-sm"
+            onClick={onNavClick}
+            className="flex items-center justify-center gap-2 w-full py-2 px-3 rounded-lg text-[13px] font-medium bg-ink text-white hover:bg-ink-hover transition-colors"
           >
-            <ArrowUpRight className="h-4 w-4" />
-            Upgrade Plan
+            <ArrowUpRight className="w-3.5 h-3.5" />
+            Upgrade plan
           </Link>
         )}
       </div>

@@ -262,7 +262,7 @@ function generateId(): string {
 function Toggle({ checked, onChange, disabled = false }: { checked: boolean; onChange: (v: boolean) => void; disabled?: boolean }) {
   return (
     <button type="button" role="switch" aria-checked={checked} disabled={disabled} onClick={() => onChange(!checked)}
-      className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus:outline-none disabled:cursor-not-allowed disabled:opacity-40 ${checked ? 'bg-[#BF56FF]' : 'bg-[#3F3F46]'}`}>
+      className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus:outline-none disabled:cursor-not-allowed disabled:opacity-40 ${checked ? 'bg-ink' : 'bg-line-strong'}`}>
       <span className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${checked ? 'translate-x-4' : 'translate-x-0'}`} />
     </button>
   );
@@ -271,7 +271,7 @@ function Toggle({ checked, onChange, disabled = false }: { checked: boolean; onC
 function FieldInput({ id, value, onChange, placeholder, className = '', type = 'text' }: { id?: string; value: string; onChange: (v: string) => void; placeholder?: string; className?: string; type?: string }) {
   return (
     <input id={id} type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder}
-      className={`w-full rounded-lg border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-white/[0.04] px-3 py-2 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#71717A] focus:border-[#BF56FF]/60 focus:outline-none focus:ring-2 focus:ring-[#BF56FF]/20 transition-colors ${className}`} />
+      className={`w-full rounded-lg border border-line bg-canvas px-3 py-2 text-sm text-ink placeholder:text-muted-soft focus:border-ink focus:outline-none transition-colors ${className}`} />
   );
 }
 
@@ -375,7 +375,7 @@ function IntegrationCard({ def, config, onConfigure }: { def: IntegrationDef; co
           <BrandLogo integrationKey={def.key} size={22} />
         </div>
         {def.comingSoon ? (
-          <span className="inline-flex items-center rounded-full bg-slate-100 dark:bg-white/[0.06] border border-slate-200 dark:border-white/[0.08] px-2 py-0.5 text-[10px] font-medium text-slate-500 dark:text-[#71717A]">
+          <span className="inline-flex items-center rounded-full bg-slate-100 border border-slate-200 px-2 py-0.5 text-[10px] font-medium text-slate-500">
             Coming Soon
           </span>
         ) : isConnected ? (
@@ -384,17 +384,17 @@ function IntegrationCard({ def, config, onConfigure }: { def: IntegrationDef; co
             Connected
           </span>
         ) : (
-          <span className="inline-flex items-center rounded-full bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.06] px-2 py-0.5 text-[10px] font-medium text-slate-500 dark:text-[#71717A]">
+          <span className="inline-flex items-center rounded-full bg-slate-100 border border-slate-200 px-2 py-0.5 text-[10px] font-medium text-slate-500">
             Not Connected
           </span>
         )}
       </div>
 
       <div className="flex-1">
-        <h3 className="text-sm font-semibold text-slate-900 dark:text-white">{def.name}</h3>
-        <p className="mt-1 text-xs text-slate-500 dark:text-[#71717A] leading-relaxed">{def.description}</p>
+        <h3 className="text-sm font-semibold text-slate-900">{def.name}</h3>
+        <p className="mt-1 text-xs text-slate-500 leading-relaxed">{def.description}</p>
         {isConnected && config?.metadata?.accountName && (
-          <p className="mt-1.5 text-xs text-[#22C55E]/80">✓ {config.metadata.accountName}</p>
+          <p className="mt-1.5 text-xs text-[#10B981] flex items-center gap-1"><CheckCircle2 className="h-3 w-3" /> {config.metadata.accountName}</p>
         )}
       </div>
 
@@ -403,10 +403,10 @@ function IntegrationCard({ def, config, onConfigure }: { def: IntegrationDef; co
         disabled={def.comingSoon}
         className={`w-full flex items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
           isConnected
-            ? 'border border-[#BF56FF]/30 text-[#BF56FF] hover:bg-[#BF56FF]/10'
+            ? 'border border-line-strong text-ink hover:bg-surface'
             : def.comingSoon
-            ? 'border border-slate-200 dark:border-white/[0.08] text-slate-400 dark:text-[#71717A]'
-            : 'bg-slate-100 dark:bg-white/[0.06] hover:bg-slate-200 dark:hover:bg-white/[0.10] text-slate-700 dark:text-white border border-slate-200 dark:border-white/[0.08]'
+            ? 'border border-slate-200 text-slate-400'
+            : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200'
         }`}
       >
         {isConnected ? 'Configure' : def.comingSoon ? 'Coming Soon' : 'Connect'}
@@ -558,34 +558,34 @@ function WizardPanel({
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40" onClick={onClose} />
 
       {/* Panel */}
-      <div className="fixed inset-y-0 right-0 w-full max-w-[500px] bg-white dark:bg-[#0E0E10] border-l border-slate-200 dark:border-white/[0.08] z-50 flex flex-col shadow-2xl">
+      <div className="fixed inset-y-0 right-0 w-full max-w-[500px] bg-white border-l border-slate-200 z-50 flex flex-col shadow-2xl">
         {/* Header */}
-        <div className="flex items-center gap-3 px-6 py-4 border-b border-slate-100 dark:border-white/[0.06]">
+        <div className="flex items-center gap-3 px-6 py-4 border-b border-slate-100">
           <div className={`flex h-9 w-9 items-center justify-center rounded-lg text-sm font-bold shrink-0 ${def.color}`}>
             {def.initial}
           </div>
           <div className="flex-1 min-w-0">
-            <h2 className="text-sm font-semibold text-slate-900 dark:text-white">{def.name}</h2>
-            <p className="text-xs text-slate-500 dark:text-[#71717A] truncate">{def.description}</p>
+            <h2 className="text-sm font-semibold text-slate-900">{def.name}</h2>
+            <p className="text-xs text-slate-500 truncate">{def.description}</p>
           </div>
-          <button onClick={onClose} className="p-1.5 rounded-lg text-slate-500 dark:text-[#71717A] hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/[0.06] transition-colors">
+          <button onClick={onClose} className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors">
             <X className="h-4 w-4" />
           </button>
         </div>
 
         {/* Step Indicator */}
-        <div className="flex items-center gap-2 px-6 py-3 border-b border-slate-100 dark:border-white/[0.04]">
+        <div className="flex items-center gap-2 px-6 py-3 border-b border-slate-100">
           {steps.map((s, i) => (
             <div key={s} className="flex items-center gap-2">
               <div className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-semibold transition-colors ${
-                s === step ? 'bg-[#BF56FF] text-white' : i < stepIndex ? 'bg-[#22C55E] text-white' : 'bg-slate-100 dark:bg-white/[0.06] text-slate-500 dark:text-[#71717A]'
+                s === step ? 'bg-ink text-white' : i < stepIndex ? 'bg-[#22C55E] text-white' : 'bg-slate-100 text-slate-500'
               }`}>
-                {i < stepIndex ? '✓' : i + 1}
+                {i < stepIndex ? <CheckCircle2 className="h-3 w-3" /> : i + 1}
               </div>
-              <span className={`text-xs font-medium capitalize ${s === step ? 'text-slate-900 dark:text-white' : 'text-slate-500 dark:text-[#71717A]'}`}>
+              <span className={`text-xs font-medium capitalize ${s === step ? 'text-slate-900' : 'text-slate-500'}`}>
                 {s === 'connect' ? (def.connectType === 'webhook' ? 'Webhook' : 'Connect') : s === 'operations' ? 'Operations' : 'Behavior'}
               </span>
-              {i < steps.length - 1 && <ChevronRight className="h-3 w-3 text-slate-400 dark:text-[#3F3F46] ml-1" />}
+              {i < steps.length - 1 && <ChevronRight className="h-3 w-3 text-slate-400 ml-1" />}
             </div>
           ))}
         </div>
@@ -607,7 +607,7 @@ function WizardPanel({
                   </div>
                   <button
                     onClick={() => setShowDisconnectConfirm(true)}
-                    className="flex items-center gap-1 text-xs text-[#71717A] hover:text-[#EC4899] transition-colors"
+                    className="flex items-center gap-1 text-xs text-[#71717A] hover:text-[#EF4444] transition-colors"
                   >
                     <Link2Off className="h-3.5 w-3.5" />
                     Disconnect
@@ -617,19 +617,19 @@ function WizardPanel({
 
               {def.connectType === 'webhook' && (
                 <div className="space-y-4">
-                  <p className="text-sm text-slate-500 dark:text-[#A1A1AA]">
+                  <p className="text-sm text-slate-500">
                     Paste your webhook URL below. The chatbot will POST conversation data to this URL when the action is triggered.
                   </p>
                   {def.credentialFields.map((field) => (
                     <div key={field.key}>
-                      <label className="block text-xs font-medium text-slate-500 dark:text-[#A1A1AA] mb-1.5">{field.label}</label>
+                      <label className="block text-xs font-medium text-slate-500 mb-1.5">{field.label}</label>
                       <FieldInput
                         value={credentials[field.key] || ''}
                         onChange={(v) => setCredentials((prev) => ({ ...prev, [field.key]: v }))}
                         placeholder={field.placeholder}
                         type={field.type}
                       />
-                      {field.hint && <p className="mt-1.5 text-xs text-slate-500 dark:text-[#71717A]">{field.hint}</p>}
+                      {field.hint && <p className="mt-1.5 text-xs text-slate-500">{field.hint}</p>}
                     </div>
                   ))}
                 </div>
@@ -638,13 +638,13 @@ function WizardPanel({
               {def.connectType === 'api_key' && (
                 <div className="space-y-4">
                   {isConnected && (
-                    <p className="text-sm text-slate-500 dark:text-[#71717A]">
+                    <p className="text-sm text-slate-500">
                       Your credentials are saved. Enter new values below only if you want to update them.
                     </p>
                   )}
                   {def.credentialFields.map((field) => (
                     <div key={field.key}>
-                      <label className="block text-xs font-medium text-slate-500 dark:text-[#A1A1AA] mb-1.5">{field.label}</label>
+                      <label className="block text-xs font-medium text-slate-500 mb-1.5">{field.label}</label>
                       <FieldInput
                         value={credentials[field.key] || ''}
                         onChange={(v) => {
@@ -654,7 +654,7 @@ function WizardPanel({
                         placeholder={isConnected ? '(unchanged — enter new value to update)' : field.placeholder}
                         type={field.type}
                       />
-                      {field.hint && <p className="mt-1.5 text-xs text-slate-500 dark:text-[#71717A]">{field.hint}</p>}
+                      {field.hint && <p className="mt-1.5 text-xs text-slate-500">{field.hint}</p>}
                     </div>
                   ))}
 
@@ -662,7 +662,7 @@ function WizardPanel({
                   <button
                     onClick={handleTestConnection}
                     disabled={testing}
-                    className="flex items-center gap-2 rounded-lg border border-slate-200 dark:border-white/[0.10] px-4 py-2 text-sm text-slate-500 dark:text-[#A1A1AA] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-white/[0.20] transition-colors disabled:opacity-50"
+                    className="flex items-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm text-slate-500 hover:text-slate-900 hover:border-slate-300 transition-colors disabled:opacity-50"
                   >
                     {testing ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
                     {testing ? 'Testing…' : 'Verify Connection'}
@@ -672,7 +672,7 @@ function WizardPanel({
                     <div className={`flex items-start gap-2.5 rounded-xl px-4 py-3 text-sm ${
                       testResult.ok
                         ? 'bg-[#22C55E]/10 border border-[#22C55E]/20 text-[#22C55E]'
-                        : 'bg-[#EC4899]/10 border border-[#EC4899]/20 text-[#EC4899]'
+                        : 'bg-[#FEF2F2] border border-line text-[#EF4444]'
                     }`}>
                       {testResult.ok
                         ? <CheckCircle2 className="h-4 w-4 shrink-0 mt-0.5" />
@@ -684,12 +684,12 @@ function WizardPanel({
               )}
 
               {def.connectType === 'oauth' && (
-                <div className="rounded-xl bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.06] px-5 py-8 text-center">
+                <div className="rounded-xl bg-slate-50 border border-slate-200 px-5 py-8 text-center">
                   <div className={`mx-auto flex h-12 w-12 items-center justify-center rounded-xl text-lg font-bold mb-4 ${def.color}`}>
                     {def.initial}
                   </div>
-                  <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-2">OAuth Coming Soon</h3>
-                  <p className="text-sm text-slate-500 dark:text-[#71717A]">
+                  <h3 className="text-sm font-semibold text-slate-900 mb-2">OAuth Coming Soon</h3>
+                  <p className="text-sm text-slate-500">
                     {def.name} integration via OAuth is coming in the next release. We&apos;ll notify you when it&apos;s ready.
                   </p>
                 </div>
@@ -701,11 +701,11 @@ function WizardPanel({
           {step === 'operations' && (
             <div className="space-y-3">
               <div>
-                <p className="text-sm font-medium text-slate-900 dark:text-white mb-1">Choose what your chatbot can do</p>
-                <p className="text-xs text-slate-500 dark:text-[#71717A]">Select the operations you want to enable. The chatbot will only perform the actions you check.</p>
+                <p className="text-sm font-medium text-slate-900 mb-1">Choose what your chatbot can do</p>
+                <p className="text-xs text-slate-500">Select the operations you want to enable. The chatbot will only perform the actions you check.</p>
               </div>
               {def.operations.map((op) => (
-                <label key={op.key} className="flex items-start gap-3 rounded-xl border border-slate-200 dark:border-white/[0.06] bg-slate-50 dark:bg-white/[0.03] px-4 py-3.5 cursor-pointer hover:border-[#BF56FF]/30 transition-colors group">
+                <label key={op.key} className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 cursor-pointer hover:border-line-strong transition-colors group">
                   <input
                     type="checkbox"
                     checked={operations.includes(op.key)}
@@ -714,16 +714,16 @@ function WizardPanel({
                         ? [...operations, op.key]
                         : operations.filter((k) => k !== op.key));
                     }}
-                    className="mt-0.5 h-4 w-4 rounded border-white/[0.20] accent-[#BF56FF] shrink-0"
+                    className="mt-0.5 h-4 w-4 rounded border-white/[0.20] accent-[#171717] shrink-0"
                   />
                   <div>
-                    <p className="text-sm font-medium text-slate-900 dark:text-white group-hover:text-[#BF56FF] transition-colors">{op.label}</p>
-                    <p className="text-xs text-slate-500 dark:text-[#71717A] mt-0.5">{op.description}</p>
+                    <p className="text-sm font-medium text-slate-900 group-hover:text-ink transition-colors">{op.label}</p>
+                    <p className="text-xs text-slate-500 mt-0.5">{op.description}</p>
                   </div>
                 </label>
               ))}
               {operations.length === 0 && (
-                <p className="text-xs text-[#EC4899]">Select at least one operation to continue.</p>
+                <p className="text-xs text-[#EF4444]">Select at least one operation to continue.</p>
               )}
             </div>
           )}
@@ -732,8 +732,8 @@ function WizardPanel({
           {step === 'behavior' && (
             <div className="space-y-4">
               <div>
-                <p className="text-sm font-medium text-slate-900 dark:text-white mb-1">When should the chatbot use {def.name}?</p>
-                <p className="text-xs text-slate-500 dark:text-[#71717A]">
+                <p className="text-sm font-medium text-slate-900 mb-1">When should the chatbot use {def.name}?</p>
+                <p className="text-xs text-slate-500">
                   Describe in plain English when this action should be triggered. The AI reads this and decides when to invoke {def.name} during conversations.
                 </p>
               </div>
@@ -741,24 +741,24 @@ function WizardPanel({
                 value={trigger}
                 onChange={(e) => setTrigger(e.target.value)}
                 rows={5}
-                className="w-full rounded-xl border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-white/[0.04] px-4 py-3 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#71717A] focus:border-[#BF56FF]/60 focus:outline-none focus:ring-2 focus:ring-[#BF56FF]/20 transition-colors resize-none"
+                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-ink focus:outline-none focus:ring-2 focus:ring-line transition-colors resize-none"
                 placeholder="Describe when the chatbot should trigger this action..."
               />
-              <div className="rounded-xl bg-slate-50 dark:bg-white/[0.02] border border-slate-100 dark:border-white/[0.05] px-4 py-3">
-                <p className="text-xs font-medium text-slate-500 dark:text-[#A1A1AA] mb-2">Example</p>
-                <p className="text-xs text-slate-400 dark:text-[#71717A] italic leading-relaxed">{def.defaultTrigger}</p>
+              <div className="rounded-xl bg-slate-50 border border-slate-100 px-4 py-3">
+                <p className="text-xs font-medium text-slate-500 mb-2">Example</p>
+                <p className="text-xs text-slate-400 italic leading-relaxed">{def.defaultTrigger}</p>
               </div>
             </div>
           )}
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between gap-3 px-6 py-4 border-t border-slate-100 dark:border-white/[0.06]">
+        <div className="flex items-center justify-between gap-3 px-6 py-4 border-t border-slate-100">
           <div>
             {stepIndex > 0 && (
               <button
                 onClick={handleBack}
-                className="rounded-xl border border-slate-200 dark:border-white/[0.10] px-4 py-2 text-sm text-slate-500 dark:text-[#A1A1AA] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-white/[0.20] transition-colors"
+                className="rounded-xl border border-slate-200 px-4 py-2 text-sm text-slate-500 hover:text-slate-900 hover:border-slate-300 transition-colors"
               >
                 Back
               </button>
@@ -768,7 +768,7 @@ function WizardPanel({
           <div className="flex items-center gap-3">
             <button
               onClick={onClose}
-              className="rounded-xl border border-slate-200 dark:border-white/[0.10] px-4 py-2 text-sm text-slate-500 dark:text-[#A1A1AA] hover:text-slate-900 dark:hover:text-white transition-colors"
+              className="rounded-xl border border-slate-200 px-4 py-2 text-sm text-slate-500 hover:text-slate-900 transition-colors"
             >
               Cancel
             </button>
@@ -777,7 +777,7 @@ function WizardPanel({
               <button
                 onClick={handleSaveAndActivate}
                 disabled={saving || !canProceed()}
-                className="inline-flex items-center gap-2 rounded-xl bg-[#BF56FF] px-5 py-2 text-sm font-semibold text-white hover:bg-[#BF56FF]/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="inline-flex items-center gap-2 rounded-xl bg-ink px-5 py-2 text-sm font-semibold text-white hover:bg-ink-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {saving && <Loader2 className="h-4 w-4 animate-spin" />}
                 {saving ? 'Saving…' : 'Save & Activate'}
@@ -800,19 +800,19 @@ function WizardPanel({
       {showDisconnectConfirm && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60" onClick={() => setShowDisconnectConfirm(false)} />
-          <div className="relative w-full max-w-sm rounded-2xl bg-white dark:bg-[#0E0E10] border border-slate-200 dark:border-white/[0.08] p-6 shadow-2xl">
-            <h3 className="text-base font-semibold text-slate-900 dark:text-white mb-2">Disconnect {def.name}?</h3>
-            <p className="text-sm text-slate-500 dark:text-[#A1A1AA] mb-5">
+          <div className="relative w-full max-w-sm rounded-2xl bg-white border border-slate-200 p-6 shadow-2xl">
+            <h3 className="text-base font-semibold text-slate-900 mb-2">Disconnect {def.name}?</h3>
+            <p className="text-sm text-slate-500 mb-5">
               This will remove your stored credentials and disable all {def.name} actions. You can reconnect at any time.
             </p>
             <div className="flex items-center justify-end gap-3">
-              <button onClick={() => setShowDisconnectConfirm(false)} className="rounded-xl border border-slate-200 dark:border-white/[0.10] px-4 py-2 text-sm text-slate-500 dark:text-[#A1A1AA] hover:text-slate-900 dark:hover:text-white transition-colors">
+              <button onClick={() => setShowDisconnectConfirm(false)} className="rounded-xl border border-slate-200 px-4 py-2 text-sm text-slate-500 hover:text-slate-900 transition-colors">
                 Cancel
               </button>
               <button
                 onClick={handleDisconnect}
                 disabled={disconnecting}
-                className="inline-flex items-center gap-2 rounded-xl bg-[#EC4899] px-4 py-2 text-sm font-semibold text-white hover:bg-[#EC4899]/80 transition-colors disabled:opacity-50"
+                className="inline-flex items-center gap-2 rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white hover:bg-ink-hover transition-colors disabled:opacity-50"
               >
                 {disconnecting && <Loader2 className="h-4 w-4 animate-spin" />}
                 {disconnecting ? 'Disconnecting…' : 'Disconnect'}
@@ -831,38 +831,38 @@ function ButtonActionCard({ action, onUpdate, onDelete }: { action: ButtonAction
   const [expanded, setExpanded] = useState(true);
   return (
     <div className="v4-card overflow-hidden">
-      <div className="flex items-center gap-3 px-5 py-3 border-b border-slate-100 dark:border-white/[0.06]">
-        <GripVertical className="h-4 w-4 text-slate-400 dark:text-[#3F3F46] shrink-0" />
-        <span className="flex-1 min-w-0 text-sm font-medium text-slate-900 dark:text-white truncate">{action.label || 'Untitled Button'}</span>
+      <div className="flex items-center gap-3 px-5 py-3 border-b border-slate-100">
+        <GripVertical className="h-4 w-4 text-slate-400 shrink-0" />
+        <span className="flex-1 min-w-0 text-sm font-medium text-slate-900 truncate">{action.label || 'Untitled Button'}</span>
         <Toggle checked={action.enabled} onChange={(v) => onUpdate({ enabled: v })} />
-        <button onClick={() => setExpanded(!expanded)} className="p-1 rounded text-slate-500 dark:text-[#71717A] hover:text-slate-900 dark:hover:text-white transition-colors">
+        <button onClick={() => setExpanded(!expanded)} className="p-1 rounded text-slate-500 hover:text-slate-900 transition-colors">
           {expanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
         </button>
-        <button onClick={onDelete} className="p-1 rounded text-slate-500 dark:text-[#71717A] hover:text-[#EC4899] transition-colors">
+        <button onClick={onDelete} className="p-1 rounded text-slate-500 hover:text-[#EF4444] transition-colors">
           <Trash2 className="h-4 w-4" />
         </button>
       </div>
       {expanded && (
         <div className="px-5 py-4 space-y-4">
           <div>
-            <label className="block text-xs font-medium text-slate-500 dark:text-[#A1A1AA] mb-1.5">Button Label</label>
+            <label className="block text-xs font-medium text-slate-500 mb-1.5">Button Label</label>
             <FieldInput value={action.label} onChange={(v) => onUpdate({ label: v })} placeholder="e.g. View Pricing" />
           </div>
           <div>
-            <label htmlFor={`btn-type-${action.id}`} className="block text-xs font-medium text-slate-500 dark:text-[#A1A1AA] mb-1.5">Action Type</label>
+            <label htmlFor={`btn-type-${action.id}`} className="block text-xs font-medium text-slate-500 mb-1.5">Action Type</label>
             <select id={`btn-type-${action.id}`} value={action.actionType} onChange={(e) => onUpdate({ actionType: e.target.value as ButtonActionType, actionValue: '' })}
-              className="w-full rounded-lg border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-white/[0.04] px-3 py-2 text-sm text-slate-900 dark:text-white focus:border-[#BF56FF]/60 focus:outline-none focus:ring-2 focus:ring-[#BF56FF]/20 transition-colors">
-              {ACTION_TYPE_OPTIONS.map((opt) => <option key={opt.value} value={opt.value} className="bg-white dark:bg-[#0E0E10]">{opt.label}</option>)}
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:border-ink focus:outline-none focus:ring-2 focus:ring-line transition-colors">
+              {ACTION_TYPE_OPTIONS.map((opt) => <option key={opt.value} value={opt.value} className="bg-white">{opt.label}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-500 dark:text-[#A1A1AA] mb-1.5">{actionValueLabel(action.actionType)}</label>
+            <label className="block text-xs font-medium text-slate-500 mb-1.5">{actionValueLabel(action.actionType)}</label>
             <FieldInput value={action.actionValue} onChange={(v) => onUpdate({ actionValue: v })} placeholder={actionValuePlaceholder(action.actionType)} />
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-500 dark:text-[#A1A1AA] mb-1.5">Condition</label>
+            <label className="block text-xs font-medium text-slate-500 mb-1.5">Condition</label>
             <FieldInput value={action.condition} onChange={(v) => onUpdate({ condition: v })} placeholder="e.g. When user asks about pricing" />
-            <p className="mt-1.5 text-xs text-slate-500 dark:text-[#71717A]">Describe when this button should appear in the conversation</p>
+            <p className="mt-1.5 text-xs text-slate-500">Describe when this button should appear in the conversation</p>
           </div>
         </div>
       )}
@@ -875,14 +875,14 @@ function FormFieldRow({ field, onUpdate, onDelete }: { field: FormField; onUpdat
     <div className="flex items-center gap-3">
       <FieldInput value={field.name} onChange={(v) => onUpdate({ name: v })} placeholder="Field name" className="flex-1" />
       <select value={field.type} onChange={(e) => onUpdate({ type: e.target.value as FormFieldType })}
-        className="w-28 rounded-lg border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-white/[0.04] px-2 py-2 text-sm text-slate-900 dark:text-white focus:border-[#BF56FF]/60 focus:outline-none focus:ring-2 focus:ring-[#BF56FF]/20 transition-colors">
-        {FIELD_TYPE_OPTIONS.map((opt) => <option key={opt.value} value={opt.value} className="bg-white dark:bg-[#0E0E10]">{opt.label}</option>)}
+        className="w-28 rounded-lg border border-slate-200 bg-white px-2 py-2 text-sm text-slate-900 focus:border-ink focus:outline-none focus:ring-2 focus:ring-line transition-colors">
+        {FIELD_TYPE_OPTIONS.map((opt) => <option key={opt.value} value={opt.value} className="bg-white">{opt.label}</option>)}
       </select>
       <div className="flex items-center gap-2">
         <Toggle checked={field.required} onChange={(v) => onUpdate({ required: v })} />
-        <span className="text-xs text-slate-500 dark:text-[#71717A] w-14">{field.required ? 'Required' : 'Optional'}</span>
+        <span className="text-xs text-slate-500 w-14">{field.required ? 'Required' : 'Optional'}</span>
       </div>
-      <button onClick={onDelete} className="p-1.5 rounded text-slate-400 dark:text-[#71717A] hover:text-[#EC4899] transition-colors">
+      <button onClick={onDelete} className="p-1.5 rounded text-slate-400 hover:text-[#EF4444] transition-colors">
         <Trash2 className="h-4 w-4" />
       </button>
     </div>
@@ -903,49 +903,49 @@ function FormActionCard({ form, onUpdate, onDelete }: { form: FormAction; onUpda
   };
   return (
     <div className="v4-card overflow-hidden">
-      <div className="flex items-center gap-3 px-5 py-3 border-b border-slate-100 dark:border-white/[0.06]">
-        <GripVertical className="h-4 w-4 text-slate-400 dark:text-[#3F3F46] shrink-0" />
+      <div className="flex items-center gap-3 px-5 py-3 border-b border-slate-100">
+        <GripVertical className="h-4 w-4 text-slate-400 shrink-0" />
         <div className="flex-1 min-w-0">
-          <span className="text-sm font-medium text-slate-900 dark:text-white truncate block">{form.name || 'Untitled Form'}</span>
-          {form.fields.length > 0 && <span className="text-xs text-slate-500 dark:text-[#71717A]">{form.fields.length} field{form.fields.length !== 1 ? 's' : ''}</span>}
+          <span className="text-sm font-medium text-slate-900 truncate block">{form.name || 'Untitled Form'}</span>
+          {form.fields.length > 0 && <span className="text-xs text-slate-500">{form.fields.length} field{form.fields.length !== 1 ? 's' : ''}</span>}
         </div>
         <Toggle checked={form.enabled} onChange={(v) => onUpdate({ enabled: v })} />
-        <button onClick={() => setExpanded(!expanded)} className="p-1 rounded text-slate-500 dark:text-[#71717A] hover:text-slate-900 dark:hover:text-white transition-colors">
+        <button onClick={() => setExpanded(!expanded)} className="p-1 rounded text-slate-500 hover:text-slate-900 transition-colors">
           {expanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
         </button>
-        <button onClick={onDelete} className="p-1 rounded text-slate-500 dark:text-[#71717A] hover:text-[#EC4899] transition-colors">
+        <button onClick={onDelete} className="p-1 rounded text-slate-500 hover:text-[#EF4444] transition-colors">
           <Trash2 className="h-4 w-4" />
         </button>
       </div>
       {expanded && (
         <div className="px-5 py-4 space-y-4">
           <div>
-            <label className="block text-xs font-medium text-slate-500 dark:text-[#A1A1AA] mb-1.5">Form Name</label>
+            <label className="block text-xs font-medium text-slate-500 mb-1.5">Form Name</label>
             <FieldInput value={form.name} onChange={(v) => onUpdate({ name: v })} placeholder="e.g. Contact Information" />
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-500 dark:text-[#A1A1AA] mb-1.5">Trigger Phrase</label>
+            <label className="block text-xs font-medium text-slate-500 mb-1.5">Trigger Phrase</label>
             <FieldInput value={form.triggerPhrase} onChange={(v) => onUpdate({ triggerPhrase: v })} placeholder="e.g. When user wants to get in touch" />
-            <p className="mt-1.5 text-xs text-slate-500 dark:text-[#71717A]">Describe when the chatbot should display this form</p>
+            <p className="mt-1.5 text-xs text-slate-500">Describe when the chatbot should display this form</p>
           </div>
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="text-xs font-medium text-slate-500 dark:text-[#A1A1AA]">Fields</label>
-              <span className="text-xs text-slate-500 dark:text-[#71717A]">{form.fields.length} field{form.fields.length !== 1 ? 's' : ''}</span>
+              <label className="text-xs font-medium text-slate-500">Fields</label>
+              <span className="text-xs text-slate-500">{form.fields.length} field{form.fields.length !== 1 ? 's' : ''}</span>
             </div>
             <div className="space-y-2">
               {form.fields.map((field) => (
                 <FormFieldRow key={field.id} field={field} onUpdate={(patch) => updateField(field.id, patch)} onDelete={() => deleteField(field.id)} />
               ))}
             </div>
-            <button onClick={addField} className="mt-3 w-full rounded-lg border border-dashed border-slate-200 dark:border-white/[0.10] py-2.5 text-sm text-slate-500 dark:text-[#A1A1AA] hover:border-[#BF56FF]/40 hover:text-[#BF56FF] transition-colors flex items-center justify-center gap-2">
+            <button onClick={addField} className="mt-3 w-full rounded-lg border border-dashed border-slate-200 py-2.5 text-sm text-slate-500 hover:border-ink hover:text-ink transition-colors flex items-center justify-center gap-2">
               <Plus className="h-4 w-4" />Add Field
             </button>
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-500 dark:text-[#A1A1AA] mb-1.5">Webhook URL</label>
+            <label className="block text-xs font-medium text-slate-500 mb-1.5">Webhook URL</label>
             <FieldInput value={form.webhookUrl} onChange={(v) => onUpdate({ webhookUrl: v })} placeholder="https://hooks.example.com/form-submit" />
-            <p className="mt-1.5 text-xs text-slate-500 dark:text-[#71717A]">Form submissions will be sent to this URL as a POST request</p>
+            <p className="mt-1.5 text-xs text-slate-500">Form submissions will be sent to this URL as a POST request</p>
           </div>
         </div>
       )}
@@ -1082,15 +1082,15 @@ export default function AIActionsPage() {
     return (
       <div className="space-y-6 v4-animate-in">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-slate-200 dark:bg-white/[0.06] animate-pulse" />
+          <div className="h-10 w-10 rounded-xl bg-slate-200 animate-pulse" />
           <div className="space-y-2">
-            <div className="h-7 w-36 rounded-lg bg-slate-200 dark:bg-white/[0.06] animate-pulse" />
-            <div className="h-4 w-64 rounded-lg bg-slate-100 dark:bg-white/[0.04] animate-pulse" />
+            <div className="h-7 w-36 rounded-lg bg-slate-200 animate-pulse" />
+            <div className="h-4 w-64 rounded-lg bg-slate-100 animate-pulse" />
           </div>
         </div>
-        <div className="h-10 w-80 rounded-xl bg-slate-100 dark:bg-white/[0.04] animate-pulse" />
+        <div className="h-10 w-80 rounded-xl bg-slate-100 animate-pulse" />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {[1,2,3,4,5,6].map((i) => <div key={i} className="h-40 rounded-2xl bg-slate-50 dark:bg-white/[0.03] animate-pulse" />)}
+          {[1,2,3,4,5,6].map((i) => <div key={i} className="h-40 rounded-2xl bg-slate-50 animate-pulse" />)}
         </div>
       </div>
     );
@@ -1104,8 +1104,8 @@ export default function AIActionsPage() {
       {toast && (
         <div className={`fixed top-4 right-4 z-[70] flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium shadow-xl border ${
           toast.type === 'success'
-            ? 'bg-white dark:bg-[#0E0E10] border-[#22C55E]/30 text-[#22C55E]'
-            : 'bg-white dark:bg-[#0E0E10] border-[#EC4899]/30 text-[#EC4899]'
+            ? 'bg-white border-[#22C55E]/30 text-[#22C55E]'
+            : 'bg-white border-line text-[#EF4444]'
         }`}>
           {toast.type === 'success' ? <CheckCircle2 className="h-4 w-4 shrink-0" /> : <AlertTriangle className="h-4 w-4 shrink-0" />}
           {toast.message}
@@ -1119,24 +1119,24 @@ export default function AIActionsPage() {
             <Zap className="h-5 w-5 text-white" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-white">AI Actions</h1>
-            <p className="text-sm text-slate-500 dark:text-[#71717A]">Configure actions your chatbot can perform during conversations</p>
+            <h1 className="text-2xl font-bold text-slate-900">AI Actions</h1>
+            <p className="text-sm text-slate-500">Configure actions your chatbot can perform during conversations</p>
           </div>
         </div>
         {activeTab !== 'builtin' && (
           <button onClick={handleSave} disabled={saving}
-            className="inline-flex items-center gap-2 rounded-xl bg-[#BF56FF] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#BF56FF]/80 transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
+            className="inline-flex items-center gap-2 rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white hover:bg-ink-hover transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
             {saving ? <><Loader2 className="h-4 w-4 animate-spin" />Saving…</> : 'Save Changes'}
           </button>
         )}
       </div>
 
       {/* Tab Bar */}
-      <div className="inline-flex items-center rounded-xl bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.06] p-1">
+      <div className="inline-flex items-center rounded-xl bg-slate-100 border border-slate-200 p-1">
         {tabs.map((tab) => (
           <button key={tab.key} onClick={() => setActiveTab(tab.key)}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-              activeTab === tab.key ? 'bg-[#BF56FF] text-white shadow-sm' : 'text-slate-500 dark:text-[#71717A] hover:text-slate-700 dark:hover:text-[#A1A1AA]'
+              activeTab === tab.key ? 'bg-ink text-white shadow-sm' : 'text-slate-500 hover:text-slate-700'
             }`}>
             {tab.icon}{tab.label}
             {tab.key === 'builtin' && connectedCount > 0 && (
@@ -1151,13 +1151,13 @@ export default function AIActionsPage() {
       {/* ── Button Actions Tab ──────────────────────────────────────────────── */}
       {activeTab === 'buttons' && (
         <div className="space-y-4">
-          <p className="text-sm text-slate-500 dark:text-[#71717A]">Define clickable buttons that appear in chat responses</p>
+          <p className="text-sm text-slate-500">Define clickable buttons that appear in chat responses</p>
           {buttonActions.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-slate-200 dark:border-white/[0.10] bg-slate-50 dark:bg-white/[0.02] px-6 py-16 text-center">
-              <MousePointer className="mx-auto h-10 w-10 text-slate-400 dark:text-[#3F3F46]" />
-              <h3 className="mt-4 text-sm font-semibold text-slate-900 dark:text-white">No button actions configured</h3>
-              <p className="mt-1 text-sm text-slate-500 dark:text-[#71717A] max-w-sm mx-auto">Add your first action to enhance chatbot interactions.</p>
-              <button onClick={addButtonAction} className="mt-6 inline-flex items-center gap-2 rounded-xl bg-slate-900 dark:bg-white px-4 py-2.5 text-sm font-semibold text-white dark:text-[#08080A] hover:bg-slate-800 dark:hover:bg-white/90 transition-colors">
+            <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-6 py-16 text-center">
+              <MousePointer className="mx-auto h-10 w-10 text-slate-400" />
+              <h3 className="mt-4 text-sm font-semibold text-slate-900">No button actions configured</h3>
+              <p className="mt-1 text-sm text-slate-500 max-w-sm mx-auto">Add your first action to enhance chatbot interactions.</p>
+              <button onClick={addButtonAction} className="mt-6 inline-flex items-center gap-2 rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white hover:bg-ink-hover transition-colors">
                 <Plus className="h-4 w-4" />Add Button Action
               </button>
             </div>
@@ -1168,7 +1168,7 @@ export default function AIActionsPage() {
                   <ButtonActionCard key={action.id} action={action} onUpdate={(patch) => updateButtonAction(action.id, patch)} onDelete={() => confirmDeleteButtonAction(action)} />
                 ))}
               </div>
-              <button onClick={addButtonAction} className="w-full rounded-xl border border-dashed border-slate-200 dark:border-white/[0.10] py-3 text-sm text-slate-500 dark:text-[#A1A1AA] hover:border-[#BF56FF]/40 hover:text-[#BF56FF] transition-colors flex items-center justify-center gap-2">
+              <button onClick={addButtonAction} className="w-full rounded-xl border border-dashed border-slate-200 py-3 text-sm text-slate-500 hover:border-ink hover:text-ink transition-colors flex items-center justify-center gap-2">
                 <Plus className="h-4 w-4" />Add Button Action
               </button>
             </>
@@ -1179,13 +1179,13 @@ export default function AIActionsPage() {
       {/* ── Form Actions Tab ────────────────────────────────────────────────── */}
       {activeTab === 'forms' && (
         <div className="space-y-4">
-          <p className="text-sm text-slate-500 dark:text-[#71717A]">Create forms that collect structured data from users</p>
+          <p className="text-sm text-slate-500">Create forms that collect structured data from users</p>
           {formActions.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-slate-200 dark:border-white/[0.10] bg-slate-50 dark:bg-white/[0.02] px-6 py-16 text-center">
-              <FormInput className="mx-auto h-10 w-10 text-slate-400 dark:text-[#3F3F46]" />
-              <h3 className="mt-4 text-sm font-semibold text-slate-900 dark:text-white">No form actions configured</h3>
-              <p className="mt-1 text-sm text-slate-500 dark:text-[#71717A] max-w-sm mx-auto">Create forms to collect data from your users.</p>
-              <button onClick={addFormAction} className="mt-6 inline-flex items-center gap-2 rounded-xl bg-slate-900 dark:bg-white px-4 py-2.5 text-sm font-semibold text-white dark:text-[#08080A] hover:bg-slate-800 dark:hover:bg-white/90 transition-colors">
+            <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-6 py-16 text-center">
+              <FormInput className="mx-auto h-10 w-10 text-slate-400" />
+              <h3 className="mt-4 text-sm font-semibold text-slate-900">No form actions configured</h3>
+              <p className="mt-1 text-sm text-slate-500 max-w-sm mx-auto">Create forms to collect data from your users.</p>
+              <button onClick={addFormAction} className="mt-6 inline-flex items-center gap-2 rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white hover:bg-ink-hover transition-colors">
                 <Plus className="h-4 w-4" />Add Form Action
               </button>
             </div>
@@ -1196,7 +1196,7 @@ export default function AIActionsPage() {
                   <FormActionCard key={form.id} form={form} onUpdate={(patch) => updateFormAction(form.id, patch)} onDelete={() => confirmDeleteFormAction(form)} />
                 ))}
               </div>
-              <button onClick={addFormAction} className="w-full rounded-xl border border-dashed border-slate-200 dark:border-white/[0.10] py-3 text-sm text-slate-500 dark:text-[#A1A1AA] hover:border-[#BF56FF]/40 hover:text-[#BF56FF] transition-colors flex items-center justify-center gap-2">
+              <button onClick={addFormAction} className="w-full rounded-xl border border-dashed border-slate-200 py-3 text-sm text-slate-500 hover:border-ink hover:text-ink transition-colors flex items-center justify-center gap-2">
                 <Plus className="h-4 w-4" />Add Form Action
               </button>
             </>
@@ -1209,7 +1209,7 @@ export default function AIActionsPage() {
         <div className="space-y-6">
           {/* Stats row */}
           <div className="flex items-center justify-between">
-            <p className="text-sm text-slate-500 dark:text-[#71717A]">
+            <p className="text-sm text-slate-500">
               Connect third-party tools your chatbot can use during conversations.{' '}
               {connectedCount > 0 && (
                 <span className="text-[#22C55E]">{connectedCount} connected.</span>
@@ -1219,7 +1219,7 @@ export default function AIActionsPage() {
 
           {/* Webhook / Automation section */}
           <div>
-            <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-400 dark:text-[#3F3F46] mb-3">Automation & Webhooks</h2>
+            <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-3">Automation & Webhooks</h2>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {ALL_INTEGRATIONS.filter((i) => i.connectType === 'webhook').map((def) => (
                 <IntegrationCard
@@ -1273,24 +1273,24 @@ export default function AIActionsPage() {
       {deleteDialog.open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setDeleteDialog({ open: false, type: 'button', id: '', name: '' })} />
-          <div className="relative w-full max-w-md rounded-2xl bg-slate-50 dark:bg-[#0E0E10] border border-slate-200 dark:border-white/[0.08] shadow-2xl p-6">
-            <button onClick={() => setDeleteDialog({ open: false, type: 'button', id: '', name: '' })} className="absolute right-4 top-4 text-slate-500 dark:text-[#71717A] hover:text-slate-900 dark:hover:text-white transition-colors">
+          <div className="relative w-full max-w-md rounded-2xl bg-slate-50 border border-slate-200 shadow-2xl p-6">
+            <button onClick={() => setDeleteDialog({ open: false, type: 'button', id: '', name: '' })} className="absolute right-4 top-4 text-slate-500 hover:text-slate-900 transition-colors">
               <X className="h-4 w-4" />
             </button>
             <div className="flex items-center gap-3 mb-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#EC4899]/10">
-                <AlertTriangle className="h-5 w-5 text-[#EC4899]" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FEF2F2]">
+                <AlertTriangle className="h-5 w-5 text-[#EF4444]" />
               </div>
-              <h2 className="text-base font-semibold text-slate-900 dark:text-white">Delete {deleteDialog.type === 'button' ? 'Button Action' : 'Form Action'}</h2>
+              <h2 className="text-base font-semibold text-slate-900">Delete {deleteDialog.type === 'button' ? 'Button Action' : 'Form Action'}</h2>
             </div>
-            <p className="text-sm text-slate-500 dark:text-[#A1A1AA] mb-6">
-              Are you sure you want to delete <span className="font-medium text-slate-900 dark:text-white">&quot;{deleteDialog.name}&quot;</span>? This action cannot be undone.
+            <p className="text-sm text-slate-500 mb-6">
+              Are you sure you want to delete <span className="font-medium text-slate-900">&quot;{deleteDialog.name}&quot;</span>? This action cannot be undone.
             </p>
             <div className="flex items-center justify-end gap-3">
-              <button onClick={() => setDeleteDialog({ open: false, type: 'button', id: '', name: '' })} className="rounded-xl border border-slate-200 dark:border-white/[0.10] px-4 py-2 text-sm text-slate-500 dark:text-[#A1A1AA] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-white/[0.20] transition-colors">
+              <button onClick={() => setDeleteDialog({ open: false, type: 'button', id: '', name: '' })} className="rounded-xl border border-slate-200 px-4 py-2 text-sm text-slate-500 hover:text-slate-900 hover:border-slate-300 transition-colors">
                 Cancel
               </button>
-              <button onClick={handleConfirmDelete} className="rounded-xl bg-[#EC4899] px-4 py-2 text-sm font-semibold text-white hover:bg-[#EC4899]/80 transition-colors">
+              <button onClick={handleConfirmDelete} className="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white hover:bg-ink-hover transition-colors">
                 Delete
               </button>
             </div>

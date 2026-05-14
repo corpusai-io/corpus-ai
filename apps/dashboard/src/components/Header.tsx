@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Menu, FileText, Bot, Trash2, Settings, Sun, Moon } from 'lucide-react';
+import { Menu, FileText, Trash2, Settings, ChevronRight } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useTheme } from '@/contexts/ThemeContext';
 import { useHeaderStore } from '@/stores/header-store';
+import { Pill } from '@/components/corpus';
 import UserDropdown from './UserDropdown';
 
 const TIER_NAMES: Record<number, string> = {
@@ -16,13 +16,8 @@ const TIER_NAMES: Record<number, string> = {
   3: 'Business',
 };
 
-interface HeaderProps {
-  onMenuClick: () => void;
-}
-
-export default function Header({ onMenuClick }: HeaderProps) {
+export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
   const { user } = useAuth();
-  const { isDark, toggleTheme } = useTheme();
   const router = useRouter();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const chatContext = useHeaderStore((s) => s.chatContext);
@@ -37,62 +32,54 @@ export default function Header({ onMenuClick }: HeaderProps) {
     : '?';
 
   const displayName = user?.name || user?.email?.split('@')[0] || '';
-  const tier = user?.tier ?? 0;
-  const tierName = TIER_NAMES[tier] || 'Free';
+  const tierName    = TIER_NAMES[user?.tier ?? 0] || 'Free';
 
   return (
-    <header className="h-14 bg-white/90 dark:bg-[#111113]/90 backdrop-blur-sm border-b border-slate-200 dark:border-[#1E1E22] flex items-center justify-between px-4 lg:px-6 sticky top-0 z-30">
+    <header className="h-14 bg-canvas/85 backdrop-blur-md border-b border-line flex items-center justify-between px-4 lg:px-6 sticky top-0 z-30">
 
-      {/* ── Left ─────────────────────────────────────────────── */}
-      <div className="flex items-center gap-3">
+      {/* ── Left ──────────────────────────────────────────────── */}
+      <div className="flex items-center gap-2 min-w-0">
         {/* Mobile hamburger */}
         <button
           onClick={onMenuClick}
-          className="lg:hidden p-1.5 rounded-lg text-slate-400 dark:text-[#58585E] hover:text-slate-600 dark:hover:text-[#A8A8B0] hover:bg-slate-100 dark:hover:bg-[#1C1C20] transition-colors"
-          aria-label="Toggle sidebar"
+          className="lg:hidden p-1.5 rounded-lg text-muted hover:text-ink hover:bg-surface transition-colors"
+          aria-label="Open navigation"
         >
-          <Menu className="h-4 w-4" />
+          <Menu className="w-4 h-4" />
         </button>
 
         {chatContext ? (
-          /* ── Chat context: show bot identity ── */
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-full bg-slate-100 dark:bg-[#1E1E22] border border-slate-200 dark:border-[#2E2E34] flex items-center justify-center">
-              <Bot className="w-3.5 h-3.5 text-slate-400 dark:text-[#8A8A98]" />
-            </div>
-            <span className="text-sm font-semibold text-slate-800 dark:text-[#E8E8F0]">{chatContext.chatbotName}</span>
-            <span className="px-1.5 py-0.5 rounded-md bg-slate-100 dark:bg-[#1C1C20] text-slate-400 dark:text-[#58585E] text-[10px] font-medium border border-slate-200 dark:border-[#2A2A30]">
-              Preview
-            </span>
-          </div>
-        ) : (
-          /* ── Default: logo (mobile) + tier badge (desktop) ── */
           <>
-            <Link href="/" className="flex items-center lg:hidden">
-              <img src="/logo.svg" alt="Corpus AI" className="h-5 dark:brightness-0 dark:invert dark:opacity-75 opacity-80" />
-            </Link>
-            {user && (
-              <span className="hidden lg:inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-100 dark:bg-[#1C1C20] text-slate-500 dark:text-[#68686E] border border-slate-200 dark:border-[#2A2A30]">
-                {tierName}
-              </span>
-            )}
+            <button
+              onClick={() => router.push('/chatbots')}
+              className="text-[13px] text-muted hover:text-ink transition-colors"
+            >
+              Chatbots
+            </button>
+            <ChevronRight className="w-3.5 h-3.5 text-muted-soft flex-shrink-0" />
+            <span className="text-[13px] font-medium text-ink truncate max-w-[40vw]">
+              {chatContext.chatbotName}
+            </span>
+            <Pill variant="mono" className="ml-2">Preview</Pill>
           </>
+        ) : (
+          user && <Pill variant="mono">{tierName} plan</Pill>
         )}
       </div>
 
-      {/* ── Right ────────────────────────────────────────────── */}
+      {/* ── Right ─────────────────────────────────────────────── */}
       <div className="flex items-center gap-1">
 
-        {/* Chat-specific actions: Clear + Settings */}
+        {/* Chat-specific actions */}
         {chatContext && (
           <>
             {chatContext.hasMessages && (
               <button
                 onClick={chatContext.onClear}
                 disabled={chatContext.clearingHistory}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs text-slate-400 dark:text-[#58585E] hover:text-red-500 dark:hover:text-[#9E4A4A] hover:bg-slate-100 dark:hover:bg-[#1C1C20] transition-all disabled:opacity-40"
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[12px] text-muted hover:text-[#EF4444] hover:bg-[#FEF2F2] transition-colors disabled:opacity-40"
               >
-                <Trash2 className="h-3.5 w-3.5" />
+                <Trash2 className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">
                   {chatContext.clearingHistory ? 'Clearing…' : 'Clear'}
                 </span>
@@ -100,50 +87,38 @@ export default function Header({ onMenuClick }: HeaderProps) {
             )}
             <button
               onClick={() => router.push(`/chatbots/${chatContext.chatbotId}/settings`)}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs text-slate-400 dark:text-[#58585E] hover:text-slate-600 dark:hover:text-[#B0B0BC] hover:bg-slate-100 dark:hover:bg-[#1C1C20] transition-all"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[12px] text-muted hover:text-ink hover:bg-surface transition-colors"
             >
-              <Settings className="h-3.5 w-3.5" />
+              <Settings className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Settings</span>
             </button>
-            <div className="w-px h-4 bg-slate-200 dark:bg-[#26262B] mx-1" />
+            <div className="w-px h-4 bg-line mx-1" />
           </>
         )}
 
-        {/* Docs — always visible */}
         <a
           href={process.env.NEXT_PUBLIC_DOCS_URL || 'http://localhost:3001'}
           target="_blank"
           rel="noopener noreferrer"
-          className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-500 dark:text-[#68686E] border border-slate-200 dark:border-[#26262B] hover:bg-slate-50 dark:hover:bg-[#1C1C20] hover:text-slate-700 dark:hover:text-[#C0C0CC] hover:border-slate-300 dark:hover:border-[#32323A] transition-all duration-150"
+          className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-medium text-muted border border-line hover:bg-surface hover:text-ink transition-colors"
         >
-          <FileText className="h-3.5 w-3.5" />
+          <FileText className="w-3.5 h-3.5" />
           Docs
         </a>
 
-        {/* Theme toggle */}
-        <button
-          onClick={toggleTheme}
-          className="p-1.5 rounded-lg text-slate-400 dark:text-[#58585E] hover:text-slate-600 dark:hover:text-[#A8A8B0] hover:bg-slate-100 dark:hover:bg-[#1C1C20] transition-colors"
-          aria-label="Toggle theme"
-          title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-        >
-          {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-        </button>
+        <div className="hidden sm:block w-px h-4 bg-line mx-1" />
 
-        {/* Divider */}
-        <div className="hidden sm:block w-px h-4 bg-slate-200 dark:bg-[#26262B] mx-1" />
-
-        {/* User avatar + dropdown */}
         <div className="relative">
           <button
             onClick={() => setDropdownOpen(!dropdownOpen)}
-            className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-lg hover:bg-slate-100 dark:hover:bg-[#1C1C20] transition-colors group"
+            className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-lg hover:bg-surface transition-colors"
+            aria-label="User menu"
           >
-            <div className="h-7 w-7 rounded-full bg-slate-100 dark:bg-[#1E1E22] border border-slate-200 dark:border-[#2E2E34] flex items-center justify-center shrink-0">
-              <span className="text-[11px] font-semibold text-slate-500 dark:text-[#8A8A98]">{initials}</span>
+            <div className="h-7 w-7 rounded-full bg-canvas border border-line flex items-center justify-center">
+              <span className="text-[10px] font-semibold text-muted">{initials}</span>
             </div>
             {displayName && (
-              <span className="hidden md:block text-xs font-medium text-slate-500 dark:text-[#78787E] group-hover:text-slate-700 dark:group-hover:text-[#A8A8B0] transition-colors max-w-[100px] truncate">
+              <span className="hidden md:block text-[12px] font-medium text-muted max-w-[100px] truncate">
                 {displayName}
               </span>
             )}

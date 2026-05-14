@@ -32,7 +32,7 @@ interface WidgetConfig {
 
 const DEFAULT_CONFIG: WidgetConfig = {
   chatbotName: 'AI Assistant',
-  primaryColor: '#BF56FF',
+  primaryColor: '#171717',
   welcomeMessage: 'Hello! How can I help you today?',
   suggestedQuestions: [
     'What can you help me with?',

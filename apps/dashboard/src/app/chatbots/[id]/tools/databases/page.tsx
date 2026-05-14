@@ -55,10 +55,10 @@ interface DatabaseConnection {
 }
 
 const DB_TYPE_META: Record<DatabaseType, { label: string; defaultPort: string; color: string; icon: string }> = {
-  postgresql: { label: 'PostgreSQL', defaultPort: '5432', color: 'bg-[#60A5FA]/10 text-[#60A5FA]',  icon: '🐘' },
-  mysql:      { label: 'MySQL',      defaultPort: '3306', color: 'bg-[#F59E0B]/10 text-[#F59E0B]',  icon: '🐬' },
-  mongodb:    { label: 'MongoDB',    defaultPort: '27017',color: 'bg-[#22C55E]/10 text-[#22C55E]',  icon: '🍃' },
-  mssql:      { label: 'SQL Server', defaultPort: '1433', color: 'bg-[#BF56FF]/10 text-[#BF56FF]',  icon: '🔷' },
+  postgresql: { label: 'PostgreSQL', defaultPort: '5432',  color: 'bg-surface border border-line text-ink', icon: 'PG' },
+  mysql:      { label: 'MySQL',      defaultPort: '3306',  color: 'bg-surface border border-line text-ink', icon: 'MY' },
+  mongodb:    { label: 'MongoDB',    defaultPort: '27017', color: 'bg-surface border border-line text-ink', icon: 'MG' },
+  mssql:      { label: 'SQL Server', defaultPort: '1433',  color: 'bg-surface border border-line text-ink', icon: 'MS' },
 };
 
 const EXAMPLE_QUERIES = [
@@ -88,7 +88,7 @@ function FieldInput({
       placeholder={placeholder}
       disabled={disabled}
       style={style}
-      className={`w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm text-white placeholder:text-[#71717A] focus:border-[#BF56FF]/60 focus:outline-none focus:ring-2 focus:ring-[#BF56FF]/20 transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${className}`}
+      className={`w-full rounded-lg border border-line bg-canvas px-3 py-2 text-sm text-ink placeholder:text-muted-soft focus:border-ink focus:outline-none transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${className}`}
     />
   );
 }
@@ -154,14 +154,14 @@ function WizardStepIndicator({ currentStep, steps }: { currentStep: number; step
                   isCompleted
                     ? 'bg-[#22C55E] text-white'
                     : isActive
-                    ? 'bg-[#BF56FF] text-white'
+                    ? 'bg-ink text-white'
                     : 'bg-white/[0.06] text-[#71717A]'
                 }`}
               >
                 {isCompleted ? <CheckCircle className="h-4 w-4" /> : stepNum}
               </div>
               <span className={`mt-1.5 text-[11px] font-medium ${
-                isActive ? 'text-[#BF56FF]' : isCompleted ? 'text-[#22C55E]' : 'text-[#71717A]'
+                isActive ? 'text-ink' : isCompleted ? 'text-[#22C55E]' : 'text-[#71717A]'
               }`}>
                 {label}
               </span>
@@ -222,7 +222,7 @@ function SslSection({ enabled, onToggle, ca, onCa, cert, onCert, key: keyVal, on
               type="checkbox"
               checked={enabled}
               onChange={(e) => onToggle(e.target.checked)}
-              className="h-4 w-4 rounded accent-[#BF56FF] cursor-pointer"
+              className="h-4 w-4 rounded accent-[#171717] cursor-pointer"
             />
             <span className="text-sm text-[#A1A1AA]">Enable SSL/TLS encryption</span>
           </label>
@@ -234,7 +234,7 @@ function SslSection({ enabled, onToggle, ca, onCa, cert, onCert, key: keyVal, on
                   type="checkbox"
                   checked={rejectUnauthorized}
                   onChange={(e) => onRejectUnauthorized(e.target.checked)}
-                  className="h-4 w-4 rounded accent-[#BF56FF] cursor-pointer"
+                  className="h-4 w-4 rounded accent-[#171717] cursor-pointer"
                 />
                 <div>
                   <span className="text-sm text-[#A1A1AA]">Verify server certificate</span>
@@ -252,7 +252,7 @@ function SslSection({ enabled, onToggle, ca, onCa, cert, onCert, key: keyVal, on
                   onChange={(e) => onCa(e.target.value)}
                   placeholder={"-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----"}
                   rows={4}
-                  className="w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-xs font-mono text-white placeholder:text-[#71717A] focus:border-[#BF56FF]/60 focus:outline-none focus:ring-2 focus:ring-[#BF56FF]/20 resize-y"
+                  className="w-full rounded-lg border border-line bg-canvas px-3 py-2 text-xs font-mono text-ink placeholder:text-muted-soft focus:border-ink focus:outline-none resize-y"
                 />
                 <p className="mt-1 text-xs text-[#71717A]">Paste the CA certificate PEM content</p>
               </div>
@@ -267,7 +267,7 @@ function SslSection({ enabled, onToggle, ca, onCa, cert, onCert, key: keyVal, on
                   onChange={(e) => onCert(e.target.value)}
                   placeholder={"-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----"}
                   rows={4}
-                  className="w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-xs font-mono text-white placeholder:text-[#71717A] focus:border-[#BF56FF]/60 focus:outline-none focus:ring-2 focus:ring-[#BF56FF]/20 resize-y"
+                  className="w-full rounded-lg border border-line bg-canvas px-3 py-2 text-xs font-mono text-ink placeholder:text-muted-soft focus:border-ink focus:outline-none resize-y"
                 />
               </div>
 
@@ -281,7 +281,7 @@ function SslSection({ enabled, onToggle, ca, onCa, cert, onCert, key: keyVal, on
                   onChange={(e) => onKey(e.target.value)}
                   placeholder={"-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----"}
                   rows={4}
-                  className="w-full rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-xs font-mono text-white placeholder:text-[#71717A] focus:border-[#BF56FF]/60 focus:outline-none focus:ring-2 focus:ring-[#BF56FF]/20 resize-y"
+                  className="w-full rounded-lg border border-line bg-canvas px-3 py-2 text-xs font-mono text-ink placeholder:text-muted-soft focus:border-ink focus:outline-none resize-y"
                 />
                 <p className="mt-1 text-xs text-[#71717A]">Paste the private key PEM content</p>
               </div>
@@ -328,7 +328,7 @@ function MssqlEncryptionSection({ encrypt, onEncrypt, trustCert, onTrustCert }: 
               type="checkbox"
               checked={encrypt}
               onChange={(e) => onEncrypt(e.target.checked)}
-              className="h-4 w-4 rounded accent-[#BF56FF] cursor-pointer mt-0.5"
+              className="h-4 w-4 rounded accent-[#171717] cursor-pointer mt-0.5"
             />
             <div>
               <span className="text-sm text-[#A1A1AA]">Encrypt connection</span>
@@ -341,7 +341,7 @@ function MssqlEncryptionSection({ encrypt, onEncrypt, trustCert, onTrustCert }: 
               type="checkbox"
               checked={trustCert}
               onChange={(e) => onTrustCert(e.target.checked)}
-              className="h-4 w-4 rounded accent-[#BF56FF] cursor-pointer mt-0.5"
+              className="h-4 w-4 rounded accent-[#171717] cursor-pointer mt-0.5"
             />
             <div>
               <span className="text-sm text-[#A1A1AA]">Trust server certificate</span>
@@ -690,7 +690,7 @@ export default function DatabasesPage() {
       {/* Loading */}
       {loadingConnections && (
         <div className="flex items-center justify-center py-16">
-          <Loader2 className="h-8 w-8 animate-spin text-[#BF56FF]" />
+          <Loader2 className="h-8 w-8 animate-spin text-ink" />
         </div>
       )}
 
@@ -724,8 +724,8 @@ export default function DatabasesPage() {
               <div key={db.id} className="v4-card p-6">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex items-start gap-4">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#BF56FF]/10">
-                      <Database className="h-6 w-6 text-[#BF56FF]" />
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-ink/10">
+                      <Database className="h-6 w-6 text-ink" />
                     </div>
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
@@ -734,8 +734,8 @@ export default function DatabasesPage() {
                           {meta.label}
                         </span>
                         <span className="flex items-center gap-1 text-xs">
-                          <span className={`inline-block h-2 w-2 rounded-full ${db.status === 'connected' ? 'bg-[#22C55E]' : 'bg-[#EC4899]'}`} />
-                          <span className={db.status === 'connected' ? 'text-[#22C55E]' : 'text-[#EC4899]'}>
+                          <span className={`inline-block h-2 w-2 rounded-full ${db.status === 'connected' ? 'bg-[#22C55E]' : 'bg-ink'}`} />
+                          <span className={db.status === 'connected' ? 'text-[#22C55E]' : 'text-[#EF4444]'}>
                             {db.status === 'connected' ? 'Connected' : 'Error'}
                           </span>
                         </span>
@@ -769,7 +769,7 @@ export default function DatabasesPage() {
                         )}
                       </div>
                       {refreshNotification && refreshNotification.id === db.id && (
-                        <div className={`mt-2 flex items-center gap-2 rounded-lg px-2 py-1 text-xs ${refreshNotification.type === 'success' ? 'bg-[#22C55E]/10 text-[#22C55E]' : 'bg-[#EC4899]/10 text-[#EC4899]'}`}>
+                        <div className={`mt-2 flex items-center gap-2 rounded-lg px-2 py-1 text-xs ${refreshNotification.type === 'success' ? 'bg-[#22C55E]/10 text-[#22C55E]' : 'bg-ink/10 text-[#EF4444]'}`}>
                           {refreshNotification.type === 'success'
                             ? <CheckCircle className="h-3.5 w-3.5 shrink-0" />
                             : <XCircle className="h-3.5 w-3.5 shrink-0" />}
@@ -789,7 +789,7 @@ export default function DatabasesPage() {
                     </button>
                     <button
                       onClick={() => setDeleteTarget(db.id)}
-                      className="rounded-lg border border-[#EC4899]/30 p-2 text-[#EC4899] hover:bg-[#EC4899]/10 transition-colors"
+                      className="rounded-lg border border-line p-2 text-[#EF4444] hover:bg-ink/10 transition-colors"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </button>
@@ -805,7 +805,7 @@ export default function DatabasesPage() {
       {databases.length > 0 && (
         <div className="v4-card p-6">
           <div className="mb-1 flex items-center gap-2">
-            <Zap className="h-5 w-5 text-[#BF56FF]" />
+            <Zap className="h-5 w-5 text-ink" />
             <h2 className="text-lg font-semibold text-white">Natural Language Query</h2>
           </div>
           <p className="mb-4 text-sm text-[#71717A]">Test how your chatbot queries the database. Ask questions in plain English.</p>
@@ -814,7 +814,7 @@ export default function DatabasesPage() {
           <div className="mb-3 flex flex-wrap gap-2">
             {EXAMPLE_QUERIES.map((q) => (
               <button key={q} type="button" onClick={() => setQueryText(q)}
-                className="cursor-pointer rounded-full border border-white/[0.08] bg-white/[0.03] px-3 py-1.5 text-xs text-[#A1A1AA] transition-colors hover:border-[#BF56FF]/40 hover:bg-[#BF56FF]/[0.06] hover:text-[#BF56FF]">
+                className="cursor-pointer rounded-full border border-white/[0.08] bg-white/[0.03] px-3 py-1.5 text-xs text-[#A1A1AA] transition-colors hover:border-ink hover:bg-ink/[0.06] hover:text-ink">
                 {q}
               </button>
             ))}
@@ -830,7 +830,7 @@ export default function DatabasesPage() {
                 onKeyDown={(e) => { if (e.key === 'Enter' && !isQuerying) handleNlQuery(); }}
                 placeholder="e.g. How many orders were placed this week?"
                 disabled={isQuerying}
-                className="w-full rounded-lg border border-white/[0.08] bg-white/[0.04] pl-10 pr-4 py-2 text-sm text-white placeholder:text-[#71717A] focus:border-[#BF56FF]/60 focus:outline-none focus:ring-2 focus:ring-[#BF56FF]/20 transition-colors disabled:opacity-40"
+                className="w-full rounded-lg border border-line bg-canvas pl-10 pr-4 py-2 text-sm text-ink placeholder:text-muted-soft focus:border-ink focus:outline-none transition-colors disabled:opacity-40"
               />
             </div>
             <button
@@ -845,15 +845,15 @@ export default function DatabasesPage() {
           {/* Results */}
           {isQuerying && (
             <div className="flex items-center justify-center gap-2 rounded-xl border border-dashed border-white/[0.08] bg-white/[0.02] p-8">
-              <Loader2 className="h-5 w-5 animate-spin text-[#BF56FF]" />
+              <Loader2 className="h-5 w-5 animate-spin text-ink" />
               <span className="text-sm text-[#71717A]">Querying database...</span>
             </div>
           )}
 
           {!isQuerying && queryError && (
-            <div className="flex items-start gap-2 rounded-xl bg-[#EC4899]/[0.06] border border-[#EC4899]/20 px-4 py-3">
-              <XCircle className="h-4 w-4 text-[#EC4899] mt-0.5 shrink-0" />
-              <p className="text-sm text-[#EC4899]">{queryError}</p>
+            <div className="flex items-start gap-2 rounded-xl bg-ink/[0.06] border border-line px-4 py-3">
+              <XCircle className="h-4 w-4 text-[#EF4444] mt-0.5 shrink-0" />
+              <p className="text-sm text-[#EF4444]">{queryError}</p>
             </div>
           )}
 
@@ -861,7 +861,7 @@ export default function DatabasesPage() {
             <div className="rounded-xl border border-white/[0.08] overflow-hidden">
               <div className="flex items-center justify-between px-4 py-2.5 bg-white/[0.03] border-b border-white/[0.06]">
                 <div className="flex items-center gap-2 text-xs text-[#71717A]">
-                  <Database className="h-3.5 w-3.5 text-[#BF56FF]" />
+                  <Database className="h-3.5 w-3.5 text-ink" />
                   <span className="font-medium text-[#A1A1AA]">{queryResult.connectionName}</span>
                   <span>·</span>
                   <span>{queryResult.rowCount} row{queryResult.rowCount !== 1 ? 's' : ''}</span>
@@ -907,7 +907,7 @@ export default function DatabasesPage() {
       <SimpleModal open={wizardOpen} onClose={closeWizard} className="max-w-xl">
         <div className="mb-4">
           <h2 className="flex items-center gap-2 text-lg font-semibold text-white">
-            <Server className="h-5 w-5 text-[#BF56FF]" />
+            <Server className="h-5 w-5 text-ink" />
             Connect a Database
           </h2>
           <p className="mt-1 text-sm text-[#71717A]">
@@ -931,7 +931,7 @@ export default function DatabasesPage() {
                 const meta = DB_TYPE_META[type];
                 return (
                   <button key={type} type="button" onClick={() => handleSelectType(type)}
-                    className="cursor-pointer flex items-center gap-3 rounded-xl border border-white/[0.08] bg-white/[0.03] p-4 text-left transition-all hover:border-[#BF56FF]/40 hover:bg-[#BF56FF]/[0.04]">
+                    className="cursor-pointer flex items-center gap-3 rounded-xl border border-white/[0.08] bg-white/[0.03] p-4 text-left transition-all hover:border-ink hover:bg-ink/[0.04]">
                     <span className="text-2xl">{meta.icon}</span>
                     <div>
                       <p className="text-sm font-semibold text-white">{meta.label}</p>
@@ -965,7 +965,7 @@ export default function DatabasesPage() {
                       setConnectionResult('idle');
                       setConnectionError('');
                     }}
-                    className="h-4 w-4 rounded accent-[#BF56FF] cursor-pointer"
+                    className="h-4 w-4 rounded accent-[#171717] cursor-pointer"
                   />
                   <div>
                     <span className="text-sm font-medium text-[#A1A1AA] flex items-center gap-1.5">
@@ -1076,9 +1076,9 @@ export default function DatabasesPage() {
               </div>
             )}
             {connectionResult === 'fail' && (
-              <div className="flex items-start gap-2 rounded-xl bg-[#EC4899]/[0.06] border border-[#EC4899]/20 px-3 py-2">
-                <XCircle className="h-4 w-4 text-[#EC4899] mt-0.5 shrink-0" />
-                <p className="text-sm text-[#EC4899] font-medium">{connectionError}</p>
+              <div className="flex items-start gap-2 rounded-xl bg-ink/[0.06] border border-line px-3 py-2">
+                <XCircle className="h-4 w-4 text-[#EF4444] mt-0.5 shrink-0" />
+                <p className="text-sm text-[#EF4444] font-medium">{connectionError}</p>
               </div>
             )}
 
@@ -1121,12 +1121,12 @@ export default function DatabasesPage() {
               <p className="text-sm text-[#71717A]">
                 Select the {selectedType === 'mongodb' ? 'collections' : 'tables'} your chatbot can query (up to {MAX_TABLES}).
               </p>
-              <span className="text-xs font-medium text-[#BF56FF]">{selectedTables.length}/{MAX_TABLES} selected</span>
+              <span className="text-xs font-medium text-ink">{selectedTables.length}/{MAX_TABLES} selected</span>
             </div>
 
             {isFetchingTables && (
               <div className="flex items-center justify-center py-8">
-                <Loader2 className="h-6 w-6 animate-spin text-[#BF56FF] mr-2" />
+                <Loader2 className="h-6 w-6 animate-spin text-ink mr-2" />
                 <span className="text-sm text-[#71717A]">
                   Fetching {selectedType === 'mongodb' ? 'collections' : 'tables'}...
                 </span>
@@ -1134,9 +1134,9 @@ export default function DatabasesPage() {
             )}
 
             {!isFetchingTables && tablesError && (
-              <div className="flex items-start gap-2 rounded-xl bg-[#EC4899]/[0.06] border border-[#EC4899]/20 px-3 py-2">
-                <XCircle className="h-4 w-4 text-[#EC4899] mt-0.5 shrink-0" />
-                <p className="text-sm text-[#EC4899]">{tablesError}</p>
+              <div className="flex items-start gap-2 rounded-xl bg-ink/[0.06] border border-line px-3 py-2">
+                <XCircle className="h-4 w-4 text-[#EF4444] mt-0.5 shrink-0" />
+                <p className="text-sm text-[#EF4444]">{tablesError}</p>
               </div>
             )}
 
@@ -1148,7 +1148,7 @@ export default function DatabasesPage() {
                     value={tableFilter}
                     onChange={(e) => setTableFilter(e.target.value)}
                     placeholder={`Search ${selectedType === 'mongodb' ? 'collections' : 'tables'}...`}
-                    className="w-full rounded-lg border border-white/[0.08] bg-white/[0.04] pl-10 pr-4 py-2 text-sm text-white placeholder:text-[#71717A] focus:border-[#BF56FF]/60 focus:outline-none focus:ring-2 focus:ring-[#BF56FF]/20 transition-colors"
+                    className="w-full rounded-lg border border-line bg-canvas pl-10 pr-4 py-2 text-sm text-ink placeholder:text-muted-soft focus:border-ink focus:outline-none transition-colors"
                   />
                 </div>
 
@@ -1158,13 +1158,13 @@ export default function DatabasesPage() {
                     const isDisabled = !isSelected && selectedTables.length >= MAX_TABLES;
                     return (
                       <label key={table}
-                        className={`flex items-center gap-3 px-4 py-2.5 cursor-pointer transition-colors ${isSelected ? 'bg-[#BF56FF]/[0.06]' : 'hover:bg-white/[0.03]'} ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                        className={`flex items-center gap-3 px-4 py-2.5 cursor-pointer transition-colors ${isSelected ? 'bg-ink/[0.06]' : 'hover:bg-white/[0.03]'} ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}>
                         <input
                           type="checkbox"
                           checked={isSelected}
                           onChange={() => !isDisabled && toggleTable(table)}
                           disabled={isDisabled}
-                          className="h-4 w-4 rounded accent-[#BF56FF] cursor-pointer"
+                          className="h-4 w-4 rounded accent-[#171717] cursor-pointer"
                         />
                         <Table className="h-3.5 w-3.5 text-[#71717A] shrink-0" />
                         <span className="text-sm text-[#A1A1AA]">{table}</span>
@@ -1238,8 +1238,8 @@ export default function DatabasesPage() {
       {/* Delete Confirmation */}
       <SimpleModal open={!!deleteTarget} onClose={() => setDeleteTarget(null)} className="max-w-md">
         <div className="flex items-center gap-3 mb-4">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#EC4899]/10">
-            <Trash2 className="h-5 w-5 text-[#EC4899]" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-ink/10">
+            <Trash2 className="h-5 w-5 text-[#EF4444]" />
           </div>
           <h2 className="text-base font-semibold text-white">Remove Database</h2>
         </div>
@@ -1257,7 +1257,7 @@ export default function DatabasesPage() {
           <button
             onClick={() => deleteTarget && handleDelete(deleteTarget)}
             disabled={isDeleting}
-            className="inline-flex items-center gap-1.5 rounded-xl bg-[#EC4899] px-4 py-2 text-sm font-semibold text-white hover:bg-[#EC4899]/80 transition-colors disabled:opacity-40"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white hover:bg-ink/80 transition-colors disabled:opacity-40"
           >
             {isDeleting ? <><Loader2 className="h-4 w-4 animate-spin" /> Removing...</> : 'Remove'}
           </button>

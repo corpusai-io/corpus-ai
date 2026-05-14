@@ -49,53 +49,53 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 localStorage.setItem('idToken', authData.idToken);
                 localStorage.setItem('refreshToken', authData.refreshToken);
                 localStorage.setItem('user', JSON.stringify(authData.user));
-                console.log('✅ [AuthContext] Recovered tokens from URL hash');
+                console.log('[AuthContext] Recovered tokens from URL hash');
               }
               // Clean up the URL hash
               window.history.replaceState(null, '', window.location.pathname);
             } catch (e) {
-              console.warn('⚠️ [AuthContext] Failed to parse auth hash:', e);
+              console.warn('[AuthContext] Failed to parse auth hash:', e);
             }
           }
 
           const accessToken = localStorage.getItem('accessToken');
           const userStr = localStorage.getItem('user');
-          console.log('🔍 [AuthContext] Initializing auth, accessToken present:', !!accessToken, 'user present:', !!userStr);
+          console.log('[AuthContext] Initializing auth, accessToken present:', !!accessToken, 'user present:', !!userStr);
 
           if (accessToken && userStr) {
             try {
               // First try to use stored user data
               const storedUser = JSON.parse(userStr);
-              console.log('✅ [AuthContext] Using stored user data:', storedUser);
+              console.log('[AuthContext] Using stored user data:', storedUser);
               setUser(storedUser);
 
               // Optionally fetch fresh data in background (don't await)
               authApi.getCurrentUser()
                 .then(freshUser => {
-                  console.log('✅ [AuthContext] Fresh user data fetched:', freshUser);
+                  console.log('[AuthContext] Fresh user data fetched:', freshUser);
                   setUser(freshUser);
                 })
                 .catch(err => {
-                  console.warn('⚠️ [AuthContext] Failed to fetch fresh user data (using stored):', err);
+                  console.warn('[AuthContext] Failed to fetch fresh user data (using stored):', err);
                 });
             } catch (parseError) {
-              console.error('❌ [AuthContext] Failed to parse stored user, fetching from backend');
+              console.error('[AuthContext] Failed to parse stored user, fetching from backend');
               // Fall back to fetching from backend
               const currentUser = await authApi.getCurrentUser();
-              console.log('✅ [AuthContext] User fetched from backend:', currentUser);
+              console.log('[AuthContext] User fetched from backend:', currentUser);
               setUser(currentUser);
             }
           } else {
-            console.log('⚠️ [AuthContext] No accessToken or user found in localStorage');
+            console.log('[AuthContext] No accessToken or user found in localStorage');
           }
         }
       } catch (error) {
-        console.error('❌ [AuthContext] Auth init error:', error);
+        console.error('[AuthContext] Auth init error:', error);
         // Don't clear tokens on error - user might just have network issues
         // Only clear if it's an auth error
         const errorMessage = error instanceof Error ? error.message : String(error);
         if (errorMessage.includes('token') || errorMessage.includes('auth')) {
-          console.log('🗑️ [AuthContext] Clearing invalid tokens');
+          console.log('[AuthContext] Clearing invalid tokens');
           if (typeof window !== 'undefined' && typeof localStorage?.removeItem === 'function') {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('idToken');
@@ -105,7 +105,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       } finally {
         setLoading(false);
-        console.log('🔍 [AuthContext] Loading complete');
+        console.log('[AuthContext] Loading complete');
       }
     };
 
@@ -130,12 +130,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const FIVE_MINUTES = 5 * 60 * 1000;
 
       if (timeUntilExpiry <= FIVE_MINUTES) {
-        console.log('🔄 [AuthContext] Access token expiring soon, refreshing proactively...');
+        console.log('[AuthContext] Access token expiring soon, refreshing proactively...');
         try {
           await authApi.refreshToken();
-          console.log('✅ [AuthContext] Proactive token refresh succeeded');
+          console.log('[AuthContext] Proactive token refresh succeeded');
         } catch (error) {
-          console.error('❌ [AuthContext] Proactive token refresh failed:', error);
+          console.error('[AuthContext] Proactive token refresh failed:', error);
           // Token refresh failed - log user out
           if (typeof localStorage?.removeItem === 'function') {
             localStorage.removeItem('accessToken');

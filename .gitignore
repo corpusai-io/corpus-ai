@@ -47,6 +47,12 @@ build
 *.stackdump
 .playwright-mcp/
 
+# local design refs (not part of the app)
+design_example/
+
+# Claude Code user config
+.claude/
+
 # debug
 npm-debug.log*
 yarn-debug.log*

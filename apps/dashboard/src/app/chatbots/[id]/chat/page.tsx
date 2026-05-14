@@ -2,20 +2,28 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useParams } from 'next/navigation';
-import { chatbotApi, chatHistoryApi } from '@/lib/api';
+import { chatHistoryApi } from '@/lib/api';
 import { useChatbotById } from '@/stores/chatbot-store';
 import { useHeaderStore } from '@/stores/header-store';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import {
-  Bot,
-  ArrowUpRight,
+  ArrowUp,
   ThumbsUp,
   ThumbsDown,
   Copy,
   Database,
-  User,
+  User as UserIcon,
+  Sparkles,
 } from 'lucide-react';
+import {
+  Eyebrow,
+  Mark,
+  Status,
+  Pill,
+  Divider,
+  statusFromBackend,
+} from '@/components/corpus';
 
 interface Citation {
   source: string;
@@ -47,18 +55,25 @@ function formatTime(ts: number) {
   return new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
+/* ─── Brand mark (small) ──────────────────────────────────── */
+function BotMark() {
+  return (
+    <div className="w-7 h-7 rounded-full bg-canvas border border-line flex items-center justify-center flex-shrink-0">
+      <Mark size={12} />
+    </div>
+  );
+}
+
 /* ─── Typing indicator ────────────────────────────────────── */
 function TypingIndicator() {
   return (
     <div className="flex items-start gap-3">
-      <div className="w-7 h-7 mt-0.5 rounded-full bg-slate-100 dark:bg-[#1E1E22] border border-slate-200 dark:border-[#2E2E34] flex items-center justify-center shrink-0">
-        <Bot className="w-3.5 h-3.5 text-slate-400 dark:text-[#8A8A98]" />
-      </div>
-      <div className="bg-white dark:bg-[#17171A] border border-slate-200 dark:border-[#26262B] rounded-2xl rounded-tl-none px-4 py-3">
+      <BotMark />
+      <div className="rounded-2xl rounded-tl-md bg-canvas border border-line px-4 py-3">
         <div className="flex gap-1.5 items-center h-4">
-          <span className="w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-[#3A3A42] animate-bounce" style={{ animationDelay: '0ms' }} />
-          <span className="w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-[#3A3A42] animate-bounce" style={{ animationDelay: '150ms' }} />
-          <span className="w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-[#3A3A42] animate-bounce" style={{ animationDelay: '300ms' }} />
+          <span className="w-1.5 h-1.5 rounded-full bg-line-strong" style={{ animation: 'typing-dot 1.4s ease-in-out infinite', animationDelay: '0ms' }} />
+          <span className="w-1.5 h-1.5 rounded-full bg-line-strong" style={{ animation: 'typing-dot 1.4s ease-in-out infinite', animationDelay: '150ms' }} />
+          <span className="w-1.5 h-1.5 rounded-full bg-line-strong" style={{ animation: 'typing-dot 1.4s ease-in-out infinite', animationDelay: '300ms' }} />
         </div>
       </div>
     </div>
@@ -79,7 +94,8 @@ function InlineCitations({ text, onCitationClick }: { text: string; onCitationCl
               key={i}
               type="button"
               onClick={() => onCitationClick(idx)}
-              className="mx-0.5 inline-flex h-4 w-4 items-center justify-center rounded-full bg-slate-200 dark:bg-[#2A2A30] text-[9px] font-bold text-slate-500 dark:text-[#8A8A98] hover:bg-slate-300 dark:hover:bg-[#32323A] hover:text-slate-700 dark:hover:text-[#C0C0CC] transition-colors"
+              className="mx-0.5 inline-flex h-4 w-4 items-center justify-center rounded-full bg-surface text-[9px] font-semibold text-ink hover:bg-line transition-colors"
+              style={{ fontFamily: 'var(--font-geist-mono), ui-monospace, monospace' }}
               title={`Source ${match[1]}`}
             >
               {match[1]}
@@ -102,18 +118,26 @@ function CitationBadges({ citations, highlightIndex }: { citations: Citation[]; 
           <button
             type="button"
             onClick={() => setExpanded(expanded === i ? null : i)}
-            className={`inline-flex items-center rounded-md border px-2 py-0.5 text-[10px] font-medium transition-all ${
+            className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-[11px] transition-colors ${
               highlightIndex === i
-                ? 'border-slate-300 dark:border-[#3A3A42] bg-slate-100 dark:bg-[#242428] text-slate-700 dark:text-[#C0C0CC]'
-                : 'border-slate-200 dark:border-[#26262B] bg-slate-50 dark:bg-[#1A1A1E] text-slate-400 dark:text-[#58585E] hover:border-slate-300 dark:hover:border-[#3A3A42] hover:text-slate-600 dark:hover:text-[#8A8A98]'
+                ? 'border-line-strong bg-surface text-ink'
+                : 'border-line bg-canvas text-muted hover:text-ink hover:border-line-strong'
             }`}
           >
-            [{i + 1}] {(cit.source || `Source ${i + 1}`).length > 28
-              ? (cit.source || '').slice(0, 28) + '…'
-              : (cit.source || `Source ${i + 1}`)}
+            <span
+              className="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full bg-surface text-[9px] font-semibold text-ink"
+              style={{ fontFamily: 'var(--font-geist-mono), ui-monospace, monospace' }}
+            >
+              {i + 1}
+            </span>
+            <span>
+              {(cit.source || `Source ${i + 1}`).length > 28
+                ? (cit.source || '').slice(0, 28) + '…'
+                : (cit.source || `Source ${i + 1}`)}
+            </span>
           </button>
           {expanded === i && cit.text && (
-            <p className="mt-1.5 rounded-lg bg-slate-50 dark:bg-[#16161A] border border-slate-200 dark:border-[#26262B] px-3 py-2 text-xs text-slate-500 dark:text-[#58585E] leading-relaxed">
+            <p className="mt-1.5 rounded-lg bg-surface border border-line px-3 py-2 text-[12px] text-muted leading-relaxed">
               {cit.text}
             </p>
           )}
@@ -174,72 +198,66 @@ function MessageBubble({
   if (isUser) {
     return (
       <div className="flex justify-end items-start gap-2.5">
-        <div className="flex flex-col items-end gap-1 max-w-[75%] sm:max-w-[60%]">
-          <div className="bg-slate-800 dark:bg-[#F0F0F4] text-white dark:text-[#111113] px-4 py-2.5 rounded-2xl rounded-tr-none text-sm font-medium leading-relaxed break-words w-full">
+        <div className="flex flex-col items-end gap-1 max-w-[78%]">
+          <div className="bg-ink text-white px-4 py-2.5 rounded-2xl rounded-tr-md text-[14px] leading-relaxed break-words">
             {msg.content}
           </div>
-          <span className="text-[10px] text-slate-400 dark:text-[#44444C] px-1">{formatTime(msg.timestamp)}</span>
+          <span className="text-[10px] text-muted-soft px-1 font-mono">{formatTime(msg.timestamp)}</span>
         </div>
-        <div className="w-7 h-7 mt-0.5 rounded-full bg-slate-100 dark:bg-[#1E1E22] border border-slate-200 dark:border-[#2E2E34] flex items-center justify-center shrink-0">
-          <User className="w-3.5 h-3.5 text-slate-400 dark:text-[#8A8A98]" />
+        <div className="w-7 h-7 rounded-full bg-canvas border border-line flex items-center justify-center flex-shrink-0">
+          <UserIcon className="w-3.5 h-3.5 text-muted-soft" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex justify-start items-start gap-2.5">
-      <div className="w-7 h-7 mt-0.5 rounded-full bg-slate-100 dark:bg-[#1E1E22] border border-slate-200 dark:border-[#2E2E34] flex items-center justify-center shrink-0">
-        <Bot className="w-3.5 h-3.5 text-slate-400 dark:text-[#8A8A98]" />
-      </div>
+    <div className="flex justify-start items-start gap-3">
+      <BotMark />
 
-      <div className="flex flex-col gap-1.5 max-w-[85%] sm:max-w-[75%]">
-        {/* Bot bubble */}
-        <div className="bg-white dark:bg-[#17171A] border border-slate-200 dark:border-[#26262B] rounded-2xl rounded-tl-none px-4 py-3 shadow-sm dark:shadow-none">
-          <div className="markdown-content text-sm text-slate-700 dark:text-[#C8C8D0] leading-relaxed">
+      <div className="flex flex-col gap-1.5 max-w-[85%]">
+        <div className="bg-canvas border border-line rounded-2xl rounded-tl-md px-4 py-3">
+          <div className="markdown-content text-[14px] leading-relaxed">
             <ReactMarkdown remarkPlugins={[remarkGfm]} components={citationComponents}>
               {msg.content}
             </ReactMarkdown>
           </div>
 
-          {/* DB badge */}
           {msg.queryType === 'database' && (
             <div className="mt-2 flex items-center gap-1.5">
-              <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-md bg-slate-100 dark:bg-[#1A1A1E] border border-slate-200 dark:border-[#2A2A2F] text-slate-500 dark:text-[#8A8A98] font-medium">
-                <Database className="w-2.5 h-2.5" />
+              <Pill variant="soft">
+                <Database className="w-3 h-3" />
                 {msg.connectionName || 'Database'}
-              </span>
+              </Pill>
             </div>
           )}
 
-          {/* SQL query */}
           {msg.queryType === 'database' && msg.executedQuery && (
             <details className="mt-2">
-              <summary className="text-[10px] text-slate-400 dark:text-[#44444C] cursor-pointer hover:text-slate-600 dark:hover:text-[#70707A] select-none">
+              <summary className="text-[11px] text-muted-soft cursor-pointer hover:text-ink select-none">
                 View query
               </summary>
-              <pre className="mt-1.5 text-[10px] bg-slate-50 dark:bg-[#111113] border border-slate-200 dark:border-[#26262B] rounded-lg p-2.5 overflow-x-auto whitespace-pre-wrap font-mono text-slate-500 dark:text-[#58585E]">
+              <pre className="mt-1.5 text-[11px] bg-surface border border-line rounded-lg p-2.5 overflow-x-auto whitespace-pre-wrap font-mono text-ink">
                 {msg.executedQuery}
               </pre>
             </details>
           )}
 
-          {/* Citations */}
           {msg.citations && msg.citations.length > 0 && (
             <CitationBadges citations={msg.citations} highlightIndex={highlightedCitation} />
           )}
         </div>
 
-        {/* Feedback row */}
         <div className="flex items-center gap-3 px-1">
-          <span className="text-[10px] text-slate-400 dark:text-[#44444C]">{formatTime(msg.timestamp)}</span>
-          <div className="w-px h-3 bg-slate-200 dark:bg-[#26262B]" />
+          <span className="text-[10px] text-muted-soft font-mono">{formatTime(msg.timestamp)}</span>
+          <div className="w-px h-3 bg-line" />
           <button
             type="button"
             onClick={() => onFeedback(msg.id, 'up')}
             className={`transition-colors ${
-              msg.feedback === 'up' ? 'text-emerald-500 dark:text-[#5A9E6F]' : 'text-slate-400 dark:text-[#3A3A42] hover:text-slate-500 dark:hover:text-[#8A8A98]'
+              msg.feedback === 'up' ? 'text-[#10B981]' : 'text-muted-soft hover:text-ink'
             }`}
+            title="Helpful"
           >
             <ThumbsUp className="w-3 h-3" />
           </button>
@@ -247,8 +265,9 @@ function MessageBubble({
             type="button"
             onClick={() => onFeedback(msg.id, 'down')}
             className={`transition-colors ${
-              msg.feedback === 'down' ? 'text-red-400 dark:text-[#9E4A4A]' : 'text-slate-400 dark:text-[#3A3A42] hover:text-slate-500 dark:hover:text-[#8A8A98]'
+              msg.feedback === 'down' ? 'text-[#EF4444]' : 'text-muted-soft hover:text-ink'
             }`}
+            title="Not helpful"
           >
             <ThumbsDown className="w-3 h-3" />
           </button>
@@ -256,7 +275,7 @@ function MessageBubble({
             type="button"
             onClick={() => onCopy(msg.id, msg.content)}
             className={`transition-colors ml-0.5 ${
-              msg.copied ? 'text-emerald-500 dark:text-[#5A9E6F]' : 'text-slate-400 dark:text-[#3A3A42] hover:text-slate-500 dark:hover:text-[#8A8A98]'
+              msg.copied ? 'text-[#10B981]' : 'text-muted-soft hover:text-ink'
             }`}
             title="Copy"
           >
@@ -298,7 +317,7 @@ export default function ChatPage() {
   const [historyLoading, setHistoryLoading] = useState(true);
   const [clearingHistory, setClearingHistory] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   // Load history
   useEffect(() => {
@@ -331,10 +350,17 @@ export default function ChatPage() {
     return () => { cancelled = true; };
   }, [chatbotId]);
 
-  // Scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, loading]);
+
+  // Auto-resize textarea
+  useEffect(() => {
+    const ta = inputRef.current;
+    if (!ta) return;
+    ta.style.height = 'auto';
+    ta.style.height = `${Math.min(ta.scrollHeight, 120)}px`;
+  }, [input]);
 
   const sendMessage = async (text: string) => {
     if (!text.trim() || loading) return;
@@ -399,7 +425,7 @@ export default function ChatPage() {
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       sendMessage(input);
@@ -423,13 +449,9 @@ export default function ChatPage() {
 
   const handleCopy = useCallback((msgId: string, text: string) => {
     navigator.clipboard.writeText(text).catch(() => {});
-    setMessages((prev) =>
-      prev.map((m) => (m.id === msgId ? { ...m, copied: true } : m))
-    );
+    setMessages((prev) => prev.map((m) => (m.id === msgId ? { ...m, copied: true } : m)));
     setTimeout(() => {
-      setMessages((prev) =>
-        prev.map((m) => (m.id === msgId ? { ...m, copied: false } : m))
-      );
+      setMessages((prev) => prev.map((m) => (m.id === msgId ? { ...m, copied: false } : m)));
     }, 1500);
   }, []);
 
@@ -450,7 +472,6 @@ export default function ChatPage() {
     }
   };
 
-  // Sync chatbot context into the main header
   useEffect(() => {
     setChatContext({
       chatbotName,
@@ -460,52 +481,72 @@ export default function ChatPage() {
       onClear: handleClearHistory,
     });
     return () => clearChatContext();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatbotName, chatbotId]);
 
-  // Keep hasMessages + clearingHistory in sync without re-registering onClear
   useEffect(() => {
     updateChatContext({ hasMessages: messages.length > 0 });
-  }, [messages.length]);
+  }, [messages.length]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     updateChatContext({ clearingHistory });
-  }, [clearingHistory]);
+  }, [clearingHistory]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div
-      className="flex flex-col -m-4 lg:-m-6 bg-slate-50 dark:bg-[#111113]"
-      style={{ height: 'calc(100vh - 56px)' }}
-    >
-      {/* ── Messages ───────────────────────────────────────────── */}
-      <div className="flex-1 overflow-y-auto">
-        <div className="px-5 py-6 flex flex-col gap-6">
+    <div className="flex flex-col -m-6 lg:-m-8 bg-surface" style={{ height: 'calc(100vh - 56px)' }}>
 
-          {/* History loading */}
+      {/* ── Title row ────────────────────────────────────── */}
+      <div className="px-6 lg:px-8 pt-6 pb-4 border-b border-line bg-canvas/60">
+        <div className="max-w-[920px] mx-auto flex items-center justify-between">
+          <div>
+            <Eyebrow>Chatbot</Eyebrow>
+            <h1
+              className="font-display text-2xl font-medium text-ink mt-1.5"
+              style={{ letterSpacing: '-0.02em' }}
+            >
+              {chatbotName}
+            </h1>
+          </div>
+          <div className="flex items-center gap-3">
+            {chatbot && <Status kind={statusFromBackend(chatbot.status)} size="lg" />}
+            {messages.length > 0 && (
+              <Pill variant="soft">{messages.length} msgs</Pill>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Thread ───────────────────────────────────────── */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="max-w-[920px] mx-auto px-6 lg:px-8 py-6 flex flex-col gap-5">
+
           {historyLoading && (
             <div className="flex justify-center py-16">
-              <div className="flex items-center gap-2 text-xs text-slate-400 dark:text-[#44444C]">
-                <div className="h-3.5 w-3.5 rounded-full border border-slate-300 dark:border-[#3A3A42] border-t-slate-500 dark:border-t-[#8A8A98] animate-spin" />
+              <div className="flex items-center gap-2 text-[12px] text-muted">
+                <div className="h-3.5 w-3.5 rounded-full border border-line border-t-ink animate-spin" />
                 Loading history…
               </div>
             </div>
           )}
 
-          {/* Empty state */}
           {!historyLoading && messages.length === 0 && !loading && (
-            <div className="flex flex-col items-center justify-center py-20 text-center">
-              <div className="h-12 w-12 rounded-full bg-slate-100 dark:bg-[#1A1A1E] border border-slate-200 dark:border-[#2A2A2F] flex items-center justify-center mb-5">
-                <Bot className="h-5 w-5 text-slate-400 dark:text-[#8A8A98]" />
-              </div>
-              <h2 className="text-sm font-semibold text-slate-700 dark:text-[#D0D0D8] mb-1">{chatbotName}</h2>
-              <p className="text-sm text-slate-400 dark:text-[#58585E] mb-8">How can I help you today?</p>
-              <div className="flex flex-wrap justify-center gap-2">
+            <div className="flex flex-col items-center justify-center py-16 text-center">
+              <BotMark />
+              <Eyebrow className="mt-4">Ready</Eyebrow>
+              <h2
+                className="font-display text-2xl font-medium leading-tight mt-2"
+                style={{ letterSpacing: '-0.02em' }}
+              >
+                <span className="text-ink">How can I help?</span>{' '}
+                <span className="text-muted">Pick a thread.</span>
+              </h2>
+              <div className="flex flex-wrap justify-center gap-1.5 mt-6 max-w-xl">
                 {SUGGESTED.map((q) => (
                   <button
                     key={q}
                     type="button"
                     onClick={() => sendMessage(q)}
-                    className="rounded-lg border border-slate-200 dark:border-[#26262B] bg-white dark:bg-[#17171A] px-4 py-2 text-xs text-slate-500 dark:text-[#68686E] hover:border-slate-300 dark:hover:border-[#32323A] hover:text-slate-700 dark:hover:text-[#A8A8B0] hover:bg-slate-50 dark:hover:bg-[#1C1C20] transition-all shadow-sm dark:shadow-none"
+                    className="text-[12px] px-3 py-1.5 rounded-full border border-line bg-canvas text-ink hover:bg-surface transition-colors"
                   >
                     {q}
                   </button>
@@ -514,7 +555,6 @@ export default function ChatPage() {
             </div>
           )}
 
-          {/* Message list */}
           {messages.map((msg) => (
             <MessageBubble
               key={msg.id}
@@ -524,45 +564,45 @@ export default function ChatPage() {
             />
           ))}
 
-          {/* Typing */}
           {loading && <TypingIndicator />}
 
           <div ref={messagesEndRef} />
         </div>
       </div>
 
-      {/* ── Input ──────────────────────────────────────────────── */}
-      <div className="shrink-0 px-5 py-4 border-t border-slate-200 dark:border-[#1E1E22] bg-white dark:bg-[#111113]">
-        <div>
-          <div className="relative flex items-center bg-white dark:bg-[#17171A] border border-slate-200 dark:border-[#26262B] rounded-xl focus-within:border-slate-300 dark:focus-within:border-[#3A3A42] focus-within:ring-2 focus-within:ring-slate-100 dark:focus-within:ring-[#26262B] transition-all duration-200 shadow-sm dark:shadow-none">
-            <input
+      {/* ── Composer ─────────────────────────────────────── */}
+      <div className="shrink-0 px-6 lg:px-8 pb-6 pt-3 bg-surface">
+        <div className="max-w-[920px] mx-auto">
+          <div className="border border-line bg-canvas rounded-2xl shadow-sm">
+            <textarea
               ref={inputRef}
-              type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               disabled={loading}
-              placeholder="Message chatbot…"
-              className="flex-1 bg-transparent border-0 px-4 py-3 text-sm text-slate-800 dark:text-[#E0E0E8] placeholder-slate-400 dark:placeholder-[#3A3A42] focus:outline-none focus:ring-0 disabled:opacity-50"
+              rows={1}
+              placeholder="Ask the bot anything…"
+              className="w-full resize-none outline-none px-4 pt-3 pb-1 text-[14px] text-ink placeholder:text-muted-soft bg-transparent disabled:opacity-50"
             />
-            <div className="pr-2">
+            <div className="flex items-center justify-between px-3 pb-3">
+              <div className="flex items-center gap-2 text-[11px] text-muted-soft">
+                <Sparkles className="w-3 h-3" />
+                <span>Grounded in your sources</span>
+                <span className="mx-1">·</span>
+                <span className="font-mono" style={{ letterSpacing: '0.14em' }}>
+                  ⌘ + ENTER
+                </span>
+              </div>
               <button
                 type="button"
                 onClick={() => sendMessage(input)}
                 disabled={!canSend}
-                className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-150 ${
-                  canSend
-                    ? 'bg-slate-900 dark:bg-[#F0F0F4] text-white dark:text-[#111113] hover:bg-slate-700 dark:hover:bg-white shadow-sm'
-                    : 'bg-transparent text-slate-200 dark:text-[#2E2E34] cursor-not-allowed'
-                }`}
+                className="w-8 h-8 rounded-lg bg-ink hover:bg-ink-hover text-white flex items-center justify-center transition-colors disabled:opacity-30"
               >
-                <ArrowUpRight className="w-4 h-4" />
+                <ArrowUp className="w-4 h-4" />
               </button>
             </div>
           </div>
-          <p className="text-center mt-2 text-[10px] text-slate-400 dark:text-[#2E2E34]">
-            Press Enter to send · Shift+Enter for new line
-          </p>
         </div>
       </div>
     </div>

@@ -425,7 +425,7 @@ export default function WidgetChat({
                     key={q}
                     type="button"
                     onClick={() => sendMessage(q)}
-                    className="rounded-full border border-gray-200 bg-white px-3 py-1.5 text-xs text-gray-600 transition-colors hover:border-purple-300 hover:bg-purple-50 hover:text-purple-700"
+                    className="rounded-full border border-gray-200 bg-white px-3 py-1.5 text-xs text-gray-700 transition-colors hover:border-gray-300 hover:bg-gray-50 hover:text-gray-900"
                   >
                     {q}
                   </button>

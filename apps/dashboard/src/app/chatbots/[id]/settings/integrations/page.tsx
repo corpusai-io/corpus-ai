@@ -10,71 +10,42 @@ import {
   Send as SendIcon,
   Loader2,
   HelpCircle,
-  ExternalLink,
 } from 'lucide-react';
+import { Eyebrow, IconChip, Status, Button, Divider } from '@/components/corpus';
 
 interface IntegrationDef {
   key: string;
   name: string;
   description: string;
   icon: React.ReactNode;
-  iconBoxClass: string;
 }
 
 const INTEGRATIONS: IntegrationDef[] = [
-  {
-    key: 'slack',
-    name: 'Slack',
-    description: 'Connect your chatbot to Slack workspace',
-    icon: <Hash className="h-5 w-5 text-[#BF56FF]" />,
-    iconBoxClass: 'bg-[#BF56FF]/10',
-  },
-  {
-    key: 'telegram',
-    name: 'Telegram',
-    description: 'Deploy chatbot to Telegram channels',
-    icon: <SendIcon className="h-5 w-5 text-[#60A5FA]" />,
-    iconBoxClass: 'bg-[#60A5FA]/10',
-  },
-  {
-    key: 'whatsapp',
-    name: 'WhatsApp',
-    description: 'Connect via WhatsApp Business API',
-    icon: <Phone className="h-5 w-5 text-[#22C55E]" />,
-    iconBoxClass: 'bg-[#22C55E]/10',
-  },
-  {
-    key: 'zapier',
-    name: 'Zapier',
-    description: 'Trigger workflows with Zapier webhooks',
-    icon: <Zap className="h-5 w-5 text-[#F59E0B]" />,
-    iconBoxClass: 'bg-[#F59E0B]/10',
-  },
+  { key: 'slack',    name: 'Slack',    description: 'Connect to a Slack workspace.',          icon: <Hash     className="w-5 h-5 text-ink" /> },
+  { key: 'telegram', name: 'Telegram', description: 'Deploy as a Telegram bot.',              icon: <SendIcon className="w-5 h-5 text-ink" /> },
+  { key: 'whatsapp', name: 'WhatsApp', description: 'Connect via WhatsApp Business API.',     icon: <Phone    className="w-5 h-5 text-ink" /> },
+  { key: 'zapier',   name: 'Zapier',   description: 'Trigger workflows via Zapier webhooks.', icon: <Zap      className="w-5 h-5 text-ink" /> },
 ];
 
 export default function IntegrationsPage() {
   const params = useParams();
   const chatbotId = params.id as string;
 
-  const [data, setData] = useState<any>(null);
+  const [data,    setData]    = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  // Setup dialog state
-  const [setupKey, setSetupKey] = useState<string | null>(null);
-  const [setupLoading, setSetupLoading] = useState(false);
-  const [telegramToken, setTelegramToken] = useState('');
-  const [whatsappPhoneId, setWhatsappPhoneId] = useState('');
-  const [whatsappAccessToken, setWhatsappAccessToken] = useState('');
-  const [whatsappVerifyToken, setWhatsappVerifyToken] = useState('');
-  const [zapierWebhook, setZapierWebhook] = useState('');
+  const [setupKey,             setSetupKey]             = useState<string | null>(null);
+  const [setupLoading,         setSetupLoading]         = useState(false);
+  const [telegramToken,        setTelegramToken]        = useState('');
+  const [whatsappPhoneId,      setWhatsappPhoneId]      = useState('');
+  const [whatsappAccessToken,  setWhatsappAccessToken]  = useState('');
+  const [whatsappVerifyToken,  setWhatsappVerifyToken]  = useState('');
+  const [zapierWebhook,        setZapierWebhook]        = useState('');
 
-  // Disconnect dialog state
-  const [disconnectKey, setDisconnectKey] = useState<string | null>(null);
+  const [disconnectKey,     setDisconnectKey]     = useState<string | null>(null);
   const [disconnectLoading, setDisconnectLoading] = useState(false);
 
-  useEffect(() => {
-    loadIntegrations();
-  }, []);
+  useEffect(() => { loadIntegrations(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
 
   const loadIntegrations = async () => {
     try {
@@ -92,16 +63,11 @@ export default function IntegrationsPage() {
     if (!data) return false;
     const integrations = data.integrations || data;
     switch (key) {
-      case 'slack':
-        return !!integrations.slack;
-      case 'telegram':
-        return !!integrations.telegram;
-      case 'whatsapp':
-        return !!integrations.whatsApp;
-      case 'zapier':
-        return !!integrations.zapier;
-      default:
-        return false;
+      case 'slack':    return !!integrations.slack;
+      case 'telegram': return !!integrations.telegram;
+      case 'whatsapp': return !!integrations.whatsApp;
+      case 'zapier':   return !!integrations.zapier;
+      default:         return false;
     }
   };
 
@@ -129,8 +95,7 @@ export default function IntegrationsPage() {
           : Array.isArray(integrations.zapier)
             ? `${integrations.zapier.length} webhook(s)`
             : null;
-      default:
-        return null;
+      default: return null;
     }
   };
 
@@ -138,9 +103,7 @@ export default function IntegrationsPage() {
     if (key === 'slack') {
       integrationsApi
         .getSlackOAuthUrl(chatbotId)
-        .then((url) => {
-          window.location.href = url;
-        })
+        .then((url) => { window.location.href = url; })
         .catch((err) => alert('Failed to start Slack OAuth: ' + err.message));
       return;
     }
@@ -194,23 +157,12 @@ export default function IntegrationsPage() {
 
     try {
       switch (disconnectKey) {
-        case 'slack':
-          await integrationsApi.disconnectSlack(chatbotId);
-          break;
-        case 'telegram':
-          await integrationsApi.disconnectTelegram(chatbotId);
-          break;
-        case 'whatsapp':
-          await integrationsApi.disconnectWhatsApp(chatbotId);
-          break;
-        case 'zapier':
-          await integrationsApi.disconnectZapier(chatbotId, 'new_lead');
-          break;
-        case 'googleDrive':
-          await integrationsApi.disconnectGoogleDrive(chatbotId);
-          break;
+        case 'slack':       await integrationsApi.disconnectSlack(chatbotId); break;
+        case 'telegram':    await integrationsApi.disconnectTelegram(chatbotId); break;
+        case 'whatsapp':    await integrationsApi.disconnectWhatsApp(chatbotId); break;
+        case 'zapier':      await integrationsApi.disconnectZapier(chatbotId, 'new_lead'); break;
+        case 'googleDrive': await integrationsApi.disconnectGoogleDrive(chatbotId); break;
       }
-
       setDisconnectKey(null);
       await loadIntegrations();
     } catch (err: any) {
@@ -222,173 +174,139 @@ export default function IntegrationsPage() {
 
   const isSetupValid = (): boolean => {
     switch (setupKey) {
-      case 'telegram':
-        return telegramToken.trim().length > 0;
-      case 'whatsapp':
-        return (
-          whatsappPhoneId.trim().length > 0 &&
-          whatsappAccessToken.trim().length > 0 &&
-          whatsappVerifyToken.trim().length > 0
-        );
-      case 'zapier':
-        return zapierWebhook.trim().length > 0;
-      default:
-        return false;
+      case 'telegram': return telegramToken.trim().length > 0;
+      case 'whatsapp': return whatsappPhoneId.trim().length > 0 && whatsappAccessToken.trim().length > 0 && whatsappVerifyToken.trim().length > 0;
+      case 'zapier':   return zapierWebhook.trim().length > 0;
+      default:         return false;
     }
   };
 
   if (loading) {
     return (
       <div className="v4-animate-in mx-auto max-w-4xl space-y-6">
-        <div>
-          <div className="v4-shimmer rounded-lg" style={{ height: '32px', width: '180px' }} />
-          <div className="v4-shimmer rounded-lg mt-2" style={{ height: '20px', width: '280px' }} />
+        <div className="space-y-2">
+          <div className="v4-shimmer rounded h-2.5 w-32" />
+          <div className="v4-shimmer rounded h-7 w-56" />
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="v4-card p-5">
-              <div className="flex items-start gap-4">
-                <div className="v4-shimmer rounded-xl" style={{ height: '40px', width: '40px' }} />
-                <div className="flex-1 space-y-2">
-                  <div className="v4-shimmer rounded-lg" style={{ height: '20px', width: '100px' }} />
-                  <div className="v4-shimmer rounded-lg" style={{ height: '16px', width: '200px' }} />
-                </div>
-              </div>
-              <div className="mt-4">
-                <div className="v4-shimmer rounded-lg" style={{ height: '36px', width: '90px' }} />
-              </div>
-            </div>
-          ))}
+          {Array.from({ length: 4 }).map((_, i) => <div key={i} className="v4-card h-32" />)}
         </div>
       </div>
     );
   }
 
   return (
-    <div className="v4-animate-in mx-auto max-w-4xl space-y-6">
+    <div className="v4-animate-in mx-auto max-w-4xl space-y-8">
+
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-white">Integrations</h1>
-        <p className="mt-1 text-sm text-[#A1A1AA]">
-          Connect your chatbot to external platforms
-        </p>
+        <Eyebrow>Settings · integrations</Eyebrow>
+        <h1
+          className="font-display text-3xl md:text-[34px] font-medium leading-tight mt-2"
+          style={{ letterSpacing: '-0.02em' }}
+        >
+          <span className="text-ink">Wire your bot up.</span>{' '}
+          <span className="text-muted">Wherever your users are.</span>
+        </h1>
       </div>
 
-      {/* Integration Cards */}
+      {/* Cards */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {INTEGRATIONS.map((integ) => {
+        {INTEGRATIONS.map((integ, i) => {
           const connected = isConnected(integ.key);
           const info = getConnectionInfo(integ.key);
 
           return (
-            <div
-              key={integ.key}
-              className="v4-card p-5"
-            >
+            <div key={integ.key} className="v4-card v4-animate-in p-5" style={{ animationDelay: `${60 + i * 60}ms` }}>
               <div className="flex items-start gap-4">
-                <div
-                  className={`h-10 w-10 rounded-xl flex items-center justify-center ${integ.iconBoxClass}`}
-                >
-                  {integ.icon}
-                </div>
+                <IconChip>{integ.icon}</IconChip>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-semibold text-white">
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <h3
+                      className="font-display text-[15px] font-medium text-ink"
+                      style={{ letterSpacing: '-0.012em' }}
+                    >
                       {integ.name}
                     </h3>
-                    {connected ? (
-                      <span className="inline-flex items-center gap-1.5 text-xs text-[#22C55E]">
-                        <span className="w-2 h-2 rounded-full bg-[#22C55E] animate-pulse" />
-                        Connected
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1.5 text-xs text-[#71717A]">
-                        <span className="w-2 h-2 rounded-full bg-[#52525B]" />
-                        Not connected
-                      </span>
-                    )}
+                    {connected
+                      ? <Status kind="live" />
+                      : <span className="inline-flex items-center gap-2">
+                          <span className="w-1 h-3 rounded-sm bg-line-strong" />
+                          <span className="font-mono uppercase text-[10px] tracking-[0.14em] text-muted-soft">Not connected</span>
+                        </span>
+                    }
                   </div>
-                  <p className="mt-1 text-sm text-[#A1A1AA]">
-                    {integ.description}
-                  </p>
-                  {connected && info && (
-                    <p className="mt-1 text-xs text-[#71717A]">{info}</p>
-                  )}
+                  <p className="mt-1 text-[13px] text-muted">{integ.description}</p>
+                  {connected && info && <p className="mt-1 text-[11px] text-muted-soft font-mono">{info}</p>}
                 </div>
               </div>
 
-              <div className="mt-4 flex gap-2">
-                {connected ? (
-                  <button
-                    onClick={() => setDisconnectKey(integ.key)}
-                    className="px-3 py-1.5 rounded-lg text-sm font-medium border border-[#EC4899]/30 text-[#EC4899] hover:bg-[#EC4899]/10 transition-colors"
-                  >
-                    Disconnect
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => handleConnect(integ.key)}
-                    className="px-3 py-1.5 rounded-lg text-sm font-medium bg-white text-[#08080A] hover:bg-white/90 transition-colors"
-                  >
-                    Connect
-                  </button>
-                )}
+              <div className="mt-4">
+                {connected
+                  ? (
+                    <button
+                      onClick={() => setDisconnectKey(integ.key)}
+                      className="px-3 py-1.5 rounded-lg text-[13px] font-medium border border-line text-[#EF4444] hover:bg-[#FEF2F2] transition-colors"
+                    >
+                      Disconnect
+                    </button>
+                  )
+                  : <Button variant="primary" size="sm" onClick={() => handleConnect(integ.key)}>Connect</Button>
+                }
               </div>
             </div>
           );
         })}
       </div>
 
-      {/* Help Section */}
-      <div className="rounded-2xl border border-[#60A5FA]/15 bg-[#60A5FA]/[0.03] p-4">
+      {/* Help */}
+      <div className="rounded-2xl border border-line bg-surface/50 p-4">
         <div className="flex items-start gap-3">
-          <HelpCircle className="h-5 w-5 text-[#60A5FA] mt-0.5 shrink-0" />
+          <HelpCircle className="w-5 h-5 text-muted mt-0.5 shrink-0" />
           <div>
-            <h3 className="font-semibold text-white">Need Help?</h3>
-            <p className="mt-1 text-sm text-[#A1A1AA]">
-              Check our integration guides for step-by-step setup instructions.
-            </p>
+            <p className="font-display text-[14px] font-medium text-ink" style={{ letterSpacing: '-0.012em' }}>Need help?</p>
+            <p className="mt-1 text-[13px] text-muted">Check our integration guides for step-by-step setup.</p>
           </div>
         </div>
       </div>
 
-      {/* Setup Dialog */}
+      {/* Setup dialog */}
       {setupKey && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-            onClick={() => {
-              setSetupKey(null);
-              resetSetupForm();
-            }}
+            className="absolute inset-0"
+            style={{ background: 'rgba(15,15,15,0.32)', backdropFilter: 'blur(6px)' }}
+            onClick={() => { setSetupKey(null); resetSetupForm(); }}
           />
-          <div className="relative w-full max-w-lg rounded-2xl bg-[#0E0E10] border border-white/[0.08] shadow-2xl p-6">
-            <h2 className="text-lg font-semibold text-white">
-              Connect {INTEGRATIONS.find((i) => i.key === setupKey)?.name}
+          <div className="relative w-full max-w-lg rounded-2xl bg-canvas border border-line shadow-lg p-6">
+            <Eyebrow>Connect</Eyebrow>
+            <h2
+              className="font-display text-[20px] font-medium text-ink mt-2"
+              style={{ letterSpacing: '-0.012em' }}
+            >
+              {INTEGRATIONS.find((i) => i.key === setupKey)?.name}
             </h2>
-            <p className="mt-1 text-sm text-[#A1A1AA]">
-              Enter the required credentials to connect this integration.
-            </p>
+            <p className="mt-2 text-[13px] text-muted">Enter the credentials to wire it up.</p>
 
             <div className="space-y-4 mt-5">
               {setupKey === 'telegram' && (
                 <>
                   <div>
-                    <label htmlFor="tg-token" className="block text-sm font-medium text-[#A1A1AA] mb-1.5">
-                      Bot Token <span className="text-[#EC4899]">*</span>
+                    <label htmlFor="tg-token" className="block text-[13px] font-medium text-muted mb-1.5">
+                      Bot token <span className="text-[#EF4444]">*</span>
                     </label>
                     <input
                       id="tg-token"
                       type="text"
-                      placeholder="123456789:ABCdef..."
+                      placeholder="123456789:ABCdef…"
                       value={telegramToken}
                       onChange={(e) => setTelegramToken(e.target.value)}
-                      className="w-full px-3 py-2 rounded-lg bg-white/[0.04] border border-white/[0.08] text-white placeholder-[#52525B] focus:outline-none focus:border-white/[0.16] text-sm transition-colors"
+                      className="w-full px-3 py-2 rounded-lg bg-canvas border border-line text-[14px] text-ink placeholder:text-muted-soft focus:outline-none focus:border-ink transition-colors"
                     />
                   </div>
-                  <div className="rounded-xl bg-white/[0.04] border border-white/[0.06] p-3">
-                    <p className="mb-1.5 text-xs font-medium text-white">How to get a bot token:</p>
-                    <ol className="list-inside list-decimal space-y-0.5 text-xs text-[#A1A1AA]">
+                  <div className="rounded-xl bg-surface border border-line p-3">
+                    <Eyebrow className="mb-1.5">How to get a bot token</Eyebrow>
+                    <ol className="list-inside list-decimal space-y-0.5 text-[12px] text-muted">
                       <li>Open @BotFather in Telegram</li>
                       <li>Send /newbot and follow the prompts</li>
                       <li>Copy the bot token provided</li>
@@ -400,21 +318,21 @@ export default function IntegrationsPage() {
               {setupKey === 'whatsapp' && (
                 <>
                   <div>
-                    <label htmlFor="wa-phone" className="block text-sm font-medium text-[#A1A1AA] mb-1.5">
-                      Phone Number ID <span className="text-[#EC4899]">*</span>
+                    <label htmlFor="wa-phone" className="block text-[13px] font-medium text-muted mb-1.5">
+                      Phone number ID <span className="text-[#EF4444]">*</span>
                     </label>
                     <input
                       id="wa-phone"
                       type="text"
-                      placeholder="e.g., 101234567890"
+                      placeholder="e.g. 101234567890"
                       value={whatsappPhoneId}
                       onChange={(e) => setWhatsappPhoneId(e.target.value)}
-                      className="w-full px-3 py-2 rounded-lg bg-white/[0.04] border border-white/[0.08] text-white placeholder-[#52525B] focus:outline-none focus:border-white/[0.16] text-sm transition-colors"
+                      className="w-full px-3 py-2 rounded-lg bg-canvas border border-line text-[14px] text-ink placeholder:text-muted-soft focus:outline-none focus:border-ink transition-colors"
                     />
                   </div>
                   <div>
-                    <label htmlFor="wa-token" className="block text-sm font-medium text-[#A1A1AA] mb-1.5">
-                      Access Token <span className="text-[#EC4899]">*</span>
+                    <label htmlFor="wa-token" className="block text-[13px] font-medium text-muted mb-1.5">
+                      Access token <span className="text-[#EF4444]">*</span>
                     </label>
                     <input
                       id="wa-token"
@@ -422,12 +340,12 @@ export default function IntegrationsPage() {
                       placeholder="Your WhatsApp access token"
                       value={whatsappAccessToken}
                       onChange={(e) => setWhatsappAccessToken(e.target.value)}
-                      className="w-full px-3 py-2 rounded-lg bg-white/[0.04] border border-white/[0.08] text-white placeholder-[#52525B] focus:outline-none focus:border-white/[0.16] text-sm transition-colors"
+                      className="w-full px-3 py-2 rounded-lg bg-canvas border border-line text-[14px] text-ink placeholder:text-muted-soft focus:outline-none focus:border-ink transition-colors"
                     />
                   </div>
                   <div>
-                    <label htmlFor="wa-verify" className="block text-sm font-medium text-[#A1A1AA] mb-1.5">
-                      Verify Token <span className="text-[#EC4899]">*</span>
+                    <label htmlFor="wa-verify" className="block text-[13px] font-medium text-muted mb-1.5">
+                      Verify token <span className="text-[#EF4444]">*</span>
                     </label>
                     <input
                       id="wa-verify"
@@ -435,12 +353,12 @@ export default function IntegrationsPage() {
                       placeholder="Your webhook verify token"
                       value={whatsappVerifyToken}
                       onChange={(e) => setWhatsappVerifyToken(e.target.value)}
-                      className="w-full px-3 py-2 rounded-lg bg-white/[0.04] border border-white/[0.08] text-white placeholder-[#52525B] focus:outline-none focus:border-white/[0.16] text-sm transition-colors"
+                      className="w-full px-3 py-2 rounded-lg bg-canvas border border-line text-[14px] text-ink placeholder:text-muted-soft focus:outline-none focus:border-ink transition-colors"
                     />
                   </div>
-                  <div className="rounded-xl bg-white/[0.04] border border-white/[0.06] p-3">
-                    <p className="mb-1.5 text-xs font-medium text-white">Setup steps:</p>
-                    <ol className="list-inside list-decimal space-y-0.5 text-xs text-[#A1A1AA]">
+                  <div className="rounded-xl bg-surface border border-line p-3">
+                    <Eyebrow className="mb-1.5">Setup steps</Eyebrow>
+                    <ol className="list-inside list-decimal space-y-0.5 text-[12px] text-muted">
                       <li>Go to Meta Developer Portal</li>
                       <li>Create a WhatsApp Business app</li>
                       <li>Get your Phone Number ID and Access Token</li>
@@ -453,23 +371,23 @@ export default function IntegrationsPage() {
               {setupKey === 'zapier' && (
                 <>
                   <div>
-                    <label htmlFor="zap-hook" className="block text-sm font-medium text-[#A1A1AA] mb-1.5">
-                      Webhook URL <span className="text-[#EC4899]">*</span>
+                    <label htmlFor="zap-hook" className="block text-[13px] font-medium text-muted mb-1.5">
+                      Webhook URL <span className="text-[#EF4444]">*</span>
                     </label>
                     <input
                       id="zap-hook"
                       type="url"
-                      placeholder="https://hooks.zapier.com/..."
+                      placeholder="https://hooks.zapier.com/…"
                       value={zapierWebhook}
                       onChange={(e) => setZapierWebhook(e.target.value)}
-                      className="w-full px-3 py-2 rounded-lg bg-white/[0.04] border border-white/[0.08] text-white placeholder-[#52525B] focus:outline-none focus:border-white/[0.16] text-sm transition-colors"
+                      className="w-full px-3 py-2 rounded-lg bg-canvas border border-line text-[14px] text-ink placeholder:text-muted-soft focus:outline-none focus:border-ink transition-colors"
                     />
                   </div>
-                  <div className="rounded-xl bg-white/[0.04] border border-white/[0.06] p-3">
-                    <p className="mb-1.5 text-xs font-medium text-white">Setup steps:</p>
-                    <ol className="list-inside list-decimal space-y-0.5 text-xs text-[#A1A1AA]">
+                  <div className="rounded-xl bg-surface border border-line p-3">
+                    <Eyebrow className="mb-1.5">Setup steps</Eyebrow>
+                    <ol className="list-inside list-decimal space-y-0.5 text-[12px] text-muted">
                       <li>Create a new Zap in Zapier</li>
-                      <li>Choose &quot;Webhooks by Zapier&quot; as trigger</li>
+                      <li>Choose &quot;Webhooks by Zapier&quot; as the trigger</li>
                       <li>Copy the webhook URL provided</li>
                     </ol>
                   </div>
@@ -477,72 +395,50 @@ export default function IntegrationsPage() {
               )}
             </div>
 
-            <div className="mt-6 flex justify-end gap-3">
-              <button
-                onClick={() => {
-                  setSetupKey(null);
-                  resetSetupForm();
-                }}
-                disabled={setupLoading}
-                className="px-4 py-2 rounded-lg text-sm font-medium border border-white/[0.10] text-[#A1A1AA] hover:text-white hover:border-white/[0.16] transition-colors disabled:opacity-50"
-              >
+            <Divider className="mt-6" />
+
+            <div className="mt-5 flex justify-end gap-2">
+              <Button variant="secondary" onClick={() => { setSetupKey(null); resetSetupForm(); }} disabled={setupLoading}>
                 Cancel
-              </button>
+              </Button>
               <button
                 onClick={handleSetupSubmit}
                 disabled={setupLoading || !isSetupValid()}
-                className="px-4 py-2 rounded-lg text-sm font-medium bg-white text-[#08080A] hover:bg-white/90 transition-colors disabled:opacity-50"
+                className="px-4 py-2 rounded-lg text-[14px] font-medium bg-ink text-white hover:bg-ink-hover transition-colors disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-2"
               >
-                {setupLoading ? (
-                  <span className="flex items-center gap-2">
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Connecting...
-                  </span>
-                ) : (
-                  'Connect'
-                )}
+                {setupLoading ? (<><Loader2 className="w-4 h-4 animate-spin" />Connecting…</>) : 'Connect'}
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Disconnect Confirmation Dialog */}
+      {/* Disconnect dialog */}
       {disconnectKey && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0"
+            style={{ background: 'rgba(15,15,15,0.32)', backdropFilter: 'blur(6px)' }}
             onClick={() => setDisconnectKey(null)}
           />
-          <div className="relative w-full max-w-lg rounded-2xl bg-[#0E0E10] border border-white/[0.08] shadow-2xl p-6">
-            <h2 className="text-lg font-semibold text-[#EC4899]">
+          <div className="relative w-full max-w-md rounded-2xl bg-canvas border border-line shadow-lg p-6">
+            <Eyebrow>Confirm</Eyebrow>
+            <h2
+              className="font-display text-[20px] font-medium text-ink mt-2"
+              style={{ letterSpacing: '-0.012em' }}
+            >
               Disconnect {INTEGRATIONS.find((i) => i.key === disconnectKey)?.name}?
             </h2>
-            <p className="mt-1 text-sm text-[#A1A1AA]">
-              This will remove the integration. You can reconnect it later.
-            </p>
+            <p className="mt-2 text-[13px] text-muted">The integration will stop working. You can reconnect any time.</p>
 
-            <div className="mt-6 flex justify-end gap-3">
-              <button
-                onClick={() => setDisconnectKey(null)}
-                disabled={disconnectLoading}
-                className="px-4 py-2 rounded-lg text-sm font-medium border border-white/[0.10] text-[#A1A1AA] hover:text-white hover:border-white/[0.16] transition-colors disabled:opacity-50"
-              >
-                Cancel
-              </button>
+            <div className="mt-6 flex justify-end gap-2">
+              <Button variant="secondary" onClick={() => setDisconnectKey(null)} disabled={disconnectLoading}>Cancel</Button>
               <button
                 onClick={handleDisconnect}
                 disabled={disconnectLoading}
-                className="px-4 py-2 rounded-lg text-sm font-medium bg-[#EC4899] text-white hover:bg-[#EC4899]/90 transition-colors disabled:opacity-50"
+                className="px-4 py-2 rounded-lg text-[14px] font-medium bg-ink text-white hover:bg-ink-hover transition-colors disabled:opacity-40 inline-flex items-center gap-2"
               >
-                {disconnectLoading ? (
-                  <span className="flex items-center gap-2">
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Disconnecting...
-                  </span>
-                ) : (
-                  'Disconnect'
-                )}
+                {disconnectLoading ? (<><Loader2 className="w-4 h-4 animate-spin" />Disconnecting…</>) : 'Disconnect'}
               </button>
             </div>
           </div>

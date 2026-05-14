@@ -14,6 +14,7 @@ import {
   CheckCircle,
   Code,
 } from 'lucide-react';
+import { Eyebrow, Pill, Button } from '@/components/corpus';
 
 interface ApiKeyEntry {
   keyId: string;
@@ -27,30 +28,22 @@ export default function ApiKeysPage() {
   const params = useParams();
   const chatbotId = params.id as string;
 
-  // Generate key state
-  const [keyLabel, setKeyLabel] = useState('');
-  const [generating, setGenerating] = useState(false);
-  const [newlyGeneratedKey, setNewlyGeneratedKey] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
+  const [keyLabel,           setKeyLabel]           = useState('');
+  const [generating,         setGenerating]         = useState(false);
+  const [newlyGeneratedKey,  setNewlyGeneratedKey]  = useState<string | null>(null);
+  const [copied,             setCopied]             = useState(false);
 
-  // Keys list state
-  const [keys, setKeys] = useState<ApiKeyEntry[]>([]);
-  const [loadingKeys, setLoadingKeys] = useState(true);
-  const [listError, setListError] = useState(false);
+  const [keys,         setKeys]         = useState<ApiKeyEntry[]>([]);
+  const [loadingKeys,  setLoadingKeys]  = useState(true);
+  const [listError,    setListError]    = useState(false);
 
-  // Delete dialog state
   const [deleteTarget, setDeleteTarget] = useState<ApiKeyEntry | null>(null);
-  const [deleting, setDeleting] = useState(false);
+  const [deleting,     setDeleting]     = useState(false);
 
-  // Code example copy state
-  const [codeCopied, setCodeCopied] = useState(false);
+  const [codeCopied,   setCodeCopied]   = useState(false);
+  const [showFullKey,  setShowFullKey]  = useState(false);
 
-  // Show/hide newly generated key
-  const [showFullKey, setShowFullKey] = useState(false);
-
-  useEffect(() => {
-    loadKeys();
-  }, []);
+  useEffect(() => { loadKeys(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
 
   const loadKeys = async () => {
     try {
@@ -69,10 +62,7 @@ export default function ApiKeysPage() {
   const handleGenerateKey = async () => {
     try {
       setGenerating(true);
-      const data: any = await accessControlApi.generateApiKey(
-        chatbotId,
-        keyLabel.trim() || undefined
-      );
+      const data: any = await accessControlApi.generateApiKey(chatbotId, keyLabel.trim() || undefined);
       setNewlyGeneratedKey(data.apiKey);
       setKeyLabel('');
       loadKeys();
@@ -115,117 +105,91 @@ export default function ApiKeysPage() {
     setTimeout(() => setCodeCopied(false), 2000);
   };
 
-  const formatDate = (timestamp: number) => {
-    return new Date(timestamp).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
-  };
+  const formatDate = (ts: number) =>
+    new Date(ts).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 
-  const maskKey = (prefix: string) => {
-    return prefix + '...' + '\u2022'.repeat(24);
-  };
+  const maskKey = (prefix: string) => prefix + '...' + '•'.repeat(24);
 
   return (
-    <div className="v4-animate-in mx-auto max-w-4xl space-y-6">
+    <div className="v4-animate-in mx-auto max-w-4xl space-y-8">
+
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">API Keys</h1>
-        <p className="mt-1 text-sm text-slate-500 dark:text-[#A1A1AA]">
-          Manage API keys for programmatic access to your chatbot
-        </p>
+        <Eyebrow>Settings · API keys</Eyebrow>
+        <h1
+          className="font-display text-3xl md:text-[34px] font-medium leading-tight mt-2"
+          style={{ letterSpacing: '-0.02em' }}
+        >
+          <span className="text-ink">Programmatic access.</span>{' '}
+          <span className="text-muted">One key at a time.</span>
+        </h1>
       </div>
 
-      {/* Generate Key Section */}
-      <div className="v4-card p-5">
-        <div className="mb-4 flex items-center gap-2">
-          <Key className="h-5 w-5 text-slate-400 dark:text-white/60" />
-          <h2 className="text-base font-semibold text-slate-900 dark:text-white">
-            Generate New API Key
-          </h2>
-        </div>
-
-        <p className="mb-4 text-sm text-slate-500 dark:text-[#A1A1AA]">
-          Create a new API key for programmatic access. Each key can be given an
-          optional label for identification.
+      {/* Generate */}
+      <div className="v4-card p-6">
+        <Eyebrow>Generate</Eyebrow>
+        <h2
+          className="font-display text-[18px] font-medium text-ink mt-2"
+          style={{ letterSpacing: '-0.012em' }}
+        >
+          New API key
+        </h2>
+        <p className="mt-2 text-[13px] text-muted">
+          Give it an optional label so you remember what it&apos;s for.
         </p>
 
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+        <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end">
           <div className="flex-1">
-            <label className="text-xs font-medium text-slate-500 dark:text-[#71717A] uppercase tracking-wider mb-2 block">
-              Label (optional)
-            </label>
+            <label className="block text-[12px] font-medium text-muted mb-1.5">Label (optional)</label>
             <input
               type="text"
-              placeholder="e.g. Production Server, Mobile App"
+              placeholder="e.g. Production server, Mobile app"
               value={keyLabel}
               onChange={(e) => setKeyLabel(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') handleGenerateKey();
-              }}
-              className="w-full px-3 py-2 rounded-lg bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.08] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-[#52525B] focus:outline-none focus:border-slate-300 dark:focus:border-white/[0.16] text-sm transition-colors"
+              onKeyDown={(e) => { if (e.key === 'Enter') handleGenerateKey(); }}
+              className="w-full px-3 py-2 rounded-lg bg-canvas border border-line text-[14px] text-ink placeholder:text-muted-soft focus:outline-none focus:border-ink transition-colors"
             />
           </div>
-          <button
-            onClick={handleGenerateKey}
-            disabled={generating}
-            className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-white text-[#08080A] hover:bg-white/90 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
-          >
-            <Plus className="h-4 w-4" />
-            {generating ? 'Generating...' : 'Generate New API Key'}
-          </button>
+          <Button variant="primary" icon={Plus} onClick={handleGenerateKey} disabled={generating}>
+            {generating ? 'Generating…' : 'Generate key'}
+          </Button>
         </div>
 
-        {/* Newly Generated Key Display */}
         {newlyGeneratedKey && (
           <div className="mt-6 space-y-3">
-            <div className="rounded-xl border border-[#F59E0B]/20 bg-[#F59E0B]/[0.05] p-4">
+            <div className="rounded-xl border border-line bg-surface/50 p-4">
               <div className="flex items-center gap-2 mb-2">
-                <AlertTriangle className="h-4 w-4 text-[#F59E0B]" />
-                <span className="text-sm font-medium text-[#F59E0B]">
-                  Save this API key securely. It will not be shown again.
+                <AlertTriangle className="w-4 h-4 text-[#F59E0B]" />
+                <span className="text-[13px] font-medium text-ink">
+                  Save this key now. It won&apos;t be shown again.
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="rounded-lg bg-slate-100 dark:bg-white/[0.06] border border-slate-200 dark:border-white/[0.08] px-3 py-2 font-mono text-sm text-slate-900 dark:text-white flex-1 overflow-x-auto">
+                <div className="rounded-lg bg-canvas border border-line px-3 py-2 font-mono text-[13px] text-ink flex-1 overflow-x-auto">
                   {showFullKey
                     ? newlyGeneratedKey
-                    : newlyGeneratedKey.substring(0, 12) +
-                      '\u2022'.repeat(Math.max(0, newlyGeneratedKey.length - 12))}
+                    : newlyGeneratedKey.substring(0, 12) + '•'.repeat(Math.max(0, newlyGeneratedKey.length - 12))}
                 </div>
                 <button
                   onClick={() => setShowFullKey(!showFullKey)}
-                  className="h-8 w-8 rounded-lg border border-slate-200 dark:border-white/[0.08] text-slate-500 dark:text-[#A1A1AA] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-white/[0.16] flex items-center justify-center shrink-0 transition-colors"
+                  className="h-8 w-8 rounded-lg border border-line text-muted hover:text-ink hover:bg-surface flex items-center justify-center shrink-0 transition-colors"
                   title={showFullKey ? 'Hide key' : 'Show key'}
                 >
-                  {showFullKey ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
+                  {showFullKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
                 <button
                   onClick={() => copyToClipboard(newlyGeneratedKey)}
-                  className="h-8 w-8 rounded-lg border border-slate-200 dark:border-white/[0.08] text-slate-500 dark:text-[#A1A1AA] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-white/[0.16] flex items-center justify-center shrink-0 transition-colors"
+                  className="h-8 w-8 rounded-lg border border-line text-muted hover:text-ink hover:bg-surface flex items-center justify-center shrink-0 transition-colors"
                   title="Copy to clipboard"
                 >
-                  {copied ? (
-                    <CheckCircle className="h-4 w-4 text-[#22C55E]" />
-                  ) : (
-                    <Copy className="h-4 w-4" />
-                  )}
+                  {copied ? <CheckCircle className="w-4 h-4 text-[#10B981]" /> : <Copy className="w-4 h-4" />}
                 </button>
               </div>
             </div>
 
             <button
-              onClick={() => {
-                setNewlyGeneratedKey(null);
-                setShowFullKey(false);
-                setCopied(false);
-              }}
-              className="text-xs text-[#52525B] hover:text-[#A1A1AA] transition-colors"
+              onClick={() => { setNewlyGeneratedKey(null); setShowFullKey(false); setCopied(false); }}
+              className="text-[12px] text-muted-soft hover:text-ink transition-colors"
             >
               Dismiss
             </button>
@@ -233,119 +197,95 @@ export default function ApiKeysPage() {
         )}
       </div>
 
-      {/* API Keys List */}
-      <div className="v4-card p-5">
+      {/* List */}
+      <div className="v4-card p-6">
         <div className="mb-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Key className="h-5 w-5 text-slate-400 dark:text-white/60" />
-            <h2 className="text-base font-semibold text-slate-900 dark:text-white">
-              Active API Keys
+          <div>
+            <Eyebrow>Active keys</Eyebrow>
+            <h2
+              className="font-display text-[18px] font-medium text-ink mt-2"
+              style={{ letterSpacing: '-0.012em' }}
+            >
+              All issued keys
             </h2>
           </div>
-          {keys.length > 0 && (
-            <span className="text-xs text-slate-500 dark:text-[#71717A] bg-slate-100 dark:bg-white/[0.04] rounded-md px-2 py-0.5">
-              {keys.length} key{keys.length !== 1 ? 's' : ''}
-            </span>
-          )}
+          {keys.length > 0 && <Pill variant="soft">{keys.length} {keys.length === 1 ? 'key' : 'keys'}</Pill>}
         </div>
 
         {loadingKeys ? (
           <div className="space-y-3">
-            <div className="v4-shimmer rounded-xl" style={{ height: '56px' }} />
-            <div className="v4-shimmer rounded-xl" style={{ height: '56px' }} />
-            <div className="v4-shimmer rounded-xl" style={{ height: '56px' }} />
+            {[0,1,2].map(i => <div key={i} className="v4-shimmer rounded-xl h-14" />)}
           </div>
         ) : listError ? (
-          <div className="rounded-xl border border-dashed border-slate-200 dark:border-white/[0.08] p-10 text-center">
-            <Key className="h-10 w-10 text-[#3F3F46] mx-auto mb-3" />
-            <p className="text-sm text-slate-500 dark:text-[#A1A1AA]">
-              Unable to load API keys list. The key listing feature may not be
-              available yet.
-            </p>
-            <p className="mt-1 text-xs text-slate-500 dark:text-[#71717A]">
-              You can still generate new keys above.
-            </p>
+          <div className="rounded-xl border border-dashed border-line p-10 text-center">
+            <Key className="w-9 h-9 text-line-strong mx-auto mb-3" />
+            <p className="text-[13px] text-muted">Unable to load API keys list.</p>
+            <p className="mt-1 text-[12px] text-muted-soft">You can still generate new keys above.</p>
           </div>
         ) : keys.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-slate-200 dark:border-white/[0.08] p-10 text-center">
-            <Key className="h-10 w-10 text-[#3F3F46] mx-auto mb-3" />
-            <p className="text-sm font-medium text-slate-500 dark:text-[#A1A1AA]">No API keys yet</p>
-            <p className="mt-1 text-xs text-slate-500 dark:text-[#71717A]">
-              Generate your first API key above to get started.
-            </p>
+          <div className="rounded-xl border border-dashed border-line p-10 text-center">
+            <Key className="w-9 h-9 text-line-strong mx-auto mb-3" />
+            <p className="text-[13px] font-medium text-muted">No API keys yet</p>
+            <p className="mt-1 text-[12px] text-muted-soft">Generate your first key above to get started.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
-            {/* Table Header */}
-            <div className="grid grid-cols-[1fr_180px_100px_100px_48px] gap-4 px-4 py-2.5 border-b border-slate-100 dark:border-white/[0.04]">
-              <span className="text-[11px] font-medium uppercase tracking-wider text-slate-400 dark:text-[#52525B]">Label</span>
-              <span className="text-[11px] font-medium uppercase tracking-wider text-slate-400 dark:text-[#52525B]">Key</span>
-              <span className="text-[11px] font-medium uppercase tracking-wider text-slate-400 dark:text-[#52525B]">Created</span>
-              <span className="text-[11px] font-medium uppercase tracking-wider text-slate-400 dark:text-[#52525B]">Last Used</span>
-              <span />
+            <div className="grid grid-cols-[1fr_180px_120px_120px_48px] gap-4 px-4 py-2.5 border-b border-line bg-surface/50">
+              {['Label','Key','Created','Last used',''].map((h) => (
+                <span
+                  key={h || 'spacer'}
+                  className="font-mono uppercase text-[10px] font-semibold text-muted-soft"
+                  style={{ letterSpacing: '0.14em' }}
+                >
+                  {h}
+                </span>
+              ))}
             </div>
 
-            {/* Table Rows */}
             {keys.map((key) => (
               <div
                 key={key.keyId}
-                className="group grid grid-cols-[1fr_180px_100px_100px_48px] gap-4 px-4 py-3 hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors border-b border-slate-100 dark:border-white/[0.04] items-center"
+                className="group grid grid-cols-[1fr_180px_120px_120px_48px] gap-4 px-4 py-3 hover:bg-surface transition-colors border-b border-line items-center"
               >
-                <span className={key.label ? 'text-sm text-slate-900 dark:text-white' : 'text-sm italic text-slate-400 dark:text-[#52525B]'}>
+                <span className={key.label ? 'text-[13px] text-ink' : 'text-[13px] italic text-muted-soft'}>
                   {key.label || 'No label'}
                 </span>
-                <span>
-                  <code className="rounded bg-slate-100 dark:bg-white/[0.06] px-2 py-1 font-mono text-xs text-slate-500 dark:text-[#A1A1AA]">
-                    {maskKey(key.prefix || key.keyId.substring(0, 8))}
-                  </code>
-                </span>
-                <span className="text-xs text-slate-500 dark:text-[#71717A]">
-                  {formatDate(key.createdAt)}
-                </span>
-                <span className="text-xs text-slate-500 dark:text-[#71717A]">
-                  {key.lastUsed ? formatDate(key.lastUsed) : 'Never'}
-                </span>
-                <span className="flex justify-end">
-                  <button
-                    onClick={() => setDeleteTarget(key)}
-                    className="h-7 w-7 rounded-md text-[#52525B] hover:text-[#EC4899] hover:bg-[#EC4899]/10 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
-                </span>
+                <code className="rounded bg-surface border border-line px-2 py-1 font-mono text-[11px] text-ink">
+                  {maskKey(key.prefix || key.keyId.substring(0, 8))}
+                </code>
+                <span className="text-[12px] text-muted-soft font-mono">{formatDate(key.createdAt)}</span>
+                <span className="text-[12px] text-muted-soft font-mono">{key.lastUsed ? formatDate(key.lastUsed) : 'Never'}</span>
+                <button
+                  onClick={() => setDeleteTarget(key)}
+                  className="h-7 w-7 rounded-md text-muted-soft hover:text-[#EF4444] hover:bg-[#FEF2F2] opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center"
+                  title="Delete"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
               </div>
             ))}
           </div>
         )}
       </div>
 
-      {/* Usage Example */}
-      <div className="v4-card p-5">
+      {/* Example */}
+      <div className="v4-card p-6">
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Code className="h-5 w-5 text-slate-400 dark:text-white/60" />
-            <h2 className="text-base font-semibold text-slate-900 dark:text-white">
-              Usage Example
-            </h2>
+            <Code className="w-5 h-5 text-ink" />
+            <Eyebrow>Usage</Eyebrow>
           </div>
-          <button
-            onClick={copyCodeExample}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-white/[0.10] text-slate-500 dark:text-[#A1A1AA] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-white/[0.16] transition-colors text-sm"
-          >
-            {codeCopied ? (
-              <CheckCircle className="h-4 w-4 text-[#22C55E]" />
-            ) : (
-              <Copy className="h-4 w-4" />
-            )}
+          <Button variant="secondary" size="sm" onClick={copyCodeExample}>
+            {codeCopied ? <CheckCircle className="w-4 h-4 text-[#10B981]" /> : <Copy className="w-4 h-4" />}
             {codeCopied ? 'Copied' : 'Copy'}
-          </button>
+          </Button>
         </div>
 
-        <p className="mb-3 text-sm text-slate-500 dark:text-[#A1A1AA]">
-          Use your API key to send messages to your chatbot programmatically.
+        <p className="text-[13px] text-muted mb-3">
+          Send messages to your chatbot from any backend.
         </p>
 
-        <div className="rounded-xl bg-slate-50 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.06] p-4 font-mono text-sm text-[#22C55E] overflow-x-auto">
+        <div className="rounded-xl bg-surface border border-line p-4 font-mono text-[13px] text-ink overflow-x-auto">
           <pre>
             <code>{`curl -X POST ${apiBase}/api/chat \\
   -H "Authorization: Bearer YOUR_API_KEY" \\
@@ -354,59 +294,48 @@ export default function ApiKeysPage() {
           </pre>
         </div>
 
-        <div className="mt-4 space-y-2 text-sm text-slate-500 dark:text-[#A1A1AA]">
+        <div className="mt-4 space-y-2 text-[13px] text-muted">
           <p>
             Replace{' '}
-            <code className="rounded bg-slate-100 dark:bg-white/[0.06] px-1.5 py-0.5 font-mono text-xs text-slate-500 dark:text-[#A1A1AA]">
-              YOUR_API_KEY
-            </code>{' '}
-            with your actual API key. The chatbot ID for this bot is:
+            <code className="rounded bg-surface border border-line px-1.5 py-0.5 font-mono text-[11px] text-ink">YOUR_API_KEY</code>
+            {' '}with your actual key. Your chatbot ID:
           </p>
-          <div className="rounded-lg bg-slate-50 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.06] px-3 py-2 font-mono text-xs text-slate-500 dark:text-[#A1A1AA] mt-2">
+          <div className="rounded-lg bg-surface border border-line px-3 py-2 font-mono text-[12px] text-ink">
             {chatbotId}
           </div>
         </div>
       </div>
 
-      {/* Delete Confirmation Dialog */}
+      {/* Delete dialog */}
       {deleteTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0"
+            style={{ background: 'rgba(15,15,15,0.32)', backdropFilter: 'blur(6px)' }}
             onClick={() => !deleting && setDeleteTarget(null)}
           />
-          <div className="relative w-full max-w-md rounded-2xl bg-white dark:bg-[#0E0E10] border border-slate-200 dark:border-white/[0.08] shadow-2xl p-6">
-            <h3 className="flex items-center gap-2 text-sm font-semibold text-[#EC4899] mb-2">
-              <AlertTriangle className="h-5 w-5" />
-              Delete API Key
+          <div className="relative w-full max-w-md rounded-2xl bg-canvas border border-line shadow-lg p-6">
+            <Eyebrow>Confirm</Eyebrow>
+            <h3
+              className="font-display text-[20px] font-medium text-ink mt-2"
+              style={{ letterSpacing: '-0.012em' }}
+            >
+              Delete API key?
             </h3>
-            <p className="text-sm text-slate-500 dark:text-[#A1A1AA] mb-6">
-              Are you sure you want to delete the API key
-              {deleteTarget.label ? (
-                <>
-                  {' '}
-                  <span className="font-bold text-slate-900 dark:text-white">
-                    &quot;{deleteTarget.label}&quot;
-                  </span>
-                </>
-              ) : null}
-              ? Any applications using this key will immediately lose access.
-              This action cannot be undone.
+            <p className="text-[13px] text-muted mt-2 mb-6 leading-relaxed">
+              {deleteTarget.label
+                ? <>The key <span className="font-medium text-ink">&quot;{deleteTarget.label}&quot;</span> will stop working immediately.</>
+                : 'This key will stop working immediately.'}
+              {' '}Any apps using it lose access. Cannot be undone.
             </p>
-            <div className="flex justify-end gap-3">
-              <button
-                onClick={() => setDeleteTarget(null)}
-                disabled={deleting}
-                className="px-4 py-2 rounded-lg border border-slate-200 dark:border-white/[0.10] text-slate-500 dark:text-[#A1A1AA] hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-white/[0.16] transition-colors text-sm font-medium disabled:opacity-50"
-              >
-                Cancel
-              </button>
+            <div className="flex justify-end gap-2">
+              <Button variant="secondary" onClick={() => setDeleteTarget(null)} disabled={deleting}>Cancel</Button>
               <button
                 onClick={handleDeleteKey}
                 disabled={deleting}
-                className="px-4 py-2 rounded-lg bg-[#EC4899] text-white hover:bg-[#EC4899]/90 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 rounded-lg bg-ink text-white text-[14px] font-medium hover:bg-ink-hover transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                {deleting ? 'Deleting...' : 'Delete Key'}
+                {deleting ? 'Deleting…' : 'Delete key'}
               </button>
             </div>
           </div>

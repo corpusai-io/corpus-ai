@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { Geist_Mono } from "next/font/google";
+import { Inter, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { ThemeProvider } from "@/contexts/ThemeContext";
 import DashboardShell from "@/components/DashboardShell";
 
 const inter = Inter({
@@ -12,9 +10,16 @@ const inter = Inter({
   display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const geist = Geist({
   subsets: ["latin"],
+  variable: "--font-geist",
+  display: "swap",
+});
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -28,22 +33,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        {/* Anti-flash: apply stored theme before first paint */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='light'){document.documentElement.classList.remove('dark')}else{document.documentElement.classList.add('dark')}}catch(e){document.documentElement.classList.add('dark')}})()`,
-          }}
-        />
-      </head>
-      <body className={`${inter.variable} ${geistMono.variable} font-sans antialiased`}>
+    <html lang="en">
+      <body className={`${inter.variable} ${geist.variable} ${geistMono.variable} font-sans antialiased bg-surface text-ink`}>
         <AuthProvider>
-          <ThemeProvider>
-            <DashboardShell>
-              {children}
-            </DashboardShell>
-          </ThemeProvider>
+          <DashboardShell>{children}</DashboardShell>
         </AuthProvider>
       </body>
     </html>
