@@ -26,6 +26,7 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import { quotaApi } from '@/lib/api';
 import { useChatbotStore } from '@/stores/chatbot-store';
+import { Mark } from '@/components/corpus';
 
 /* ─── Nav row ─────────────────────────────────────────────── */
 interface NavItemProps {
@@ -181,12 +182,13 @@ export default function Sidebar({ onNavClick }: { onNavClick?: () => void } = {}
 
       {/* ── Wordmark ────────────────────────────────────────── */}
       <div className="h-14 flex items-center px-5 border-b border-line">
-        <Link href="/" className="flex items-center" onClick={onNavClick}>
+        <Link href="/" className="flex items-center gap-2.5" onClick={onNavClick}>
+          <Mark size={22} />
           <span
             className="font-display text-ink"
-            style={{ fontWeight: 600, fontSize: 20, letterSpacing: '-0.03em', lineHeight: 1 }}
+            style={{ fontWeight: 600, fontSize: 18, letterSpacing: '-0.02em', lineHeight: 1 }}
           >
-            CorpusAI<span style={{ color: 'var(--muted)' }}>.</span>
+            CORPUS<span style={{ color: 'var(--muted)', fontWeight: 500 }}> AI</span>
           </span>
         </Link>
       </div>

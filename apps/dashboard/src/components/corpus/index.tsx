@@ -32,16 +32,30 @@ export function Eyebrow({ children, className }: { children: React.ReactNode; cl
 }
 
 /* ──────────────────────────────────────────────────────────────
-   Mark · the "C." brand glyph used inside icon chips, chat avatars.
+   Mark · the Cursor brand glyph — open C breaking into an arrow.
+   "Acts, not just answers." Mono by default (uses currentColor for
+   the C stroke and the arrowhead fill); pass `accent` to tint the
+   arrowhead if/when a chromatic brand exception is intentional.
 ─────────────────────────────────────────────────────────────── */
-export function Mark({ size = 16 }: { size?: number }) {
+export function Mark({ size = 16, accent }: { size?: number; accent?: string }) {
   return (
-    <span
-      className="font-display"
-      style={{ fontSize: size, fontWeight: 600, color: 'var(--ink)', letterSpacing: '-0.02em', lineHeight: 1 }}
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 64 64"
+      fill="none"
+      aria-hidden
+      style={{ display: 'block', color: 'var(--ink)' }}
     >
-      C<span style={{ color: 'var(--muted)' }}>.</span>
-    </span>
+      <path
+        d="M 50 18 A 22 22 0 1 0 50 46"
+        stroke="currentColor"
+        strokeWidth={7}
+        strokeLinecap="square"
+        fill="none"
+      />
+      <path d="M 42 24 L 56 32 L 42 40 Z" fill={accent ?? 'currentColor'} />
+    </svg>
   );
 }
 
