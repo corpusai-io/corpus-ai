@@ -83,7 +83,8 @@ corpus-ai/
 ├── proxy-server.js              Dev (and Docker prod) proxy (port 3000)
 ├── docker-compose.yaml          Base compose
 ├── docker-compose.staging.yml   Staging overrides
-└── docker-compose.production.yml Production overrides
+├── docker-compose.production.yml Production overrides
+└── .dockerignore                Keeps local node_modules, dist/, .turbo, .git out of Docker build context
 ```
 
 ### Dev routing (proxy port 3000)
@@ -127,7 +128,7 @@ Entry: `src/bootstrap.ts` → `src/index.ts`. Hosted on Railway. Trust proxy is 
 
 **Middleware:**
 - `auth.middleware.ts` — JWT vs Cognito + API key auth (`authenticateToken`, `authenticateChat`)
-- `rateLimit.middleware.ts` — custom in-memory limiter (auth 5/15min, api 100/15min, chat 20/min, passwordReset 3/hr). `ioredis` + `rate-limit-redis` are installed but the active limiter is in-memory.
+- `rateLimit.middleware.ts` — `express-rate-limit` with **Redis-or-in-memory** store (auth 5/15min, api 100/15min, chat 20/min, passwordReset 3/hr). On boot, checks for `REDIS_URL`: if set, uses `rate-limit-redis` + `ioredis` (counters shared across replicas); if not, falls back to the default in-memory store and logs `[rate-limit] REDIS_URL not set — using in-memory store (single replica only)`. Staging currently runs without Redis — fine for one Railway replica.
 - `validation.middleware.ts` — input validation + `errorHandler` at the end of the chain
 
 **Services:** `email.service.ts` (SES), `database.service.ts` (multi-DB driver), `encryption.ts` (AES with `DATABASE_ENCRYPTION_KEY`).
@@ -322,9 +323,9 @@ Enforced in `quota.middleware`. Free has a 10-day trial expiration (`FREE_TRIAL_
 
 `corpus-response-cache-{env}` (TTL on `ttl`, GSI on `chatbotId`) — used by `rag/response-cache.ts`. **Not in Terraform.**
 
-All **14 tables are now defined in Terraform** across `dynamodb.tf`, `iam.tf`, `secrets.tf`, `outputs.tf`. Earlier docs/comments may say "11 tables" or refer to a gap — that gap is closed. The auto-create logic in `apps/backend/src/utils/ensure-local-tables.ts` still handles local Docker DynamoDB.
+All **14 tables are defined and managed by Terraform** across `dynamodb.tf`, `iam.tf`, `secrets.tf`, `outputs.tf`. The auto-create logic in `apps/backend/src/utils/ensure-local-tables.ts` handles local Docker DynamoDB.
 
-> ⚠️ **Drift watch:** the staging AWS account had the three runtime-required tables (`ai-actions`, `builtin-integrations`, `response-cache`) **created manually** in the console before they existed in Terraform. They need to be either dropped & recreated via `terraform apply`, or `terraform import`-ed into state, before any future apply. See "Reconciliation runbook" in the conversation log.
+> 📜 **Historical note (resolved 2026-05-14):** staging once had `ai-actions`, `builtin-integrations`, `response-cache` created by hand in the AWS console before Terraform defined them, and the IAM policy had several `VisualEditor*` inline statements added through the console. We dropped the manual tables, reapplied Terraform, and the policy is now Terraform-managed. Production has never had this drift. If you find similar drift again, the playbook is: drop the manual resource → `terraform plan -var-file=staging.tfvars` → confirm only the expected adds → `apply`.
 
 ---
 
@@ -446,18 +447,32 @@ NEXT_PUBLIC_COGNITO_DOMAIN
 | AWS infra (staging) | Terraform — DynamoDB, S3, SQS, Cognito, SES, Secrets Manager, IAM | ✅ Applied (state in `infra/terraform/terraform.tfstate`) |
 | AWS infra (production) | Same | ✅ Applied (separate state via `production.tfvars`) |
 | Website (staging) | Vercel → `staging.corpusai.io` | ✅ Live |
-| Dashboard (staging) | Vercel → `app-staging.corpusai.io` | 🚧 Configured, debugging chatbot-creation regression (see recent commit churn `dasdhbaord chatbor createion fail`) |
+| Dashboard (staging) | Vercel → `app-staging.corpusai.io` | ✅ Live (login + chatbot create/delete cycle verified end-to-end) |
 | Docs (staging) | Vercel → `docs-staging.corpusai.io` | 🚧 In progress |
-| Backend (staging) | Railway → `api-staging.corpusai.io` | 🚧 In progress (`railway.toml` + `docker/Dockerfile.backend` ready) |
-| Lambda Build | Serverless (`pnpm deploy:staging`) | ⏳ Not yet deployed to AWS |
-| Lambda Chat | Serverless (`pnpm deploy:staging`) | ⏳ Not yet deployed to AWS |
+| Backend (staging) | Railway → `api-staging.corpusai.io` | ✅ Live (SSO + chatbots + S3 + DynamoDB + Pinecone delete cycle clean) |
+| Lambda Build | Serverless (`pnpm deploy:staging`) | ⏳ Not yet deployed to AWS — uploads to S3 succeed but documents never index until this is up |
+| Lambda Chat | Serverless (`pnpm deploy:staging`) | ⏳ Not yet deployed to AWS — backend's `/api/chat` proxy still serves prod traffic in the interim |
 | Pinecone indexes (staging) | Manual | ✅ Created (`corpus-dense-staging`, `corpus-sparse-staging`) |
 | SES domain identity | Terraform | ✅ Verified |
 | SES production access | AWS Console | ⏳ Needs request — until granted, emails only deliver to verified addresses |
-| DNS (Spaceship) | CNAMEs for all 3 staging hosts | ⏳ Partially added (SES records done; app CNAMEs needed once Vercel/Railway provide targets) |
+| DNS (Spaceship) | CNAMEs for all 3 staging hosts | ✅ All wired up (SES + website + dashboard + api) |
 | Production env (everything above) | — | ⏳ Pending — same playbook once staging is green |
 
 See `NEXT_STEPS_FOR_DEPLOYMENT.md` for the explicit remaining checklist.
+
+### Railway deploy gotchas (learned the hard way)
+
+The backend lives on Railway with a Dockerfile build. Two things that bit us:
+
+1. **Watch paths default to `/apps/backend/**`** in Railway's service config. That means commits touching `packages/aws-common/**`, `docker/Dockerfile.backend`, `pnpm-lock.yaml`, `turbo.json`, or `.dockerignore` **do NOT trigger auto-deploy** even though they affect the backend image. Clicking "Redeploy" in Railway re-runs the existing image (it does not pull new commits). The fix is either: (a) update the watch paths in Railway → Settings → Source to include all those paths, or (b) make any token edit inside `apps/backend/` to force a trigger.
+
+2. **BuildKit's content-hash layer cache will silently reuse a stale image** if the build context happens to match a cached one — every Dockerfile step will show `cached` in the log and the build will finish in <2 seconds without actually running anything. To force a real rebuild without changing app code, bump the `ARG BUILD_CACHE_BUST=...` value at the top of `docker/Dockerfile.backend`. Also note `--force` is already passed to `pnpm turbo run build` so turbo's own cache can't short-circuit a workspace-package rebuild.
+
+3. **Boot fingerprints** — `apps/backend/src/index.ts` and `packages/aws-common/src/pinecone/index.ts` each `console.log` a build/version tag at module-load time. If those lines don't show up in the Railway deploy log after a push, the new code didn't actually get into the image — diagnose via the two issues above.
+
+4. **`.gitignore` must stay in the Docker context.** `docker/Dockerfile.backend`'s builder stage does `COPY .gitignore .gitignore`, and `turbo prune --docker` (in the pruner stage) respects gitignore patterns. The repo `.dockerignore` excludes `.git/` and a lot of other VCS/build cruft, but **not** `.gitignore` itself.
+
+5. **Secrets Manager is only read at boot.** After running `terraform apply` (which rotates the secret version) or any manual edit to `corpus-ai/staging`, restart the Railway service to pick up the new values — `bootstrap.ts` does not poll.
 
 ---
 
@@ -477,22 +492,22 @@ See `NEXT_STEPS_FOR_DEPLOYMENT.md` for the explicit remaining checklist.
 - AI actions + builtin integrations dashboards
 - Embeddable widget (`/api/widget.js`)
 - Slack / Telegram / WhatsApp integrations (handled in `lambdaChat`)
-- Custom in-memory rate limiter on backend
-- AWS infra fully described in Terraform for both staging and prod
+- Rate limiter: `express-rate-limit` with `rate-limit-redis` store when `REDIS_URL` is set, in-memory fallback otherwise
+- AWS infra fully described in Terraform for both staging and prod — all 14 DynamoDB tables, IAM, S3, SQS, Cognito, SES, Secrets Manager
 - AES encryption for stored DB passwords (`DATABASE_ENCRYPTION_KEY`)
 - Backend bootstraps secrets from Secrets Manager at boot
+- Staging end-to-end: SSO → create chatbot (file upload → S3, build msg → SQS) → delete chatbot (cleans Pinecone namespace, S3 prefix, every DynamoDB row) — verified clean on Railway
 
 ### Pending / partial
 
-- **Terraform gap:** add `ai-actions`, `builtin-integrations`, `response-cache` tables back to `dynamodb.tf`, `iam.tf`, `secrets.tf`, `outputs.tf` (current diff removes them; runtime still needs them).
-- **Backend Slack OAuth callback:** stubbed (`apps/backend/src/controllers/integrations.controller.ts:65`). The real flow runs in `lambdaChat/src/handlers/slack-oauth.ts`; remove the backend stub or wire it through.
+- **Lambdas not yet deployed to AWS** for staging — uploads land in S3 but never index into Pinecone until `lambdaBuild` is deployed. Chat in production still goes through the backend `/api/chat` proxy.
+- **Backend Slack OAuth callback:** stubbed at `apps/backend/src/controllers/integrations.controller.ts:65`. The real flow runs in `lambdaChat/src/handlers/slack-oauth.ts`; remove the backend stub or wire it through.
 - **Payment downgrade after grace period:** `apps/backend/src/controllers/payment.controller.ts:208` is a TODO.
 - **Email templates:** `apps/backend/src/controllers/access.controller.ts:86` notes multi-language templates are not yet implemented.
-- **S3 presigned upload (direct browser → S3):** backend `generatePresignedUploadUrl()` and `chatbotApi.getUploadUrl()` exist but aren't wired into the dashboard upload UI. S3 CORS is provisioned in Terraform.
-- **Redis-backed rate limiter:** `ioredis` + `rate-limit-redis` are installed but unused; backend still uses the in-memory limiter. Fine for single-instance Railway; revisit if/when we horizontally scale.
-- **Lambdas not yet deployed to AWS** for staging.
-- **SES still in sandbox** until production access is granted.
-- **Commit hygiene:** the last 7 commits on `staging` all share the message `dasdhbaord chatbor createion fail` — these are WIP fixes for a dashboard chatbot-creation regression. Resolve and squash before merging to `main`.
+- **S3 presigned upload (direct browser → S3):** backend `generatePresignedUploadUrl()` and `chatbotApi.getUploadUrl()` exist but aren't wired into the dashboard upload UI. S3 CORS is already provisioned in Terraform.
+- **Redis on Railway:** not provisioned. The rate-limit code path supports Redis (`REDIS_URL` env var); add a Railway-managed Redis and set `REDIS_URL=${{Redis.REDIS_URL}}` when we scale beyond one backend replica.
+- **SES still in sandbox** until production access is granted — emails only deliver to verified addresses until then.
+- **Commit hygiene:** the staging branch carries a string of `dasdhbaord chatbor createion fail` commits (WIP fixes for an earlier dashboard regression). Squash or rewrite before merging to `main`.
 
 ---
 
@@ -527,5 +542,7 @@ See `NEXT_STEPS_FOR_DEPLOYMENT.md` for the explicit remaining checklist.
 - **Adding a DynamoDB table:** update `apps/backend/setup-aws-dynamodb.js`, `apps/backend/src/utils/ensure-local-tables.ts`, `apps/backend/.env.example`, `infra/terraform/dynamodb.tf`, `infra/terraform/iam.tf`, `infra/terraform/secrets.tf`, `infra/terraform/outputs.tf`, and the Dynamoose/ElectroDB model in `packages/aws-common`.
 - **Adding a backend route:** add controller + routes file + register in `apps/backend/src/index.ts`.
 - **Lambda changes:** edit `apps/lambdaBuild` or `apps/lambdaChat`; redeploy with the corresponding `pnpm deploy:*` script.
-- **Secrets:** never commit; push via `pnpm secrets:push:staging` / `pnpm secrets:push:production`.
+- **Secrets:** never commit; push via `pnpm secrets:push:staging` / `pnpm secrets:push:production`. Always restart Railway after rotating a Secrets Manager version.
 - **Don't bypass the bootstrap:** if you import from `@corpusai/aws-common`, you depend on env being populated first.
+- **Changing anything outside `apps/backend/`** that affects the backend image (e.g., `packages/aws-common`, the Dockerfile, `.dockerignore`, root deps): the commit either needs to also touch a file inside `apps/backend/` or Railway's watch paths need to include the changed path — otherwise auto-deploy silently skips. See the "Railway deploy gotchas" section above.
+- **Best-effort cleanup style:** the chatbot-delete path in `apps/backend/src/controllers/chatbots.controller.ts:442` wraps every external-system cleanup (Pinecone, S3, Dynamo rows, integrations) in its own try/catch so one failure doesn't block the rest. Helpers it calls in `@corpusai/aws-common` (e.g., `deleteChatbotVectors`) should also swallow their own failures and log diagnostically rather than throw — keeps the orchestrator simple and the user-facing delete always succeeds.
