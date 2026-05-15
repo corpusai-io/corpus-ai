@@ -1,509 +1,427 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import { ArrowRight, Zap } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { GridPattern } from '@/components/ui/grid-pattern';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// ─── Data ─────────────────────────────────────────────────────────────────────
 
-interface BeamCard {
-  id: string;
-  name: string;
-  desc: string;
-  icon: string | null;
-  emoji?: string;
-  href: string;
-  side: 'left' | 'right';
+const INTEGRATIONS = [
+  { id: 'slack',     name: 'Slack',     icon: '/socials-icons/slack.png',     desc: 'Deploy as a Slack workspace bot',   category: 'Messaging'  },
+  { id: 'whatsapp',  name: 'WhatsApp',  icon: '/socials-icons/whatsapp.png',  desc: 'WhatsApp Business API messaging',   category: 'Messaging'  },
+  { id: 'telegram',  name: 'Telegram',  icon: '/socials-icons/telegram.png',  desc: 'Telegram bot with full context',    category: 'Messaging'  },
+  { id: 'wordpress', name: 'WordPress', icon: '/socials-icons/wordpress.png', desc: 'Embed widget on WordPress sites',   category: 'Web'        },
+  { id: 'domain',    name: 'Website',   icon: '/socials-icons/domain.png',    desc: 'Widget on any web property',        category: 'Web'        },
+  { id: 'shopify',   name: 'Shopify',   icon: '/socials-icons/shopify.png',   desc: 'E-commerce AI agent',               category: 'Commerce'   },
+  { id: 'stripe',    name: 'Stripe',    icon: '/socials-icons/stripe.png',    desc: 'Payment intelligence & refunds',    category: 'Payments'   },
+  { id: 'email',     name: 'Email',     icon: '/socials-icons/email.png',     desc: 'Gmail and Outlook integration',     category: 'Comms'      },
+  { id: 'database',  name: 'Database',  icon: '/socials-icons/database.png',  desc: 'SQL & NoSQL live queries',          category: 'Data'       },
+] as const;
+
+type IntegrationId = typeof INTEGRATIONS[number]['id'];
+
+// ─── Orbit geometry ───────────────────────────────────────────────────────────
+
+const CW     = 800;   // viewBox width
+const CH     = 460;   // viewBox height
+const CX     = CW / 2;
+const CY     = CH / 2;
+const RADIUS = 172;   // orbit radius
+const NODE_R = 27;    // node circle radius
+const HUB_R  = 38;    // hub circle radius
+
+function orbitPos(index: number, total: number) {
+  const angle = (index / total) * 2 * Math.PI - Math.PI / 2; // start from top
+  return {
+    x: CX + Math.cos(angle) * RADIUS,
+    y: CY + Math.sin(angle) * RADIUS,
+  };
 }
 
-interface Particle {
-  id: number;
-  cardId: string;
-  progress: number;
-  side: 'left' | 'right';
-  rowIndex: number;
+/** Shorten a line segment so it doesn't overdraw the node/hub circles */
+function shortenLine(x1: number, y1: number, x2: number, y2: number, r1: number, r2: number) {
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  const len = Math.sqrt(dx * dx + dy * dy);
+  const ux = dx / len;
+  const uy = dy / len;
+  return {
+    sx: x1 + ux * r1,
+    sy: y1 + uy * r1,
+    ex: x2 - ux * r2,
+    ey: y2 - uy * r2,
+  };
 }
 
-// ─── Integration Data ──────────────────────────────────────────────────────────
+// ─── Sub-components ───────────────────────────────────────────────────────────
 
-const cards: BeamCard[] = [
-  { id: 'slack',     name: 'Slack',     desc: 'Channel alerts',     icon: '/socials-icons/Slack.svg',          href: '/Sign-In',     side: 'left'  },
-  { id: 'telegram',  name: 'Telegram',  desc: 'Bot messaging',      icon: '/socials-icons/telegram-1 1.svg',   href: '/Sign-In',  side: 'left'  },
-  { id: 'whatsapp',  name: 'WhatsApp',  desc: 'Business API',       icon: '/socials-icons/whatsapp.svg',       href: '/Sign-In',  side: 'left'  },
-  { id: 'wordpress', name: 'WordPress', desc: 'Site embedding',     icon: '/socials-icons/wordpress-icon.svg', href: '/Sign-In', side: 'left'  },
-  { id: 'zapier',    name: 'Zapier',    desc: '5,000+ automations', icon: '/socials-icons/zapier.svg',         href: '/Sign-In',    side: 'left'  },
-  { id: 'website',  name: 'Website',  desc: 'Embed widget',         icon: null, emoji: '🌐', href: '/Sign-In', side: 'right' },
-  { id: 'crm',      name: 'CRM',      desc: 'HubSpot · Salesforce', icon: null, emoji: '🎯', href: '/Sign-In', side: 'right' },
-  { id: 'database', name: 'Database', desc: 'SQL · NoSQL queries',  icon: null, emoji: '🗄️', href: '/Sign-In', side: 'right' },
-  { id: 'email',    name: 'Email',    desc: 'Gmail · Outlook',      icon: null, emoji: '📧', href: '/Sign-In', side: 'right' },
-  { id: 'webhooks', name: 'Webhooks', desc: 'Custom endpoints',     icon: null, emoji: '🔗', href: '/Sign-In', side: 'right' },
-];
-
-const leftCards  = cards.filter(c => c.side === 'left');
-const rightCards = cards.filter(c => c.side === 'right');
-
-// ─── Layout constants ──────────────────────────────────────────────────────────
-
-const HUB_COL_W  = 140;
-const COL_GAP    = 24;
-const HUB_LOGO_R = 40;
-const CARD_H     = 60;
-const CARD_GAP   = 12;
-
-// ─── Geometry helpers ──────────────────────────────────────────────────────────
-
-function clampToHub(sx: number, sy: number, hx: number, hy: number, r: number) {
-  const dx = hx - sx;
-  const dy = hy - sy;
-  const dist = Math.sqrt(dx * dx + dy * dy);
-  if (dist <= r) return { ex: sx, ey: sy };
-  const t = (dist - r) / dist;
-  return { ex: sx + dx * t, ey: sy + dy * t };
-}
-
-function lerpPoint(sx: number, sy: number, ex: number, ey: number, t: number) {
-  return { x: sx + (ex - sx) * t, y: sy + (ey - sy) * t };
-}
-
-// ─── Beam CSS ─────────────────────────────────────────────────────────────────
-
-const BEAM_CSS = `
-@keyframes beamFlow {
-  0%   { stroke-dashoffset: 24; }
-  100% { stroke-dashoffset: 0;  }
-}
-`;
-
-// ─── Single Integration Card ───────────────────────────────────────────────────
-
-function BeamCardItem({ card, lit }: { card: BeamCard; lit: boolean; wasLit: boolean }) {
+function OrbitSVG({ activeIds, hoveredId }: { activeIds: Set<IntegrationId>; hoveredId: IntegrationId | null }) {
+  const n = INTEGRATIONS.length;
   return (
-    <Link href={card.href} className="block">
-      <motion.div
-        className={`flex items-center gap-3 px-4 py-3 rounded-xl border cursor-pointer transition-colors duration-700 ${
-          lit
-            ? 'border-[#171717]/20 bg-[#F7F7F7] shadow-sm'
-            : 'border-[#E8E8E8] bg-white hover:border-[#171717]/15 hover:bg-[#FAFAFA]'
-        }`}
-        initial={{ opacity: 0, x: card.side === 'left' ? -16 : 16 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
-      >
-        {/* Icon */}
-        <motion.div
-          className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-          animate={{
-            backgroundColor: lit ? 'rgba(23,23,23,0.06)' : 'rgba(243,244,246,1)',
-          }}
-          transition={{ duration: 0.6 }}
-        >
-          {card.icon ? (
-            <Image src={card.icon} alt={card.name} width={22} height={22} className="w-[22px] h-[22px]" unoptimized />
-          ) : (
-            <span className="text-lg leading-none">{card.emoji}</span>
-          )}
-        </motion.div>
+    <>
+      <style>{`
+        @keyframes dashMove    { to { stroke-dashoffset: -8; } }
+        @keyframes spinRing    { to { transform: rotate(360deg); transform-box: fill-box; transform-origin: center; } }
+        @keyframes spinRingRev { to { transform: rotate(-360deg); transform-box: fill-box; transform-origin: center; } }
+      `}</style>
 
-        {/* Text */}
-        <div className="min-w-0 flex-1">
-          <motion.div
-            className="text-sm font-medium leading-tight"
-            animate={{ color: lit ? '#171717' : '#737373' }}
-            transition={{ duration: 0.6 }}
-          >
-            {card.name}
-          </motion.div>
-          <div className="text-xs text-[#A3A3A3] mt-0.5 truncate">{card.desc}</div>
-        </div>
-
-        {/* Active dot */}
-        <AnimatePresence>
-          {lit && (
-            <motion.span
-              key="dot"
-              className="w-2 h-2 rounded-full bg-[#171717] flex-shrink-0"
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0, opacity: 0 }}
-              transition={{ duration: 0.35 }}
-            />
-          )}
-        </AnimatePresence>
-      </motion.div>
-    </Link>
-  );
-}
-
-// ─── SVG Beams + Particles ─────────────────────────────────────────────────────
-
-function BeamLines({
-  containerRef,
-  litIds,
-  particles,
-}: {
-  containerRef: React.RefObject<HTMLDivElement | null>;
-  litIds: Set<string>;
-  particles: Particle[];
-}) {
-  const [dims, setDims] = useState({ w: 900, h: 360 });
-
-  useEffect(() => {
-    function measure() {
-      if (containerRef.current) {
-        setDims({ w: containerRef.current.offsetWidth, h: containerRef.current.offsetHeight });
-      }
-    }
-    measure();
-    const ro = new ResizeObserver(measure);
-    if (containerRef.current) ro.observe(containerRef.current);
-    return () => ro.disconnect();
-  }, [containerRef]);
-
-  const { w, h } = dims;
-  const hubX = w / 2;
-  const hubY = h / 2;
-  const onefrW      = (w - HUB_COL_W - 2 * COL_GAP) / 2;
-  const leftStartX  = onefrW;
-  const rightStartX = onefrW + COL_GAP + HUB_COL_W + COL_GAP;
-  const totalCardsH = 5 * CARD_H + 4 * CARD_GAP;
-  const firstCardY  = (h - totalCardsH) / 2 + CARD_H / 2;
-  const rowY        = (i: number) => firstCardY + i * (CARD_H + CARD_GAP);
-
-  function getEndpoints(side: 'left' | 'right', rowIndex: number) {
-    const sx = side === 'left' ? leftStartX : rightStartX;
-    const sy = rowY(rowIndex);
-    const { ex, ey } = clampToHub(sx, sy, hubX, hubY, HUB_LOGO_R);
-    return { sx, sy, ex, ey };
-  }
-
-  return (
-    <svg
-      className="absolute inset-0 w-full h-full pointer-events-none"
-      style={{ zIndex: 1 }}
-      viewBox={`0 0 ${w} ${h}`}
-      preserveAspectRatio="none"
-    >
-      <style>{BEAM_CSS}</style>
       <defs>
-        <linearGradient id="glLeft" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%"   stopColor="#171717" stopOpacity="0.05" />
-          <stop offset="100%" stopColor="#171717" stopOpacity="0.15" />
-        </linearGradient>
-        <linearGradient id="glLeftLit" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%"   stopColor="#171717" stopOpacity="0.1" />
-          <stop offset="100%" stopColor="#171717" stopOpacity="0.3" />
-        </linearGradient>
-        <linearGradient id="glRight" x1="100%" y1="0%" x2="0%" y2="0%">
-          <stop offset="0%"   stopColor="#171717" stopOpacity="0.05" />
-          <stop offset="100%" stopColor="#171717" stopOpacity="0.15" />
-        </linearGradient>
-        <linearGradient id="glRightLit" x1="100%" y1="0%" x2="0%" y2="0%">
-          <stop offset="0%"   stopColor="#171717" stopOpacity="0.1" />
-          <stop offset="100%" stopColor="#171717" stopOpacity="0.3" />
-        </linearGradient>
-        <filter id="particleGlow" x="-100%" y="-100%" width="300%" height="300%">
-          <feGaussianBlur stdDeviation="2" result="blur" />
-          <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
+        {/* Radial fade for the faint grid overlay */}
+        <radialGradient id="orbitFade" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stopColor="white" stopOpacity="0" />
+          <stop offset="100%" stopColor="white" stopOpacity="0.6" />
+        </radialGradient>
       </defs>
 
-      {/* LEFT BEAMS */}
-      {leftCards.map((card, i) => {
-        const lit   = litIds.has(card.id);
-        const sy    = rowY(i);
-        const delay = `${(i * 0.18).toFixed(2)}s`;
-        const { ex, ey } = clampToHub(leftStartX, sy, hubX, hubY, HUB_LOGO_R);
+      {/* ── Connection lines ── */}
+      {INTEGRATIONS.map((integ, i) => {
+        const pos = orbitPos(i, n);
+        const isActive = hoveredId ? hoveredId === integ.id : activeIds.has(integ.id);
+        const { sx, sy, ex, ey } = shortenLine(pos.x, pos.y, CX, CY, NODE_R + 2, HUB_R + 2);
         return (
           <line
-            key={card.id}
-            x1={leftStartX} y1={sy} x2={ex} y2={ey}
-            stroke={lit ? 'url(#glLeftLit)' : 'url(#glLeft)'}
-            strokeWidth={lit ? 2 : 1}
-            strokeDasharray="7 5"
-            opacity={lit ? 0.9 : 0.3}
-            style={{ animation: `beamFlow 1.8s linear ${delay} infinite`, transition: 'opacity 0.7s ease' }}
+            key={integ.id}
+            x1={sx} y1={sy} x2={ex} y2={ey}
+            stroke={isActive ? '#171717' : '#E8E8E8'}
+            strokeWidth={isActive ? 1.5 : 1}
+            strokeDasharray={isActive ? '4 4' : '5 7'}
+            opacity={isActive ? 1 : 0.5}
+            style={{
+              transition: 'stroke 0.45s ease, stroke-width 0.45s ease, opacity 0.45s ease',
+              animation: isActive ? 'dashMove 0.8s linear infinite' : undefined,
+            }}
           />
         );
       })}
 
-      {/* RIGHT BEAMS */}
-      {rightCards.map((card, i) => {
-        const lit   = litIds.has(card.id);
-        const sy    = rowY(i);
-        const delay = `${(i * 0.18 + leftCards.length * 0.18).toFixed(2)}s`;
-        const { ex, ey } = clampToHub(rightStartX, sy, hubX, hubY, HUB_LOGO_R);
-        return (
-          <line
-            key={card.id}
-            x1={rightStartX} y1={sy} x2={ex} y2={ey}
-            stroke={lit ? 'url(#glRightLit)' : 'url(#glRight)'}
-            strokeWidth={lit ? 2 : 1}
-            strokeDasharray="7 5"
-            opacity={lit ? 0.9 : 0.3}
-            style={{ animation: `beamFlow 1.8s linear ${delay} infinite`, transition: 'opacity 0.7s ease' }}
-          />
-        );
-      })}
-
-      {/* TRAVELING PARTICLES */}
-      {particles.map(p => {
-        const { sx, sy, ex, ey } = getEndpoints(p.side, p.rowIndex);
-        const pos = lerpPoint(sx, sy, ex, ey, p.progress);
-        const opacity =
-          p.progress < 0.1 ? p.progress / 0.1
-          : p.progress > 0.85 ? (1 - p.progress) / 0.15
-          : 1;
-        return (
-          <g key={p.id} filter="url(#particleGlow)">
-            <circle cx={pos.x} cy={pos.y} r={5} fill="#171717" opacity={opacity * 0.15} />
-            <circle cx={pos.x} cy={pos.y} r={2.5} fill="#171717" opacity={opacity * 0.7} />
-            <circle cx={pos.x} cy={pos.y} r={1} fill="#171717" opacity={opacity * 0.9} />
-          </g>
-        );
-      })}
-    </svg>
+      {/* ── Hub — outermost slow-spinning dashed ring ── */}
+      <circle
+        cx={CX} cy={CY} r={58}
+        fill="none" stroke="#E8E8E8" strokeWidth="1" strokeDasharray="5 7" opacity={0.5}
+        style={{ animation: 'spinRing 28s linear infinite', transformOrigin: `${CX}px ${CY}px` }}
+      />
+      {/* Mid ring — counter-spin */}
+      <circle
+        cx={CX} cy={CY} r={48}
+        fill="none" stroke="#D4D4D4" strokeWidth="1" opacity={0.35}
+        style={{ animation: 'spinRingRev 18s linear infinite', transformOrigin: `${CX}px ${CY}px` }}
+      />
+      {/* Hub fill circle */}
+      <circle cx={CX} cy={CY} r={HUB_R} fill="white" stroke="#E8E8E8" strokeWidth="1.5" />
+    </>
   );
 }
 
-// ─── Hub ──────────────────────────────────────────────────────────────────────
-
-function Hub({ pulse }: { pulse: boolean }) {
+function IntegrationNode({
+  integ,
+  pos,
+  isActive,
+  onHover,
+  onLeave,
+}: {
+  integ: typeof INTEGRATIONS[number];
+  pos: { x: number; y: number };
+  isActive: boolean;
+  onHover: () => void;
+  onLeave: () => void;
+}) {
+  const size = NODE_R * 2;
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div className="relative flex items-center justify-center">
-        <motion.div
-          className="absolute rounded-full border border-[#E8E8E8]"
-          animate={pulse
-            ? { width: [88, 108, 88], height: [88, 108, 88], opacity: [0.4, 0, 0.4] }
-            : { width: 88, height: 88, opacity: 0.2 }
-          }
-          transition={{ duration: 1.6, ease: 'easeOut', repeat: pulse ? 1 : 0 }}
-        />
-        <motion.div
-          className="absolute rounded-full border border-[#E8E8E8]"
-          animate={pulse
-            ? { width: [72, 96, 72], height: [72, 96, 72], opacity: [0.5, 0, 0.5] }
-            : { width: 72, height: 72, opacity: 0.3 }
-          }
-          transition={{ duration: 1.6, ease: 'easeOut', delay: 0.15, repeat: pulse ? 1 : 0 }}
-        />
-        <motion.div
-          className="absolute rounded-full"
-          animate={pulse
-            ? { boxShadow: ['0 0 0 0 rgba(23,23,23,0)', '0 0 0 12px rgba(23,23,23,0.06)', '0 0 0 0 rgba(23,23,23,0)'] }
-            : {}}
-          transition={{ duration: 1.4, ease: 'easeOut' }}
-          style={{ width: 68, height: 68, borderRadius: '50%' }}
-        />
-        <motion.div
-          className="absolute rounded-full"
-          animate={{
-            opacity: pulse ? [0.15, 0.3, 0.15] : [0.08, 0.15, 0.08],
-            scale:   pulse ? [1, 1.3, 1]       : [1, 1.08, 1],
-          }}
-          transition={{ duration: pulse ? 1.4 : 3, ease: 'easeInOut', repeat: Infinity }}
-          style={{
-            width: 80, height: 80, borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(23,23,23,0.12) 0%, transparent 70%)',
-            filter: 'blur(12px)',
-          }}
-        />
-        <motion.img
-          src="/corpus-ai-emblem.svg"
-          alt="Corpus AI"
-          className="relative w-16 h-16 rounded-full object-contain block"
-          style={{ zIndex: 2 }}
-          animate={pulse ? { scale: [1, 1.06, 1] } : { scale: 1 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-        />
-      </div>
-    </div>
+    <motion.button
+      className="absolute flex items-center justify-center rounded-full bg-white cursor-pointer select-none"
+      style={{
+        left:   `${(pos.x / CW) * 100}%`,
+        top:    `${(pos.y / CH) * 100}%`,
+        width:  size,
+        height: size,
+        transform: 'translate(-50%, -50%)',
+        zIndex: 10,
+      }}
+      animate={{
+        scale:     isActive ? 1.14 : 1,
+        boxShadow: isActive
+          ? '0 0 0 1.5px #171717, 0 4px 14px rgba(0,0,0,0.12)'
+          : '0 0 0 1px #E8E8E8',
+      }}
+      transition={{ duration: 0.35, ease: [0, 0, 0.2, 1] }}
+      onMouseEnter={onHover}
+      onMouseLeave={onLeave}
+      title={integ.name}
+    >
+      <Image
+        src={integ.icon}
+        alt={integ.name}
+        width={26}
+        height={26}
+        className="w-[26px] h-[26px] object-contain"
+        unoptimized
+      />
+    </motion.button>
   );
 }
 
-// ─── Main Export ───────────────────────────────────────────────────────────────
+// ─── Main Export ──────────────────────────────────────────────────────────────
 
 export default function IntegrationsOrbit() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const allIds = cards.map(c => c.id);
+  const [activeIds, setActiveIds] = useState<Set<IntegrationId>>(
+    new Set(['slack', 'whatsapp', 'database'] as IntegrationId[])
+  );
+  const [hoveredId, setHoveredId] = useState<IntegrationId | null>(null);
 
-  const [litIds,     setLitIds]     = useState<Set<string>>(new Set(['slack', 'whatsapp', 'website']));
-  const [prevLitIds, setPrevLitIds] = useState<Set<string>>(new Set());
-  const [hubPulse,   setHubPulse]   = useState(false);
-  const [particles,  setParticles]  = useState<Particle[]>([]);
-  const particleId = useRef(0);
-  const frameRef   = useRef<number | null>(null);
-  const lastTime   = useRef<number>(0);
-
+  // Auto-cycle 3 random integrations every 2.5 s
   useEffect(() => {
-    const tick = setInterval(() => {
-      setLitIds(prev => {
-        setPrevLitIds(new Set(prev));
-        const shuffled = [...allIds].sort(() => Math.random() - 0.5);
-        return new Set(shuffled.slice(0, 3));
-      });
-      setHubPulse(true);
-      setTimeout(() => setHubPulse(false), 1600);
-    }, 2200);
-    return () => clearInterval(tick);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    const id = setInterval(() => {
+      if (hoveredId) return; // pause while user is hovering
+      const shuffled = [...INTEGRATIONS].sort(() => Math.random() - 0.5);
+      setActiveIds(new Set(shuffled.slice(0, 3).map((i) => i.id) as IntegrationId[]));
+    }, 2500);
+    return () => clearInterval(id);
+  }, [hoveredId]);
 
-  useEffect(() => {
-    const newlyLit = [...litIds].filter(id => !prevLitIds.has(id));
-    newlyLit.forEach((id, offset) => {
-      const card = cards.find(c => c.id === id);
-      if (!card) return;
-      const rowIndex = (card.side === 'left' ? leftCards : rightCards).findIndex(c => c.id === id);
-      [0, 0.12].forEach(delay => {
-        setTimeout(() => {
-          const pid = particleId.current++;
-          setParticles(prev => [...prev, { id: pid, cardId: id, progress: 0, side: card.side, rowIndex }]);
-          setTimeout(() => {
-            setParticles(prev => prev.filter(p => p.id !== pid));
-          }, 960);
-        }, offset * 80 + delay * 1000);
-      });
-    });
-  }, [litIds]); // eslint-disable-line react-hooks/exhaustive-deps
+  // Which integration to show in the info bar
+  const featured: typeof INTEGRATIONS[number] =
+    (hoveredId && INTEGRATIONS.find((i) => i.id === hoveredId)) ||
+    INTEGRATIONS.find((i) => activeIds.has(i.id)) ||
+    INTEGRATIONS[0];
 
-  const animateParticles = useCallback((timestamp: number) => {
-    if (!lastTime.current) lastTime.current = timestamp;
-    const delta = timestamp - lastTime.current;
-    lastTime.current = timestamp;
-    const step = delta / 900;
-    setParticles(prev =>
-      prev.map(p => ({ ...p, progress: Math.min(p.progress + step, 1) })).filter(p => p.progress < 1),
-    );
-    frameRef.current = requestAnimationFrame(animateParticles);
-  }, []);
-
-  useEffect(() => {
-    frameRef.current = requestAnimationFrame(animateParticles);
-    return () => {
-      if (frameRef.current) cancelAnimationFrame(frameRef.current);
-    };
-  }, [animateParticles]);
+  const n = INTEGRATIONS.length;
 
   return (
-    <section className="py-28 px-6 max-w-7xl mx-auto">
-      {/* Section header */}
-      <div className="text-center mb-16">
-        <motion.p
-          className="text-sm font-semibold text-[#171717] uppercase tracking-widest mb-4"
-          initial={{ opacity: 0, y: 8 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          Integrations
-        </motion.p>
-        <motion.h2
-          className="text-4xl md:text-5xl font-bold text-[#171717] tracking-tight"
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.55, delay: 0.1 }}
-        >
-          One agent, every channel
-        </motion.h2>
-        <motion.p
-          className="text-lg text-[#737373] mt-4 max-w-xl mx-auto"
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.55, delay: 0.2 }}
-        >
-          Deploy your AI agent wherever your customers already are.
-          Live data flows in real time.
-        </motion.p>
-      </div>
+    <section className="py-28 px-6 bg-white relative overflow-hidden">
+      {/* Subtle grid background */}
+      <GridPattern
+        width={32} height={32} x={-1} y={-1}
+        className={cn(
+          'fill-[#171717]/[0.015] stroke-[#171717]/[0.05]',
+          '[mask-image:radial-gradient(ellipse_70%_55%_at_50%_50%,white,transparent)]',
+        )}
+      />
 
-      {/* DESKTOP: Beam Grid */}
-      <div className="hidden md:block">
-        <div ref={containerRef} className="relative max-w-[900px] mx-auto">
-          <BeamLines containerRef={containerRef} litIds={litIds} particles={particles} />
-          <div
-            className="relative grid items-center gap-6"
-            style={{ gridTemplateColumns: `1fr ${HUB_COL_W}px 1fr`, zIndex: 2 }}
-          >
-            <div className="flex flex-col gap-3">
-              {leftCards.map(card => (
-                <BeamCardItem key={card.id} card={card} lit={litIds.has(card.id)} wasLit={prevLitIds.has(card.id)} />
-              ))}
-            </div>
-            <Hub pulse={hubPulse} />
-            <div className="flex flex-col gap-3">
-              {rightCards.map(card => (
-                <BeamCardItem key={card.id} card={card} lit={litIds.has(card.id)} wasLit={prevLitIds.has(card.id)} />
-              ))}
-            </div>
-          </div>
-        </div>
+      <div className="max-w-7xl mx-auto relative z-10">
 
-        <motion.p
-          className="text-center text-[11px] text-[#A3A3A3] mt-8 tracking-widest uppercase"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.6 }}
-        >
-          <span className="text-[#171717]">●</span> Active connection
-          &nbsp;·&nbsp; Particles travel to hub every 2s
-        </motion.p>
-      </div>
-
-      {/* MOBILE: Stacked */}
-      <div className="md:hidden space-y-2.5">
-        <div className="flex justify-center mb-4">
-          <div className="relative flex items-center justify-center">
-            <motion.div
-              className="absolute w-16 h-16 rounded-full"
-              animate={{ opacity: [0.08, 0.15, 0.08], scale: [1, 1.15, 1] }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-              style={{
-                background: 'radial-gradient(circle, rgba(23,23,23,0.12) 0%, transparent 70%)',
-                filter: 'blur(10px)',
-              }}
-            />
-            <img src="/corpus-ai-emblem.svg" alt="Corpus AI" className="relative w-14 h-14 rounded-full object-contain" />
-          </div>
-        </div>
-        <div className="h-8 w-px bg-gradient-to-b from-[#171717]/20 to-transparent mx-auto" />
-        {cards.map(card => (
-          <BeamCardItem key={card.id} card={card} lit={litIds.has(card.id)} wasLit={prevLitIds.has(card.id)} />
-        ))}
-      </div>
-
-      {/* Quick links */}
-      <div className="flex flex-wrap justify-center gap-3 mt-12">
-        {[
-          { name: 'Slack',         href: '/Sign-In'    },
-          { name: 'WhatsApp',      href: '/Sign-In' },
-          { name: 'Telegram',      href: '/Sign-In' },
-          { name: 'WordPress',     href: '/Sign-In'},
-          { name: 'Zapier',        href: '/Sign-In'   },
-          { name: 'Website Embed', href: '/Sign-In'               },
-        ].map((item, i) => (
-          <motion.div
-            key={item.name}
+        {/* ── Header ─────────────────────────────────────────────── */}
+        <div className="text-center mb-16">
+          <motion.span
+            className="inline-flex items-center gap-2 bg-white border border-[#E8E8E8] rounded-full px-4 py-1.5 text-sm text-[#737373] shadow-sm mb-5"
             initial={{ opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: i * 0.07 }}
+            transition={{ duration: 0.5 }}
           >
+            <Zap className="w-3.5 h-3.5 text-[#171717]" />
+            Integrations
+          </motion.span>
+          <motion.h2
+            className="text-4xl md:text-5xl font-medium tracking-[-0.02em] text-[#171717]"
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.55, delay: 0.08 }}
+          >
+            One agent, every channel
+          </motion.h2>
+          <motion.p
+            className="text-base font-[family-name:var(--font-inter)] text-[#737373] mt-4 max-w-xl mx-auto leading-relaxed"
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.55, delay: 0.16 }}
+          >
+            Deploy your AI agent wherever your customers already are.
+            Connect once, reach everywhere — live data flows in real time.
+          </motion.p>
+        </div>
+
+        {/* ── Orbit card ─────────────────────────────────────────── */}
+        <motion.div
+          className="max-w-4xl mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <div className="bg-white border border-[#E8E8E8] rounded-2xl overflow-hidden shadow-sm">
+
+            {/* Top status bar */}
+            <div className="flex items-center justify-between px-6 py-3.5 border-b border-[#E8E8E8]">
+              <div className="flex items-center gap-2">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-60" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10B981]" />
+                </span>
+                <span className="text-[11px] font-mono uppercase tracking-wider text-[#A1A1A1]">
+                  Live connections · {hoveredId ? 1 : activeIds.size} active
+                </span>
+              </div>
+              <span className="text-[11px] font-mono text-[#A1A1A1]">corpus-ai · integration hub</span>
+            </div>
+
+            {/* Orbit diagram */}
+            <div className="relative" style={{ width: '100%', paddingBottom: `${(CH / CW) * 100}%` }}>
+
+              {/* SVG layer — lines + hub rings */}
+              <svg
+                className="absolute inset-0 w-full h-full pointer-events-none"
+                viewBox={`0 0 ${CW} ${CH}`}
+                preserveAspectRatio="xMidYMid meet"
+              >
+                <OrbitSVG activeIds={activeIds} hoveredId={hoveredId} />
+              </svg>
+
+              {/* Hub image */}
+              <div
+                className="absolute z-10"
+                style={{
+                  left:      `${(CX / CW) * 100}%`,
+                  top:       `${(CY / CH) * 100}%`,
+                  transform: 'translate(-50%, -50%)',
+                  width:     HUB_R * 2,
+                  height:    HUB_R * 2,
+                }}
+              >
+                <img
+                  src="/corpus-ai-emblem.svg"
+                  alt="Corpus AI"
+                  className="w-full h-full rounded-full object-contain"
+                />
+              </div>
+
+              {/* Integration nodes */}
+              {INTEGRATIONS.map((integ, i) => {
+                const pos     = orbitPos(i, n);
+                const isActive = hoveredId ? hoveredId === integ.id : activeIds.has(integ.id);
+                return (
+                  <IntegrationNode
+                    key={integ.id}
+                    integ={integ}
+                    pos={pos}
+                    isActive={isActive}
+                    onHover={() => setHoveredId(integ.id)}
+                    onLeave={() => setHoveredId(null)}
+                  />
+                );
+              })}
+
+              {/* Node labels (name below each icon) */}
+              {INTEGRATIONS.map((integ, i) => {
+                const pos = orbitPos(i, n);
+                const isActive = hoveredId ? hoveredId === integ.id : activeIds.has(integ.id);
+                // Push label outward from center
+                const dx = pos.x - CX;
+                const dy = pos.y - CY;
+                const len = Math.sqrt(dx * dx + dy * dy);
+                const labelX = pos.x + (dx / len) * (NODE_R + 14);
+                const labelY = pos.y + (dy / len) * (NODE_R + 14);
+                return (
+                  <div
+                    key={`label-${integ.id}`}
+                    className="absolute pointer-events-none text-center transition-all duration-300"
+                    style={{
+                      left:      `${(labelX / CW) * 100}%`,
+                      top:       `${(labelY / CH) * 100}%`,
+                      transform: 'translate(-50%, -50%)',
+                      zIndex:    5,
+                      opacity:   isActive ? 1 : 0.4,
+                      transition: 'opacity 0.4s ease',
+                    }}
+                  >
+                    <span
+                      className="font-mono text-[9px] font-semibold uppercase tracking-wider whitespace-nowrap"
+                      style={{ color: isActive ? '#171717' : '#A1A1A1' }}
+                    >
+                      {integ.name}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Bottom info bar */}
+            <div className="border-t border-[#E8E8E8] px-6 py-4 flex items-center justify-between gap-4">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={featured.id}
+                  className="flex items-center gap-3 min-w-0"
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 8 }}
+                  transition={{ duration: 0.22 }}
+                >
+                  <div className="w-8 h-8 rounded-lg border border-[#E8E8E8] bg-[#F7F7F7] flex items-center justify-center flex-shrink-0">
+                    <Image
+                      src={featured.icon}
+                      alt={featured.name}
+                      width={18}
+                      height={18}
+                      className="w-[18px] h-[18px] object-contain"
+                      unoptimized
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-[13px] font-semibold text-[#171717] leading-tight">{featured.name}</p>
+                    <p className="text-[11px] text-[#A1A1A1] truncate">{featured.desc}</p>
+                  </div>
+                  <span className="font-mono text-[9px] uppercase tracking-wider text-[#A1A1A1] bg-[#F7F7F7] border border-[#E8E8E8] px-2 py-1 rounded flex-shrink-0">
+                    {featured.category}
+                  </span>
+                </motion.div>
+              </AnimatePresence>
+              <Link
+                href="/Sign-In"
+                className="flex-shrink-0 inline-flex items-center gap-1.5 text-[12px] font-medium text-[#737373] hover:text-[#171717] transition-colors"
+              >
+                Configure
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* ── Icon chip strip ─────────────────────────────────────── */}
+        <motion.div
+          className="flex flex-wrap justify-center gap-2 mt-8"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
+        >
+          {INTEGRATIONS.map((integ) => (
             <Link
-              href={item.href}
-              className="px-4 py-2 rounded-lg border border-[#E8E8E8] hover:border-[#171717]/30 hover:text-[#171717] transition-colors text-sm text-[#737373] bg-white"
+              key={integ.id}
+              href="/Sign-In"
+              onMouseEnter={() => setHoveredId(integ.id)}
+              onMouseLeave={() => setHoveredId(null)}
+              className={cn(
+                'inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all duration-200 text-[12px]',
+                hoveredId === integ.id || activeIds.has(integ.id)
+                  ? 'border-[#171717]/20 bg-[#F7F7F7] text-[#171717]'
+                  : 'border-[#E8E8E8] bg-white text-[#737373] hover:border-[#171717]/20 hover:bg-[#F7F7F7] hover:text-[#171717]',
+              )}
             >
-              {item.name}
+              <Image
+                src={integ.icon}
+                alt={integ.name}
+                width={14}
+                height={14}
+                className="w-3.5 h-3.5 object-contain"
+                unoptimized
+              />
+              {integ.name}
             </Link>
-          </motion.div>
-        ))}
+          ))}
+          <Link
+            href="/Sign-In"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-dashed border-[#D4D4D4] bg-transparent text-[12px] text-[#A1A1A1] hover:border-[#171717]/30 hover:text-[#737373] transition-colors"
+          >
+            + 5,000 via Zapier
+            <ArrowRight className="w-3 h-3" />
+          </Link>
+        </motion.div>
+
       </div>
     </section>
   );
