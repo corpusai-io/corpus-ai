@@ -42,19 +42,14 @@ export function Mark({ size = 16, accent }: { size?: number; accent?: string }) 
     <svg
       width={size}
       height={size}
-      viewBox="0 0 64 64"
+      viewBox="0 0 100 100"
       fill="none"
       aria-hidden
       style={{ display: 'block', color: 'var(--ink)' }}
     >
-      <path
-        d="M 50 18 A 22 22 0 1 0 50 46"
-        stroke="currentColor"
-        strokeWidth={7}
-        strokeLinecap="square"
-        fill="none"
-      />
-      <path d="M 42 24 L 56 32 L 42 40 Z" fill={accent ?? 'currentColor'} />
+      <path d="M 10 20 L 24 12 L 70 46 L 56 54 Z" fill={accent ?? 'currentColor'} />
+      <path d="M 10 80 L 24 88 L 70 54 L 56 46 Z" fill={accent ?? 'currentColor'} />
+      <circle cx="80" cy="50" r="8" fill={accent ?? 'currentColor'} />
     </svg>
   );
 }

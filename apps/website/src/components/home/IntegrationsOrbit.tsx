@@ -314,7 +314,7 @@ function Hub({ pulse }: { pulse: boolean }) {
           }}
         />
         <motion.img
-          src="/logo_primary_circ.svg"
+          src="/corpus-ai-emblem.svg"
           alt="Corpus AI"
           className="relative w-16 h-16 rounded-full object-contain block"
           style={{ zIndex: 2 }}
@@ -470,7 +470,7 @@ export default function IntegrationsOrbit() {
                 filter: 'blur(10px)',
               }}
             />
-            <img src="/logo_primary_circ.svg" alt="Corpus AI" className="relative w-14 h-14 rounded-full object-contain" />
+            <img src="/corpus-ai-emblem.svg" alt="Corpus AI" className="relative w-14 h-14 rounded-full object-contain" />
           </div>
         </div>
         <div className="h-8 w-px bg-gradient-to-b from-[#171717]/20 to-transparent mx-auto" />

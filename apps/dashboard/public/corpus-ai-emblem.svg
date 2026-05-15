@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img" aria-label="CORPUS AI emblem">
+  <title>CORPUS AI · Converge emblem</title>
+  <desc>Two diagonals converging into a focal node. Monochrome, flat vector.</desc>
+
+  
+  <path d="M 10 20 L 24 12 L 70 46 L 56 54 Z" fill="#171717"></path>
+  
+  <path d="M 10 80 L 24 88 L 70 54 L 56 46 Z" fill="#171717"></path>
+  
+  <circle cx="80" cy="50" r="8" fill="#171717"></circle>
+</svg>
