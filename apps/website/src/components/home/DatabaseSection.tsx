@@ -1,521 +1,424 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, Database, ShoppingCart, Stethoscope, ChevronRight } from 'lucide-react';
+import { Database, ShoppingCart, Stethoscope, Check, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// ─── Data ─────────────────────────────────────────────────────────────────────
 
-interface TabContent {
-  label: string;
-  content: React.ReactNode;
-}
+interface Step { label: string; note: string }
+interface TableResult { type: 'table'; headers: string[]; rows: [string, string, string][] }
+interface ListResult  { type: 'list';  items: { label: string; detail: string }[] }
+type Result = TableResult | ListResult;
 
-interface AgentExample {
-  id: string;
-  icon: typeof Database;
-  label: string;
-  badge: string;
-  heading: string;
+interface Agent {
+  id:          string;
+  index:       string;
+  icon:        typeof Database;
+  label:       string;
+  badge:       string;
+  heading:     string;
   description: string;
-  features: string[];
-  cta: string;
-  tabs: TabContent[];
+  features:    string[];
+  cta:         string;
+  query:       string;
+  steps:       Step[];
+  result:      Result;
 }
 
-// ─── Code syntax colors (inside dark code panels) ─────────────────────────────
-
-function Kw({ children }: { children: React.ReactNode }) {
-  return <span className="text-[#E2E8F0]">{children}</span>;
-}
-function Val({ children }: { children: React.ReactNode }) {
-  return <span className="text-[#93C5FD]">{children}</span>;
-}
-function Col({ children }: { children: React.ReactNode }) {
-  return <span className="text-[#94A3B8]">{children}</span>;
-}
-function Cmt({ children }: { children: React.ReactNode }) {
-  return <span className="text-[#4B5563]">{children}</span>;
-}
-function Grn({ children }: { children: React.ReactNode }) {
-  return <span className="text-[#34D399]">{children}</span>;
-}
-function Ref({ children }: { children: React.ReactNode }) {
-  return <span className="text-[#CBD5E1]">{children}</span>;
-}
-
-// ─── 3 Agent Examples ─────────────────────────────────────────────────────────
-
-const agentExamples: AgentExample[] = [
+const AGENTS: Agent[] = [
   {
-    id: 'database',
-    icon: Database,
-    label: 'Database Agent',
-    badge: 'SQL + Natural Language',
-    heading: 'Query any database with natural language',
-    description:
-      'Connect PostgreSQL, MySQL, MongoDB, or DynamoDB — your agent translates natural questions into precise queries, returns structured results, and explains the data in plain English.',
+    id:          'database',
+    index:       '01',
+    icon:        Database,
+    label:       'Database Agent',
+    badge:       'SQL · Natural Language',
+    heading:     'Query any database with natural language',
+    description: 'Connect PostgreSQL, MySQL, MongoDB, or DynamoDB. Your agent translates plain questions into precise queries, returns structured results, and explains findings in clear English.',
     features: [
-      'Read-only mode by default — your data stays safe',
-      'Auto-generates optimized SQL from natural language',
+      'Read-only by default — your data stays safe',
+      'Auto-generates optimised SQL from natural language',
       'Schema-aware — understands table relationships',
-      'Results as tables, charts, or natural language',
+      'Returns results as tables or plain-English summaries',
     ],
-    cta: 'Connect your database',
-    tabs: [
-      {
-        label: 'Schema',
-        content: (
-          <div className="font-mono text-xs leading-relaxed text-[#CBD5E1]">
-            <Cmt>{'// Connected: production_db (PostgreSQL)'}</Cmt>
-            <br /><br />
-            <div><Kw>TABLE</Kw> <Col>orders</Col> <Cmt>{'{'}</Cmt></div>
-            <div className="pl-4"><Col>id</Col>{'          '}<Kw>SERIAL</Kw> <Kw>PRIMARY KEY</Kw></div>
-            <div className="pl-4"><Col>customer_id</Col>{' '}<Kw>INTEGER</Kw> <Ref>&rarr;</Ref> <Val>customers.id</Val></div>
-            <div className="pl-4"><Col>total</Col>{'       '}<Kw>DECIMAL</Kw><Val>(10,2)</Val></div>
-            <div className="pl-4"><Col>status</Col>{'      '}<Kw>VARCHAR</Kw><Val>(20)</Val></div>
-            <div className="pl-4"><Col>created_at</Col>{'  '}<Kw>TIMESTAMP</Kw></div>
-            <Cmt>{'}'}</Cmt>
-          </div>
-        ),
-      },
-      {
-        label: 'Query',
-        content: (
-          <div className="font-mono text-xs leading-relaxed text-[#CBD5E1]">
-            <Cmt>{'// User: "How many orders last week?"'}</Cmt>
-            <br /><br />
-            <Kw>SELECT</Kw> <Col>COUNT</Col><Val>(*)</Val> <Kw>AS</Kw> <Col>total_orders</Col>,<br />
-            {'  '}<Col>SUM</Col><Val>(total)</Val> <Kw>AS</Kw> <Col>revenue</Col><br />
-            <Kw>FROM</Kw> <Col>orders</Col><br />
-            <Kw>WHERE</Kw> <Col>created_at</Col> {'>'} <Val>NOW</Val><Val>()</Val> - <Kw>INTERVAL</Kw> <Val>&apos;7 days&apos;</Val><br />
-            {'  '}<Kw>AND</Kw> <Col>status</Col> = <Val>&apos;completed&apos;</Val>;
-            <br /><br />
-            <Cmt>{'// Execution time: 12ms'}</Cmt><br />
-            <Cmt>{'// Rows scanned: 2,847'}</Cmt>
-          </div>
-        ),
-      },
-      {
-        label: 'Result',
-        content: (
-          <div className="font-mono text-xs leading-relaxed">
-            <Cmt>{'// Query result'}</Cmt>
-            <br /><br />
-            <div className="border border-white/[0.08] rounded-lg overflow-hidden">
-              <div className="grid grid-cols-3 bg-white/[0.04] border-b border-white/[0.08]">
-                <div className="px-3 py-2 text-[#94A3B8] font-medium">Metric</div>
-                <div className="px-3 py-2 text-[#94A3B8] font-medium">Value</div>
-                <div className="px-3 py-2 text-[#94A3B8] font-medium">Change</div>
-              </div>
-              <div className="grid grid-cols-3 border-b border-white/[0.08]">
-                <div className="px-3 py-2 text-[#64748B]">Orders</div>
-                <div className="px-3 py-2"><Grn>2,847</Grn></div>
-                <div className="px-3 py-2"><Grn>+23%</Grn></div>
-              </div>
-              <div className="grid grid-cols-3 border-b border-white/[0.08]">
-                <div className="px-3 py-2 text-[#64748B]">Revenue</div>
-                <div className="px-3 py-2"><Grn>$184,320</Grn></div>
-                <div className="px-3 py-2"><Grn>+18%</Grn></div>
-              </div>
-              <div className="grid grid-cols-3">
-                <div className="px-3 py-2 text-[#64748B]">Avg Order</div>
-                <div className="px-3 py-2"><Val>$64.72</Val></div>
-                <div className="px-3 py-2"><Val>-3%</Val></div>
-              </div>
-            </div>
-          </div>
-        ),
-      },
+    cta:   'Connect your database',
+    query: 'How many orders did we complete last week?',
+    steps: [
+      { label: 'Parsing intent',    note: 'Aggregate count over time range' },
+      { label: 'Reading schema',    note: 'orders table · 2.8 M rows detected' },
+      { label: 'Generating query',  note: 'SELECT COUNT(*) WHERE status = completed' },
+      { label: 'Executing',         note: '12 ms · read-only mode enforced' },
     ],
+    result: {
+      type:    'table',
+      headers: ['Metric', 'Value', 'vs prior week'],
+      rows: [
+        ['Orders',    '2,847',    '+23 %'],
+        ['Revenue',   '$184,320', '+18 %'],
+        ['Avg order', '$64.72',   '−3 %'],
+      ],
+    },
   },
   {
-    id: 'ecommerce',
-    icon: ShoppingCart,
-    label: 'E-Commerce Agent',
-    badge: 'RAG + Actions',
-    heading: 'Your smartest sales associate, 24/7',
-    description:
-      'Combines deep product knowledge (RAG) with autonomous actions — track orders, process returns, recommend products, and upsell intelligently, all in a single conversation.',
+    id:          'ecommerce',
+    index:       '02',
+    icon:        ShoppingCart,
+    label:       'E-Commerce Agent',
+    badge:       'RAG · Autonomous Actions',
+    heading:     'Your smartest sales associate, 24 / 7',
+    description: 'Combines deep product knowledge with autonomous actions — track orders, process returns, recommend products, and upsell intelligently, all within a single conversation.',
     features: [
-      'Product recommendations based on browsing and purchase history',
+      'Product recommendations from purchase history',
       'Real-time order tracking and status updates',
       'Automated returns, exchanges, and refund processing',
-      'Upsell and cross-sell with contextual awareness',
+      'Contextual upsell and cross-sell suggestions',
     ],
-    cta: 'Build your store agent',
-    tabs: [
-      {
-        label: 'Prompt',
-        content: (
-          <div className="font-mono text-xs leading-relaxed space-y-3 text-[#CBD5E1]">
-            <div><Cmt>{'// Customer conversation'}</Cmt></div>
-            <div>
-              <Col>Customer:</Col> <span className="text-[#E2E8F0]">&quot;I bought the wireless headphones last week but the left earbud stopped working. Can I get a replacement?&quot;</span>
-            </div>
-            <br />
-            <div><Cmt>{'// Agent reasoning'}</Cmt></div>
-            <div className="space-y-1">
-              <div><Kw>[Search]</Kw> <span className="text-[#64748B]">Finding order → #ORD-7234</span></div>
-              <div><Kw>[Verify]</Kw> <span className="text-[#64748B]">Within 30-day warranty ✓</span></div>
-              <div><Kw>[Action]</Kw> <span className="text-[#64748B]">Creating replacement order</span></div>
-              <div><Kw>[Action]</Kw> <span className="text-[#64748B]">Generating return label</span></div>
-            </div>
-          </div>
-        ),
-      },
-      {
-        label: 'Actions',
-        content: (
-          <div className="font-mono text-xs leading-relaxed space-y-3 text-[#CBD5E1]">
-            <Cmt>{'// Executed actions'}</Cmt>
-            <br /><br />
-            <div className="space-y-3">
-              {[
-                { label: 'Order lookup', detail: 'GET /api/orders/ORD-7234 → ' },
-                { label: 'Warranty check', detail: 'Purchased 6 days ago → ' },
-                { label: 'Replacement created', detail: 'POST /api/orders/replace → ' },
-                { label: 'Return label sent', detail: 'Email → customer@email.com ' },
-              ].map(({ label, detail }) => (
-                <div key={label} className="flex items-start gap-2">
-                  <Grn>✓</Grn>
-                  <div>
-                    <div className="text-[#94A3B8]">{label}</div>
-                    <div className="text-[#4B5563]">{detail}<Grn>200 OK</Grn></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        ),
-      },
-      {
-        label: 'Response',
-        content: (
-          <div className="font-mono text-xs leading-relaxed text-[#CBD5E1]">
-            <Cmt>{'// Agent response'}</Cmt>
-            <br /><br />
-            <div className="bg-white/[0.04] border border-white/[0.08] p-4 rounded-xl space-y-3">
-              <div className="text-[#E2E8F0] leading-relaxed">
-                &quot;I&apos;m sorry about the issue with your headphones! I&apos;ve already set up a replacement for you:&quot;
-              </div>
-              <div className="space-y-2 text-[#94A3B8]">
-                <div>• <Grn>Replacement order #ORD-7301</Grn> created</div>
-                <div>• Ships within <Val>24 hours</Val> (free express)</div>
-                <div>• Return label sent to your email</div>
-                <div>• No need to wait — keep using the right earbud!</div>
-              </div>
-              <div className="text-[#4B5563] text-[10px] pt-2 border-t border-white/[0.04]">
-                Would you also like a <Val>20% discount code</Val> for your next purchase as an apology?
-              </div>
-            </div>
-          </div>
-        ),
-      },
+    cta:   'Build your store agent',
+    query: 'My left earbud stopped working after one week. Can I get a replacement?',
+    steps: [
+      { label: 'Looking up order',  note: '#ORD-7234 — Wireless Headphones Pro' },
+      { label: 'Checking warranty', note: 'Purchased 6 days ago · within 30-day window' },
+      { label: 'Creating order',    note: 'Replacement #ORD-7301 · free express shipping' },
+      { label: 'Sending label',     note: 'Return label emailed to customer' },
     ],
+    result: {
+      type:  'list',
+      items: [
+        { label: 'Replacement created',  detail: 'Order #ORD-7301 · ships in 24 h' },
+        { label: 'Return label sent',    detail: 'Email delivered to customer@email.com' },
+        { label: 'No wait required',     detail: 'Keep using the right earbud in the meantime' },
+        { label: 'Discount offered',     detail: '20 % off next purchase as an apology' },
+      ],
+    },
   },
   {
-    id: 'healthcare',
-    icon: Stethoscope,
-    label: 'Healthcare Agent',
-    badge: 'Appointments + Triage',
-    heading: 'Patient support that never sleeps',
-    description:
-      'HIPAA-aware AI that handles appointment scheduling, symptom pre-screening, insurance verification, and prescription refill requests — reducing front-desk workload by 60%.',
+    id:          'healthcare',
+    index:       '03',
+    icon:        Stethoscope,
+    label:       'Healthcare Agent',
+    badge:       'Scheduling · Triage',
+    heading:     'Patient support that never sleeps',
+    description: 'HIPAA-aware AI that handles appointment scheduling, symptom pre-screening, insurance verification, and refill requests — reducing front-desk workload by 60 %.',
     features: [
-      'Smart appointment scheduling with provider matching',
+      'Smart scheduling with provider matching',
       'Symptom pre-screening and urgency triage',
       'Insurance verification and copay estimation',
       'Prescription refill requests with pharmacy routing',
     ],
-    cta: 'Build your healthcare agent',
-    tabs: [
-      {
-        label: 'Conversation',
-        content: (
-          <div className="font-mono text-xs leading-relaxed space-y-3 text-[#CBD5E1]">
-            <Cmt>{'// Patient interaction'}</Cmt>
-            <br />
-            <div>
-              <Col>Patient:</Col> <span className="text-[#E2E8F0]">&quot;I need to see a cardiologist. I&apos;ve been having chest tightness after exercise.&quot;</span>
-            </div>
-            <br />
-            <div><Cmt>{'// Agent triage assessment'}</Cmt></div>
-            <div className="space-y-1">
-              <div><Kw>[Triage]</Kw> <span className="text-[#FCD34D]">Priority: Elevated</span></div>
-              <div><Kw>[Check]</Kw> <span className="text-[#64748B]">Insurance: BlueCross PPO ✓</span></div>
-              <div><Kw>[Match]</Kw> <span className="text-[#64748B]">Dr. Sarah Chen — Cardiology</span></div>
-              <div><Kw>[Book]</Kw> <span className="text-[#64748B]">Next available: Tomorrow 2:30 PM</span></div>
-            </div>
-          </div>
-        ),
-      },
-      {
-        label: 'Scheduling',
-        content: (
-          <div className="font-mono text-xs leading-relaxed text-[#CBD5E1]">
-            <Cmt>{'// Available slots — Dr. Sarah Chen, Cardiology'}</Cmt>
-            <br /><br />
-            <div className="border border-white/[0.08] rounded-lg overflow-hidden">
-              <div className="grid grid-cols-3 bg-white/[0.04] border-b border-white/[0.08]">
-                <div className="px-3 py-2 text-[#94A3B8] font-medium">Date</div>
-                <div className="px-3 py-2 text-[#94A3B8] font-medium">Time</div>
-                <div className="px-3 py-2 text-[#94A3B8] font-medium">Status</div>
-              </div>
-              <div className="grid grid-cols-3 border-b border-white/[0.08] bg-[#34D399]/[0.04]">
-                <div className="px-3 py-2 text-[#E2E8F0]">Tomorrow</div>
-                <div className="px-3 py-2"><Grn>2:30 PM</Grn></div>
-                <div className="px-3 py-2"><Grn>● Booked</Grn></div>
-              </div>
-              <div className="grid grid-cols-3 border-b border-white/[0.08]">
-                <div className="px-3 py-2 text-[#64748B]">Thu, Feb 27</div>
-                <div className="px-3 py-2 text-[#64748B]">10:00 AM</div>
-                <div className="px-3 py-2 text-[#4B5563]">Available</div>
-              </div>
-              <div className="grid grid-cols-3">
-                <div className="px-3 py-2 text-[#64748B]">Fri, Feb 28</div>
-                <div className="px-3 py-2 text-[#64748B]">11:30 AM</div>
-                <div className="px-3 py-2 text-[#4B5563]">Available</div>
-              </div>
-            </div>
-            <br />
-            <Cmt>{'// Copay estimate: $35 (BlueCross PPO)'}</Cmt>
-          </div>
-        ),
-      },
-      {
-        label: 'Confirmation',
-        content: (
-          <div className="font-mono text-xs leading-relaxed text-[#CBD5E1]">
-            <Cmt>{'// Appointment confirmed'}</Cmt>
-            <br /><br />
-            <div className="bg-white/[0.04] border border-white/[0.08] p-4 rounded-xl space-y-3">
-              <div className="text-[#E2E8F0] leading-relaxed">
-                &quot;Your appointment is all set! Here&apos;s a summary:&quot;
-              </div>
-              <div className="space-y-2 text-[#94A3B8]">
-                <div>• <span className="text-[#E2E8F0]">Dr. Sarah Chen</span> — Cardiology</div>
-                <div>• <Grn>Tomorrow at 2:30 PM</Grn></div>
-                <div>• Location: <Val>City Medical Center, Suite 401</Val></div>
-                <div>• Estimated copay: <Val>$35</Val></div>
-              </div>
-              <div className="border-t border-white/[0.04] pt-3 space-y-1.5 text-[#64748B]">
-                <div>✓ Confirmation email sent</div>
-                <div>✓ Calendar invite added</div>
-                <div>✓ Pre-visit forms sent to your patient portal</div>
-              </div>
-            </div>
-          </div>
-        ),
-      },
+    cta:   'Build your healthcare agent',
+    query: 'I need to see a cardiologist. I've been having chest tightness after exercise.',
+    steps: [
+      { label: 'Triage assessment',  note: 'Priority: elevated · cardiac symptoms flagged' },
+      { label: 'Verifying insurance', note: 'BlueCross PPO · cardiology covered' },
+      { label: 'Matching provider',  note: 'Dr. Sarah Chen · Cardiology · in-network' },
+      { label: 'Booking slot',       note: 'Tomorrow at 2:30 PM confirmed' },
     ],
+    result: {
+      type:  'list',
+      items: [
+        { label: 'Appointment booked',   detail: 'Dr. Sarah Chen · Tomorrow 2:30 PM' },
+        { label: 'Location',             detail: 'City Medical Center, Suite 401' },
+        { label: 'Estimated copay',      detail: '$35 · BlueCross PPO' },
+        { label: 'Pre-visit forms sent', detail: 'Patient portal · confirmation emailed' },
+      ],
+    },
   },
 ];
 
-// ─── Interactive Tab Widget (dark code panel) ─────────────────────────────────
+// ─── Right-panel components ────────────────────────────────────────────────────
 
-function TabWidget({ tabs, autoRotate }: { tabs: TabContent[]; autoRotate: boolean }) {
-  const [activeTab, setActiveTab] = useState(0);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  const startAutoRotate = useCallback(() => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    if (!autoRotate) return;
-    intervalRef.current = setInterval(() => {
-      setActiveTab((prev) => (prev + 1) % tabs.length);
-    }, 3000);
-  }, [autoRotate, tabs.length]);
-
-  useEffect(() => {
-    startAutoRotate();
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [startAutoRotate]);
-
-  const handleTabClick = (i: number) => {
-    setActiveTab(i);
-    startAutoRotate();
-  };
-
-  useEffect(() => {
-    setActiveTab(0);
-  }, [tabs]);
-
+function UserBubble({ text }: { text: string }) {
   return (
-    <div className="bg-[#0F0F14] rounded-2xl overflow-hidden">
-      {/* Tab bar */}
-      <div className="flex border-b border-white/[0.08] bg-white/[0.02]">
-        {tabs.map((tab, i) => (
-          <button
-            key={tab.label}
-            onClick={() => handleTabClick(i)}
-            className={`px-4 py-3 text-xs font-medium transition-colors relative cursor-pointer ${
-              i === activeTab ? 'text-white' : 'text-[#4B5563] hover:text-[#6B7280]'
-            }`}
-          >
-            {tab.label}
-            {i === activeTab && (
-              <motion.div
-                layoutId="dbTab"
-                className="absolute bottom-0 left-0 right-0 h-px bg-white"
-                transition={{ duration: 0.2 }}
-              />
-            )}
-          </button>
-        ))}
-        {autoRotate && (
-          <div className="ml-auto flex items-center pr-4">
-            <div className="w-16 h-1 bg-white/[0.04] rounded-full overflow-hidden">
-              <motion.div
-                className="h-full bg-white/30 rounded-full"
-                key={`${activeTab}-progress`}
-                initial={{ width: '0%' }}
-                animate={{ width: '100%' }}
-                transition={{ duration: 3, ease: 'linear' }}
-              />
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Tab content */}
-      <div className="p-6 min-h-[280px]">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={`${tabs[activeTab]?.label}-${activeTab}`}
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.2 }}
-          >
-            {tabs[activeTab]?.content}
-          </motion.div>
-        </AnimatePresence>
+    <div className="flex justify-end">
+      <div
+        className="bg-[#171717] text-white text-[13px] leading-relaxed rounded-2xl rounded-tr-sm px-4 py-3 max-w-[80%]"
+        style={{ letterSpacing: '-0.01em' }}
+      >
+        {text}
       </div>
     </div>
   );
 }
 
-// ─── Main Section ─────────────────────────────────────────────────────────────
+function StepTrace({ steps }: { steps: Step[] }) {
+  return (
+    <div className="flex flex-col gap-2.5">
+      {steps.map((step, i) => (
+        <div key={step.label} className="flex items-start gap-3">
+          {/* Number + connector */}
+          <div className="flex flex-col items-center gap-1 pt-px flex-shrink-0">
+            <div
+              className="w-5 h-5 rounded-full bg-[#171717] text-white flex items-center justify-center flex-shrink-0"
+              style={{ fontSize: 9, fontWeight: 700, fontFamily: 'monospace' }}
+            >
+              {i + 1}
+            </div>
+            {i < steps.length - 1 && (
+              <div className="w-px bg-[#E8E8E8]" style={{ minHeight: 14 }} />
+            )}
+          </div>
+          {/* Content */}
+          <div className="pb-1">
+            <p className="text-[12px] font-semibold text-[#171717] leading-snug">{step.label}</p>
+            <p className="text-[11px] text-[#A1A1A1] font-mono mt-0.5">{step.note}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ResultPanel({ result }: { result: Result }) {
+  if (result.type === 'table') {
+    return (
+      <div className="border border-[#E8E8E8] rounded-xl overflow-hidden">
+        {/* Header row */}
+        <div className="grid grid-cols-3 bg-[#F7F7F7] border-b border-[#E8E8E8]">
+          {result.headers.map((h) => (
+            <div
+              key={h}
+              className="px-3 py-2 text-[10px] font-mono font-semibold uppercase tracking-wider text-[#A1A1A1]"
+            >
+              {h}
+            </div>
+          ))}
+        </div>
+        {/* Data rows */}
+        {result.rows.map(([metric, value, change], i) => (
+          <div
+            key={metric}
+            className={cn('grid grid-cols-3', i < result.rows.length - 1 && 'border-b border-[#E8E8E8]')}
+          >
+            <div className="px-3 py-2.5 text-[12px] text-[#737373]">{metric}</div>
+            <div className="px-3 py-2.5 text-[12px] font-semibold text-[#171717]">{value}</div>
+            <div className="px-3 py-2.5 text-[12px] text-[#737373]">{change}</div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-2">
+      {result.items.map((item) => (
+        <div key={item.label} className="flex items-start gap-2.5">
+          <div className="mt-0.5 w-4 h-4 rounded-full bg-[#171717] flex items-center justify-center flex-shrink-0">
+            <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
+          </div>
+          <div>
+            <span className="text-[12px] font-semibold text-[#171717]">{item.label}</span>
+            <span className="text-[12px] text-[#737373]"> — {item.detail}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ScenarioPanel({ agent }: { agent: Agent }) {
+  return (
+    <div className="bg-white border border-[#E8E8E8] rounded-2xl overflow-hidden shadow-sm">
+      {/* Panel header */}
+      <div className="flex items-center justify-between px-5 py-3 border-b border-[#E8E8E8] bg-[#FAFAFA]">
+        <div className="flex items-center gap-2">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#171717] opacity-40" />
+            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#171717]" />
+          </span>
+          <span className="text-[10px] font-mono uppercase tracking-wider text-[#A1A1A1]">
+            Agent · live trace
+          </span>
+        </div>
+        <span className="text-[10px] font-mono text-[#A1A1A1]">[{agent.index}] {agent.label}</span>
+      </div>
+
+      <div className="p-5 flex flex-col gap-5">
+        {/* User message */}
+        <UserBubble text={agent.query} />
+
+        {/* Divider label */}
+        <div className="flex items-center gap-3">
+          <div className="flex-1 h-px bg-[#E8E8E8]" />
+          <span className="text-[10px] font-mono uppercase tracking-wider text-[#A1A1A1]">
+            Agent reasoning
+          </span>
+          <div className="flex-1 h-px bg-[#E8E8E8]" />
+        </div>
+
+        {/* Step trace */}
+        <StepTrace steps={agent.steps} />
+
+        {/* Divider label */}
+        <div className="flex items-center gap-3">
+          <div className="flex-1 h-px bg-[#E8E8E8]" />
+          <span className="text-[10px] font-mono uppercase tracking-wider text-[#A1A1A1]">
+            Result
+          </span>
+          <div className="flex-1 h-px bg-[#E8E8E8]" />
+        </div>
+
+        {/* Result */}
+        <ResultPanel result={agent.result} />
+      </div>
+    </div>
+  );
+}
+
+// ─── Main Export ──────────────────────────────────────────────────────────────
 
 export default function DatabaseSection() {
-  const [activeExample, setActiveExample] = useState(0);
-  const example = agentExamples[activeExample];
-  const Icon = example.icon;
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveExample((prev) => (prev + 1) % agentExamples.length);
-    }, 12000);
-    return () => clearInterval(interval);
-  }, []);
+    if (paused) return;
+    const id = setInterval(() => setActive((a) => (a + 1) % AGENTS.length), 6000);
+    return () => clearInterval(id);
+  }, [paused]);
+
+  const agent = AGENTS[active];
+  const Icon  = agent.icon;
 
   return (
     <section className="py-28 px-6 bg-[#F7F7F7]">
       <div className="max-w-7xl mx-auto">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-white border border-[#E8E8E8] text-sm text-[#737373] shadow-sm mb-6">
+
+        {/* ── Header ─────────────────────────────────────────────── */}
+        <div className="text-center mb-14">
+          <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-white border border-[#E8E8E8] text-sm text-[#737373] shadow-sm mb-5">
             Agent Capabilities
           </span>
           <h2 className="text-4xl md:text-5xl font-medium text-[#171717] tracking-[-0.02em]">
             See what your agent can do
           </h2>
-          <p className="text-lg font-normal text-[#737373] mt-4 max-w-2xl mx-auto">
-            From database queries to appointment booking — Corpus AI agents handle complex workflows across every industry.
+          <p className="text-base font-[family-name:var(--font-inter)] font-normal text-[#737373] mt-4 max-w-2xl mx-auto leading-relaxed">
+            From database queries to appointment booking — Corpus AI agents handle
+            complex workflows across every industry.
           </p>
         </div>
 
-        {/* Carousel Selector */}
-        <div className="flex justify-center gap-3 mb-12">
-          {agentExamples.map((ex, i) => {
-            const ExIcon = ex.icon;
+        {/* ── Agent selector ──────────────────────────────────────── */}
+        <div className="flex justify-center gap-2 mb-12">
+          {AGENTS.map((a, i) => {
+            const AIcon = a.icon;
+            const isActive = active === i;
             return (
               <button
-                key={ex.id}
-                onClick={() => setActiveExample(i)}
-                className={`flex items-center gap-2.5 px-5 py-3 rounded-xl text-sm font-medium transition-all cursor-pointer ${
-                  i === activeExample
-                    ? 'bg-[#171717] text-white'
-                    : 'bg-white border border-[#E8E8E8] text-[#737373] hover:text-[#171717] hover:border-[#D1D5DB]'
-                }`}
+                key={a.id}
+                onClick={() => { setActive(i); setPaused(true); }}
+                className={cn(
+                  'relative flex items-center gap-2.5 px-5 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-200 cursor-pointer border',
+                  isActive
+                    ? 'bg-[#171717] text-white border-[#171717]'
+                    : 'bg-white text-[#737373] border-[#E8E8E8] hover:text-[#171717] hover:border-[#D4D4D4]',
+                )}
               >
-                <ExIcon className="w-4 h-4" />
-                {ex.label}
+                <span
+                  className={cn('font-mono text-[9px] font-semibold',
+                    isActive ? 'text-white/40' : 'text-[#A1A1A1]')}
+                >
+                  [{a.index}]
+                </span>
+                <AIcon className="w-3.5 h-3.5" />
+                {a.label}
+                {/* Progress underline */}
+                {isActive && !paused && (
+                  <motion.div
+                    className="absolute bottom-0 left-3 right-3 h-px bg-white/40 rounded-full overflow-hidden"
+                  >
+                    <motion.div
+                      className="h-full bg-white/70"
+                      initial={{ width: '0%' }}
+                      animate={{ width: '100%' }}
+                      transition={{ duration: 6, ease: 'linear' }}
+                      key={active}
+                    />
+                  </motion.div>
+                )}
               </button>
             );
           })}
         </div>
 
-        {/* Content Grid */}
+        {/* ── Content grid ───────────────────────────────────────── */}
         <AnimatePresence mode="wait">
           <motion.div
-            key={example.id}
-            initial={{ opacity: 0, y: 12 }}
+            key={agent.id}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start"
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.28, ease: [0, 0, 0.2, 1] }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start"
           >
-            {/* Left Side: Text Content */}
-            <div>
+            {/* Left — text content */}
+            <div className="lg:pt-2">
+              {/* Icon + badge */}
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-[#F7F7F7] border border-[#E8E8E8] flex items-center justify-center">
-                  <Icon className="w-5 h-5 text-[#171717]" />
+                <div className="w-9 h-9 rounded-lg bg-white border border-[#E8E8E8] flex items-center justify-center shadow-sm">
+                  <Icon className="w-4 h-4 text-[#171717]" />
                 </div>
-                <span className="text-xs font-medium px-3 py-1 rounded-full bg-white border border-[#E8E8E8] text-[#737373] shadow-sm">
-                  {example.badge}
+                <span className="text-[11px] font-mono uppercase tracking-wider text-[#737373] bg-white border border-[#E8E8E8] px-3 py-1 rounded-full">
+                  {agent.badge}
                 </span>
               </div>
 
-              <h3 className="text-3xl md:text-4xl font-medium text-[#171717] tracking-[-0.02em] leading-tight">
-                {example.heading}
+              {/* Heading */}
+              <h3
+                className="text-3xl md:text-4xl font-medium text-[#171717] tracking-[-0.02em] leading-tight"
+              >
+                {agent.heading}
               </h3>
-              <p className="text-base font-normal text-[#737373] mt-4 leading-relaxed max-w-lg">
-                {example.description}
+
+              {/* Body */}
+              <p className="text-[15px] font-[family-name:var(--font-inter)] text-[#737373] mt-4 leading-relaxed">
+                {agent.description}
               </p>
 
-              <div className="space-y-3 mt-8">
-                {example.features.map((feature) => (
-                  <div key={feature} className="flex items-start gap-3">
-                    <Check className="w-4 h-4 text-[#171717] mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-[#737373]">{feature}</span>
+              {/* Features */}
+              <div className="mt-8 flex flex-col gap-3">
+                {agent.features.map((feat) => (
+                  <div key={feat} className="flex items-start gap-3">
+                    <div className="mt-0.5 w-4 h-4 rounded-full bg-[#171717] flex items-center justify-center flex-shrink-0">
+                      <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
+                    </div>
+                    <span className="text-[13px] text-[#737373] leading-snug">{feat}</span>
                   </div>
                 ))}
               </div>
 
+              {/* CTA */}
               <div className="mt-8">
                 <Link
                   href="/Sign-In"
-                  className="inline-flex items-center gap-2 text-sm font-medium text-[#171717] hover:text-[#737373] transition-colors"
+                  className="inline-flex items-center gap-1.5 text-[13px] font-medium text-[#171717] hover:text-[#737373] transition-colors group"
                 >
-                  {example.cta}
-                  <ChevronRight className="w-4 h-4" />
+                  {agent.cta}
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                 </Link>
               </div>
             </div>
 
-            {/* Right Side: Dark Code Panel */}
-            <TabWidget tabs={example.tabs} autoRotate={true} />
+            {/* Right — scenario panel */}
+            <ScenarioPanel agent={agent} />
           </motion.div>
         </AnimatePresence>
 
-        {/* Carousel dots */}
+        {/* ── Dot nav ─────────────────────────────────────────────── */}
         <div className="flex justify-center gap-2 mt-12">
-          {agentExamples.map((_, i) => (
+          {AGENTS.map((_, i) => (
             <button
               key={i}
-              onClick={() => setActiveExample(i)}
-              className={`h-2 rounded-full transition-all cursor-pointer ${
-                i === activeExample
-                  ? 'bg-[#171717] w-6'
-                  : 'bg-[#D1D5DB] hover:bg-[#737373] w-2'
-              }`}
+              onClick={() => { setActive(i); setPaused(true); }}
+              className={cn(
+                'h-1.5 rounded-full transition-all duration-300 cursor-pointer',
+                i === active ? 'bg-[#171717] w-6' : 'bg-[#D4D4D4] hover:bg-[#737373] w-1.5',
+              )}
             />
           ))}
         </div>
+
       </div>
     </section>
   );
