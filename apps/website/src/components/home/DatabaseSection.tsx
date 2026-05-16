@@ -108,7 +108,7 @@ const AGENTS: Agent[] = [
       'Prescription refill requests with pharmacy routing',
     ],
     cta:   'Build your healthcare agent',
-    query: 'I need to see a cardiologist. I've been having chest tightness after exercise.',
+    query: "I need to see a cardiologist. I've been having chest tightness after exercise.",
     steps: [
       { label: 'Triage assessment',  note: 'Priority: elevated · cardiac symptoms flagged' },
       { label: 'Verifying insurance', note: 'BlueCross PPO · cardiology covered' },
