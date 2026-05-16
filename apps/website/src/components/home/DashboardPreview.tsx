@@ -1,8 +1,7 @@
 'use client';
 
-// Static mockup that mirrors the real apps/dashboard UI exactly.
-// Colors, spacing and typography are copied 1-to-1 from the dashboard's design tokens:
-// canvas=#FFFFFF, surface=#F7F7F7, line=#E8E8E8, ink=#171717, muted=#737373, muted-soft=#A1A1A1
+// Static mockup showing the chatbot settings/configuration view.
+// Colors match dashboard design tokens exactly.
 
 import React from 'react';
 import {
@@ -15,39 +14,44 @@ import {
   Users,
   Rocket,
   Settings,
-  Plus,
-  Search,
-  Globe,
-  FileText,
-  BookOpen,
+  Shield,
+  Link2,
   Key,
+  Paintbrush,
+  ChevronRight,
+  Globe,
+  Send,
+  BookOpen,
   ArrowUpRight,
+  Plus,
+  Zap,
 } from 'lucide-react';
 
-// ─── Sub-components ───────────────────────────────────────────────────────────
-
-function CorpusMark({ size = 22 }: { size?: number }) {
-  // Simplified emblem matching the Mark component
+// ─── Correct Corpus AI mark (two converging diagonals + focal circle) ──────────
+function CorpusMark({ size = 20 }: { size?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <rect width="24" height="24" rx="5" fill="#171717" />
-      <rect x="6" y="7" width="5" height="2" rx="1" fill="white" />
-      <rect x="6" y="11" width="8" height="2" rx="1" fill="white" />
-      <rect x="6" y="15" width="5" height="2" rx="1" fill="white" />
+    <svg width={size} height={size} viewBox="0 0 100 100" fill="none" aria-hidden>
+      <path d="M 10 20 L 24 12 L 70 46 L 56 54 Z" fill="#171717" />
+      <path d="M 10 80 L 24 88 L 70 54 L 56 46 Z" fill="#171717" />
+      <circle cx="80" cy="50" r="8" fill="#171717" />
     </svg>
   );
 }
 
-function NavItem({
+// ─── Sub-components ───────────────────────────────────────────────────────────
+
+function SidebarItem({
   icon: Icon,
   label,
   active,
+  indent,
   badge,
 }: {
   icon: React.ElementType;
   label: string;
   active?: boolean;
-  badge?: string | number;
+  indent?: boolean;
+  badge?: string;
 }) {
   return (
     <div
@@ -55,7 +59,7 @@ function NavItem({
         display: 'flex',
         alignItems: 'center',
         gap: 8,
-        padding: '5px 10px',
+        padding: indent ? '5px 10px 5px 22px' : '5px 10px',
         borderRadius: 8,
         fontSize: 12,
         fontWeight: 500,
@@ -63,175 +67,216 @@ function NavItem({
         background: active ? '#F7F7F7' : 'transparent',
       }}
     >
-      <Icon style={{ width: 14, height: 14, flexShrink: 0, color: active ? '#171717' : '#A1A1A1' }} />
+      <Icon style={{ width: 13, height: 13, flexShrink: 0, color: active ? '#171717' : '#A1A1A1' }} />
       <span style={{ flex: 1 }}>{label}</span>
-      {badge !== undefined && (
-        <span style={{ fontFamily: 'monospace', fontSize: 9, color: '#A1A1A1' }}>{badge}</span>
-      )}
+      {badge && <span style={{ fontFamily: 'monospace', fontSize: 9, color: '#A1A1A1' }}>{badge}</span>}
     </div>
   );
 }
 
 function GroupLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p
-      style={{
-        fontFamily: 'monospace',
-        textTransform: 'uppercase',
-        fontSize: 9,
-        fontWeight: 600,
-        color: '#A1A1A1',
-        marginBottom: 6,
-        padding: '0 10px',
-        letterSpacing: '0.14em',
-      }}
-    >
+    <p style={{ fontFamily: 'monospace', textTransform: 'uppercase', fontSize: 9, fontWeight: 600, color: '#A1A1A1', marginBottom: 4, padding: '0 10px', letterSpacing: '0.14em' }}>
       {children}
     </p>
   );
 }
 
-function QuotaRow({ label, pct }: { label: string; pct: number }) {
+function TabBtn({ label, active }: { label: string; active?: boolean }) {
   return (
-    <div style={{ marginBottom: 8 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 9, marginBottom: 3 }}>
-        <span style={{ fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.14em', color: '#A1A1A1' }}>{label}</span>
-        <span style={{ fontFamily: 'monospace', color: '#737373' }}>{pct}%</span>
-      </div>
-      <div style={{ height: 2, background: '#F7F7F7', borderRadius: 99 }}>
-        <div style={{ height: '100%', width: `${pct}%`, background: '#171717', borderRadius: 99 }} />
-      </div>
+    <div style={{
+      padding: '7px 14px',
+      fontSize: 12,
+      fontWeight: 500,
+      color: active ? '#171717' : '#737373',
+      borderBottom: active ? '2px solid #171717' : '2px solid transparent',
+      cursor: 'pointer',
+      whiteSpace: 'nowrap',
+    }}>
+      {label}
     </div>
   );
 }
 
-function StatCard({
-  label,
-  value,
-  sub,
-  hint,
-  delay,
-}: {
-  label: string;
-  value: string;
-  sub: string;
-  hint: string;
-  delay: number;
-}) {
+function FieldRow({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
   return (
-    <div
-      style={{
-        background: '#FFFFFF',
+    <div style={{ marginBottom: 14 }}>
+      <div style={{ fontSize: 11, fontWeight: 600, color: '#171717', marginBottom: 5 }}>{label}</div>
+      <div style={{
+        padding: '8px 12px',
         border: '1px solid #E8E8E8',
-        borderRadius: 12,
-        padding: '14px 16px',
-        animationDelay: `${delay}ms`,
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
-        <span style={{ fontSize: 10, color: '#737373', fontFamily: 'monospace' }}>{label}</span>
-        <span style={{ fontSize: 10, color: '#A1A1A1', fontFamily: 'monospace' }}>{hint}</span>
-      </div>
-      <div style={{ fontSize: 22, fontWeight: 600, color: '#171717', marginTop: 6, letterSpacing: '-0.02em' }}>{value}</div>
-      <div style={{ fontSize: 10, color: '#A1A1A1', marginTop: 2 }}>{sub}</div>
+        borderRadius: 8,
+        fontSize: 12,
+        color: '#737373',
+        background: '#FFFFFF',
+        fontFamily: mono ? 'monospace' : 'inherit',
+      }}>{value}</div>
     </div>
   );
 }
 
-function ChatbotCard({
-  title,
-  desc,
-  origin,
-  status,
-}: {
-  title: string;
-  desc: string;
-  origin: string;
-  status: 'live' | 'training' | 'draft';
-}) {
-  const statusColor = status === 'live' ? '#10B981' : status === 'training' ? '#F59E0B' : '#C4C4C4';
-  const statusLabel = status === 'live' ? 'Active' : status === 'training' ? 'Training' : 'Draft';
-  const isUrl = origin.startsWith('http') || origin.includes('.');
-
+function SelectRow({ label, value }: { label: string; value: string }) {
   return (
-    <div
-      style={{
-        background: '#FFFFFF',
-        border: '1px solid #E8E8E8',
-        borderRadius: 12,
-        padding: '14px 16px',
+    <div style={{ marginBottom: 14 }}>
+      <div style={{ fontSize: 11, fontWeight: 600, color: '#171717', marginBottom: 5 }}>{label}</div>
+      <div style={{
         display: 'flex',
-        flexDirection: 'column',
-        gap: 10,
-      }}
-    >
-      {/* Header row */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-        {/* Icon chip */}
-        <div
-          style={{
-            width: 32,
-            height: 32,
-            borderRadius: 8,
-            background: '#F7F7F7',
-            border: '1px solid #E8E8E8',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <CorpusMark size={16} />
-        </div>
-        {/* Status pill */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-          <div
-            style={{
-              width: 6,
-              height: 6,
-              borderRadius: '50%',
-              background: statusColor,
-              boxShadow: `0 0 0 2px ${statusColor}33`,
-            }}
-          />
-          <span style={{ fontSize: 10, color: statusColor, fontWeight: 500 }}>{statusLabel}</span>
-        </div>
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '8px 12px',
+        border: '1px solid #E8E8E8',
+        borderRadius: 8,
+        fontSize: 12,
+        color: '#737373',
+        background: '#FFFFFF',
+      }}>
+        <span>{value}</span>
+        <ChevronRight style={{ width: 12, height: 12, color: '#A1A1A1' }} />
       </div>
-      {/* Title */}
-      <div style={{ fontSize: 13, fontWeight: 600, color: '#171717', letterSpacing: '-0.012em', lineHeight: 1.3 }}>{title}</div>
-      {/* Desc */}
-      <div style={{ fontSize: 11, color: '#737373', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{desc}</div>
-      {/* Origin */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 10, color: '#A1A1A1' }}>
-        {isUrl
-          ? <Globe style={{ width: 10, height: 10 }} />
-          : <FileText style={{ width: 10, height: 10 }} />
-        }
-        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{origin}</span>
+    </div>
+  );
+}
+
+function ToggleRow({ label, sub, on }: { label: string; sub: string; on?: boolean }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+      <div>
+        <div style={{ fontSize: 12, fontWeight: 500, color: '#171717' }}>{label}</div>
+        <div style={{ fontSize: 10, color: '#A1A1A1', marginTop: 2 }}>{sub}</div>
       </div>
-      {/* Divider */}
-      <div style={{ height: 1, background: '#E8E8E8' }} />
-      {/* Actions */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 4,
-            padding: '4px 8px',
-            borderRadius: 6,
-            fontSize: 10,
-            fontWeight: 500,
-            color: '#737373',
-            background: '#F7F7F7',
-            border: '1px solid #E8E8E8',
-          }}
-        >
-          <MessageSquare style={{ width: 10, height: 10 }} />
-          Chat
+      <div style={{
+        width: 32,
+        height: 18,
+        borderRadius: 99,
+        background: on ? '#171717' : '#E8E8E8',
+        position: 'relative',
+        flexShrink: 0,
+      }}>
+        <div style={{
+          position: 'absolute',
+          top: 2,
+          left: on ? 14 : 2,
+          width: 14,
+          height: 14,
+          borderRadius: '50%',
+          background: '#FFFFFF',
+          transition: 'left 0.15s',
+        }} />
+      </div>
+    </div>
+  );
+}
+
+// ─── Right panel: live chat preview ──────────────────────────────────────────
+
+function ChatPreviewPanel() {
+  const messages = [
+    { from: 'bot',  text: 'Hi! I\'m your Support Agent. How can I help you today?' },
+    { from: 'user', text: 'What\'s your return policy?' },
+    { from: 'bot',  text: 'We offer a 30-day return window on all orders. Items must be unused and in original packaging. Shall I start a return for you?' },
+  ];
+
+  return (
+    <div style={{
+      width: 260,
+      flexShrink: 0,
+      background: '#FAFAFA',
+      borderLeft: '1px solid #E8E8E8',
+      display: 'flex',
+      flexDirection: 'column',
+    }}>
+      {/* Chat header */}
+      <div style={{
+        padding: '12px 14px',
+        borderBottom: '1px solid #E8E8E8',
+        display: 'flex',
+        alignItems: 'center',
+        gap: 8,
+        background: '#FFFFFF',
+      }}>
+        <div style={{
+          width: 28,
+          height: 28,
+          borderRadius: 8,
+          background: '#171717',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <CorpusMark size={14} />
+        </div>
+        <div>
+          <div style={{ fontSize: 11, fontWeight: 600, color: '#171717' }}>Support Agent</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 9, color: '#A1A1A1' }}>
+            <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#10B981', display: 'inline-block' }} />
+            Online
+          </div>
         </div>
         <div style={{ flex: 1 }} />
-        <div style={{ padding: 5, borderRadius: 6, color: '#A1A1A1' }}>
-          <Settings style={{ width: 12, height: 12 }} />
+        <div style={{ fontSize: 9, fontFamily: 'monospace', color: '#A1A1A1', background: '#F7F7F7', border: '1px solid #E8E8E8', padding: '2px 6px', borderRadius: 4 }}>PREVIEW</div>
+      </div>
+
+      {/* Messages */}
+      <div style={{ flex: 1, padding: '12px 12px 0', display: 'flex', flexDirection: 'column', gap: 8, overflowY: 'hidden' }}>
+        {messages.map((m, i) => (
+          <div key={i} style={{ display: 'flex', justifyContent: m.from === 'user' ? 'flex-end' : 'flex-start' }}>
+            {m.from === 'bot' && (
+              <div style={{
+                width: 18,
+                height: 18,
+                borderRadius: 5,
+                background: '#171717',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginRight: 6,
+                flexShrink: 0,
+                alignSelf: 'flex-end',
+              }}>
+                <CorpusMark size={10} />
+              </div>
+            )}
+            <div style={{
+              maxWidth: '78%',
+              padding: '8px 10px',
+              borderRadius: m.from === 'user' ? '12px 12px 2px 12px' : '12px 12px 12px 2px',
+              fontSize: 10.5,
+              lineHeight: 1.5,
+              background: m.from === 'user' ? '#171717' : '#FFFFFF',
+              color: m.from === 'user' ? '#FFFFFF' : '#171717',
+              border: m.from === 'bot' ? '1px solid #E8E8E8' : 'none',
+            }}>{m.text}</div>
+          </div>
+        ))}
+
+        {/* Typing indicator */}
+        <div style={{ display: 'flex', alignItems: 'flex-end', gap: 6 }}>
+          <div style={{ width: 18, height: 18, borderRadius: 5, background: '#171717', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <CorpusMark size={10} />
+          </div>
+          <div style={{ background: '#FFFFFF', border: '1px solid #E8E8E8', borderRadius: '12px 12px 12px 2px', padding: '8px 12px', display: 'flex', gap: 4 }}>
+            {[0, 1, 2].map(i => (
+              <div key={i} style={{ width: 4, height: 4, borderRadius: '50%', background: '#A1A1A1', opacity: 0.6 }} />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Input */}
+      <div style={{ padding: '10px 12px', borderTop: '1px solid #E8E8E8', background: '#FFFFFF' }}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          border: '1px solid #E8E8E8',
+          borderRadius: 10,
+          padding: '7px 10px',
+          background: '#F7F7F7',
+        }}>
+          <span style={{ flex: 1, fontSize: 10, color: '#A1A1A1' }}>Message Support Agent…</span>
+          <div style={{ width: 22, height: 22, borderRadius: 6, background: '#171717', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Send style={{ width: 10, height: 10, color: '#FFFFFF' }} />
+          </div>
         </div>
       </div>
     </div>
@@ -242,358 +287,233 @@ function ChatbotCard({
 
 export default function DashboardPreview() {
   return (
-    // Outer scaler: renders at 1100px natural width, scaled down to fit container
-    <div
-      style={{ width: '100%', position: 'relative', overflow: 'hidden', borderRadius: 16 }}
-      aria-hidden="true"
-    >
-      {/* Scale wrapper — scales 1100px content down to container width */}
-      <div
-        style={{
-          width: 1100,
-          transformOrigin: 'top left',
-          transform: 'scale(var(--dashboard-scale, 1))',
-        }}
-        className="dashboard-scale-wrapper"
-      >
+    <div style={{ width: '100%', position: 'relative', overflow: 'hidden', borderRadius: 16 }} aria-hidden="true">
+      <div style={{ width: 1100, transformOrigin: 'top left', transform: 'scale(var(--dashboard-scale, 1))' }} className="dashboard-scale-wrapper">
         {/* Shell */}
-        <div
-          style={{
-            display: 'flex',
-            height: 620,
-            background: '#F7F7F7',
-            border: '1px solid #E8E8E8',
-            borderRadius: 16,
-            overflow: 'hidden',
-            fontFamily: 'Inter, system-ui, sans-serif',
-          }}
-        >
-          {/* ── Sidebar ──────────────────────────────────────── */}
-          <aside
-            style={{
-              width: 200,
-              flexShrink: 0,
-              background: '#FFFFFF',
-              borderRight: '1px solid #E8E8E8',
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
+        <div style={{
+          display: 'flex',
+          height: 620,
+          background: '#F7F7F7',
+          border: '1px solid #E8E8E8',
+          borderRadius: 16,
+          overflow: 'hidden',
+          fontFamily: 'Inter, system-ui, sans-serif',
+        }}>
+
+          {/* ── Sidebar ──────────────────────────────────────────── */}
+          <aside style={{ width: 210, flexShrink: 0, background: '#FFFFFF', borderRight: '1px solid #E8E8E8', display: 'flex', flexDirection: 'column' }}>
             {/* Wordmark */}
-            <div
-              style={{
-                height: 52,
-                display: 'flex',
-                alignItems: 'center',
-                padding: '0 18px',
-                borderBottom: '1px solid #E8E8E8',
-                gap: 8,
-              }}
-            >
+            <div style={{ height: 52, display: 'flex', alignItems: 'center', padding: '0 18px', borderBottom: '1px solid #E8E8E8', gap: 8 }}>
               <CorpusMark size={20} />
-              <span
-                style={{
-                  fontSize: 15,
-                  fontWeight: 700,
-                  letterSpacing: '-0.02em',
-                  color: '#171717',
-                }}
-              >
-                CORPUS<span style={{ color: '#737373', fontWeight: 500 }}> AI</span>
+              <span style={{ fontSize: 14, fontWeight: 700, letterSpacing: '-0.02em', color: '#171717' }}>
+                CORPUS<span style={{ color: '#737373', fontWeight: 400 }}> AI</span>
               </span>
             </div>
 
             {/* Nav */}
-            <div style={{ flex: 1, overflowY: 'auto', padding: '14px 10px', display: 'flex', flexDirection: 'column', gap: 18 }}>
+            <div style={{ flex: 1, overflowY: 'auto', padding: '14px 10px', display: 'flex', flexDirection: 'column', gap: 16 }}>
               {/* Workspace */}
               <div>
                 <GroupLabel>Workspace</GroupLabel>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                  <NavItem icon={LayoutDashboard} label="Dashboard" active />
-                  <NavItem icon={Bot} label="Chatbots" badge={2} />
-                  <NavItem icon={CreditCard} label="Billing" />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                  <SidebarItem icon={LayoutDashboard} label="Dashboard" />
+                  <SidebarItem icon={Bot} label="Chatbots" badge="2" />
+                  <SidebarItem icon={CreditCard} label="Billing" />
+                </div>
+              </div>
+
+              {/* Active chatbot sub-nav */}
+              <div>
+                <GroupLabel>Support Agent</GroupLabel>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                  <SidebarItem icon={MessageSquare} label="Chat" indent />
+                  <SidebarItem icon={BarChart3}     label="Analytics" indent />
+                  <SidebarItem icon={Database}      label="Datastores" indent />
+                  <SidebarItem icon={Rocket}        label="Deploy" indent />
+                  <SidebarItem icon={Users}         label="Leads" indent />
+                  <SidebarItem icon={Settings}      label="Settings" indent active />
+                </div>
+              </div>
+
+              {/* Settings sub-nav */}
+              <div>
+                <GroupLabel>Settings</GroupLabel>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                  <SidebarItem icon={Settings}   label="General" indent active />
+                  <SidebarItem icon={Paintbrush} label="Customization" indent />
+                  <SidebarItem icon={Key}        label="API Keys" indent />
+                  <SidebarItem icon={Link2}      label="Integrations" indent />
+                  <SidebarItem icon={Shield}     label="Security" indent />
                 </div>
               </div>
             </div>
 
-            {/* Quota footer */}
+            {/* Footer */}
             <div style={{ padding: '12px 14px', borderTop: '1px solid #E8E8E8' }}>
-              <QuotaRow label="Messages" pct={42} />
-              <QuotaRow label="Chatbots" pct={100} />
-              <QuotaRow label="Storage" pct={18} />
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 6,
-                  padding: '7px 12px',
-                  borderRadius: 8,
-                  fontSize: 11,
-                  fontWeight: 500,
-                  background: '#171717',
-                  color: '#FFFFFF',
-                  marginTop: 10,
-                  cursor: 'pointer',
-                }}
-              >
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 6,
+                padding: '7px 12px',
+                borderRadius: 8,
+                fontSize: 11,
+                fontWeight: 500,
+                background: '#171717',
+                color: '#FFFFFF',
+                cursor: 'pointer',
+              }}>
                 <ArrowUpRight style={{ width: 11, height: 11 }} />
                 Upgrade plan
               </div>
             </div>
           </aside>
 
-          {/* ── Main ─────────────────────────────────────────── */}
+          {/* ── Main ─────────────────────────────────────────────── */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
             {/* Header */}
-            <header
-              style={{
-                height: 52,
-                borderBottom: '1px solid #E8E8E8',
-                display: 'flex',
-                alignItems: 'center',
-                padding: '0 24px',
-                gap: 10,
-                background: '#FFFFFF',
-                flexShrink: 0,
-              }}
-            >
-              <span style={{ fontSize: 12, color: '#737373' }}>Dashboard</span>
+            <header style={{
+              height: 52,
+              borderBottom: '1px solid #E8E8E8',
+              display: 'flex',
+              alignItems: 'center',
+              padding: '0 22px',
+              gap: 8,
+              background: '#FFFFFF',
+              flexShrink: 0,
+            }}>
+              <span style={{ fontSize: 11, color: '#A1A1A1' }}>Chatbots</span>
+              <ChevronRight style={{ width: 11, height: 11, color: '#A1A1A1' }} />
+              <span style={{ fontSize: 11, color: '#A1A1A1' }}>Support Agent</span>
+              <ChevronRight style={{ width: 11, height: 11, color: '#A1A1A1' }} />
+              <span style={{ fontSize: 11, fontWeight: 500, color: '#171717' }}>Settings</span>
               <div style={{ flex: 1 }} />
-              {/* Tier badge */}
-              <div
-                style={{
-                  padding: '3px 8px',
-                  borderRadius: 6,
-                  border: '1px solid #E8E8E8',
-                  fontSize: 10,
-                  fontWeight: 600,
-                  color: '#737373',
-                  fontFamily: 'monospace',
-                  letterSpacing: '0.05em',
-                  textTransform: 'uppercase',
-                }}
-              >
-                Starter
+              {/* Status pill */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#10B981', boxShadow: '0 0 0 2px #10B98133' }} />
+                <span style={{ fontSize: 10, fontWeight: 500, color: '#10B981', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Live</span>
               </div>
-              {/* Docs link */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: '#A1A1A1', cursor: 'pointer' }}>
-                <BookOpen style={{ width: 13, height: 13 }} />
+              <div style={{ width: 1, height: 16, background: '#E8E8E8', margin: '0 4px' }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, color: '#A1A1A1', cursor: 'pointer' }}>
+                <BookOpen style={{ width: 12, height: 12 }} />
                 Docs
               </div>
-              {/* Avatar */}
-              <div
-                style={{
-                  width: 28,
-                  height: 28,
-                  borderRadius: '50%',
-                  background: '#171717',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: 11,
-                  fontWeight: 600,
-                  color: '#FFFFFF',
-                }}
-              >
+              <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#171717', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 600, color: '#FFFFFF' }}>
                 A
               </div>
             </header>
 
-            {/* Content */}
-            <div style={{ flex: 1, overflowY: 'auto', padding: '28px 28px 0' }}>
+            {/* Body: settings + chat preview */}
+            <div style={{ flex: 1, display: 'flex', minHeight: 0 }}>
 
-              {/* Greeting */}
-              <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 20 }}>
-                <div>
-                  <div
-                    style={{
-                      fontSize: 9,
-                      fontFamily: 'monospace',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.14em',
-                      color: '#A1A1A1',
-                      marginBottom: 6,
-                    }}
-                  >
-                    Monday · May 16
-                  </div>
-                  <h1
-                    style={{
-                      fontSize: 22,
-                      fontWeight: 600,
-                      letterSpacing: '-0.02em',
-                      lineHeight: 1.2,
-                      color: '#171717',
-                    }}
-                  >
-                    Good morning, Alex.{' '}
-                    <span style={{ color: '#737373', fontWeight: 400 }}>2 bots running and learning.</span>
-                  </h1>
+              {/* Settings panel */}
+              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                {/* Tabs */}
+                <div style={{ display: 'flex', borderBottom: '1px solid #E8E8E8', background: '#FFFFFF', padding: '0 22px' }}>
+                  <TabBtn label="General" active />
+                  <TabBtn label="Customization" />
+                  <TabBtn label="API Keys" />
+                  <TabBtn label="Integrations" />
+                  <TabBtn label="Security" />
                 </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 6,
-                    padding: '7px 14px',
-                    borderRadius: 8,
-                    fontSize: 11,
-                    fontWeight: 500,
-                    background: '#171717',
-                    color: '#FFFFFF',
-                    cursor: 'pointer',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  <Plus style={{ width: 12, height: 12 }} />
-                  New chatbot
-                </div>
-              </div>
 
-              {/* Stat grid */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 24 }}>
-                <StatCard label="[01] Chatbots" value="2" sub="2 of 2 used" hint="100%" delay={60} />
-                <StatCard label="[02] Messages" value="847" sub="of 1,500 / month" hint="56%" delay={120} />
-                <StatCard label="[03] Storage" value="24 MB" sub="of 50 MB" hint="48%" delay={180} />
-                <StatCard label="[04] Active bots" value="2" sub="2 of 2 live" hint="100%" delay={240} />
-              </div>
-
-              {/* Chatbots section */}
-              <div>
-                <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 14 }}>
-                  <div>
-                    <div
-                      style={{
-                        fontSize: 9,
-                        fontFamily: 'monospace',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.14em',
-                        color: '#A1A1A1',
-                        marginBottom: 4,
-                      }}
-                    >
-                      Your chatbots
+                {/* Form content */}
+                <div style={{ flex: 1, overflowY: 'auto', padding: '22px 22px' }}>
+                  {/* Section: Basic info */}
+                  <div style={{ marginBottom: 22 }}>
+                    <div style={{ fontSize: 9, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.14em', color: '#A1A1A1', marginBottom: 12 }}>
+                      Basic information
                     </div>
-                    <h2 style={{ fontSize: 15, fontWeight: 600, color: '#171717', letterSpacing: '-0.012em' }}>
-                      Active and recently created
-                    </h2>
+                    <FieldRow label="Chatbot name" value="Support Agent" />
+                    <FieldRow label="Description" value="Handles tier-1 support queries using the help centre documentation and product FAQs." />
+                    <SelectRow label="Language" value="English (en)" />
                   </div>
-                  {/* Search */}
-                  <div
-                    style={{
-                      display: 'flex',
+
+                  <div style={{ height: 1, background: '#E8E8E8', marginBottom: 22 }} />
+
+                  {/* Section: Behaviour */}
+                  <div style={{ marginBottom: 22 }}>
+                    <div style={{ fontSize: 9, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.14em', color: '#A1A1A1', marginBottom: 12 }}>
+                      Behaviour
+                    </div>
+                    <SelectRow label="LLM Model" value="GPT-4o mini (fast, cost-efficient)" />
+                    <ToggleRow label="Show citations" sub="Display source references in responses" on />
+                    <ToggleRow label="Keep showing suggestions" sub="Persist suggested questions after first reply" />
+                    <ToggleRow label="Lead capture" sub="Collect visitor contact info during chat" on />
+                  </div>
+
+                  <div style={{ height: 1, background: '#E8E8E8', marginBottom: 22 }} />
+
+                  {/* Section: System prompt preview */}
+                  <div>
+                    <div style={{ fontSize: 9, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.14em', color: '#A1A1A1', marginBottom: 12 }}>
+                      System prompt
+                    </div>
+                    <div style={{
+                      background: '#F7F7F7',
+                      border: '1px solid #E8E8E8',
+                      borderRadius: 10,
+                      padding: '12px 14px',
+                      fontSize: 11,
+                      color: '#737373',
+                      lineHeight: 1.7,
+                      fontFamily: 'monospace',
+                    }}>
+                      You are a helpful support agent for Acme Corp. Answer questions using only the provided knowledge base. If unsure, escalate to a human agent. Always be concise and polite.
+                    </div>
+                  </div>
+
+                  {/* Save button */}
+                  <div style={{ marginTop: 20, display: 'flex', gap: 8 }}>
+                    <div style={{
+                      display: 'inline-flex',
                       alignItems: 'center',
                       gap: 6,
-                      padding: '5px 10px',
-                      border: '1px solid #E8E8E8',
+                      padding: '8px 16px',
                       borderRadius: 8,
-                      fontSize: 11,
-                      color: '#A1A1A1',
-                      background: '#FFFFFF',
-                    }}
-                  >
-                    <Search style={{ width: 11, height: 11 }} />
-                    Search chatbots…
-                  </div>
-                </div>
-
-                {/* Cards grid */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
-                  <ChatbotCard
-                    title="Support Agent"
-                    desc="Handles tier-1 support queries using the help centre documentation."
-                    origin="docs.acme.com"
-                    status="live"
-                  />
-                  <ChatbotCard
-                    title="Sales Assistant"
-                    desc="Qualifies inbound leads and books demos from the pricing page."
-                    origin="acme.com/pricing"
-                    status="live"
-                  />
-                  <ChatbotCard
-                    title="HR Onboarding Bot"
-                    desc="Answers new-hire questions from the employee handbook PDFs."
-                    origin="handbook.pdf"
-                    status="training"
-                  />
-                </div>
-              </div>
-
-              {/* Quick access strip */}
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '14px 16px',
-                  border: '1px solid #E8E8E8',
-                  borderRadius: 12,
-                  background: '#FFFFFF',
-                  marginTop: 16,
-                }}
-              >
-                <div>
-                  <div
-                    style={{
-                      fontSize: 9,
-                      fontFamily: 'monospace',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.14em',
-                      color: '#A1A1A1',
-                      marginBottom: 4,
-                    }}
-                  >
-                    Quick access
-                  </div>
-                  <div style={{ fontSize: 12, color: '#171717' }}>
-                    Documentation, billing, and API keys — all one click away.
-                  </div>
-                </div>
-                <div style={{ display: 'flex', gap: 8 }}>
-                  {[
-                    { icon: BookOpen, label: 'Docs' },
-                    { icon: CreditCard, label: 'Billing' },
-                    { icon: Key, label: 'API keys' },
-                  ].map(({ icon: Icon, label }) => (
-                    <div
-                      key={label}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 5,
-                        padding: '5px 10px',
-                        border: '1px solid #E8E8E8',
-                        borderRadius: 8,
-                        fontSize: 11,
-                        fontWeight: 500,
-                        color: '#737373',
-                        background: '#F7F7F7',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      <Icon style={{ width: 11, height: 11 }} />
-                      {label}
+                      fontSize: 12,
+                      fontWeight: 500,
+                      background: '#171717',
+                      color: '#FFFFFF',
+                      cursor: 'pointer',
+                    }}>
+                      <Zap style={{ width: 12, height: 12 }} />
+                      Save changes
                     </div>
-                  ))}
+                    <div style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 6,
+                      padding: '8px 16px',
+                      borderRadius: 8,
+                      fontSize: 12,
+                      fontWeight: 500,
+                      background: '#FFFFFF',
+                      border: '1px solid #E8E8E8',
+                      color: '#737373',
+                      cursor: 'pointer',
+                    }}>
+                      Discard
+                    </div>
+                  </div>
                 </div>
               </div>
+
+              {/* Live chat preview panel */}
+              <ChatPreviewPanel />
             </div>
           </div>
         </div>
       </div>
 
-      {/* ── Gradient fade at bottom ───────────────────────────── */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'linear-gradient(to bottom, transparent 40%, white 100%)',
-          pointerEvents: 'none',
-          borderRadius: 16,
-        }}
-      />
+      {/* Bottom gradient fade */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        background: 'linear-gradient(to bottom, transparent 40%, white 100%)',
+        pointerEvents: 'none',
+        borderRadius: 16,
+      }} />
     </div>
   );
 }
