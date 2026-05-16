@@ -35,7 +35,7 @@ const steps = [
 
 export default function WorkflowTimeline() {
   return (
-    <section className="py-28 px-6 bg-[#F7F7F7] relative overflow-hidden">
+    <section className="py-16 md:py-28 px-4 sm:px-6 bg-[#F7F7F7] relative overflow-hidden">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-14">
           <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-white border border-[#E8E8E8] text-sm text-[#737373] shadow-sm mb-6">

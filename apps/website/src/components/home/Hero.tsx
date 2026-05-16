@@ -53,7 +53,7 @@ export default function Hero() {
         }}
       />
 
-      <div className="relative z-10 pt-36 pb-0 px-6 text-center">
+      <div className="relative z-10 pt-24 md:pt-36 pb-0 px-4 sm:px-6 text-center">
         <motion.div
           className="max-w-5xl mx-auto"
           variants={containerVariants}

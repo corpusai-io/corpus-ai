@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 export default function FinalCTA() {
   return (
-    <section className="py-28 px-6 bg-[#171717] relative overflow-hidden">
+    <section className="py-16 md:py-28 px-4 sm:px-6 bg-[#171717] relative overflow-hidden">
       {/* Subtle gradient overlay */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -39,13 +39,13 @@ export default function FinalCTA() {
         <div className="flex items-center justify-center gap-4 mt-10 flex-wrap">
           <Link
             href="/Sign-In"
-            className="border border-white text-white hover:bg-white hover:text-[#171717] rounded-md px-8 py-4 text-sm font-medium transition-all"
+            className="border border-white text-white hover:bg-white hover:text-[#171717] rounded-md px-5 sm:px-8 py-3.5 text-sm font-medium transition-all"
           >
             Build Your First Agent — Free
           </Link>
           <Link
             href="/Sign-In"
-            className="bg-[#2a2a2a] text-white/80 hover:bg-[#333333] hover:text-white rounded-md px-8 py-4 text-sm font-medium transition-all"
+            className="bg-[#2a2a2a] text-white/80 hover:bg-[#333333] hover:text-white rounded-md px-5 sm:px-8 py-3.5 text-sm font-medium transition-all"
           >
             Talk to Sales
           </Link>

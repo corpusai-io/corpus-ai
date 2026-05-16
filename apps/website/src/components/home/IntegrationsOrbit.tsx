@@ -191,7 +191,7 @@ export default function IntegrationsOrbit() {
   const n = INTEGRATIONS.length;
 
   return (
-    <section className="py-28 px-6 bg-white relative overflow-hidden">
+    <section className="py-16 md:py-28 px-6 bg-white relative overflow-hidden">
       {/* Subtle grid background */}
       <GridPattern
         width={32} height={32} x={-1} y={-1}
@@ -236,9 +236,22 @@ export default function IntegrationsOrbit() {
           </motion.p>
         </div>
 
-        {/* ── Orbit card ─────────────────────────────────────────── */}
+        {/* ── Mobile icon grid (< md) ────────────────────────────── */}
+        <div className="md:hidden grid grid-cols-3 gap-3 mb-8">
+          {INTEGRATIONS.map((integ) => (
+            <div
+              key={integ.id}
+              className="flex flex-col items-center gap-2 bg-white border border-[#E8E8E8] rounded-xl p-4"
+            >
+              <Image src={integ.icon} alt={integ.name} width={28} height={28} className="w-7 h-7 object-contain" unoptimized />
+              <span className="text-[10px] font-mono text-[#737373] text-center leading-tight">{integ.name}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* ── Orbit card (md+) ───────────────────────────────────── */}
         <motion.div
-          className="max-w-4xl mx-auto"
+          className="hidden md:block max-w-4xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -306,38 +319,7 @@ export default function IntegrationsOrbit() {
                 );
               })}
 
-              {/* Node labels (name below each icon) */}
-              {INTEGRATIONS.map((integ, i) => {
-                const pos = orbitPos(i, n);
-                const isActive = hoveredId ? hoveredId === integ.id : activeIds.has(integ.id);
-                // Push label outward from center
-                const dx = pos.x - CX;
-                const dy = pos.y - CY;
-                const len = Math.sqrt(dx * dx + dy * dy);
-                const labelX = pos.x + (dx / len) * (NODE_R + 14);
-                const labelY = pos.y + (dy / len) * (NODE_R + 14);
-                return (
-                  <div
-                    key={`label-${integ.id}`}
-                    className="absolute pointer-events-none text-center transition-all duration-300"
-                    style={{
-                      left:      `${(labelX / CW) * 100}%`,
-                      top:       `${(labelY / CH) * 100}%`,
-                      transform: 'translate(-50%, -50%)',
-                      zIndex:    5,
-                      opacity:   isActive ? 1 : 0.4,
-                      transition: 'opacity 0.4s ease',
-                    }}
-                  >
-                    <span
-                      className="font-mono text-[9px] font-semibold uppercase tracking-wider whitespace-nowrap"
-                      style={{ color: isActive ? '#171717' : '#A1A1A1' }}
-                    >
-                      {integ.name}
-                    </span>
-                  </div>
-                );
-              })}
+              {/* Node labels intentionally removed — icons only */}
             </div>
 
             {/* Bottom info bar */}

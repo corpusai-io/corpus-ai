@@ -282,7 +282,7 @@ export default function DatabaseSection() {
   const Icon  = agent.icon;
 
   return (
-    <section className="py-28 px-6 bg-[#F7F7F7]">
+    <section className="py-16 md:py-28 px-4 sm:px-6 bg-[#F7F7F7]">
       <div className="max-w-7xl mx-auto">
 
         {/* ── Header ─────────────────────────────────────────────── */}
@@ -300,7 +300,7 @@ export default function DatabaseSection() {
         </div>
 
         {/* ── Agent selector ──────────────────────────────────────── */}
-        <div className="flex justify-center gap-2 mb-12">
+        <div className="flex flex-wrap justify-center gap-2 mb-10 sm:mb-12">
           {AGENTS.map((a, i) => {
             const AIcon = a.icon;
             const isActive = active === i;
@@ -322,7 +322,8 @@ export default function DatabaseSection() {
                   [{a.index}]
                 </span>
                 <AIcon className="w-3.5 h-3.5" />
-                {a.label}
+                <span className="hidden sm:inline">{a.label}</span>
+                <span className="sm:hidden">{a.label.replace(' Agent', '')}</span>
                 {/* Progress underline */}
                 {isActive && !paused && (
                   <motion.div

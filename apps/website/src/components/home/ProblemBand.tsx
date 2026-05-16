@@ -36,7 +36,7 @@ export default function ProblemBand() {
   const [hovered, setHovered] = useState<number | null>(null);
 
   return (
-    <section className="py-28 px-6 bg-[#F7F7F7]">
+    <section className="py-16 md:py-28 px-4 sm:px-6 bg-[#F7F7F7]">
       <div className="max-w-4xl mx-auto">
 
         {/* Section label — unchanged */}
@@ -59,9 +59,9 @@ export default function ProblemBand() {
           </p>
         </motion.div>
 
-        {/* Column headers */}
+        {/* Column headers — desktop only */}
         <motion.div
-          className="grid gap-0 mb-3"
+          className="hidden md:grid gap-0 mb-3"
           style={{ gridTemplateColumns: '1fr 48px 1fr' }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -73,8 +73,28 @@ export default function ProblemBand() {
           <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[#999] pl-4">With Corpus AI</p>
         </motion.div>
 
-        {/* Rows — rendered as a unified grid so arrows always align */}
-        <div className="flex flex-col gap-2">
+        {/* Mobile: solution-only list */}
+        <div className="flex flex-col gap-3 md:hidden">
+          {rows.map((row, i) => {
+            const Icon = row.icon;
+            return (
+              <motion.div
+                key={i}
+                className="flex items-center gap-3 bg-white rounded-xl px-4 py-3.5 shadow-sm"
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.07, duration: 0.4 }}
+              >
+                <Icon className="w-4 h-4 flex-shrink-0 text-[#737373]" strokeWidth={1.5} />
+                <p className="text-sm text-[#333] font-medium leading-snug">{row.solution}</p>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* Desktop: comparison rows */}
+        <div className="hidden md:flex flex-col gap-2">
           {rows.map((row, i) => {
             const Icon = row.icon;
             const isHovered = hovered === i;
@@ -83,7 +103,7 @@ export default function ProblemBand() {
               <motion.div
                 key={i}
                 className="grid items-center gap-0"
-                style={{ gridTemplateColumns: '1fr 48px 1fr' }}
+                style={{ gridTemplateColumns: 'minmax(0,1fr) 40px minmax(0,1fr)' }}
                 initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-20px' }}

@@ -212,7 +212,7 @@ export default function AgenticShowcase() {
   const Visual = tab.visual;
 
   return (
-    <section className="py-28 px-6 bg-[#F7F7F7] relative overflow-hidden">
+    <section className="py-16 md:py-28 px-4 sm:px-6 bg-[#F7F7F7] relative overflow-hidden">
       {/* ── Grid background ─────────────────────────────────────── */}
       <GridPattern
         width={32}
@@ -244,7 +244,7 @@ export default function AgenticShowcase() {
           <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr]">
 
             {/* Left — tab list */}
-            <div className="border-b lg:border-b-0 lg:border-r border-[#E8E8E8] p-6 flex flex-col gap-3">
+            <div className="border-b lg:border-b-0 lg:border-r border-[#E8E8E8] p-4 sm:p-6 flex flex-col gap-3">
               {tabs.map((t, i) => {
                 const Icon = t.icon;
                 const isActive = active === i;
@@ -312,7 +312,7 @@ export default function AgenticShowcase() {
             </div>
 
             {/* Right — animated visual */}
-            <div className="p-8 bg-[#FAFAFA] flex flex-col justify-center min-h-[360px]">
+            <div className="p-4 sm:p-8 bg-[#FAFAFA] flex flex-col justify-center min-h-[300px] sm:min-h-[360px]">
               {/* Panel header */}
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-2">

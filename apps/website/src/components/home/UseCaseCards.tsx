@@ -39,21 +39,21 @@ const useCases = [
 
 export default function UseCaseCards() {
   return (
-    <section className="py-28 px-6 relative">
+    <section className="py-16 md:py-28 px-4 sm:px-6 relative">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-sm font-semibold text-[#171717] uppercase tracking-widest mb-4">
+        <div className="text-center mb-12 md:mb-16">
+          <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-[#F7F7F7] border border-[#E8E8E8] text-sm text-[#737373] shadow-sm mb-5">
             Solutions
-          </p>
-          <h2 className="text-4xl md:text-5xl font-bold text-[#171717] tracking-tight">
+          </span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium text-[#171717] tracking-[-0.02em]">
             Purpose-built for your industry
           </h2>
-          <p className="text-lg text-[#737373] mt-4">
+          <p className="text-base font-[family-name:var(--font-inter)] text-[#737373] mt-4 max-w-xl mx-auto">
             AI agents trained on industry-specific knowledge and compliance requirements.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {useCases.map((useCase, i) => (
             <motion.div
               key={useCase.title}
@@ -64,7 +64,7 @@ export default function UseCaseCards() {
             >
               <Link
                 href={useCase.href}
-                className="bg-white rounded-2xl p-8 group block h-full transition-shadow duration-300 hover:shadow-md"
+                className="bg-white rounded-2xl p-6 sm:p-8 group block h-full transition-shadow duration-300 hover:shadow-md"
               >
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-5 bg-[#F7F7F7]">
                   <useCase.icon className="w-5 h-5 text-[#171717]" />

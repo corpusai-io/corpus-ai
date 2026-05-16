@@ -55,7 +55,7 @@ const tiers = [
 
 export default function Pricing() {
   return (
-    <section className="py-28 px-6 bg-[#F7F7F7]">
+    <section className="py-16 md:py-28 px-4 sm:px-6 bg-[#F7F7F7]">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <span className="inline-block bg-white border border-[#E8E8E8] rounded-full px-4 py-1.5 text-sm text-[#737373] mb-6">

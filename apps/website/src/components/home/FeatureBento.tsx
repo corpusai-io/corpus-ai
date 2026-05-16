@@ -14,7 +14,7 @@ const cardVariants = {
 
 export default function FeatureBento() {
   return (
-    <section className="py-28 px-6 bg-[#F7F7F7]">
+    <section className="py-16 md:py-28 px-4 sm:px-6 bg-[#F7F7F7]">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-white border border-[#E8E8E8] text-sm text-[#737373] shadow-sm mb-6">
