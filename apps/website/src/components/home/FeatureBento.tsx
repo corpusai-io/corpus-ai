@@ -17,13 +17,13 @@ export default function FeatureBento() {
     <section className="py-16 md:py-28 px-4 sm:px-6 bg-[#F7F7F7]">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-white border border-[#E8E8E8] text-sm text-[#737373] shadow-sm mb-6">
+          <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-white border border-[#E8E8E8] text-sm text-[#5C5C5C] shadow-sm mb-6">
             Platform
           </span>
           <h2 className="text-4xl md:text-5xl font-medium text-[#171717] tracking-[-0.02em]">
-            Everything you need.{' '}<span className="text-[#737373]">Nothing you don&apos;t.</span>
+            Everything you need.{' '}<span className="text-[#5C5C5C]">Nothing you don&apos;t.</span>
           </h2>
-          <p className="text-lg font-normal text-[#737373] mt-4">
+          <p className="text-lg font-normal text-[#5C5C5C] mt-4">
             A complete platform for building, training, and deploying AI agents.
           </p>
         </div>
@@ -38,11 +38,11 @@ export default function FeatureBento() {
             whileInView="visible"
             viewport={{ once: true, margin: '-40px' }}
           >
-            <p className="text-xs font-medium text-[#737373] uppercase tracking-widest mb-3">[01] RETRIEVAL</p>
+            <p className="text-xs font-medium text-[#5C5C5C] uppercase tracking-widest mb-3">[01] RETRIEVAL</p>
             <h3 className="text-xl font-medium text-[#171717] mb-2">
               Intelligent RAG Pipeline
             </h3>
-            <p className="text-sm text-[#737373] max-w-md">
+            <p className="text-sm text-[#5C5C5C] max-w-md">
               Adaptive retrieval that automatically chooses the best strategy —
               simple search for direct questions, hybrid search with reranking for
               complex queries, and HyDE for vague ones.
@@ -68,14 +68,14 @@ export default function FeatureBento() {
             whileInView="visible"
             viewport={{ once: true, margin: '-40px' }}
           >
-            <p className="text-xs font-medium text-[#737373] uppercase tracking-widest mb-3">[02] GROWTH</p>
+            <p className="text-xs font-medium text-[#5C5C5C] uppercase tracking-widest mb-3">[02] GROWTH</p>
             <div className="w-10 h-10 rounded-lg bg-[#F7F7F7] flex items-center justify-center mb-4">
               <UserPlus className="w-5 h-5 text-[#171717]" />
             </div>
             <h3 className="text-xl font-medium text-[#171717] mb-2">
               Smart Lead Capture
             </h3>
-            <p className="text-sm text-[#737373]">
+            <p className="text-sm text-[#5C5C5C]">
               Auto-classify leads as hot, warm, or cold based on conversation
               intent. Trigger capture forms on high-intent signals, unanswered
               questions, or exit intent.
@@ -91,14 +91,14 @@ export default function FeatureBento() {
             whileInView="visible"
             viewport={{ once: true, margin: '-40px' }}
           >
-            <p className="text-xs font-medium text-[#737373] uppercase tracking-widest mb-3">[03] BRANDING</p>
+            <p className="text-xs font-medium text-[#5C5C5C] uppercase tracking-widest mb-3">[03] BRANDING</p>
             <div className="w-10 h-10 rounded-lg bg-[#F7F7F7] flex items-center justify-center mb-4">
               <Palette className="w-5 h-5 text-[#171717]" />
             </div>
             <h3 className="text-xl font-medium text-[#171717] mb-2">
               Full White-Label
             </h3>
-            <p className="text-sm text-[#737373]">
+            <p className="text-sm text-[#5C5C5C]">
               Match your brand perfectly — custom colors, fonts, avatar, welcome
               messages, and remove all Corpus AI branding on Business plans.
             </p>
@@ -113,14 +113,14 @@ export default function FeatureBento() {
             whileInView="visible"
             viewport={{ once: true, margin: '-40px' }}
           >
-            <p className="text-xs font-medium text-[#737373] uppercase tracking-widest mb-3">[04] INSIGHTS</p>
+            <p className="text-xs font-medium text-[#5C5C5C] uppercase tracking-widest mb-3">[04] INSIGHTS</p>
             <div className="w-10 h-10 rounded-lg bg-[#F7F7F7] flex items-center justify-center mb-4">
               <BarChart3 className="w-5 h-5 text-[#171717]" />
             </div>
             <h3 className="text-xl font-medium text-[#171717] mb-2">
               Conversation Analytics
             </h3>
-            <p className="text-sm text-[#737373]">
+            <p className="text-sm text-[#5C5C5C]">
               Track message volume, resolution rates, popular topics, and customer
               satisfaction. Export reports and set up alerts for anomalies.
             </p>
@@ -135,11 +135,11 @@ export default function FeatureBento() {
             whileInView="visible"
             viewport={{ once: true, margin: '-40px' }}
           >
-            <p className="text-xs font-medium text-[#737373] uppercase tracking-widest mb-3">[05] SECURITY</p>
+            <p className="text-xs font-medium text-[#5C5C5C] uppercase tracking-widest mb-3">[05] SECURITY</p>
             <h3 className="text-xl font-medium text-[#171717] mb-2">
               Enterprise-Grade Security
             </h3>
-            <p className="text-sm text-[#737373] max-w-md">
+            <p className="text-sm text-[#5C5C5C] max-w-md">
               End-to-end encryption, SOC 2 compliance standards, domain
               whitelisting, rate limiting, and IP-based access controls. Your data
               never trains public models.
@@ -165,14 +165,14 @@ export default function FeatureBento() {
             whileInView="visible"
             viewport={{ once: true, margin: '-40px' }}
           >
-            <p className="text-xs font-medium text-[#737373] uppercase tracking-widest mb-3">[06] GLOBAL</p>
+            <p className="text-xs font-medium text-[#5C5C5C] uppercase tracking-widest mb-3">[06] GLOBAL</p>
             <div className="w-10 h-10 rounded-lg bg-[#F7F7F7] flex items-center justify-center mb-4">
               <Languages className="w-5 h-5 text-[#171717]" />
             </div>
             <h3 className="text-xl font-medium text-[#171717] mb-2">
               Multi-Language Support
             </h3>
-            <p className="text-sm text-[#737373]">
+            <p className="text-sm text-[#5C5C5C]">
               Automatically detect and respond in 50+ languages. Serve global
               audiences without managing separate bots for each locale.
             </p>

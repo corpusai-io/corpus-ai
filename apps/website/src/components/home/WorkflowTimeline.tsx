@@ -37,14 +37,14 @@ export default function WorkflowTimeline() {
   return (
     <section className="py-16 md:py-28 px-4 sm:px-6 bg-[#F7F7F7] relative overflow-hidden">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-14">
-          <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-white border border-[#E8E8E8] text-sm text-[#737373] shadow-sm mb-6">
+        <div className="text-center mb-12 md:mb-16">
+          <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-white border border-[#E8E8E8] text-sm text-[#5C5C5C] shadow-sm mb-6">
             How It Works
           </span>
           <h2 className="text-4xl md:text-5xl font-medium text-[#171717] tracking-[-0.02em]">
             Live in four simple steps
           </h2>
-          <p className="text-lg font-normal text-[#737373] mt-4">
+          <p className="text-lg font-normal text-[#5C5C5C] mt-4">
             From zero to deployed AI agent. No ML expertise required.
           </p>
         </div>
@@ -80,7 +80,7 @@ export default function WorkflowTimeline() {
                 <h3 className="text-xl font-medium text-[#171717] mb-2">
                   {step.title}
                 </h3>
-                <p className="text-sm font-normal text-[#737373] leading-relaxed max-w-md">
+                <p className="text-sm font-normal text-[#5C5C5C] leading-relaxed max-w-md">
                   {step.body}
                 </p>
 

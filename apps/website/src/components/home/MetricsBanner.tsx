@@ -67,7 +67,7 @@ function AnimatedNumber({ metric }: { metric: Metric }) {
         {display}
         {metric.suffix}
       </div>
-      <div className="text-sm text-[#737373] mt-2">{metric.label}</div>
+      <div className="text-sm text-[#5C5C5C] mt-2">{metric.label}</div>
     </div>
   );
 }

@@ -34,10 +34,10 @@ export default function Testimonials() {
     <section className="py-16 md:py-28 px-4 sm:px-6 bg-[#F7F7F7]">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <span className="inline-block bg-white border border-[#E8E8E8] rounded-full px-4 py-1.5 text-sm text-[#737373] mb-6">
+          <span className="inline-block bg-white border border-[#E8E8E8] rounded-full px-4 py-1.5 text-sm text-[#5C5C5C] mb-6">
             Trusted by 500+ teams
           </span>
-          <h2 className="text-3xl md:text-4xl font-medium text-[#171717] tracking-tight">
+          <h2 className="text-4xl md:text-5xl font-medium text-[#171717] tracking-[-0.02em]">
             What our customers say
           </h2>
         </div>
@@ -57,7 +57,7 @@ export default function Testimonials() {
                 <span className="text-5xl leading-none font-serif text-[#E8E8E8] select-none">
                   &ldquo;
                 </span>
-                <blockquote className="text-base text-[#737373] leading-relaxed italic mt-2">
+                <blockquote className="text-base text-[#5C5C5C] leading-relaxed italic mt-2">
                   {t.quote}
                 </blockquote>
               </div>
@@ -69,10 +69,10 @@ export default function Testimonials() {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-[#171717]">{t.name}</p>
-                    <p className="text-xs text-[#737373]">{t.role}</p>
+                    <p className="text-xs text-[#5C5C5C]">{t.role}</p>
                   </div>
                 </div>
-                <span className="text-xs font-medium text-[#737373] ml-4 flex-shrink-0">
+                <span className="text-xs font-medium text-[#5C5C5C] ml-4 flex-shrink-0">
                   {t.company}
                 </span>
               </div>

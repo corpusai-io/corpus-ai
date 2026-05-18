@@ -41,20 +41,20 @@ export default function ProblemBand() {
 
         {/* Section label — unchanged */}
         <motion.div
-          className="text-center mb-14"
+          className="text-center mb-12 md:mb-16"
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <span className="inline-flex items-center gap-2 bg-white border border-[#E8E8E8] rounded-full px-4 py-1.5 text-sm text-[#737373] shadow-sm mb-5">
+          <span className="inline-flex items-center gap-2 bg-white border border-[#E8E8E8] rounded-full px-4 py-1.5 text-sm text-[#5C5C5C] shadow-sm mb-5">
             <ArrowRightLeft className="w-3.5 h-3.5 text-[#171717]" />
             The transformation
           </span>
-          <h2 className="text-3xl md:text-4xl font-medium tracking-[-0.02em] text-[#171717]">
+          <h2 className="text-4xl md:text-5xl font-medium tracking-[-0.02em] text-[#171717]">
             From chaos to clarity.
           </h2>
-          <p className="font-[family-name:var(--font-inter)] font-normal text-[#737373] mt-3 max-w-xl mx-auto">
+          <p className="font-[family-name:var(--font-inter)] font-normal text-[#5C5C5C] mt-3 max-w-xl mx-auto">
             See the difference an AI agent makes when it handles what used to slow you down.
           </p>
         </motion.div>
@@ -68,7 +68,7 @@ export default function ProblemBand() {
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.1 }}
         >
-          <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[#C0C0C0] pl-4">Today</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[#9E9E9E] pl-4">Today</p>
           <span />
           <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[#999] pl-4">With Corpus AI</p>
         </motion.div>
@@ -86,7 +86,7 @@ export default function ProblemBand() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.07, duration: 0.4 }}
               >
-                <Icon className="w-4 h-4 flex-shrink-0 text-[#737373]" strokeWidth={1.5} />
+                <Icon className="w-4 h-4 flex-shrink-0 text-[#5C5C5C]" strokeWidth={1.5} />
                 <p className="text-sm text-[#333] font-medium leading-snug">{row.solution}</p>
               </motion.div>
             );
@@ -121,7 +121,7 @@ export default function ProblemBand() {
                   <p
                     className="text-sm leading-relaxed transition-all duration-250"
                     style={{
-                      color: isHovered ? '#888' : '#C4C4C4',
+                      color: isHovered ? '#737373' : '#9E9E9E',
                       textDecoration: isHovered ? 'line-through' : 'none',
                       textDecorationColor: '#C4C4C4',
                     }}

@@ -42,13 +42,13 @@ export default function UseCaseCards() {
     <section className="py-16 md:py-28 px-4 sm:px-6 relative">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12 md:mb-16">
-          <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-[#F7F7F7] border border-[#E8E8E8] text-sm text-[#737373] shadow-sm mb-5">
+          <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-[#F7F7F7] border border-[#E8E8E8] text-sm text-[#5C5C5C] shadow-sm mb-5">
             Solutions
           </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium text-[#171717] tracking-[-0.02em]">
+          <h2 className="text-4xl md:text-5xl font-medium text-[#171717] tracking-[-0.02em]">
             Purpose-built for your industry
           </h2>
-          <p className="text-base font-[family-name:var(--font-inter)] text-[#737373] mt-4 max-w-xl mx-auto">
+          <p className="text-base font-[family-name:var(--font-inter)] text-[#5C5C5C] mt-4 max-w-xl mx-auto">
             AI agents trained on industry-specific knowledge and compliance requirements.
           </p>
         </div>
@@ -72,10 +72,10 @@ export default function UseCaseCards() {
                 <h3 className="text-lg font-semibold text-[#171717] mb-3">
                   {useCase.title}
                 </h3>
-                <p className="text-sm text-[#737373] leading-relaxed">
+                <p className="text-sm text-[#5C5C5C] leading-relaxed">
                   {useCase.body}
                 </p>
-                <p className="text-xs text-[#737373] group-hover:text-[#171717] transition-colors mt-4 font-medium">
+                <p className="text-xs text-[#5C5C5C] group-hover:text-[#171717] transition-colors mt-4 font-medium">
                   Explore {useCase.title} &rarr;
                 </p>
               </Link>

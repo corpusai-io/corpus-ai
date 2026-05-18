@@ -14,7 +14,7 @@ export default function LogoBar() {
 
   return (
     <section className="py-16 px-6 bg-[#F7F7F7] border-t border-[#E8E8E8]">
-      <p className="text-center text-xs font-medium text-[#737373] uppercase tracking-[0.2em] mb-8">
+      <p className="text-center text-xs font-medium text-[#5C5C5C] uppercase tracking-[0.2em] mb-8">
         Powering AI agents at forward-thinking teams
       </p>
       <div

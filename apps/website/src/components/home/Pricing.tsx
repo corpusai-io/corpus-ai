@@ -58,13 +58,13 @@ export default function Pricing() {
     <section className="py-16 md:py-28 px-4 sm:px-6 bg-[#F7F7F7]">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <span className="inline-block bg-white border border-[#E8E8E8] rounded-full px-4 py-1.5 text-sm text-[#737373] mb-6">
+          <span className="inline-block bg-white border border-[#E8E8E8] rounded-full px-4 py-1.5 text-sm text-[#5C5C5C] mb-6">
             Pricing
           </span>
-          <h2 className="text-3xl md:text-4xl font-medium text-[#171717] tracking-tight">
+          <h2 className="text-4xl md:text-5xl font-medium text-[#171717] tracking-[-0.02em]">
             Start free. Scale infinitely.
           </h2>
-          <p className="text-base text-[#737373] mt-4">
+          <p className="text-base text-[#5C5C5C] mt-4">
             No hidden fees. No surprises. Cancel anytime.
           </p>
         </div>
@@ -93,16 +93,16 @@ export default function Pricing() {
 
               <div className="mt-4">
                 <span className="text-4xl font-medium text-[#171717]">{tier.price}</span>
-                <span className="text-base text-[#737373]">/mo</span>
+                <span className="text-base text-[#5C5C5C]">/mo</span>
               </div>
 
-              <p className="text-sm text-[#737373] mt-3">{tier.description}</p>
+              <p className="text-sm text-[#5C5C5C] mt-3">{tier.description}</p>
 
               <div className="border-t border-[#E8E8E8] my-6" />
 
               <ul className="space-y-0">
                 {tier.features.map((feature) => (
-                  <li key={feature} className="flex items-center gap-2.5 text-sm text-[#737373] py-1.5">
+                  <li key={feature} className="flex items-center gap-2.5 text-sm text-[#5C5C5C] py-1.5">
                     <Check className="w-4 h-4 flex-shrink-0 text-[#171717]" />
                     {feature}
                   </li>
@@ -126,7 +126,7 @@ export default function Pricing() {
         <div className="text-center mt-8">
           <Link
             href="/Sign-In"
-            className="text-sm text-[#737373] hover:text-[#171717] transition-colors"
+            className="text-sm text-[#5C5C5C] hover:text-[#171717] transition-colors"
           >
             Compare all plans &rarr;
           </Link>

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, BookOpen, Database, Zap } from 'lucide-react';
+import { ArrowRight, Zap } from 'lucide-react';
 import DashboardPreview from '@/components/home/DashboardPreview';
 
 // ─── Animation Variants ───────────────────────────────────────────────────────
@@ -75,28 +75,16 @@ export default function Hero() {
           >
             <span className="text-[#171717]">AI Agents that act,</span>
             <br />
-            <span className="text-[#737373]">not just answer.</span>
+            <span className="text-[#5C5C5C]">not just answer.</span>
           </motion.h1>
 
           {/* ── Subtitle ── */}
           <motion.div variants={itemVariants} className="mt-7 max-w-2xl mx-auto">
-            <p className="font-[family-name:var(--font-inter)] text-base font-normal text-[#737373] tracking-[-0.2px] leading-relaxed text-balance">
+            <p className="font-[family-name:var(--font-inter)] text-base font-normal text-[#5C5C5C] tracking-[-0.2px] leading-relaxed text-balance">
               Train on your data, connect your tools, and deploy autonomous agents that work with your{' '}
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-[#E8E8E8] bg-white text-sm text-[#171717] align-middle">
-                <BookOpen className="w-3 h-3" />
-                Knowledge Base
-              </span>
-              {', '}
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-[#E8E8E8] bg-white text-sm text-[#171717] align-middle">
-                <Database className="w-3 h-3" />
-                Database
-              </span>
-              {', and '}
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-[#E8E8E8] bg-white text-sm text-[#171717] align-middle">
-                <Zap className="w-3 h-3" />
-                Actions
-              </span>
-              {' '}— in minutes, not months.
+              <span className="font-medium text-[#171717]">Knowledge Base</span>,{' '}
+              <span className="font-medium text-[#171717]">Database</span>, and{' '}
+              <span className="font-medium text-[#171717]">Actions</span> — in minutes, not months.
             </p>
           </motion.div>
 
@@ -132,7 +120,7 @@ export default function Hero() {
             className="flex items-center justify-center gap-1 mt-5 flex-wrap"
           >
             {['500+ teams', 'SOC 2 compliant', 'No credit card', 'Free forever plan'].map((text, i, arr) => (
-              <span key={text} className="text-xs text-[#737373]">
+              <span key={text} className="text-xs text-[#5C5C5C]">
                 {text}{i < arr.length - 1 && <span className="mx-2">&middot;</span>}
               </span>
             ))}

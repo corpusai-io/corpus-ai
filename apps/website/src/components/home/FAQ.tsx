@@ -46,16 +46,16 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="py-28 px-6 bg-[#F7F7F7]">
+    <section className="py-16 md:py-28 px-4 sm:px-6 bg-[#F7F7F7]">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-16">
-          <span className="inline-block bg-white border border-[#E8E8E8] rounded-full px-4 py-1.5 text-sm text-[#737373] mb-6">
+          <span className="inline-block bg-white border border-[#E8E8E8] rounded-full px-4 py-1.5 text-sm text-[#5C5C5C] mb-6">
             FAQ
           </span>
-          <h2 className="text-3xl md:text-4xl font-medium text-[#171717] tracking-tight">
+          <h2 className="text-4xl md:text-5xl font-medium text-[#171717] tracking-[-0.02em]">
             Questions &amp; answers
           </h2>
-          <p className="text-base text-[#737373] mt-4">
+          <p className="text-base text-[#5C5C5C] mt-4">
             Everything you need to know before you build.
           </p>
         </div>
@@ -71,7 +71,7 @@ export default function FAQ() {
                   {faq.question}
                 </span>
                 <ChevronDown
-                  className={`w-5 h-5 text-[#737373] flex-shrink-0 transition-transform duration-200 ${
+                  className={`w-5 h-5 text-[#5C5C5C] flex-shrink-0 transition-transform duration-200 ${
                     openIndex === i ? 'rotate-180' : ''
                   }`}
                 />
@@ -86,7 +86,7 @@ export default function FAQ() {
                     transition={{ duration: 0.2 }}
                     className="overflow-hidden"
                   >
-                    <p className="text-sm text-[#737373] leading-relaxed pb-5">
+                    <p className="text-sm text-[#5C5C5C] leading-relaxed pb-5">
                       {faq.answer}
                     </p>
                   </motion.div>

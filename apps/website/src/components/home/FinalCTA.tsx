@@ -26,7 +26,7 @@ export default function FinalCTA() {
           Your first agent is free
         </span>
 
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium text-white tracking-tight">
+        <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium text-white tracking-[-0.02em]">
           Stop triaging tickets.<br className="hidden md:block" />
           Deploy an agent today.
         </h2>

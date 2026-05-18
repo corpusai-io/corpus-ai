@@ -188,7 +188,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center shrink-0">
-            <img src="/logo.svg" alt="Corpus AI" className="h-8 brightness-0 opacity-90" />
+            <img src="/logo.svg" alt="Corpus AI" className="h-7 brightness-0 opacity-90" />
           </Link>
 
           {/* Center: Desktop Nav */}
@@ -233,7 +233,7 @@ export default function Navbar() {
           >
             <div className="flex items-center justify-between px-6 py-4 border-b border-[#E8E8E8]">
               <Link href="/" className="flex items-center" onClick={() => setMobileOpen(false)}>
-                <img src="/logo.svg" alt="Corpus AI" className="h-8 brightness-0 opacity-90" />
+                <img src="/logo.svg" alt="Corpus AI" className="h-7 brightness-0 opacity-90" />
               </Link>
               <button className="text-[#171717]" onClick={() => setMobileOpen(false)}>
                 <X size={24} />

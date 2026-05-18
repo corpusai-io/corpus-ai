@@ -4,7 +4,6 @@ import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence, MotionValue } from 'framer-motion';
 import { Brain, Plug, Zap, CheckCircle, Clock, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { GridPattern } from '@/components/ui/grid-pattern';
 
 // ─── Scroll-scrubbed headline ─────────────────────────────────────────────────
 
@@ -123,7 +122,7 @@ function ToolVisual() {
           <span className={cn('font-mono text-[10px] font-bold w-8 flex-shrink-0', methodColor[call.method])}>
             {call.method}
           </span>
-          <span className="font-mono text-[11px] text-[#737373] flex-1 truncate">{call.endpoint}</span>
+          <span className="font-mono text-[11px] text-[#5C5C5C] flex-1 truncate">{call.endpoint}</span>
           <span className="font-mono text-[10px] text-[#A1A1A1] flex-shrink-0">{call.time}</span>
           <span className="font-mono text-[10px] text-[#10B981] font-semibold flex-shrink-0">
             {call.status}
@@ -213,27 +212,15 @@ export default function AgenticShowcase() {
 
   return (
     <section className="py-16 md:py-28 px-4 sm:px-6 bg-[#F7F7F7] relative overflow-hidden">
-      {/* ── Grid background ─────────────────────────────────────── */}
-      <GridPattern
-        width={32}
-        height={32}
-        x={-1}
-        y={-1}
-        className={cn(
-          'fill-[#171717]/[0.018] stroke-[#171717]/[0.06]',
-          '[mask-image:radial-gradient(ellipse_80%_60%_at_50%_50%,white,transparent)]',
-        )}
-      />
-
       <div className="max-w-7xl mx-auto relative z-10">
         {/* ── Header ──────────────────────────────────────────────── */}
         <div className="text-center mb-16">
-          <span className="inline-flex items-center gap-2 bg-white border border-[#E8E8E8] rounded-full px-4 py-1.5 text-sm text-[#737373] shadow-sm mb-5">
+          <span className="inline-flex items-center gap-2 bg-white border border-[#E8E8E8] rounded-full px-4 py-1.5 text-sm text-[#5C5C5C] shadow-sm mb-5">
             <Zap className="w-3.5 h-3.5 text-[#171717]" />
             Agents, not chatbots
           </span>
           <ScrollHeading />
-          <p className="text-base font-[family-name:var(--font-inter)] font-normal text-[#737373] mt-5 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base font-[family-name:var(--font-inter)] font-normal text-[#5C5C5C] mt-5 max-w-2xl mx-auto leading-relaxed">
             Chatbots follow scripts. Corpus AI agents reason through complexity,
             query live data, and take real action — all within guardrails you define.
           </p>
@@ -270,7 +257,7 @@ export default function AgenticShowcase() {
                         [{t.index}]
                       </span>
                       <Icon
-                        className={cn('w-4 h-4', isActive ? 'text-white' : 'text-[#737373]')}
+                        className={cn('w-4 h-4', isActive ? 'text-white' : 'text-[#5C5C5C]')}
                       />
                       {/* Progress bar (auto-cycle indicator) */}
                       {isActive && !paused && (
